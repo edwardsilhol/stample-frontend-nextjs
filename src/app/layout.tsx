@@ -1,3 +1,4 @@
+import '../styles/globals.css';
 import FontProvider from './fontProvider';
 
 function RootLayout({ children }: { children: React.ReactNode }) {
