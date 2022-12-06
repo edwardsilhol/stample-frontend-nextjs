@@ -6,8 +6,11 @@ const font = Roboto({
   style: ['normal', 'italic'],
   subsets: ['latin'],
 });
+interface Props {
+  children: ReactNode;
+}
 
-function FontProvider({ children }: { children: ReactNode }) {
+function FontProvider({ children }: Props) {
   return <main className={font.className}>{children}</main>;
 }
 

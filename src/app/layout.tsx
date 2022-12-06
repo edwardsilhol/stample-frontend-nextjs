@@ -1,12 +1,20 @@
 import '../styles/globals.css';
-import FontProvider from './fontProvider';
+import { ReactNode } from 'react';
+import FontProvider from './providers/fontProvider';
+import ReactQueryProvider from './providers/reactQueryProvider';
 
-function RootLayout({ children }: { children: React.ReactNode }) {
+interface Props {
+  children: ReactNode;
+}
+
+function RootLayout({ children }: Props) {
   return (
     <html>
       <head />
       <body>
-        <FontProvider>{children}</FontProvider>
+        <FontProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </FontProvider>
       </body>
     </html>
   );
