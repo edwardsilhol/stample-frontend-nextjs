@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSession, useSignIn } from '../../../stores/hooks/user';
+import { useSignIn } from '../../../stores/hooks/user';
 import { useRouter } from 'next/navigation';
 
 function SignInPage() {
