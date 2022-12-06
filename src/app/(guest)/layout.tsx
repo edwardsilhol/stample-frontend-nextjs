@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useSession } from '../../stores/hooks/user';
+import { useSession } from '../../stores/hooks/user.hooks';
 import { useRouter } from 'next/navigation';
 
 interface Props {

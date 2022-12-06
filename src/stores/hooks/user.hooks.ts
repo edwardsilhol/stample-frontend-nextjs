@@ -1,6 +1,6 @@
-import { fetchSession, signIn, signUp } from '../api/user';
+import { fetchSession, signIn, signUp } from '../api/user.api';
 
-import { SignInDTO, SignUpDTO } from '../types/user';
+import { SignInDTO, SignUpDTO } from '../types/user.types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,

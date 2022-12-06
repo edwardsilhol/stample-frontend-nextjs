@@ -1,4 +1,4 @@
-import { SignInDTO, SignUpDTO, Tokens, User } from '../types/user';
+import { SignInDTO, SignUpDTO, Tokens, User } from '../types/user.types';
 import {
   apiRequest,
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
