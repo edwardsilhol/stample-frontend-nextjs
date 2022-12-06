@@ -21,7 +21,7 @@
     "typescript": "4.9.3"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "./**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "npx prettier --write"
     ]
   },
