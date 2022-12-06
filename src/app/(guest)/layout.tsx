@@ -1,11 +1,24 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { ReactNode, useEffect } from 'react';
+import { useSession } from '../../stores/hooks/user';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   children: ReactNode;
 }
 
 function RootLayout({ children }: Props) {
-  return <>{children}</>;
+  const { data: user, isLoading: isLoading } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push('/');
+    }
+  });
+
+  return !isLoading && !user ? <>{children}</> : <></>;
 }
 
 export default RootLayout;

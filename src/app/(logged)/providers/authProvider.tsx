@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useSession } from '../../../stores/hooks/user';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   children: ReactNode;
@@ -9,9 +10,10 @@ interface Props {
 
 function AuthProvider({ children }: Props) {
   const { data: user, isLoading } = useSession();
+  const router = useRouter();
   useEffect(() => {
     if (!isLoading && !user) {
-      window.location.href = '/signIn';
+      router.push('/signIn');
     }
   });
 
