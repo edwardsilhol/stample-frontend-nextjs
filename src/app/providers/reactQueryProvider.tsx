@@ -31,7 +31,10 @@ function ReactQueryProvider({ children }: Props) {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       {showDevtools && (
         <Suspense fallback={null}>
-          <ReactQueryDevtoolsProduction />
+          <ReactQueryDevtoolsProduction
+            initialIsOpen={false}
+            position="bottom-right"
+          />
         </Suspense>
       )}
     </QueryClientProvider>
