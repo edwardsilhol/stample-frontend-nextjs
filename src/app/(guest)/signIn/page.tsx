@@ -1,15 +1,10 @@
 'use client';
 
 import React from 'react';
-import SignInForm from '../../../components/forms/auth/SignInForm';
+import SignInForm from '../../../components/forms/SignInForm';
 
 function SignInPage() {
-  return (
-    <div>
-      <h1>SignIn</h1>
-      <SignInForm />
-    </div>
-  );
+  return <SignInForm />;
 }
 
 export default SignInPage;

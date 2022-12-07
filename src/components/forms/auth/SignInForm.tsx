@@ -21,8 +21,8 @@ const useStyles = createUseStyles({
 function SignInForm() {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
-  const login = useSignIn();
-  const { isLoading } = login;
+  const { mutateAsync: signInMutateAsync, isLoading: isSignInLoading } =
+    useSignIn();
   const [error, setError] = useState(undefined);
 
   const validationSchema = Yup.object({
@@ -41,7 +41,7 @@ function SignInForm() {
   const onSubmit = async (values: SignInDTO) => {
     try {
       setError(undefined);
-      await login.mutateAsync({
+      await signInMutateAsync({
         email: values.email,
         password: values.password,
       });
@@ -85,7 +85,7 @@ function SignInForm() {
           size="large"
           type="submit"
           variant="contained"
-          loading={isLoading}
+          loading={isSignInLoading}
         >
           {'logIn'}
         </LoadingButton>
