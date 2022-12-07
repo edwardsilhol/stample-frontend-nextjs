@@ -1,24 +1,12 @@
-'use client';
-
-import { ReactNode, useEffect } from 'react';
-import { useSession } from '../../stores/hooks/user.hooks';
-import { useRouter } from 'next/navigation';
+import { ReactNode } from 'react';
+import GuestAuthProvider from './providers/guestAuthProvider';
 
 interface Props {
   children: ReactNode;
 }
 
 function GuestLayout({ children }: Props) {
-  const { data: user, isLoading: isLoading } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.push('/');
-    }
-  });
-
-  return !isLoading && !user ? <>{children}</> : <></>;
+  return <GuestAuthProvider>{children}</GuestAuthProvider>;
 }
 
 export default GuestLayout;

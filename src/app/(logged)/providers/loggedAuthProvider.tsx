@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-function AuthProvider({ children }: Props) {
+function LoggedAuthProvider({ children }: Props) {
   const { data: user, isLoading } = useSession();
   const router = useRouter();
   useEffect(() => {
@@ -20,4 +20,4 @@ function AuthProvider({ children }: Props) {
   return !isLoading && user ? <>{children}</> : <></>;
 }
 
-export default AuthProvider;
+export default LoggedAuthProvider;

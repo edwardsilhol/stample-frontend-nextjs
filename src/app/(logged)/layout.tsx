@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import AuthProvider from './providers/authProvider';
+import LoggedAuthProvider from './providers/loggedAuthProvider';
 
 interface Props {
   children: ReactNode;
 }
 
 function LoggedLayout({ children }: Props) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return <LoggedAuthProvider>{children}</LoggedAuthProvider>;
 }
 
 export default LoggedLayout;
