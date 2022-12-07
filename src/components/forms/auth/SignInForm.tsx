@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { IconButton, InputAdornment, Stack, Typography } from '@mui/material';
-import { createUseStyles } from 'react-jss';
-import { TextFieldForm } from '../fields/TextFieldForm';
-import { LoadingButton } from '@mui/lab';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 import { useSignIn } from '../../../stores/hooks/user.hooks';
+import * as Yup from 'yup';
 import { SignInDTO } from '../../../stores/types/user.types';
-
-const useStyles = createUseStyles({
-  fieldContainer: {},
-  error: {
-    // TODO : useTheme
-    color: 'red',
-  },
-});
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { TextFieldForm } from '../fields/TextFieldForm';
 
 function SignInForm() {
-  const classes = useStyles();
-  const [showPassword, setShowPassword] = useState(false);
-  const { mutateAsync: signInMutateAsync, isLoading: isSignInLoading } =
-    useSignIn();
+  const signIn = useSignIn();
+  // TODO: handle errors in form
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
 
   const validationSchema = Yup.object({
@@ -41,7 +38,7 @@ function SignInForm() {
   const onSubmit = async (values: SignInDTO) => {
     try {
       setError(undefined);
-      await signInMutateAsync({
+      await signIn.mutateAsync({
         email: values.email,
         password: values.password,
       });
@@ -51,51 +48,98 @@ function SignInForm() {
     }
   };
 
-  const handleShowPassword = () => {
-    setShowPassword((show) => !show);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={'18px'} direction="column">
-        <Stack
-          spacing={'18px'}
-          direction="column"
-          className={classes.fieldContainer}
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid
+        item
+        xs={false}
+        sm={false}
+        md={8}
+        sx={{
+          backgroundImage: 'url(https://source.unsplash.com/random)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Grid item xs={12} sm={12} md={4} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
-          <TextFieldForm name="email" control={control} label={'email'} />
-          <TextFieldForm
-            name="password"
-            control={control}
-            type={showPassword ? 'text' : 'password'}
-            label={'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Stack>
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSignInLoading}
-        >
-          {'logIn'}
-        </LoadingButton>
-        {error && (
-          <Typography variant="h5" className={classes.error}>
-            {error}
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
           </Typography>
-        )}
-      </Stack>
-    </form>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{ mt: 1 }}
+          >
+            <TextFieldForm
+              control={control}
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextFieldForm
+              control={control}
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link
+                  href="src/components/forms/auth/SignInForm#"
+                  variant="body2"
+                >
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link
+                  href="src/components/forms/auth/SignInForm#"
+                  variant="body2"
+                >
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 
