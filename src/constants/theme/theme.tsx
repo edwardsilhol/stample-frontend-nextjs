@@ -1,4 +1,3 @@
-import React from 'react';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { ExtendedPalette, palette, paletteExtended } from './overides/palette';
 import breakpoints from './overides/breakpoints';
@@ -8,7 +7,6 @@ declare module '@mui/material/styles' {
   interface Theme {
     paletteExtended: ExtendedPalette;
   }
-  // allow configuration using `createTheme`
   interface ThemeOptions {
     paletteExtended: ExtendedPalette;
   }

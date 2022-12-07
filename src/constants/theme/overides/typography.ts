@@ -1,4 +1,17 @@
+declare module '@mui/material/Typography' {
+  export interface TypographyPropsVariantOverrides {
+    additionalVariant: true;
+  }
+}
+
 const FONT_PRIMARY = 'Roboto, sans-serif';
+
+const extendedTypography = {
+  additionalVariant: {
+    fontWeight: 700,
+    fontSize: 16,
+  },
+};
 
 export const typography = {
   fontFamily: FONT_PRIMARY,
@@ -12,34 +25,6 @@ export const typography = {
   h2: {
     fontWeight: 700,
     fontSize: 20,
-  },
-  p1: {
-    fontWeight: 700,
-    fontSize: 16,
-  },
-  p2: {
-    fontWeight: 500,
-    fontSize: 14,
-  },
-  p3: {
-    fontWeight: 400,
-    fontSize: 12,
-  },
-  p4: {
-    fontWeight: 700,
-    fontSize: 10,
-  },
-  price: {
-    fontWeight: 400,
-    fontSize: 24,
-  },
-  b1: {
-    fontWeight: 500,
-    fontSize: 14,
-  },
-  b2: {
-    fontWeight: 500,
-    fontSize: 12,
   },
   h3: {
     fontWeight: 700,
@@ -83,6 +68,7 @@ export const typography = {
     fontWeight: 700,
     fontSize: 14,
   },
+  ...extendedTypography,
 };
 
 export default typography;
