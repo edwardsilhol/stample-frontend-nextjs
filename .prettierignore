@@ -29,3 +29,5 @@ yarn-error.log
 **/.gitkeep
 .stylelintignore
 node_modules/
+next.config.js
+tsconfig.json
