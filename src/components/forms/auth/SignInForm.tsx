@@ -16,8 +16,28 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextFieldForm } from '../fields/TextFieldForm';
 
+const useStyles = () => ({
+  leftContainer: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  signInContainer: {
+    my: 8,
+    mx: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  signInIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
+  fieldContainer: { mt: 1 },
+  submitButton: { mt: 3, mb: 2 },
+});
+
 function SignInForm() {
   const signIn = useSignIn();
+  const classes = useStyles();
   // TODO: handle errors in form
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
@@ -50,29 +70,10 @@ function SignInForm() {
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
-      <Grid
-        item
-        xs={false}
-        sm={false}
-        md={8}
-        sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      <Grid item xs={false} sm={false} md={8} sx={classes.leftContainer} />
       <Grid item xs={12} sm={12} md={4} component={Paper} elevation={6} square>
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Box sx={classes.signInContainer}>
+          <Avatar sx={classes.signInIcon}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -82,7 +83,7 @@ function SignInForm() {
             component="form"
             noValidate
             onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 1 }}
+            sx={classes.fieldContainer}
           >
             <TextFieldForm
               control={control}
@@ -114,7 +115,7 @@ function SignInForm() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={classes.submitButton}
             >
               Sign In
             </Button>

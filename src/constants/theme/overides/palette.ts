@@ -6,13 +6,13 @@ export interface ExtendedPalette {
   };
 }
 
-export const paletteExtended: PaletteOptions & ExtendedPalette = {
+const paletteExtended: ExtendedPalette = {
   additionalColors: {
-    additionalMain: '#FF0000',
+    additionalMain: '#1976d2',
   },
 };
 
-export const palette: PaletteOptions = {
+export const palette: PaletteOptions & ExtendedPalette = {
   mode: 'light',
   primary: {
     main: '#1976d2',
@@ -63,4 +63,5 @@ export const palette: PaletteOptions = {
     activatedOpacity: 0.12,
   },
   divider: 'rgba(2,2,2,0.12)',
+  ...paletteExtended,
 };
