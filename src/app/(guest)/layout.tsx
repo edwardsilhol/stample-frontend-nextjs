@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-function RootLayout({ children }: Props) {
+function GuestLayout({ children }: Props) {
   const { data: user, isLoading: isLoading } = useSession();
   const router = useRouter();
 
@@ -21,4 +21,4 @@ function RootLayout({ children }: Props) {
   return !isLoading && !user ? <>{children}</> : <></>;
 }
 
-export default RootLayout;
+export default GuestLayout;

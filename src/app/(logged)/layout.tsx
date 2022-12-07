@@ -5,8 +5,8 @@ interface Props {
   children: ReactNode;
 }
 
-function RootLayout({ children }: Props) {
+function LoggedLayout({ children }: Props) {
   return <AuthProvider>{children}</AuthProvider>;
 }
 
-export default RootLayout;
+export default LoggedLayout;

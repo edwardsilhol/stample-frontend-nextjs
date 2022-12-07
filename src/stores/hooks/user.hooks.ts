@@ -5,7 +5,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-} from '../../utils/api';
+} from '../../constants/tokenConfig';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
 // Queries
 

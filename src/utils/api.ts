@@ -1,11 +1,12 @@
 import { stringify } from 'query-string';
 import { Mutex } from 'async-mutex';
 import { fetchTimeout } from './fetchTimeout';
+import {
+  LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+  LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+} from '../constants/tokenConfig';
 
 const API_URL = process.env.NEXT_PUBLIC_APP_API_URL;
-
-export const LOCAL_STORAGE_ACCESS_TOKEN_KEY = 'accessToken';
-export const LOCAL_STORAGE_REFRESH_TOKEN_KEY = 'refreshToken';
 
 export type HTTPMethod =
   | 'CONNECT'

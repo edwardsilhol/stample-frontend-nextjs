@@ -1,9 +1,9 @@
 import { SignInDTO, SignUpDTO, Tokens, User } from '../types/user.types';
+import { apiRequest } from '../../utils/api';
 import {
-  apiRequest,
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-} from '../../utils/api';
+} from '../../constants/tokenConfig';
 
 const setAccessRefreshTokenAndGetUser = (
   accessToken: string,

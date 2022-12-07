@@ -1,29 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useSignIn } from '../../../stores/hooks/user.hooks';
-import { useRouter } from 'next/navigation';
+import SignInForm from '../../../components/forms/auth/SignInForm';
 
 function SignInPage() {
-  const signIn = useSignIn();
-  const router = useRouter();
   return (
     <div>
       <h1>SignIn</h1>
-      <button
-        onClick={async () => {
-          // TODO : handle using form
-          const user = await signIn.mutateAsync({
-            email: 'admin@admin.com',
-            password: 'adminadminadmin',
-          });
-          if (user) {
-            router.back();
-          }
-        }}
-      >
-        Sign In
-      </button>
+      <SignInForm />
     </div>
   );
 }
