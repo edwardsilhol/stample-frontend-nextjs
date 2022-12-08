@@ -43,6 +43,7 @@ function SignInForm() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
 
+  // TODO: add better validation for your needs
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
