@@ -2,46 +2,103 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Link from 'next/link';
+import { SignInDTO, SignUpDTO } from '../../../stores/types/user.types';
+import { useSignUp } from '../../../stores/hooks/user.hooks';
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
+import { TextFieldForm } from '../fields/TextFieldForm';
 
-export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+const useStyles = () => ({
+  signUpContainer: {
+    my: 8,
+    mx: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  signUpIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
+  fieldContainer: { mt: 1 },
+  submitButton: { mt: 3, mb: 2 },
+  link: { color: 'additionalColors.link' },
+});
+
+interface SignUpFormType extends SignUpDTO {
+  confirmPassword: string;
+}
+
+function SignUp() {
+  const signUp = useSignUp();
+  const classes = useStyles();
+  // TODO: handle errors in form
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState(undefined);
+
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    email: Yup.string().email().required(),
+    password: Yup.string().required(),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required(),
+  } as Record<keyof SignUpFormType, any>);
+
+  const { control, handleSubmit } = useForm<SignUpFormType>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    resolver: yupResolver(validationSchema),
+  });
+  const onSubmit = async (values: SignUpFormType) => {
+    try {
+      setError(undefined);
+      const { firstName, lastName, email, password } = values;
+
+      await signUp.mutateAsync({
+        firstName,
+        lastName,
+        email,
+        password,
+        locale: navigator.language,
+      });
+    } catch (error: any) {
+      setError(error.message);
+      console.log(error.message);
+    }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+    <Container component="main" maxWidth="sm">
+      <Box sx={classes.signUpContainer}>
+        <Avatar sx={classes.signUpIcon}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant={'h5'}>
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={classes.fieldContainer}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
+              <TextFieldForm
+                control={control}
                 name="firstName"
                 required
                 fullWidth
@@ -51,17 +108,18 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextFieldForm
+                control={control}
                 required
                 fullWidth
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="family-name"
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <TextFieldForm
+                control={control}
                 required
                 fullWidth
                 id="email"
@@ -71,20 +129,25 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <TextFieldForm
+                control={control}
                 required
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextFieldForm
+                control={control}
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
               />
             </Grid>
           </Grid>
@@ -92,14 +155,16 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={classes.submitButton}
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              <Link href="/signIn">
+                <Typography variant="body2" sx={classes.link}>
+                  Already have an account? Sign in
+                </Typography>
               </Link>
             </Grid>
           </Grid>
@@ -108,3 +173,5 @@ export default function SignUp() {
     </Container>
   );
 }
+
+export default SignUp;

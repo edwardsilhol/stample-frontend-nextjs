@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -15,6 +14,7 @@ import { SignInDTO } from '../../../stores/types/user.types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextFieldForm } from '../fields/TextFieldForm';
+import Link from 'next/link';
 
 const useStyles = () => ({
   leftContainer: {
@@ -33,6 +33,7 @@ const useStyles = () => ({
   signInIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
   fieldContainer: { mt: 1 },
   submitButton: { mt: 3, mb: 2 },
+  link: { color: 'additionalColors.link' },
 });
 
 function SignInForm() {
@@ -121,19 +122,14 @@ function SignInForm() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link
-                  href="src/components/forms/auth/SignInForm#"
-                  variant="body2"
-                >
-                  Forgot password?
-                </Link>
+                <Link href="/">Forgot password?</Link>
+                {/* TODO: add forgot password page*/}
               </Grid>
               <Grid item>
-                <Link
-                  href="src/components/forms/auth/SignInForm#"
-                  variant="body2"
-                >
-                  {"Don't have an account? Sign Up"}
+                <Link href="/signUp">
+                  <Typography variant="body2" sx={classes.link}>
+                    {"Don't have an account? Sign Up"}
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>

@@ -3,12 +3,14 @@ import { PaletteOptions } from '@mui/material/styles/createPalette';
 export interface ExtendedPalette {
   additionalColors: {
     additionalMain: string;
+    link: string;
   };
 }
 
 const paletteExtended: ExtendedPalette = {
   additionalColors: {
     additionalMain: '#1976d2',
+    link: '#1976d2',
   },
 };
 
