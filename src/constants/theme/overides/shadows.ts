@@ -1,4 +1,4 @@
-import { Shadows } from '@mui/material';
+import { Shadows } from '@mui/material/styles/shadows';
 
 export interface ShadowsExtended {
   additionalShadow: string;

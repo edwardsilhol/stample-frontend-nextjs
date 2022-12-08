@@ -12,7 +12,7 @@ const paletteExtended: ExtendedPalette = {
   },
 };
 
-export const palette: PaletteOptions & ExtendedPalette = {
+const palette: PaletteOptions & ExtendedPalette = {
   mode: 'light',
   primary: {
     main: '#1976d2',
@@ -65,3 +65,5 @@ export const palette: PaletteOptions & ExtendedPalette = {
   divider: 'rgba(2,2,2,0.12)',
   ...paletteExtended,
 };
+
+export default palette;

@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
-import { TextField, TextFieldProps, Tooltip } from '@mui/material';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import { Control, useController, UseControllerProps } from 'react-hook-form';
-import { createUseStyles } from 'react-jss';
-
-const useStyles = createUseStyles({
-  textField: {},
-  inputLabel: {},
-});
 
 interface Props extends UseControllerProps {
   control: Control<any>;
@@ -20,7 +15,6 @@ export const TextFieldForm: FC<Props & TextFieldProps> = ({
   defaultValue,
   ...props
 }) => {
-  const classes = useStyles();
   const {
     field,
     fieldState: { error },
@@ -28,15 +22,7 @@ export const TextFieldForm: FC<Props & TextFieldProps> = ({
 
   return (
     <Tooltip title={error?.message || ''}>
-      <TextField
-        {...field}
-        error={!!error}
-        {...props}
-        className={classes.textField}
-        InputLabelProps={{
-          className: classes.inputLabel,
-        }}
-      />
+      <TextField {...field} error={!!error} {...props} />
     </Tooltip>
   );
 };

@@ -1,5 +1,6 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { palette } from './overides/palette';
+import responsiveFontSizes from '@mui/material/styles/responsiveFontSizes';
+import createTheme from '@mui/material/styles/createTheme';
+import palette from './overides/palette';
 import breakpoints from './overides/breakpoints';
 import typography from './overides/typography';
 import shape from './overides/shape';

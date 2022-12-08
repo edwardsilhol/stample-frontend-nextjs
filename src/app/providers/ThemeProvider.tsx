@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { default as MuiThemeProvider } from '@mui/material/styles/ThemeProvider';
 import theme from '../../constants/theme/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 
