@@ -1,6 +1,5 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import GuestAuthProvider from './providers/guestAuthProvider';
-
 interface Props {
   children: ReactNode;
 }
@@ -8,5 +7,4 @@ interface Props {
 function GuestLayout({ children }: Props) {
   return <GuestAuthProvider>{children}</GuestAuthProvider>;
 }
-
 export default GuestLayout;
