@@ -28,7 +28,7 @@ export const useSignIn = () => {
   });
 };
 
-export const useSignup = () => {
+export const useSignUp = () => {
   const queryClient = useQueryClient();
   return useMutation((signUpDTO: SignUpDTO) => signUp(signUpDTO), {
     onSuccess: (user) => {

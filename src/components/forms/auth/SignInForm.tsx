@@ -1,30 +1,49 @@
 import React, { useState } from 'react';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { IconButton, InputAdornment, Stack, Typography } from '@mui/material';
-import { createUseStyles } from 'react-jss';
-import { TextFieldForm } from '../fields/TextFieldForm';
-import { LoadingButton } from '@mui/lab';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 import { useSignIn } from '../../../stores/hooks/user.hooks';
+import * as Yup from 'yup';
 import { SignInDTO } from '../../../stores/types/user.types';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { TextFieldForm } from '../fields/TextFieldForm';
+import Link from 'next/link';
 
-const useStyles = createUseStyles({
-  fieldContainer: {},
-  error: {
-    // TODO : useTheme
-    color: 'red',
+const useStyles = () => ({
+  leftContainer: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   },
+  signInContainer: {
+    my: 8,
+    mx: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  signInIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
+  fieldContainer: { mt: 1 },
+  submitButton: { mt: 3, mb: 2 },
+  link: { color: 'additionalColors.link' },
 });
 
 function SignInForm() {
+  const signIn = useSignIn();
   const classes = useStyles();
-  const [showPassword, setShowPassword] = useState(false);
-  const login = useSignIn();
-  const { isLoading } = login;
+  // TODO: handle errors in form
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
 
+  // TODO: add better validation for your needs
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
@@ -41,7 +60,7 @@ function SignInForm() {
   const onSubmit = async (values: SignInDTO) => {
     try {
       setError(undefined);
-      await login.mutateAsync({
+      await signIn.mutateAsync({
         email: values.email,
         password: values.password,
       });
@@ -51,51 +70,78 @@ function SignInForm() {
     }
   };
 
-  const handleShowPassword = () => {
-    setShowPassword((show) => !show);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={'18px'} direction="column">
-        <Stack
-          spacing={'18px'}
-          direction="column"
-          className={classes.fieldContainer}
-        >
-          <TextFieldForm name="email" control={control} label={'email'} />
-          <TextFieldForm
-            name="password"
-            control={control}
-            type={showPassword ? 'text' : 'password'}
-            label={'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Stack>
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isLoading}
-        >
-          {'logIn'}
-        </LoadingButton>
-        {error && (
-          <Typography variant="h5" className={classes.error}>
-            {error}
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid item xs={false} sm={false} md={8} sx={classes.leftContainer} />
+      <Grid item xs={12} sm={12} md={4} component={Paper} elevation={6} square>
+        <Box sx={classes.signInContainer}>
+          <Avatar sx={classes.signInIcon}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
           </Typography>
-        )}
-      </Stack>
-    </form>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            sx={classes.fieldContainer}
+          >
+            <TextFieldForm
+              control={control}
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextFieldForm
+              control={control}
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={classes.submitButton}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/">
+                  <Typography variant="body2" sx={classes.link}>
+                    Forgot password?
+                  </Typography>
+                </Link>
+                {/* TODO: add forgot password page*/}
+              </Grid>
+              <Grid item>
+                <Link href="/signUp">
+                  <Typography variant="body2" sx={classes.link}>
+                    {"Don't have an account? Sign Up"}
+                  </Typography>
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 

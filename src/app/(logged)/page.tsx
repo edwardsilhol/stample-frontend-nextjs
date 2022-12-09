@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLogout } from '../../stores/hooks/user.hooks';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 function HomePage() {
   const logout = useLogout();

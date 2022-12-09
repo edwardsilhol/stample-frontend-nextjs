@@ -15,6 +15,7 @@ export type SignUpDTO = {
   email: string;
   phoneNumber?: string;
   locale: string;
+  password: string;
 };
 
 export interface User {
