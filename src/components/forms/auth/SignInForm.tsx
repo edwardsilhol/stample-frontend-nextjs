@@ -123,7 +123,11 @@ function SignInForm() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/">Forgot password?</Link>
+                <Link href="/">
+                  <Typography variant="body2" sx={classes.link}>
+                    Forgot password?
+                  </Typography>
+                </Link>
                 {/* TODO: add forgot password page*/}
               </Grid>
               <Grid item>
