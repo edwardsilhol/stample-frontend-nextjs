@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
-import { SignInDTO, SignUpDTO } from '../../../stores/types/user.types';
+import { SignUpDTO } from '../../../stores/types/user.types';
 import { useSignUp } from '../../../stores/hooks/user.hooks';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
