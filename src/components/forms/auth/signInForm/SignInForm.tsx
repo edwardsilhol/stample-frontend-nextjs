@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextFieldForm } from '../../fields/TextFieldForm';
 import Link from 'next/link';
+import Container from '@mui/material/Container';
 
 const useStyles = () => ({
   leftContainer: {
@@ -71,77 +71,74 @@ function SignInForm() {
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
-      <Grid item xs={false} sm={false} md={8} sx={classes.leftContainer} />
-      <Grid item xs={12} sm={12} md={4} component={Paper} elevation={6} square>
-        <Box sx={classes.signInContainer}>
-          <Avatar sx={classes.signInIcon}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            sx={classes.fieldContainer}
+    <Container component="main" maxWidth="sm">
+      <Box sx={classes.signInContainer}>
+        <Avatar sx={classes.signInIcon}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={classes.fieldContainer}
+        >
+          <TextFieldForm
+            control={control}
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextFieldForm
+            control={control}
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={classes.submitButton}
           >
-            <TextFieldForm
-              control={control}
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextFieldForm
-              control={control}
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={classes.submitButton}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/">
-                  <Typography variant="body2" sx={classes.link}>
-                    Forgot password?
-                  </Typography>
-                </Link>
-                {/* TODO: add forgot password page*/}
-              </Grid>
-              <Grid item>
-                <Link href="/signUp">
-                  <Typography variant="body2" sx={classes.link}>
-                    {"Don't have an account? Sign Up"}
-                  </Typography>
-                </Link>
-              </Grid>
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="/">
+                <Typography variant="body2" sx={classes.link}>
+                  Forgot password?
+                </Typography>
+              </Link>
+              {/* TODO: add forgot password page*/}
             </Grid>
-          </Box>
+            <Grid item>
+              <Link href="/signUp">
+                <Typography variant="body2" sx={classes.link}>
+                  {"Don't have an account? Sign Up"}
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </Container>
   );
 }
 

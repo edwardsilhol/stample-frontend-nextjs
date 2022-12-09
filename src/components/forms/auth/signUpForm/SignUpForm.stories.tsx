@@ -4,7 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import SignUpForm from './SignUpForm';
 
 export default {
-  title: 'SignUpForm', // Change story title
+  title: 'Components/SignUpForm', // Change story title
   component: SignUpForm,
 } as Meta;
 

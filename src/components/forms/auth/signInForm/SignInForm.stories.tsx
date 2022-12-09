@@ -1,10 +1,10 @@
+import { Meta, Story } from '@storybook/react';
 import React from 'react';
 
-import { Meta, Story } from '@storybook/react';
 import SignInForm from './SignInForm';
 
 export default {
-  title: 'SignInForm', // Change story title
+  title: 'Components/SignInForm', // Change story title
   component: SignInForm,
 } as Meta;
 
