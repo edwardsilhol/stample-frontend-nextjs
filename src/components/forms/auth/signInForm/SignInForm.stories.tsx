@@ -1,17 +1,8 @@
-import { Meta, Story } from '@storybook/react';
-import React from 'react';
-
 import SignInForm from './SignInForm';
-
+import { Meta } from '@storybook/react';
 export default {
-  title: 'Components/SignInForm', // Change story title
+  title: 'Components/Forms/Auth/SignInForm', // Change story title
   component: SignInForm,
 } as Meta;
 
-export const Default: Story = () => (
-  <>
-    <SignInForm />
-  </>
-);
-
-Default.args = {};
+export const Default = {};
