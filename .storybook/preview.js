@@ -39,8 +39,8 @@ export const parameters = {
 /* snipped for brevity */
 
 const THEMES = {
-  light: theme,
-  dark: theme,
+  light: theme('light'),
+  dark: theme('dark'),
 };
 
 export const withProviders = (Story, context) => {

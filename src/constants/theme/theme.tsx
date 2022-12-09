@@ -1,10 +1,10 @@
 import responsiveFontSizes from '@mui/material/styles/responsiveFontSizes';
 import createTheme from '@mui/material/styles/createTheme';
-import palette from './overides/palette';
-import breakpoints from './overides/breakpoints';
-import typography from './overides/typography';
-import shape from './overides/shape';
-import { shadows, shadowsExtended, ShadowsExtended } from './overides/shadows';
+import breakpoints from './breakpoints';
+import typography from './typography';
+import shape from './shape';
+import { shadows, shadowsExtended, ShadowsExtended } from './shadows';
+import { darkPalette, lightPalette } from './palette';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -15,15 +15,16 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = responsiveFontSizes(
-  createTheme({
-    palette,
-    breakpoints,
-    typography,
-    shape,
-    shadows,
-    shadowsExtended,
-  }),
-);
+const theme = (mode: 'light' | 'dark') =>
+  responsiveFontSizes(
+    createTheme({
+      palette: mode === 'light' ? lightPalette : darkPalette,
+      breakpoints,
+      typography,
+      shape,
+      shadows,
+      shadowsExtended,
+    }),
+  );
 
 export default theme;

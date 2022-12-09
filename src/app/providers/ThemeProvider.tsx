@@ -11,7 +11,7 @@ interface Props {
 
 function ThemeProvider({ children }: Props) {
   return (
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme('light')}>
       <CssBaseline />
       {children}
     </MuiThemeProvider>
