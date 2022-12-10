@@ -9,7 +9,7 @@ export function checkRequiredFormField(
     cy.get(`input[name="${fieldName}"]`).trigger('mouseover');
     cy.contains(`${fieldName} is a required field`).should('not.exist');
   });
-  it(`invalid${testName}`, () => {
+  it(`empty${testName}`, () => {
     cy.get('form').submit();
     cy.get(`input[name="${fieldName}"]`).trigger('mouseover');
     cy.contains(`${fieldName} is a required field`).should('exist');
