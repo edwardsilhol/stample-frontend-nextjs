@@ -46,4 +46,8 @@ describe('SignInForm.cy.tsx', () => {
     });
     cy.contains('email must be a valid email').should('not.exist');
   });
+  it('signUpLink', () => {
+    cy.get('a[href="/signUp"]').click();
+    cy.url().should('include', '/signUp');
+  });
 });
