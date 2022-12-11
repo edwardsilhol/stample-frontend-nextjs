@@ -99,6 +99,35 @@ describe('SignUpForm.cy.tsx', () => {
       test.errorMessage,
     );
   });
-  // TODO: add tests for both passwords matching
-  // TODO: add tests for email being valid
+  it('passwordDontMatch', () => {
+    cy.get('#password').click().type('password1');
+    cy.get('#confirmPassword').click().type('password');
+    cy.get('form').submit();
+    cy.get(`#confirmPassword`).trigger('mouseover');
+    cy.contains('Passwords must match');
+  });
+  // TODO: add tests for dto validation
+  it('doSubmit', () => {
+    cy.get('#firstName').click().type('firstName');
+    cy.get('#lastName').click().type('lastName');
+    cy.get('input[name="email"]').type('test@test.com');
+    cy.get('input[name="password"]').type('password');
+    cy.get('input[name="confirmPassword"]').type('password');
+    cy.intercept('POST', `**/auth/signUp`).as('signUp');
+    cy.get('form').submit();
+    cy.wait('@signUp').then((interception) => {
+      console.log(interception.request.body);
+      expect(interception.request.body).to.deep.contains({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'test@test.com',
+        password: 'password',
+      });
+    });
+  });
+
+  it('signInLink', () => {
+    cy.get('a[href="/signIn"]').click();
+    cy.url().should('include', '/signIn');
+  });
 });
