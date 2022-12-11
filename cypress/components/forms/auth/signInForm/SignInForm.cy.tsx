@@ -1,6 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SignInForm from '../../../../../src/components/forms/auth/signInForm/SignInForm';
-import { checkRequiredFormField } from '../../utils/utils';
+import {
+  checkInvalidFormField,
+  checkRequiredFormField,
+  checkValidFormField,
+} from '../../utils/utils';
 
 export {};
 
@@ -18,6 +22,17 @@ const requiredFields = [
   {
     testName: 'Email',
     fieldName: 'email',
+  },
+  {
+    testName: 'Password',
+    fieldName: 'password',
+  },
+];
+
+const validFields = [
+  {
+    testName: 'Email',
+    fieldName: 'email',
     validValue: 'test@test.com',
   },
   {
@@ -27,22 +42,35 @@ const requiredFields = [
   },
 ];
 
+const invalidFields = [
+  {
+    testName: 'Email',
+    fieldName: 'email',
+    invalidValue: 'test.com',
+    errorMessage: 'email must be a valid email',
+  },
+];
+
 describe('SignInForm.cy.tsx', () => {
   beforeEach(() => {
     mountComponent();
   });
   it('renders', () => {
-    // check that the component renders
     cy.get('form').should('exist');
   });
   requiredFields.map((test) => {
-    checkRequiredFormField(test.testName, test.fieldName, test.validValue);
+    checkRequiredFormField(test.testName, test.fieldName);
   });
-  it('invalidEmail', () => {
-    cy.get('input[name="email"]').type('test.com');
-    cy.get('form').submit();
-    cy.get('input[name="email"]').trigger('mouseover');
-    cy.contains('email must be a valid email');
+  validFields.map((test) => {
+    checkValidFormField(test.testName, test.fieldName, test.validValue);
+  });
+  invalidFields.map((test) => {
+    checkInvalidFormField(
+      test.testName,
+      test.fieldName,
+      test.invalidValue,
+      test.errorMessage,
+    );
   });
 
   it('doSubmit', () => {
@@ -56,7 +84,6 @@ describe('SignInForm.cy.tsx', () => {
         password: 'password',
       });
     });
-    cy.contains('email must be a valid email').should('not.exist');
   });
 
   it('signUpLink', () => {
