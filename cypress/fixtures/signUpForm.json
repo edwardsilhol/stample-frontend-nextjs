@@ -1,0 +1,59 @@
+{
+  "requiredFields": [
+    {
+      "testName": "FirstName",
+      "fieldName": "firstName"
+    },
+    {
+      "testName": "LastName",
+      "fieldName": "lastName"
+    },
+    {
+      "testName": "Email",
+      "fieldName": "email"
+    },
+    {
+      "testName": "Password",
+      "fieldName": "password"
+    },
+    {
+      "testName": "ConfirmPassword",
+      "fieldName": "confirmPassword"
+    }
+  ],
+  "validFields": [
+    {
+      "testName": "FirstName",
+      "fieldName": "firstName",
+      "validValue": "firstName"
+    },
+    {
+      "testName": "LastName",
+      "fieldName": "lastName",
+      "validValue": "lastName"
+    },
+    {
+      "testName": "Email",
+      "fieldName": "email",
+      "validValue": "test@test.com"
+    },
+    {
+      "testName": "Password",
+      "fieldName": "password",
+      "validValue": "password"
+    },
+    {
+      "testName": "ConfirmPassword",
+      "fieldName": "confirmPassword",
+      "validValue": "password"
+    }
+  ],
+  "invalidFields": [
+    {
+      "testName": "Email",
+      "fieldName": "email",
+      "invalidValue": "test.com",
+      "errorMessage": "email must be a valid email"
+    }
+  ]
+}

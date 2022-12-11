@@ -9,7 +9,9 @@
     "lint": "next lint",
     "prettier": "prettier -c --write **/*",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "cypress": "cypress open",
+    "cypress:headless:component": "cypress run --component"
   },
   "dependencies": {
     "@babel/core": "^7.20.5",
@@ -62,6 +64,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.1",
     "@typescript-eslint/parser": "^5.45.1",
     "babel-loader": "^8.3.0",
+    "cypress": "^12.0.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-storybook": "^0.6.8",
