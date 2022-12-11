@@ -4,7 +4,8 @@ import {
   checkInvalidFormField,
   checkRequiredFormField,
   checkValidFormField,
-} from '../../utils/utils';
+} from '../../../../support/formUtils';
+import testData from '../../../../fixtures/signInForm.json';
 
 export {};
 
@@ -18,39 +19,6 @@ function mountComponent() {
   );
 }
 
-const requiredFields = [
-  {
-    testName: 'Email',
-    fieldName: 'email',
-  },
-  {
-    testName: 'Password',
-    fieldName: 'password',
-  },
-];
-
-const validFields = [
-  {
-    testName: 'Email',
-    fieldName: 'email',
-    validValue: 'test@test.com',
-  },
-  {
-    testName: 'Password',
-    fieldName: 'password',
-    validValue: 'password',
-  },
-];
-
-const invalidFields = [
-  {
-    testName: 'Email',
-    fieldName: 'email',
-    invalidValue: 'test.com',
-    errorMessage: 'email must be a valid email',
-  },
-];
-
 describe('SignInForm.cy.tsx', () => {
   beforeEach(() => {
     mountComponent();
@@ -58,21 +26,25 @@ describe('SignInForm.cy.tsx', () => {
   it('renders', () => {
     cy.get('form').should('exist');
   });
-  requiredFields.map((test) => {
-    checkRequiredFormField(test.testName, test.fieldName);
+  testData?.requiredFields.forEach((requiredField: any) => {
+    it(`required${requiredField.testName}`, () => {
+      checkRequiredFormField(requiredField?.fieldName);
+    });
   });
-  validFields.map((test) => {
-    checkValidFormField(test.testName, test.fieldName, test.validValue);
+  testData?.validFields.forEach((validField: any) => {
+    it(`valid${validField.testName}`, () => {
+      checkValidFormField(validField?.fieldName, validField?.validValue);
+    });
   });
-  invalidFields.map((test) => {
-    checkInvalidFormField(
-      test.testName,
-      test.fieldName,
-      test.invalidValue,
-      test.errorMessage,
-    );
+  testData?.invalidFields.forEach((invalidField: any) => {
+    it(`invalid${invalidField.testName}`, () => {
+      checkInvalidFormField(
+        invalidField?.fieldName,
+        invalidField?.invalidValue,
+        invalidField?.errorMessage,
+      );
+    });
   });
-
   it('doSubmit', () => {
     cy.get('input[name="email"]').type('test@test.com');
     cy.get('input[name="password"]').type('password');

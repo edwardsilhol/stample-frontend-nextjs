@@ -1,0 +1,32 @@
+{
+  "requiredFields": [
+    {
+      "testName": "Email",
+      "fieldName": "email"
+    },
+    {
+      "testName": "Password",
+      "fieldName": "password"
+    }
+  ],
+  "validFields": [
+    {
+      "testName": "Email",
+      "fieldName": "email",
+      "validValue": "test@test.com"
+    },
+    {
+      "testName": "Password",
+      "fieldName": "password",
+      "validValue": "password"
+    }
+  ],
+  "invalidFields": [
+    {
+      "testName": "Email",
+      "fieldName": "email",
+      "invalidValue": "test.com",
+      "errorMessage": "email must be a valid email"
+    }
+  ]
+}

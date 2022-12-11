@@ -4,7 +4,8 @@ import {
   checkInvalidFormField,
   checkRequiredFormField,
   checkValidFormField,
-} from '../../utils/utils';
+} from '../../../../support/formUtils';
+import testData from '../../../../fixtures/signUpForm.json';
 
 export {};
 
@@ -18,66 +19,6 @@ function mountComponent() {
   );
 }
 
-const requiredFields = [
-  {
-    testName: 'FirstName',
-    fieldName: 'firstName',
-  },
-  {
-    testName: 'LastName',
-    fieldName: 'lastName',
-  },
-  {
-    testName: 'Email',
-    fieldName: 'email',
-  },
-  {
-    testName: 'Password',
-    fieldName: 'password',
-  },
-  {
-    testName: 'ConfirmPassword',
-    fieldName: 'confirmPassword',
-  },
-];
-
-const validFields = [
-  {
-    testName: 'FirstName',
-    fieldName: 'firstName',
-    validValue: 'firstName',
-  },
-  {
-    testName: 'LastName',
-    fieldName: 'lastName',
-    validValue: 'lastName',
-  },
-  {
-    testName: 'Email',
-    fieldName: 'email',
-    validValue: 'test@test.com',
-  },
-  {
-    testName: 'Password',
-    fieldName: 'password',
-    validValue: 'password',
-  },
-  {
-    testName: 'ConfirmPassword',
-    fieldName: 'confirmPassword',
-    validValue: 'password',
-  },
-];
-
-const invalidFields = [
-  {
-    testName: 'Email',
-    fieldName: 'email',
-    invalidValue: 'test.com',
-    errorMessage: 'email must be a valid email',
-  },
-];
-
 describe('SignUpForm.cy.tsx', () => {
   beforeEach(() => {
     mountComponent();
@@ -85,19 +26,24 @@ describe('SignUpForm.cy.tsx', () => {
   it('renders', () => {
     cy.get('form').should('exist');
   });
-  requiredFields.map((test) => {
-    checkRequiredFormField(test.testName, test.fieldName);
+  testData?.requiredFields.forEach((requiredField: any) => {
+    it(`required${requiredField.testName}`, () => {
+      checkRequiredFormField(requiredField?.fieldName);
+    });
   });
-  validFields.map((test) => {
-    checkValidFormField(test.testName, test.fieldName, test.validValue);
+  testData?.validFields.forEach((validField: any) => {
+    it(`valid${validField.testName}`, () => {
+      checkValidFormField(validField?.fieldName, validField?.validValue);
+    });
   });
-  invalidFields.map((test) => {
-    checkInvalidFormField(
-      test.testName,
-      test.fieldName,
-      test.invalidValue,
-      test.errorMessage,
-    );
+  testData?.invalidFields.forEach((invalidField: any) => {
+    it(`invalid${invalidField.testName}`, () => {
+      checkInvalidFormField(
+        invalidField?.fieldName,
+        invalidField?.invalidValue,
+        invalidField?.errorMessage,
+      );
+    });
   });
   it('passwordDontMatch', () => {
     cy.get('#password').click().type('password1');
