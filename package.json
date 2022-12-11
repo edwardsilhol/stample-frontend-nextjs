@@ -10,7 +10,8 @@
     "prettier": "prettier -c --write **/*",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "cypress:headless:component": "cypress run --component"
   },
   "dependencies": {
     "@babel/core": "^7.20.5",
