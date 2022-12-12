@@ -6,7 +6,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import '@fontsource/material-icons';
 import { useMemo } from 'react';
-import theme from '../src/constants/theme/theme';
+import theme from '../src/styles/theme/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const globalTypes = {
