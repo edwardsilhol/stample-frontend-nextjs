@@ -36,7 +36,7 @@ interface SignUpFormType extends SignUpDTO {
 
 function SignUp() {
   const signUp = useSignUp();
-  const classes = useStyles();
+  const styles = useStyles();
   // TODO: handle errors in form
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
@@ -82,8 +82,8 @@ function SignUp() {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Box sx={classes.signUpContainer}>
-        <Avatar sx={classes.signUpIcon}>
+      <Box sx={styles.signUpContainer}>
+        <Avatar sx={styles.signUpIcon}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant={'h5'}>
@@ -93,7 +93,7 @@ function SignUp() {
           component="form"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
-          sx={classes.fieldContainer}
+          sx={styles.fieldContainer}
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -155,14 +155,14 @@ function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={classes.submitButton}
+            sx={styles.submitButton}
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signIn">
-                <Typography variant="body2" sx={classes.link}>
+                <Typography variant="body2" sx={styles.link}>
                   Already have an account? Sign in
                 </Typography>
               </Link>

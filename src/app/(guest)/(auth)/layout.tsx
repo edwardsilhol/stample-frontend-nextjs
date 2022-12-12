@@ -17,10 +17,10 @@ interface Props {
 }
 
 function AuthLayout({ children }: Props) {
-  const classes = useStyles();
+  const styles = useStyles();
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
-      <Grid item xs={false} sm={false} md={8} sx={classes.leftContainer} />
+      <Grid item xs={false} sm={false} md={8} sx={styles.leftContainer} />
       <Grid item xs={12} sm={12} md={4} component={Paper} elevation={6} square>
         {children}
       </Grid>

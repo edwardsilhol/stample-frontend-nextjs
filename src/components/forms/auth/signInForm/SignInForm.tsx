@@ -38,7 +38,7 @@ const useStyles = () => ({
 
 function SignInForm() {
   const signIn = useSignIn();
-  const classes = useStyles();
+  const styles = useStyles();
   // TODO: handle errors in form
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
@@ -72,8 +72,8 @@ function SignInForm() {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Box sx={classes.signInContainer}>
-        <Avatar sx={classes.signInIcon}>
+      <Box sx={styles.signInContainer}>
+        <Avatar sx={styles.signInIcon}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -83,7 +83,7 @@ function SignInForm() {
           component="form"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
-          sx={classes.fieldContainer}
+          sx={styles.fieldContainer}
         >
           <TextFieldForm
             control={control}
@@ -115,14 +115,14 @@ function SignInForm() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={classes.submitButton}
+            sx={styles.submitButton}
           >
             Sign In
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="/">
-                <Typography variant="body2" sx={classes.link}>
+                <Typography variant="body2" sx={styles.link}>
                   Forgot password?
                 </Typography>
               </Link>
@@ -130,7 +130,7 @@ function SignInForm() {
             </Grid>
             <Grid item>
               <Link href="/signUp">
-                <Typography variant="body2" sx={classes.link}>
+                <Typography variant="body2" sx={styles.link}>
                   {"Don't have an account? Sign Up"}
                 </Typography>
               </Link>
