@@ -5,7 +5,7 @@ import {
   checkRequiredFormField,
   checkValidFormField,
 } from '../../../../support/formUtils';
-import testData from '../../../../fixtures/signInForm.json';
+import testData from '../../../../fixtures/components/forms/auth/signInForm/signInForm.json';
 
 export {};
 
