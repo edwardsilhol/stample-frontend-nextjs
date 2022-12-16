@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.5",
+    "@ducanh2912/next-pwa": "^7.1.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@hookform/resolvers": "^2.9.10",

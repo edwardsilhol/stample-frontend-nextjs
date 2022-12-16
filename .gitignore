@@ -38,3 +38,7 @@ next-env.d.ts
 #cypress
 cypress/videos
 cypress/screenshots
+
+#next-pwa
+service-worker.gen.js
+workbox-*.js
