@@ -1,4 +1,4 @@
-// TODO: use regulat next-pwa when they updated to nextjs 13 new app dir
+// TODO: use regular next-pwa when they updated to Next.js 13 new app dir
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
