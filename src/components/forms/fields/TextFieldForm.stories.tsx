@@ -5,7 +5,7 @@ import { TextFieldForm } from './TextFieldForm';
 import { useForm } from 'react-hook-form';
 
 export default {
-  title: 'Components/Forms/Auth/TextFieldForm', // Change story title
+  title: 'Components/Forms/Fields/TextFieldForm', // Change story title
   component: TextFieldForm,
   argsTypes: {
     label: { control: 'text' },
