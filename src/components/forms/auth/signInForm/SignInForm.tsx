@@ -17,12 +17,6 @@ import Link from 'next/link';
 import Container from '@mui/material/Container';
 
 const useStyles = () => ({
-  leftContainer: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
   signInContainer: {
     my: 8,
     mx: 4,
