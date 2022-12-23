@@ -59,10 +59,9 @@ describe('SignUpForm.cy.tsx', () => {
     cy.get('input[name="email"]').type('test@test.com');
     cy.get('input[name="password"]').type('password');
     cy.get('input[name="confirmPassword"]').type('password');
-    cy.intercept('POST', `**/auth/signUp`).as('signUp');
+    cy.intercept('POST', `**/auth/signUpLocal`).as('signUpLocal');
     cy.get('form').submit();
-    cy.wait('@signUp').then((interception) => {
-      console.log(interception.request.body);
+    cy.wait('@signUpLocal').then((interception) => {
       expect(interception.request.body).to.deep.contains({
         firstName: 'firstName',
         lastName: 'lastName',
