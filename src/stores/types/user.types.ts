@@ -11,21 +11,16 @@ export type SignInDTO = {
 export type SignUpDTO = {
   firstName: string;
   lastName: string;
-  profilePictureUrl?: string;
   email: string;
-  phoneNumber?: string;
   locale: string;
   password: string;
 };
 
 export interface User {
-  _id: string;
+  id: string;
   firstName: string;
   lastName: string;
-  profilePictureUrl?: string;
   email: string;
-  phoneNumber?: string;
   locale: string;
   isAdmin: boolean;
-  isActiveAccount?: boolean;
 }
