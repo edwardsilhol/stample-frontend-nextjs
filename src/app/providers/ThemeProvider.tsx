@@ -7,11 +7,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 interface Props {
   children: ReactNode;
+  color: string;
 }
 
-function ThemeProvider({ children }: Props) {
+function ThemeProvider({ children, color }: Props) {
   return (
-    <MuiThemeProvider theme={theme('light')}>
+    <MuiThemeProvider theme={theme(color)}>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

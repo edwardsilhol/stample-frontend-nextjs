@@ -24,7 +24,7 @@ const useStyles = () => ({
     alignItems: 'center',
     marginTop: 8,
   },
-  signUpIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
+  signUpIcon: { m: 1, bgcolor: 'primary.main' },
   fieldContainer: { mt: 1 },
   submitButton: { mt: 3, mb: 2 },
   link: { color: 'additionalColors.link' },

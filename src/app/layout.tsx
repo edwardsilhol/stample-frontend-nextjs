@@ -3,18 +3,27 @@ import { ReactNode } from 'react';
 import FontProvider from './providers/fontProvider';
 import ReactQueryProvider from './providers/reactQueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
+import { cookies } from 'next/headers';
 
 interface Props {
   children: ReactNode;
 }
 
-function RootLayout({ children }: Props) {
+async function getCookies() {
+  const theme = await cookies().get('theme');
+
+  return { theme: theme?.value };
+}
+
+async function RootLayout({ children }: Props) {
+  const { theme } = await getCookies();
+  console.log('theme', theme);
   return (
     <html>
       <head />
       <body>
         <FontProvider>
-          <ThemeProvider>
+          <ThemeProvider color={theme || '#000000'}>
             <ReactQueryProvider>{children}</ReactQueryProvider>
           </ThemeProvider>
         </FontProvider>

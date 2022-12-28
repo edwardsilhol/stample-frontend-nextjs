@@ -15,10 +15,10 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = (mode: 'light' | 'dark') =>
+const theme = (color: string, mode?: 'light' | 'dark') =>
   responsiveFontSizes(
     createTheme({
-      palette: mode === 'light' ? lightPalette : darkPalette,
+      palette: mode !== 'dark' ? lightPalette(color) : darkPalette,
       breakpoints,
       typography,
       shape,
