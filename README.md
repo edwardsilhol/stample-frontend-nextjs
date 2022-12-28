@@ -24,6 +24,10 @@ Remember to change app name everywhere.
 - **Node** >= 19.x LTS
 - **pnpm** >= 7.2.x
 
+## Requirements
+
+- husky `npx husky install` for pre-commit and pre-push hooks
+
 ## Development
 
 - `pnpm install`
@@ -36,7 +40,7 @@ Remember to change app name everywhere.
 ## Test
 
 - storybook : `pnpm storybook` for visual testing
-- cypress :  `pnpm cypress` for gui component testing and `pnpm cypress:headless:component` for cli component testing
+- cypress : `pnpm cypress` for gui component testing and `pnpm cypress:headless:component` for cli component testing
 
 ## Production
 
@@ -51,4 +55,3 @@ Remember to change app name everywhere.
 ### Next
 
 - check the documentation of the new app directory of nextjs 13 [here](https://beta.nextjs.org/docs)
-
