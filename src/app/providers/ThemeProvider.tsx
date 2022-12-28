@@ -4,15 +4,16 @@ import { ReactNode } from 'react';
 import { default as MuiThemeProvider } from '@mui/material/styles/ThemeProvider';
 import theme from '../../styles/theme/theme';
 import CssBaseline from '@mui/material/CssBaseline';
+import { TenantThemeConfig } from '../../stores/types/tenantConfig.types';
 
 interface Props {
   children: ReactNode;
-  color: string;
+  tenantThemeConfig: TenantThemeConfig;
 }
 
-function ThemeProvider({ children, color }: Props) {
+function ThemeProvider({ children, tenantThemeConfig }: Props) {
   return (
-    <MuiThemeProvider theme={theme(color)}>
+    <MuiThemeProvider theme={theme(tenantThemeConfig)}>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

@@ -4,26 +4,30 @@ import FontProvider from './providers/fontProvider';
 import ReactQueryProvider from './providers/reactQueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import { cookies } from 'next/headers';
+import { TenantConfig } from '../stores/types/tenantConfig.types';
 
 interface Props {
   children: ReactNode;
 }
 
-async function getCookies() {
-  const theme = await cookies().get('theme');
+async function getTenantConfig(): Promise<TenantConfig> {
+  const primaryColor = await cookies().get('primaryColor');
 
-  return { theme: theme?.value };
+  return {
+    tenantThemeConfig: {
+      primaryColor: primaryColor?.value,
+    },
+  };
 }
 
 async function RootLayout({ children }: Props) {
-  const { theme } = await getCookies();
-  console.log('theme', theme);
+  const { tenantThemeConfig } = await getTenantConfig();
   return (
     <html>
       <head />
       <body>
         <FontProvider>
-          <ThemeProvider color={theme || '#000000'}>
+          <ThemeProvider tenantThemeConfig={tenantThemeConfig}>
             <ReactQueryProvider>{children}</ReactQueryProvider>
           </ThemeProvider>
         </FontProvider>

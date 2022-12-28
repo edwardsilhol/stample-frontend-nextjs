@@ -1,0 +1,8 @@
+[
+  {
+    "host": "dev.localhost:3000",
+    "config": {
+        "primaryColor": "#ff6884"
+      }
+  }
+]
