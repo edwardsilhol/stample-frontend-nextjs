@@ -7,6 +7,7 @@ export default function middleware(request: NextRequest) {
   const tenantConfig = tenantsConfig.find(
     (tenant) => tenant.host === request.headers.get('host'),
   );
+  response.cookies.set('host', request.headers.get('host'));
   if (tenantConfig) {
     Object.entries(tenantConfig?.serverSide).forEach(([key, value]) => {
       response.cookies.set(key, value, {
