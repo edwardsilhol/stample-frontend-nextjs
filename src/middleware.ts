@@ -3,11 +3,12 @@ import tenantsConfig from '../public/config/tenants.json';
 
 export default function middleware(request: NextRequest) {
   const response = NextResponse.next();
-
+  
+  const host = request.headers.get('host');
   const tenantConfig = tenantsConfig.find(
-    (tenant) => tenant.host === request.headers.get('host'),
+    (tenant) => tenant.host === host),
   );
-  response.cookies.set('host', request.headers.get('host') || 'none');
+  response.cookies.set('host', host || 'none');
   if (tenantConfig) {
     Object.entries(tenantConfig?.serverSide).forEach(([key, value]) => {
       response.cookies.set(key, value, {
