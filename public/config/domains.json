@@ -1,8 +1,8 @@
 {
   "prod": [
-    ".overa.sbs"
+    "overa.sbs"
   ],
   "local": [
-    ".overa.sbs"
+    "localhost:3000"
   ]
 }

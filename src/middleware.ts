@@ -11,17 +11,17 @@ export default function middleware(request: NextRequest) {
   const response = !!requestHostCookie
     ? NextResponse.next()
     : NextResponse.redirect(url);
-  const currentHost = request.headers.get('host') || '';
+  let currentHost = request.headers.get('host') || '';
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
   process.env.NODE_ENV === 'production'
     ? domainsConfig.prod.forEach((domain) => {
-        currentHost.replace(domain, '');
+        currentHost = currentHost.replace(`.${domain}`, '');
       })
     : domainsConfig.local.forEach((domain) => {
-        currentHost.replace(domain, '');
+        currentHost = currentHost.replace(`.${domain}`, '');
       });
 
   // Finding and assigning the tenant config based on the current host
