@@ -1,20 +1,20 @@
 [
   {
-    "host": "dev.localhost:3000",
+    "host": "local",
     "serverSide": {
-        "primaryColor": "#ff6884"
-      },
+      "primaryColor": "#ff6884"
+    },
     "clientSide": {
-        "apiUrl": "http://dev.localhost:9000/"
-      }
+      "apiUrl": "http://dev.localhost:9000/"
+    }
   },
   {
-    "host": "dev.overa.sbs",
+    "host": "dev",
     "serverSide": {
-        "primaryColor": "#ff6884"
-      },
+      "primaryColor": "#ff0000"
+    },
     "clientSide": {
-        "apiUrl": "http://dev.localhost:9000/"
-      }
+      "apiUrl": "http://test.localhost:9000/"
+    }
   }
 ]

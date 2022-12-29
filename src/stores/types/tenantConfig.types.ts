@@ -4,4 +4,5 @@ export interface TenantThemeConfig {
 
 export interface TenantConfig {
   tenantThemeConfig: TenantThemeConfig;
+  apiUrl?: string;
 }
