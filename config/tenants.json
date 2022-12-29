@@ -5,7 +5,7 @@
       "primaryColor": "#ff6884"
     },
     "clientSide": {
-      "apiUrl": "http://dev.localhost:9000/"
+      "apiUrl": "http://local.localhost:9000/"
     }
   },
   {
@@ -14,7 +14,7 @@
       "primaryColor": "#ff0000"
     },
     "clientSide": {
-      "apiUrl": "http://test.localhost:9000/"
+      "apiUrl": "http://dev.localhost:9000/"
     }
   }
 ]
