@@ -7,5 +7,14 @@
     "clientSide": {
         "apiUrl": "http://dev.localhost:9000/"
       }
+  },
+  {
+    "host": "dev.overa.sbs",
+    "serverSide": {
+        "primaryColor": "#ff6884"
+      },
+    "clientSide": {
+        "apiUrl": "http://dev.localhost:9000/"
+      }
   }
 ]
