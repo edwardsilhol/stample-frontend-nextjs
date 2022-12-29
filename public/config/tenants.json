@@ -1,8 +1,11 @@
 [
   {
     "host": "dev.localhost:3000",
-    "config": {
+    "serverSide": {
         "primaryColor": "#ff6884"
+      },
+    "clientSide": {
+        "apiUrl": "http://dev.localhost:9000/"
       }
   }
 ]

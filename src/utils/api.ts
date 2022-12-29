@@ -5,8 +5,7 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '../constants/tokenConfig';
-
-const API_URL = process.env.NEXT_PUBLIC_APP_API_URL;
+import { getCookie } from 'cookies-next';
 
 export type HTTPMethod =
   | 'CONNECT'
@@ -37,16 +36,18 @@ export class ApiError extends Error {
 
 const refreshTokenMutex = new Mutex();
 
-export const apiRequest = async <T>(
+export async function apiRequest<T>(
   method: HTTPMethod,
   endpoint: string,
   params?: Record<string, string>,
   body?: FormData | Record<string, unknown>,
   nextConfig?: RequestInit,
   isFile?: boolean,
-) => {
+) {
   const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
   const refreshToken = localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
+  const API_URL = (getCookie('apiUrl') ||
+    process.env.NEXT_PUBLIC_APP_API_URL) as string;
   let query = API_URL + endpoint;
 
   if (params) {
@@ -95,7 +96,7 @@ export const apiRequest = async <T>(
             accessToken: localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY),
             refreshToken: localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY),
           }))
-        : handleRefreshToken(refreshToken));
+        : handleRefreshToken(refreshToken, API_URL));
 
       if (tokens?.accessToken) {
         fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
@@ -112,9 +113,10 @@ export const apiRequest = async <T>(
     throw new ApiError(bodyResult.message, response.status);
   }
   return bodyResult as T;
-};
+}
 
 const handleRefreshToken = async (
+  API_URL: string,
   refreshToken: string,
 ): Promise<AccessTokenRefreshToken | null> => {
   const release = await refreshTokenMutex.acquire();

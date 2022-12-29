@@ -8,9 +8,14 @@ export default function middleware(request: NextRequest) {
     (tenant) => tenant.host === request.headers.get('host'),
   );
   if (tenantConfig) {
-    Object.entries(tenantConfig.config).forEach(([key, value]) => {
+    Object.entries(tenantConfig?.serverSide).forEach(([key, value]) => {
       response.cookies.set(key, value, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
+    });
+    Object.entries(tenantConfig?.clientSide).forEach(([key, value]) => {
+      response.cookies.set(key, value, {
         secure: process.env.NODE_ENV === 'production',
       });
     });
