@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import tenantsConfig from '../public/config/tenants.json';
-import domainsConfig from '../public/config/domains.json';
+import tenantsConfig from '../config/tenants.json';
+import domainsConfig from '../config/domains.json';
 
 export default function middleware(request: NextRequest) {
   const url = request.nextUrl;
@@ -30,7 +30,6 @@ export default function middleware(request: NextRequest) {
   );
   response.cookies.set('host', currentHost);
   if (tenantConfig) {
-    console.log('tenantConfig', tenantConfig);
     Object.entries(tenantConfig?.serverSide).forEach(([key, value]) => {
       response.cookies.set(key, value, {
         httpOnly: true,
