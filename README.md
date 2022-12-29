@@ -49,6 +49,7 @@ Remember to change app name everywhere.
 - Serve files in `/build` folder
 - The file `.env.production` will be loaded (use for non sensitive variables, can be committed)
 - The file `.env.production.local` will be loaded (use for sensitive variables such as API keys, listed in .gitignore as it must not be committed)
+- To access React Query devtools type `window.toggleDevtools()` in the console
 
 ## Frontend specific code rules
 
