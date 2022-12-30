@@ -1,0 +1,20 @@
+[
+  {
+    "host": "local",
+    "serverSide": {
+      "primaryColor": "#ff6884"
+    },
+    "clientSide": {
+      "apiUrl": "http://local.localhost:9000/"
+    }
+  },
+  {
+    "host": "dev",
+    "serverSide": {
+      "primaryColor": "#ff0000"
+    },
+    "clientSide": {
+      "apiUrl": "http://dev.localhost:9000/"
+    }
+  }
+]

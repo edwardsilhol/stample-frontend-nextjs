@@ -13,7 +13,7 @@ function LoggedAuthProvider({ children }: Props) {
   const router = useRouter();
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push('/signIn');
+      router.push('/');
     }
   });
 

@@ -24,7 +24,7 @@ const useStyles = () => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  signInIcon: { m: 1, bgcolor: 'additionalColors.additionalMain' },
+  signInIcon: { m: 1, bgcolor: 'primary.main' },
   fieldContainer: { mt: 1 },
   submitButton: { mt: 3, mb: 2 },
   link: { color: 'additionalColors.link' },
