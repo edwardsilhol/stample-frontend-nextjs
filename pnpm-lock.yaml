@@ -51,7 +51,6 @@ specifiers:
   react-hook-form: ^7.40.0
   react-i18next: ^12.1.0
   require-from-string: ^2.0.2
-  tss-react: ^4.5.1
   typescript: 4.9.3
   webpack: ^5.75.0
   yup: ^0.32.11
@@ -85,7 +84,6 @@ dependencies:
   react-hook-form: 7.40.0_react@18.2.0
   react-i18next: 12.1.1_jwe7z4xlygtvpa5yjysgtpzr34
   require-from-string: 2.0.2
-  tss-react: 4.5.1_7gkcoq2nf4xufkduddb7kah6jm
   typescript: 4.9.3
   yup: 0.32.11
 
@@ -12872,24 +12870,6 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
-
-  /tss-react/4.5.1_7gkcoq2nf4xufkduddb7kah6jm:
-    resolution: {integrity: sha512-5tImgVq1pfOQS9Kg4oJNKFDW29lILbtUc4QgwCaaSQK3KfkZrXTKVSD4uZt6Tk6UThWCHAJ5CLEBWyECPSs+eg==}
-    peerDependencies:
-      '@emotion/react': ^11.4.1
-      '@emotion/server': ^11.4.0
-      react: ^16.8.0 || ^17.0.2 || ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/server':
-        optional: true
-    dependencies:
-      '@emotion/cache': 11.10.5
-      '@emotion/react': 11.10.5_xl5my4wapvq2ctl7qwehtbgorq
-      '@emotion/serialize': 1.1.1
-      '@emotion/server': 11.10.0
-      '@emotion/utils': 1.2.0
-      react: 18.2.0
-    dev: false
 
   /tsutils/3.21.0_typescript@4.9.3:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
