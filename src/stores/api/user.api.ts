@@ -20,7 +20,7 @@ const setAccessRefreshTokenAndGetUser = (
 export const signIn = async (payload: SignInDTO): Promise<User | null> => {
   const { accessToken, refreshToken } = await apiRequest<Tokens>(
     'PUT',
-    '/auth/signInLocal',
+    '/auth/signIn',
     undefined,
     payload,
   );
@@ -31,7 +31,7 @@ export const signIn = async (payload: SignInDTO): Promise<User | null> => {
 export const signUp = async (payload: SignUpDTO) => {
   const { accessToken, refreshToken } = await apiRequest<Tokens>(
     'POST',
-    '/auth/signUpLocal',
+    '/auth/signUp',
     undefined,
     payload,
   );
@@ -46,7 +46,7 @@ export const fetchSession = async (): Promise<User | null> => {
   }
 
   try {
-    return await apiRequest<User>('GET', '/auth/session');
+    return await apiRequest<User>('GET', '/auth/user');
   } catch (error) {
     return null;
   }

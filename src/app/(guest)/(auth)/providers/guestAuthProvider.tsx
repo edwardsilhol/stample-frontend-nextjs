@@ -14,7 +14,7 @@ function GuestAuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push('/csrExample');
+      router.push('/workspace/0');
     }
   });
 
