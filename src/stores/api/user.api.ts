@@ -14,13 +14,13 @@ const setAccessRefreshTokenAndGetUser = (
     localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, refreshToken);
   }
 
-  return apiRequest<User>('GET', '/auth/user');
+  return fetchSession();
 };
 
-export const signIn = async (payload: SignInDTO): Promise<User> => {
+export const signIn = async (payload: SignInDTO): Promise<User | null> => {
   const { accessToken, refreshToken } = await apiRequest<Tokens>(
     'PUT',
-    '/auth/signIn',
+    '/auth/signInLocal',
     undefined,
     payload,
   );
@@ -31,7 +31,7 @@ export const signIn = async (payload: SignInDTO): Promise<User> => {
 export const signUp = async (payload: SignUpDTO) => {
   const { accessToken, refreshToken } = await apiRequest<Tokens>(
     'POST',
-    '/auth/signUp',
+    '/auth/signUpLocal',
     undefined,
     payload,
   );
@@ -46,7 +46,7 @@ export const fetchSession = async (): Promise<User | null> => {
   }
 
   try {
-    return await apiRequest<User>('GET', '/auth/user');
+    return await apiRequest<User>('GET', '/auth/session');
   } catch (error) {
     return null;
   }

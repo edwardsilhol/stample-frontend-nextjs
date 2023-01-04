@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useSession } from '../../../stores/hooks/user.hooks';
+import { useSession } from '../../../../stores/hooks/user.hooks';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -14,7 +14,7 @@ function GuestAuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push('/');
+      router.push('/csrExample');
     }
   });
 

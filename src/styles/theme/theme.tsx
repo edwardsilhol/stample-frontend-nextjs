@@ -4,7 +4,8 @@ import breakpoints from './breakpoints';
 import typography from './typography';
 import shape from './shape';
 import { shadows, shadowsExtended, ShadowsExtended } from './shadows';
-import { darkPalette, lightPalette } from './palette';
+import { palette } from './palette';
+import { TenantThemeConfig } from '../../stores/types/tenantConfig.types';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -15,10 +16,10 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = (mode: 'light' | 'dark') =>
+const theme = (tenantThemeConfig: TenantThemeConfig, mode?: 'light' | 'dark') =>
   responsiveFontSizes(
     createTheme({
-      palette: mode === 'light' ? lightPalette : darkPalette,
+      palette: palette(tenantThemeConfig, mode || 'light'),
       breakpoints,
       typography,
       shape,

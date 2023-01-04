@@ -1,0 +1,4 @@
+{
+  "prod": ["overa.sbs"],
+  "local": ["localhost:3000"]
+}
