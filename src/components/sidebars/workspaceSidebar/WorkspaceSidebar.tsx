@@ -1,42 +1,77 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Drawer from '../../muiOverrides/Drawer';
 import List from '../../muiOverrides/List';
 import ListItem from '../../muiOverrides/ListItem';
-import ListItemIcon from '../../muiOverrides/ListItemIcon';
 import ListItemText from '../../muiOverrides/ListItemText';
 import PersonIcon from '../../muiOverrides/PersonIcon';
 import AddIcon from '../../muiOverrides/AddIcon';
+import IconButton from '../../muiOverrides/IconButton';
+import ListItemAvatar from '../../muiOverrides/ListItemAvatar';
+import Avatar from '../../muiOverrides/Avatar';
+import ListItemButton from '../../muiOverrides/ListItemButton';
+import KeyboardArrowDownIcon from '../../muiOverrides/KeyboardArrowDownIcon';
+import MoreHorizIcon from '../../muiOverrides/MoreHorizIcon';
+import AddDocumentButton from '../../buttons/addDocumentButton/AddDocumentButton';
 
-export interface SidebarProps {
-  children: ReactNode;
-  open: boolean;
-}
-
-export const WorkspaceSidebar: React.FC<SidebarProps> = (props) => {
-  const { open, children } = props;
-
+export const WorkspaceSidebar: React.FC = () => {
   return (
     <>
-      <Drawer variant="persistent" open={open}>
+      <Drawer variant="persistent" open>
         <List>
-          <ListItem button>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
+          <ListItem
+            secondaryAction={
+              <IconButton edge="end" aria-label="add-tag">
+                <AddIcon />
+              </IconButton>
+            }
+            divider={true}
+            sx={{ justifyContent: 'space-between' }}
+          >
+            <ListItemButton
+              dense={true}
+              sx={{
+                padding: 0,
+                display: 'flex',
+                alignItems: 'left',
+                // borderRadius: '20', TODO avec Youssef : arrondir le bouton
+              }}
+            >
+              {/* TODO avec Youssef : dans le cadre de refacto, profil à mettre en component avec ListItem ? */}
+              <ListItemAvatar>
+                <Avatar>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Profil" />
+            </ListItemButton>
           </ListItem>
-          <ListItem button>
-            <ListItemText primary="Collection" />
+          <ListItem
+            button
+            divider={true}
+            sx={{ justifyContent: 'space-between' }}
+            secondaryAction={
+              <IconButton edge="end" aria-label="options">
+                <MoreHorizIcon />
+              </IconButton>
+            }
+          >
+            <ListItemButton
+              sx={{
+                padding: 0,
+                display: 'flex',
+                alignItems: 'left',
+                justifyContent: 'left',
+              }}
+            >
+              <ListItemText primary="Tags" />
+              <KeyboardArrowDownIcon />
+            </ListItemButton>
           </ListItem>
           <ListItem button>
             <ListItemText primary="Filters" />
           </ListItem>
         </List>
       </Drawer>
-      {children}
     </>
   );
 };

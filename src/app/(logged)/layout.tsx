@@ -1,6 +1,9 @@
 import { ReactNode } from 'react';
 import LoggedAuthProvider from './providers/loggedAuthProvider';
+
 import WorspaceSidebar from '../../components/sidebars/workspaceSidebar/WorkspaceSidebar';
+import Box from '../../components/muiOverrides/Box';
+import GeneralTopbar from '../../components/topbars/GeneralTopbar';
 
 interface Props {
   children: ReactNode;
@@ -9,7 +12,15 @@ interface Props {
 function LoggedLayout({ children }: Props) {
   return (
     <LoggedAuthProvider>
-      <WorspaceSidebar open>{children}</WorspaceSidebar>
+      <Box>
+        <Box>
+          <WorspaceSidebar />
+        </Box>
+        <Box>
+          <GeneralTopbar />
+          {children}
+        </Box>
+      </Box>
     </LoggedAuthProvider>
   );
 }
