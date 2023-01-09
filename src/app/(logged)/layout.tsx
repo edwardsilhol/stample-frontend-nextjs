@@ -13,7 +13,7 @@ function LoggedLayout({ children }: Props) {
   return (
     <LoggedAuthProvider>
       <Box>
-        <Box>
+        <Box m={0}>
           <WorspaceSidebar />
         </Box>
         <Box>

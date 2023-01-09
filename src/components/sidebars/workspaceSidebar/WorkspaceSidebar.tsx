@@ -11,7 +11,6 @@ import Avatar from '../../muiOverrides/Avatar';
 import ListItemButton from '../../muiOverrides/ListItemButton';
 import KeyboardArrowDownIcon from '../../muiOverrides/KeyboardArrowDownIcon';
 import MoreHorizIcon from '../../muiOverrides/MoreHorizIcon';
-import AddDocumentButton from '../../buttons/addDocumentButton/AddDocumentButton';
 
 export const WorkspaceSidebar: React.FC = () => {
   return (
@@ -24,6 +23,7 @@ export const WorkspaceSidebar: React.FC = () => {
                 <AddIcon />
               </IconButton>
             }
+            dense={true}
             divider={true}
             sx={{ justifyContent: 'space-between' }}
           >
@@ -33,10 +33,8 @@ export const WorkspaceSidebar: React.FC = () => {
                 padding: 0,
                 display: 'flex',
                 alignItems: 'left',
-                // borderRadius: '20', TODO avec Youssef : arrondir le bouton
               }}
             >
-              {/* TODO avec Youssef : dans le cadre de refacto, profil à mettre en component avec ListItem ? */}
               <ListItemAvatar>
                 <Avatar>
                   <PersonIcon />
