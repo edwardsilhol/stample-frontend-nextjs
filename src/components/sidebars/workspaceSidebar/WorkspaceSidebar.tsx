@@ -12,7 +12,28 @@ import ListItemButton from '../../muiOverrides/ListItemButton';
 import KeyboardArrowDownIcon from '../../muiOverrides/KeyboardArrowDownIcon';
 import MoreHorizIcon from '../../muiOverrides/MoreHorizIcon';
 
-export const WorkspaceSidebar: React.FC = () => {
+function useStyles() {
+  return {
+    profileAndAdd: {
+      justifyContent: 'space-between',
+    },
+    profileButton: {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'left',
+    },
+    tagsItem: { justifyContent: 'space-between' },
+    tagsButton: {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'left',
+      justifyContent: 'left',
+    },
+  };
+}
+function WorkspaceSidebar() {
+  const styles = useStyles();
+
   return (
     <>
       <Drawer variant="persistent" open>
@@ -25,16 +46,9 @@ export const WorkspaceSidebar: React.FC = () => {
             }
             dense={true}
             divider={true}
-            sx={{ justifyContent: 'space-between' }}
+            sx={styles.profileAndAdd}
           >
-            <ListItemButton
-              dense={true}
-              sx={{
-                padding: 0,
-                display: 'flex',
-                alignItems: 'left',
-              }}
-            >
+            <ListItemButton dense={true} sx={styles.profileButton}>
               <ListItemAvatar>
                 <Avatar>
                   <PersonIcon />
@@ -46,21 +60,14 @@ export const WorkspaceSidebar: React.FC = () => {
           <ListItem
             button
             divider={true}
-            sx={{ justifyContent: 'space-between' }}
+            sx={styles.tagsItem}
             secondaryAction={
               <IconButton edge="end" aria-label="options">
                 <MoreHorizIcon />
               </IconButton>
             }
           >
-            <ListItemButton
-              sx={{
-                padding: 0,
-                display: 'flex',
-                alignItems: 'left',
-                justifyContent: 'left',
-              }}
-            >
+            <ListItemButton sx={styles.tagsButton}>
               <ListItemText primary="Tags" />
               <KeyboardArrowDownIcon />
             </ListItemButton>
@@ -72,6 +79,6 @@ export const WorkspaceSidebar: React.FC = () => {
       </Drawer>
     </>
   );
-};
+}
 
 export default WorkspaceSidebar;

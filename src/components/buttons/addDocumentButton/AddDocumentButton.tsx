@@ -4,13 +4,22 @@ import Button from '../../muiOverrides/Button';
 import ArrowDropDownIcon from '../../muiOverrides/ArrowDropDownIcon';
 import StarIcon from '../../muiOverrides/StarIcon';
 
-export default function AddDocumentButton() {
+function useStyles() {
+  return {
+    button: {
+      justifyContent: 'flex-end',
+    },
+  };
+}
+function AddDocumentButton() {
+  const styles = useStyles();
+
   return (
     <>
       <ButtonGroup
         variant="contained"
         aria-label="double button"
-        sx={{ justifyContent: 'flex-end' }}
+        sx={styles.button}
       >
         <Button>
           <StarIcon />
@@ -23,3 +32,5 @@ export default function AddDocumentButton() {
     </>
   );
 }
+
+export default AddDocumentButton;
