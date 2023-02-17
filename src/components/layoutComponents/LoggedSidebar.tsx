@@ -1,7 +1,6 @@
 import React from 'react';
-import { Drawer, Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
-import Box from '../muiOverrides/Box';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
