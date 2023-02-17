@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import LoggedAuthProvider from './providers/loggedAuthProvider';
+import LoggedAuthProvider from './providers/LoggedAuthProvider';
 
 interface Props {
   children: ReactNode;

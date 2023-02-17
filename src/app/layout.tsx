@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import { ReactNode } from 'react';
-import FontProvider from './providers/fontProvider';
-import ReactQueryProvider from './providers/reactQueryProvider';
+import FontProvider from './providers/FontProvider';
+import ReactQueryProvider from './providers/ReactQueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import { cookies } from 'next/headers';
 import { TenantConfig } from '../stores/types/tenantConfig.types';
