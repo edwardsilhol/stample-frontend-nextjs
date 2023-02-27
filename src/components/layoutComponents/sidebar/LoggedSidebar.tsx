@@ -1,21 +1,19 @@
 import React from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import Stack from '../muiOverrides/Stack';
+import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
   Add,
-  ArrowDropDown,
-  ArrowRight,
   KeyboardArrowDownOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
 import { createUseStyles } from 'react-jss';
-import Typography from '../muiOverrides/Typography';
-import { useLogout } from '../../stores/hooks/user.hooks';
-import { TreeView, TreeItem } from '@mui/lab';
-import { Tag } from '../../stores/types/tag.types';
-import { User } from '../../stores/types/user.types';
+import Typography from '../../muiOverrides/Typography';
+import { useLogout } from '../../../stores/hooks/user.hooks';
+import { User } from '../../../stores/types/user.types';
+import { useRichTags } from '../../../stores/hooks/tag.hooks';
+import { TagsView } from './TagsView';
 
 const drawerWidth = '300px';
 
@@ -78,17 +76,6 @@ const useStyles = createUseStyles({
       },
     },
   },
-  tagsLabel: {
-    color: 'black',
-    opacity: 0.6,
-    fontSize: '13px',
-    fontWeight: 600,
-  },
-  tagsContainer: {
-    '&:hover $tagAddButton': {
-      display: 'inline-flex',
-    },
-  },
   tagAddButton: {
     display: 'none',
     borderRadius: '4px',
@@ -113,53 +100,13 @@ const useStyles = createUseStyles({
   },
 });
 
-const tags: Tag[] = [
-  {
-    _id: '1',
-    name: 'tag 1',
-    children: [
-      {
-        _id: '3',
-        name: 'tag 3',
-        children: [],
-      },
-      {
-        _id: '4',
-        name: 'tag 4',
-        children: [
-          {
-            _id: '7',
-            name: 'tag 7',
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    _id: '2',
-    name: 'tag 2',
-    children: [
-      {
-        _id: '5',
-        name: 'tag 5',
-        children: [],
-      },
-      {
-        _id: '6',
-        name: 'tag 6',
-        children: [],
-      },
-    ],
-  },
-];
-
 interface SidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const classes = useStyles();
+  const { data: tags } = useRichTags();
   const logout = useLogout();
   const [showTags, setShowTags] = React.useState(false);
   const [anchorAccountMenu, setAnchorAccountMenu] =
@@ -178,36 +125,6 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
 
   const handleAccountMenuClose = () => {
     setAnchorAccountMenu(null);
-  };
-
-  const renderTags = ({ _id, name, children }: Tag) => {
-    return (
-      <TreeItem
-        key={_id}
-        nodeId={_id}
-        label={
-          <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            className={classes.tagsContainer}
-          >
-            <Typography className={classes.tagsLabel}>{`#${name}`}</Typography>
-            <IconButton
-              className={classes.tagAddButton}
-              onClick={(event) => {
-                event.stopPropagation();
-                console.log('add tag');
-              }}
-            >
-              <Add sx={{ height: '12px' }} />
-            </IconButton>
-          </Stack>
-        }
-      >
-        {children.length > 0 && children.map((child: Tag) => renderTags(child))}
-      </TreeItem>
-    );
   };
 
   return (
@@ -261,18 +178,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           </Button>
         )}
       </Button>
-      {showTags && (
-        <TreeView
-          defaultCollapseIcon={
-            <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
-          }
-          defaultExpandIcon={
-            <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
-          }
-        >
-          {tags.map((tag) => renderTags(tag))}
-        </TreeView>
-      )}
+      {showTags && <TagsView tags={tags || []} />}
     </Stack>
   );
 };

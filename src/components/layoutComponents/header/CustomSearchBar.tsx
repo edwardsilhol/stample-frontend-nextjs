@@ -3,6 +3,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { Tag } from '../../../stores/types/tag.types';
 import { DocumentType } from '../../../stores/types/document.types';
 import { createUseStyles } from 'react-jss';
+import { useRawTags } from '../../../stores/hooks/tag.hooks';
 
 const useStyles = createUseStyles({
   container: {
@@ -11,16 +12,11 @@ const useStyles = createUseStyles({
   },
 });
 
-interface SearchBarProps {
-  tags: Tag[];
-  documents: DocumentType[];
-}
-export const CustomSearchBar: React.FC<SearchBarProps> = ({
-  tags,
-  documents,
-}) => {
+export const CustomSearchBar: React.FC = () => {
   const classes = useStyles();
-  const tagNames = tags.map((tag) => tag.name);
+  const { data: tags } = useRawTags();
+  const documents: DocumentType[] = [];
+  const tagNames = tags ? tags.map((tag) => tag.name) : [];
   const documentTitles = documents.map((document) => document.title);
 
   return (

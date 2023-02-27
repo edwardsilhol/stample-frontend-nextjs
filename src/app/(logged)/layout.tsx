@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import LoggedAuthProvider from './providers/LoggedAuthProvider';
 import Stack from '../../components/muiOverrides/Stack';
-import { LoggedSidebar } from '../../components/layoutComponents/LoggedSidebar';
+import { LoggedSidebar } from '../../components/layoutComponents/sidebar/LoggedSidebar';
 import { LoggedHeader } from '../../components/layoutComponents/header/LoggedHeader';
 import { useSession } from '../../stores/hooks/user.hooks';
 
