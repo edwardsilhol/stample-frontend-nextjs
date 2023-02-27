@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { TreeItem, TreeView } from '@mui/lab';
-import { Add, ArrowDropDown, ArrowRight } from '@mui/icons-material';
+import { Add, ArrowDropDown, ArrowRight, Check } from '@mui/icons-material';
 import { TagRich } from '../../../stores/types/tag.types';
 import Stack from '../../muiOverrides/Stack';
 import Typography from '../../muiOverrides/Typography';
-import { IconButton } from '@mui/material';
+import { IconButton, InputBase, Popover, TextField } from '@mui/material';
 import { createUseStyles } from 'react-jss';
+import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 
 const useStyles = createUseStyles({
   tagsContainer: {
@@ -26,6 +27,13 @@ const useStyles = createUseStyles({
     fontSize: '13px',
     fontWeight: 600,
   },
+  popoverInput: {
+    '& .MuiPopover-paper': {
+      borderRadius: '4px',
+      padding: '0',
+      margin: '0',
+    },
+  },
 });
 
 interface TagsViewProps {
@@ -33,6 +41,29 @@ interface TagsViewProps {
 }
 export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+  const [newTagName, setNewTagName] = React.useState<string>('');
+  const createTag = useCreateTag();
+  const updateTag = useUpdateTag();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget.parentElement);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleCreateTag = (parentId: string) => {
+    createTag.mutateAsync({ name: newTagName }).then((tag) => {
+      tag &&
+        updateTag.mutate({
+          tagId: parentId,
+          payload: { add: { children: [tag._id] } },
+        });
+    });
+    setNewTagName('');
+    handleClose();
+  };
   const renderTags = ({ _id, name, children }: TagRich) => {
     return (
       <TreeItem
@@ -47,14 +78,52 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
           >
             <Typography className={classes.tagsLabel}>{`#${name}`}</Typography>
             <IconButton
+              aria-describedby={_id}
               className={classes.tagAddButton}
               onClick={(event) => {
                 event.stopPropagation();
-                console.log('add tag');
+                handleClick(event);
               }}
             >
               <Add sx={{ height: '12px' }} />
             </IconButton>
+            <Popover
+              className={classes.popoverInput}
+              id={_id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <Stack direction={'row'} alignItems={'center'}>
+                <InputBase
+                  sx={{
+                    width: '100px',
+                    padding: '0 10px',
+                    borderRadius: '4px',
+                    border: '1px solid #4d4d4d',
+                  }}
+                  placeholder={'Name'}
+                  value={newTagName}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setNewTagName(event.target.value);
+                  }}
+                />
+                <IconButton
+                  aria-describedby={_id}
+                  onClick={() => handleCreateTag(_id)}
+                >
+                  <Check sx={{ height: '12px' }} />
+                </IconButton>
+              </Stack>
+            </Popover>
           </Stack>
         }
       >
