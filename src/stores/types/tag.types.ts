@@ -1,5 +1,5 @@
 export interface Tag {
   _id: string;
   name: string;
-  children: string[];
+  children: Tag[];
 }

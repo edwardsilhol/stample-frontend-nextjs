@@ -1,11 +1,12 @@
 import React from 'react';
-import { Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
-  ChevronRight,
-  ExpandMore,
+  Add,
+  ArrowDropDown,
+  ArrowRight,
   KeyboardArrowDownOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
@@ -14,8 +15,9 @@ import Typography from '../muiOverrides/Typography';
 import { useLogout } from '../../stores/hooks/user.hooks';
 import { TreeView, TreeItem } from '@mui/lab';
 import { Tag } from '../../stores/types/tag.types';
+import { User } from '../../stores/types/user.types';
 
-const drawerWidth = '230px';
+const drawerWidth = '300px';
 
 const useStyles = createUseStyles({
   navContainer: {
@@ -32,8 +34,15 @@ const useStyles = createUseStyles({
     '&:hover': {
       backgroundColor: 'transparent',
     },
+    '&:hover $tagAddButton': {
+      display: 'inline-flex',
+    },
+    '&:hover $showButton': {
+      display: 'inline-flex',
+    },
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     textTransform: 'none',
   },
   accountButton: {
@@ -70,10 +79,36 @@ const useStyles = createUseStyles({
     },
   },
   tagsLabel: {
-    '& .MuiTreeItem-label': {
-      color: '#4d4d4d',
-      fontSize: '13px',
-      fontWeight: 500,
+    color: 'black',
+    opacity: 0.6,
+    fontSize: '13px',
+    fontWeight: 600,
+  },
+  tagsContainer: {
+    '&:hover $tagAddButton': {
+      display: 'inline-flex',
+    },
+  },
+  tagAddButton: {
+    display: 'none',
+    borderRadius: '4px',
+    width: '20px',
+    height: '18px',
+    padding: 0,
+  },
+  showButton: {
+    display: 'none',
+    color: 'black',
+    opacity: 0.7,
+    width: 'fit-content',
+    minWidth: 0,
+    border: '1px solid rgba(0, 0, 0, 0.3)',
+    borderRadius: '3px',
+    padding: '0 6px',
+    margin: 0,
+    textTransform: 'none',
+    '&:hover': {
+      border: '1px solid rgba(0, 0, 0, 0.7)',
     },
   },
 });
@@ -82,55 +117,54 @@ const tags: Tag[] = [
   {
     _id: '1',
     name: 'tag 1',
-    children: ['3', '4'],
+    children: [
+      {
+        _id: '3',
+        name: 'tag 3',
+        children: [],
+      },
+      {
+        _id: '4',
+        name: 'tag 4',
+        children: [
+          {
+            _id: '7',
+            name: 'tag 7',
+            children: [],
+          },
+        ],
+      },
+    ],
   },
   {
     _id: '2',
     name: 'tag 2',
-    children: ['5', '6'],
-  },
-  {
-    _id: '3',
-    name: 'tag 3',
-    children: [],
-  },
-  {
-    _id: '4',
-    name: 'tag 4',
-    children: ['7'],
-  },
-  {
-    _id: '5',
-    name: 'tag 5',
-    children: [],
-  },
-  {
-    _id: '6',
-    name: 'tag 6',
-    children: [],
-  },
-  {
-    _id: '7',
-    name: 'tag 7',
-    children: [],
+    children: [
+      {
+        _id: '5',
+        name: 'tag 5',
+        children: [],
+      },
+      {
+        _id: '6',
+        name: 'tag 6',
+        children: [],
+      },
+    ],
   },
 ];
 
 interface SidebarProps {
-  firstName: string;
-  lastName: string;
+  user: User | null | undefined;
+  isLoading: boolean;
 }
-export const LoggedSidebar: React.FC<SidebarProps> = ({
-  firstName,
-  lastName,
-}) => {
+export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const classes = useStyles();
   const logout = useLogout();
   const [showTags, setShowTags] = React.useState(false);
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
   const openAccountMenu = Boolean(anchorAccountMenu);
-  const seen: string[] = [];
 
   const handleTagsClick = () => {
     setShowTags(!showTags);
@@ -146,39 +180,52 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
     setAnchorAccountMenu(null);
   };
 
-  const renderTags = (tag: Tag) => {
-    if (seen.includes(tag._id)) {
-      return null;
-    }
-    seen.push(tag._id);
+  const renderTags = ({ _id, name, children }: Tag) => {
     return (
       <TreeItem
-        key={tag._id}
-        nodeId={tag._id.toString()}
-        label={`#${tag.name}`}
-        className={classes.tagsLabel}
+        key={_id}
+        nodeId={_id}
+        label={
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            className={classes.tagsContainer}
+          >
+            <Typography className={classes.tagsLabel}>{`#${name}`}</Typography>
+            <IconButton
+              className={classes.tagAddButton}
+              onClick={(event) => {
+                event.stopPropagation();
+                console.log('add tag');
+              }}
+            >
+              <Add sx={{ height: '12px' }} />
+            </IconButton>
+          </Stack>
+        }
       >
-        {tag.children.map((child: any) =>
-          renderTags(tags.filter((t) => t._id === child)[0]),
-        )}
+        {children.length > 0 && children.map((child: Tag) => renderTags(child))}
       </TreeItem>
     );
   };
 
   return (
     <Stack className={classes.navContainer}>
-      <Button
-        disableRipple
-        onClick={handleAccountMenuClick}
-        className={classes.accountButton}
-      >
-        <AccountCircleOutlined sx={{ height: '18px' }} />
-        <Typography
-          fontSize={12}
-          fontWeight={600}
-        >{`${firstName} ${lastName}`}</Typography>
-        <KeyboardArrowDownOutlined sx={{ height: '18px' }} />
-      </Button>
+      {!isLoading && user && (
+        <Button
+          disableRipple
+          onClick={handleAccountMenuClick}
+          className={classes.accountButton}
+        >
+          <AccountCircleOutlined sx={{ height: '18px' }} />
+          <Typography
+            fontSize={12}
+            fontWeight={600}
+          >{`${user?.firstName} ${user?.lastName}`}</Typography>
+          <KeyboardArrowDownOutlined sx={{ height: '18px' }} />
+        </Button>
+      )}
       <Menu
         anchorEl={anchorAccountMenu}
         open={openAccountMenu}
@@ -196,14 +243,31 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
         onClick={handleTagsClick}
       >
         <Typography fontSize={12}>Tags</Typography>
+        {showTags ? (
+          <IconButton
+            className={classes.tagAddButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              console.log('add tag');
+            }}
+          >
+            <Add sx={{ height: '12px' }} />
+          </IconButton>
+        ) : (
+          <Button className={classes.showButton}>
+            <Typography fontSize={10} lineHeight={1.4}>
+              Show
+            </Typography>
+          </Button>
+        )}
       </Button>
       {showTags && (
         <TreeView
           defaultCollapseIcon={
-            <ExpandMore sx={{ height: '16px', color: '#4d4d4d' }} />
+            <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
           }
           defaultExpandIcon={
-            <ChevronRight sx={{ height: '16px', color: '#4d4d4d' }} />
+            <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
           }
         >
           {tags.map((tag) => renderTags(tag))}
