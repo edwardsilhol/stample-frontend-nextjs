@@ -1,4 +1,16 @@
-export interface DocumentType {
+export interface Document {
   _id: string;
   title: string;
+  content: string;
+  summary: string;
+  keyInsight: string;
+  url: string;
+  team: string;
+  type: 'webpage' | 'note' | 'file';
+  readers: string[];
+  likes: string[];
+  comments: string[];
+  tags: string[];
+  creator: string;
+  createdAt: Date;
 }
