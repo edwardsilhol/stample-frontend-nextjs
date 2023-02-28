@@ -1,6 +1,5 @@
 import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { Tag } from '../../../stores/types/tag.types';
 import { DocumentType } from '../../../stores/types/document.types';
 import { createUseStyles } from 'react-jss';
 import { useRawTags } from '../../../stores/hooks/tag.hooks';
