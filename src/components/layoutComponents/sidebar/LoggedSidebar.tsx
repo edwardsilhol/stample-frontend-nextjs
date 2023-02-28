@@ -19,6 +19,7 @@ const drawerWidth = '300px';
 
 const useStyles = createUseStyles({
   navContainer: {
+    minHeight: '100vh',
     width: drawerWidth,
     backgroundColor: '#f6f5f4',
     borderRight: '1px solid #d3d4d5',
@@ -103,7 +104,7 @@ const useStyles = createUseStyles({
 interface SidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
-  setSelectedTag: (tag: string | null) => void;
+  setSelectedTag: (tag: string) => void;
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({
   user,

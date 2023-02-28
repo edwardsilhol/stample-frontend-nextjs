@@ -11,10 +11,15 @@ const useStyles = createUseStyles({
   },
 });
 
-export const CustomSearchBar: React.FC = () => {
+interface CustomSearchBarProps {
+  documents: Document[];
+}
+
+export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
+  documents,
+}) => {
   const classes = useStyles();
   const { data: tags } = useRawTags();
-  const documents: Document[] = [];
   const tagNames = tags ? tags.map((tag) => tag.name) : [];
   const documentTitles = documents.map((document) => document.title);
 
