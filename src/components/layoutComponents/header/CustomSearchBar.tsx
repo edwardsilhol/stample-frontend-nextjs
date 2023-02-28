@@ -1,6 +1,6 @@
 import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { DocumentType } from '../../../stores/types/document.types';
+import { Document } from '../../../stores/types/document.types';
 import { createUseStyles } from 'react-jss';
 import { useRawTags } from '../../../stores/hooks/tag.hooks';
 
@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
 export const CustomSearchBar: React.FC = () => {
   const classes = useStyles();
   const { data: tags } = useRawTags();
-  const documents: DocumentType[] = [];
+  const documents: Document[] = [];
   const tagNames = tags ? tags.map((tag) => tag.name) : [];
   const documentTitles = documents.map((document) => document.title);
 

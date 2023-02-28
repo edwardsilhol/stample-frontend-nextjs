@@ -22,6 +22,7 @@ const useStyles = createUseStyles({
     padding: 0,
   },
   tagsLabel: {
+    width: 'calc(100% - 20px)',
     color: 'black',
     opacity: 0.6,
     fontSize: '13px',
@@ -30,6 +31,7 @@ const useStyles = createUseStyles({
   popover: {
     '& .MuiPopover-paper': {
       boxShadow: '0 5px 20px rgb(150,150,150,0.15)',
+      // boxShadow: 'none',
       border: '1px solid rgba(0,0,0,0.13)',
       borderRadius: '4px',
       padding: '0px',
@@ -63,8 +65,9 @@ const useStyles = createUseStyles({
 
 interface TagsViewProps {
   tags: TagRich[];
+  setSelectedTag: (tagId: string) => void;
 }
-export const TagsView: FC<TagsViewProps> = ({ tags }) => {
+export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
@@ -96,6 +99,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
       <TreeItem
         key={_id}
         nodeId={_id}
+        onClick={() => setSelectedTag(_id)}
         label={
           <Stack
             direction={'row'}

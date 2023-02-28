@@ -103,8 +103,13 @@ const useStyles = createUseStyles({
 interface SidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
+  setSelectedTag: (tag: string | null) => void;
 }
-export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
+export const LoggedSidebar: React.FC<SidebarProps> = ({
+  user,
+  isLoading,
+  setSelectedTag,
+}) => {
   const classes = useStyles();
   const { data: tags } = useRichTags();
   const logout = useLogout();
@@ -178,7 +183,9 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           </Button>
         )}
       </Button>
-      {showTags && <TagsView tags={tags || []} />}
+      {showTags && (
+        <TagsView tags={tags || []} setSelectedTag={setSelectedTag} />
+      )}
     </Stack>
   );
 };
