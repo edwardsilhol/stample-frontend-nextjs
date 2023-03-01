@@ -30,7 +30,7 @@ const useStyles = createUseStyles({
   },
   popover: {
     '& .MuiPopover-paper': {
-      boxShadow: '0 5px 20px rgb(150,150,150,0.15)',
+      boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
       // boxShadow: 'none',
       border: '1px solid rgba(0,0,0,0.13)',
       borderRadius: '4px',
@@ -118,54 +118,6 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
             >
               <Add sx={{ height: '12px' }} />
             </IconButton>
-            <Popover
-              className={classes.popover}
-              id={_id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                spacing={'5px'}
-                margin={'5px'}
-              >
-                <InputBase
-                  size={'small'}
-                  className={classes.popoverInput}
-                  autoFocus
-                  placeholder={'Name'}
-                  value={newTagName}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setNewTagName(event.target.value);
-                  }}
-                />
-                <IconButton
-                  aria-describedby={_id}
-                  onClick={handleCreateTag}
-                  sx={{
-                    height: '24px',
-                    width: '24px',
-                    padding: '0',
-                    borderRadius: '4px',
-                  }}
-                >
-                  <Check sx={{ height: '20px' }} />
-                </IconButton>
-              </Stack>
-            </Popover>
           </Stack>
         }
       >
@@ -177,15 +129,63 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
   };
 
   return (
-    <TreeView
-      defaultCollapseIcon={
-        <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
-      }
-      defaultExpandIcon={
-        <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
-      }
-    >
-      {tags && tags.map((tag) => renderTags(tag))}
-    </TreeView>
+    <>
+      <TreeView
+        defaultCollapseIcon={
+          <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
+        }
+        defaultExpandIcon={
+          <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
+        }
+      >
+        {tags && tags.map((tag) => renderTags(tag))}
+      </TreeView>
+      <Popover
+        className={classes.popover}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          spacing={'5px'}
+          margin={'5px'}
+        >
+          <InputBase
+            size={'small'}
+            className={classes.popoverInput}
+            autoFocus
+            placeholder={'Name'}
+            value={newTagName}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setNewTagName(event.target.value);
+            }}
+          />
+          <IconButton
+            onClick={handleCreateTag}
+            sx={{
+              height: '24px',
+              width: '24px',
+              padding: '0',
+              borderRadius: '4px',
+            }}
+          >
+            <Check sx={{ height: '20px' }} />
+          </IconButton>
+        </Stack>
+      </Popover>
+    </>
   );
 };
