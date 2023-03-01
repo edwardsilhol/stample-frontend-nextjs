@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
   Add,
-  KeyboardArrowDownOutlined,
+  ArrowDropDown,
   LogoutOutlined,
 } from '@mui/icons-material';
 import { createUseStyles } from 'react-jss';
@@ -46,13 +46,13 @@ const useStyles = createUseStyles({
   },
   accountButton: {
     color: '#4d4d4d',
-    width: '150px',
+    width: 'fit-content',
     height: '22px',
     padding: 0,
     margin: '10px 0 0 10px',
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '5px',
     textTransform: 'none',
     borderRadius: '4px',
     '&:hover': {
@@ -142,12 +142,14 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
           onClick={handleAccountMenuClick}
           className={classes.accountButton}
         >
-          <AccountCircleOutlined sx={{ height: '18px' }} />
+          <AccountCircleOutlined
+            sx={{ width: '18px', height: '20px', paddingBottom: '2px' }}
+          />
           <Typography
             fontSize={12}
             fontWeight={600}
           >{`${user?.firstName} ${user?.lastName}`}</Typography>
-          <KeyboardArrowDownOutlined sx={{ height: '18px' }} />
+          <ArrowDropDown sx={{ width: '12px', height: '12px' }} />
         </Button>
       )}
       <Menu
