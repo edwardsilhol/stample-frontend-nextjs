@@ -35,7 +35,7 @@ const useStyles = createUseStyles({
       border: '1px solid rgba(0,0,0,0.13)',
       borderRadius: '4px',
       padding: '0px',
-      margin: '0',
+      margin: '-20px 0 0 -20px',
     },
   },
   popoverInput: {
@@ -94,6 +94,12 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
     setNewTagName('');
     handleClose();
   };
+  const handlekeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    e.key === 'Enter' && handleCreateTag();
+  };
+
   const renderTags = ({ _id, name, children }: TagRich) => {
     return (
       <TreeItem
@@ -172,6 +178,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setNewTagName(event.target.value);
             }}
+            onKeyDown={handlekeyDown}
           />
           <IconButton
             onClick={handleCreateTag}
