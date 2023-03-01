@@ -20,7 +20,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const { data: tags, isLoading: isTagsLoading } = useRawTags();
 
   return !isDocumentsLoading && !isTagsLoading && documents && tags ? (
-    <Box margin={'10px'}>
+    <Box margin={2}>
       <Grid container spacing={2}>
         {documents
           .filter((document) => {
