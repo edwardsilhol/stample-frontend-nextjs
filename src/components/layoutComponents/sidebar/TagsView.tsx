@@ -9,6 +9,11 @@ import { createUseStyles } from 'react-jss';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 
 const useStyles = createUseStyles({
+  treeView: {
+    maxHeight: '80vh',
+    flexGrow: 1,
+    overflowY: 'auto',
+  },
   tagsContainer: {
     '&:hover $tagAddButton': {
       display: 'inline-flex',
@@ -55,11 +60,6 @@ const useStyles = createUseStyles({
       color: 'black',
       opacity: 0.6,
     },
-    '& :focus': {
-      '& .MuiInputBase-root': {
-        border: '1px solid rgba(0,0,0,1)',
-      },
-    },
   },
 });
 
@@ -94,7 +94,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
     setNewTagName('');
     handleClose();
   };
-  const handlekeyDown = (
+  const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     e.key === 'Enter' && handleCreateTag();
@@ -137,6 +137,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
   return (
     <>
       <TreeView
+        className={classes.treeView}
         defaultCollapseIcon={
           <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
         }
@@ -178,7 +179,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setNewTagName(event.target.value);
             }}
-            onKeyDown={handlekeyDown}
+            onKeyDown={handleKeyDown}
           />
           <IconButton
             onClick={handleCreateTag}

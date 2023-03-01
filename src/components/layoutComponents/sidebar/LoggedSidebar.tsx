@@ -15,12 +15,12 @@ import { User } from '../../../stores/types/user.types';
 import { useRichTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 
-const drawerWidth = '300px';
-
 const useStyles = createUseStyles({
   navContainer: {
     minHeight: '100vh',
-    width: drawerWidth,
+    minWidth: '200px',
+    width: '300px',
+    maxWidth: '25%',
     backgroundColor: '#f6f5f4',
     borderRight: '1px solid #d3d4d5',
   },
@@ -121,6 +121,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
 
   const handleTagsClick = () => {
     setShowTags(!showTags);
+    setSelectedTag('');
   };
 
   const handleAccountMenuClick = (

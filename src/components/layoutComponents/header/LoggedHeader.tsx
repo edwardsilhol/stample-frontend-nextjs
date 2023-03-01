@@ -2,7 +2,6 @@ import React from 'react';
 import Stack from '../../muiOverrides/Stack';
 import { CustomSearchBar } from './CustomSearchBar';
 import { createUseStyles } from 'react-jss';
-import { Document } from '../../../stores/types/document.types';
 
 const useStyles = createUseStyles({
   container: {
@@ -11,16 +10,23 @@ const useStyles = createUseStyles({
 });
 
 interface LoggedHeaderProps {
-  documents: Document[];
+  searchValue: string;
+  setSearchValue: (value: string) => void;
 }
 
-export const LoggedHeader: React.FC<LoggedHeaderProps> = ({ documents }) => {
+export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
+  searchValue,
+  setSearchValue,
+}) => {
   const classes = useStyles();
 
   return (
     <Stack direction={'column'} className={classes.container}>
-      <Stack direction={'row'}>
-        <CustomSearchBar documents={documents} />
+      <Stack direction={'row'} padding={'8px 16px'}>
+        <CustomSearchBar
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       </Stack>
     </Stack>
   );
