@@ -11,6 +11,7 @@ const useStyles = createUseStyles({
     minWidth: '100px',
     width: '300px',
     maxWidth: '50%',
+    height: '24px',
     borderRadius: '4px',
     border: '1px solid rgba(0,0,0,0)',
   },
