@@ -14,7 +14,7 @@ import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import { useRichTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const useStyles = createUseStyles({
   navContainer: {
@@ -111,7 +111,9 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const router = useRouter();
   const { data: tags } = useRichTags();
   const logout = useLogout();
-  const [showTags, setShowTags] = React.useState(false);
+  const path = usePathname()?.split('/');
+  const tagId = path?.includes('tag') ? path?.[path?.length - 1] : undefined;
+  const [showTags, setShowTags] = React.useState(!!tagId);
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
   const openAccountMenu = Boolean(anchorAccountMenu);
@@ -184,7 +186,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           </Button>
         )}
       </Button>
-      {showTags && <TagsView tags={tags || []} />}
+      {showTags && <TagsView tagId={tagId} tags={tags || []} />}
     </Stack>
   );
 };

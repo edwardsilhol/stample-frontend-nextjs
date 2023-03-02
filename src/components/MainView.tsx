@@ -16,7 +16,7 @@ export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
 
   return (
     <Stack direction={'row'} width={'100%'}>
-      <Stack direction={'column'} width={'100%'}>
+      <Stack direction={'column'} width={showDocument ? '420px' : '100%'}>
         <LoggedHeader
           searchValue={searchValue}
           setSearchValue={setSearchValue}
@@ -27,7 +27,9 @@ export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
           setDocumentId={setDocumentId}
         />
       </Stack>
-      {showDocument && <DocumentView documentId={documentId} />}
+      {showDocument && (
+        <DocumentView documentId={documentId} setDocumentId={setDocumentId} />
+      )}
     </Stack>
   );
 };

@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
     backgroundColor: '#f6f5f4',
     minWidth: '100px',
     width: '300px',
-    maxWidth: '50%',
+    maxWidth: '70%',
     height: '24px',
     borderRadius: '4px',
     border: '1px solid rgba(0,0,0,0)',
