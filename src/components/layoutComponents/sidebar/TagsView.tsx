@@ -65,10 +65,9 @@ const useStyles = createUseStyles({
 });
 
 interface TagsViewProps {
-  tagId?: string;
   tags: TagRich[];
 }
-export const TagsView: FC<TagsViewProps> = ({ tagId, tags }) => {
+export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const classes = useStyles();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -77,26 +76,6 @@ export const TagsView: FC<TagsViewProps> = ({ tagId, tags }) => {
   const [parentTagId, setParentTagId] = React.useState<string>('');
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
-
-  // get ids of tags to expand
-  const expandedIds: string[] = [];
-  const findTag = (tag: TagRich) => {
-    if (tag._id === tagId) {
-      expandedIds.push(tag._id);
-      return true;
-    }
-    if (tag.children) {
-      for (const child of tag.children) {
-        if (findTag(child)) {
-          expandedIds.push(tag._id);
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-  tags.find((tag) => findTag(tag));
-  expandedIds.reverse();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
     setAnchorEl(event.currentTarget.parentElement);
@@ -127,13 +106,13 @@ export const TagsView: FC<TagsViewProps> = ({ tagId, tags }) => {
       <TreeItem
         key={_id}
         nodeId={_id}
-        onClick={() => router.push(`/my/tag/${_id}`)}
         label={
           <Stack
             direction={'row'}
             alignItems={'center'}
             justifyContent={'space-between'}
             className={classes.tagsContainer}
+            onClick={() => router.push(`/my/tag/${_id}`)}
           >
             <Typography className={classes.tagsLabel}>{`#${name}`}</Typography>
             <IconButton
@@ -166,8 +145,6 @@ export const TagsView: FC<TagsViewProps> = ({ tagId, tags }) => {
         defaultExpandIcon={
           <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
         }
-        expanded={expandedIds}
-        selected={tagId}
       >
         {tags && tags.map((tag) => renderTags(tag))}
       </TreeView>

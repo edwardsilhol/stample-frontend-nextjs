@@ -112,8 +112,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const { data: tags } = useRichTags();
   const logout = useLogout();
   const path = usePathname()?.split('/');
-  const tagId = path?.includes('tag') ? path?.[path?.length - 1] : undefined;
-  const [showTags, setShowTags] = React.useState(!!tagId);
+  const [showTags, setShowTags] = React.useState(path?.includes('tag'));
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
   const openAccountMenu = Boolean(anchorAccountMenu);
@@ -186,7 +185,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           </Button>
         )}
       </Button>
-      {showTags && <TagsView tagId={tagId} tags={tags || []} />}
+      {showTags && <TagsView tags={tags || []} />}
     </Stack>
   );
 };
