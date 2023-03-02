@@ -1,32 +1,34 @@
 'use-client';
 
 import React from 'react';
-import { CircularProgress, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
-import { useRawDocuments } from '../../../stores/hooks/document.hooks';
 import Typography from '../../muiOverrides/Typography';
-import { useRawTags } from '../../../stores/hooks/tag.hooks';
 import Box from '../../muiOverrides/Box';
+import { Document } from '../../../stores/types/document.types';
+import { Tag } from '../../../stores/types/tag.types';
 
 interface DocumentViewProps {
+  documents: Document[];
+  tags: Tag[];
   tagId?: string;
   searchValue: string;
   setDocumentId: (id: string) => void;
   showDocument: boolean;
 }
 export const DocumentsView: React.FC<DocumentViewProps> = ({
+  documents,
+  tags,
   tagId,
   searchValue,
   setDocumentId,
   showDocument,
 }) => {
-  const { data: documents, isLoading: isDocumentsLoading } = useRawDocuments();
-  const { data: tags, isLoading: isTagsLoading } = useRawTags();
   const gridWidth = showDocument
     ? { xs: 12, sm: 12, md: 12, lg: 6 }
     : { xs: 12, sm: 6, md: 4, lg: 3 };
 
-  return !isDocumentsLoading && !isTagsLoading && documents && tags ? (
+  return (
     <Box margin={2}>
       <Grid container spacing={2}>
         {documents
@@ -80,9 +82,5 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
           ))}
       </Grid>
     </Box>
-  ) : (
-    <Stack justifyContent={'center'} alignItems={'center'} height={'100%'}>
-      <CircularProgress />
-    </Stack>
   );
 };
