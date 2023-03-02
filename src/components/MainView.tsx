@@ -12,7 +12,7 @@ interface MainViewProps {
 export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [documentId, setDocumentId] = React.useState<string>('');
-  const showDocument = documentId && documentId !== '';
+  const showDocument = documentId ? documentId !== '' : false;
 
   return (
     <Stack direction={'row'} width={'100%'}>
@@ -25,6 +25,7 @@ export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
           tagId={tagId}
           searchValue={searchValue}
           setDocumentId={setDocumentId}
+          showDocument={showDocument}
         />
       </Stack>
       {showDocument && (

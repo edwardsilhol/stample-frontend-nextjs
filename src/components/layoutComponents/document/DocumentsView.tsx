@@ -12,14 +12,19 @@ interface DocumentViewProps {
   tagId?: string;
   searchValue: string;
   setDocumentId: (id: string) => void;
+  showDocument: boolean;
 }
 export const DocumentsView: React.FC<DocumentViewProps> = ({
   tagId,
   searchValue,
   setDocumentId,
+  showDocument,
 }) => {
   const { data: documents, isLoading: isDocumentsLoading } = useRawDocuments();
   const { data: tags, isLoading: isTagsLoading } = useRawTags();
+  const gridWidth = showDocument
+    ? { xs: 12, sm: 12, md: 12, lg: 6 }
+    : { xs: 12, sm: 6, md: 4, lg: 3 };
 
   return !isDocumentsLoading && !isTagsLoading && documents && tags ? (
     <Box margin={2}>
@@ -35,7 +40,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
                 document.title.toLowerCase().includes(searchValue);
           })
           .map((document) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={document._id}>
+            <Grid item {...gridWidth} key={document._id}>
               <Stack
                 direction={'column'}
                 justifyContent={'center'}
