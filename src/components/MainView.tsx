@@ -52,6 +52,7 @@ export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
         <DocumentView
           document={selectedDocument}
           setDocumentId={setDocumentId}
+          tags={tags || []}
         />
       )}
     </Stack>

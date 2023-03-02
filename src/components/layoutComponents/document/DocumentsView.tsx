@@ -25,11 +25,14 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   showDocument,
 }) => {
   const gridWidth = showDocument
-    ? { xs: 12, sm: 12, md: 12, lg: 6 }
+    ? { xs: 12, sm: 12, md: 12, lg: 12 }
     : { xs: 12, sm: 6, md: 4, lg: 3 };
 
   return (
-    <Box margin={2}>
+    <Box
+      padding={2}
+      sx={{ maxHeight: 'calc(100vh - 41px)', flexGrow: 1, overflowY: 'auto' }}
+    >
       <Grid container spacing={2}>
         {documents
           .filter((document) => {
