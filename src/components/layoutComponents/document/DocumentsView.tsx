@@ -2,19 +2,21 @@
 
 import React from 'react';
 import { CircularProgress, Grid } from '@mui/material';
-import Stack from '../muiOverrides/Stack';
-import { useRawDocuments } from '../../stores/hooks/document.hooks';
-import Typography from '../muiOverrides/Typography';
-import { useRawTags } from '../../stores/hooks/tag.hooks';
-import Box from '../muiOverrides/Box';
+import Stack from '../../muiOverrides/Stack';
+import { useRawDocuments } from '../../../stores/hooks/document.hooks';
+import Typography from '../../muiOverrides/Typography';
+import { useRawTags } from '../../../stores/hooks/tag.hooks';
+import Box from '../../muiOverrides/Box';
 
 interface DocumentViewProps {
-  selectedTag: string;
+  tagId?: string;
   searchValue: string;
+  setDocumentId: (id: string) => void;
 }
-export const DocumentView: React.FC<DocumentViewProps> = ({
-  selectedTag,
+export const DocumentsView: React.FC<DocumentViewProps> = ({
+  tagId,
   searchValue,
+  setDocumentId,
 }) => {
   const { data: documents, isLoading: isDocumentsLoading } = useRawDocuments();
   const { data: tags, isLoading: isTagsLoading } = useRawTags();
@@ -26,10 +28,10 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           .filter((document) => {
             searchValue = searchValue.toLowerCase();
             return searchValue == ''
-              ? document.tags.includes(selectedTag)
-              : selectedTag === ''
+              ? document.tags.includes(tagId || '')
+              : !tagId || tagId === ''
               ? document.title.toLowerCase().includes(searchValue)
-              : document.tags.includes(selectedTag) &&
+              : document.tags.includes(tagId || '') &&
                 document.title.toLowerCase().includes(searchValue);
           })
           .map((document) => (
@@ -46,6 +48,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
                   borderRadius: '4px',
                   overflow: 'hidden',
                 }}
+                onClick={() => setDocumentId(document._id)}
               >
                 <Typography fontSize={'13px'} fontWeight={500}>
                   {document.title}

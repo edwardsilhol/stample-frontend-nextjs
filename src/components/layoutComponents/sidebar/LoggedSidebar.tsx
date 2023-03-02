@@ -14,6 +14,7 @@ import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import { useRichTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
+import { useRouter } from 'next/navigation';
 
 const useStyles = createUseStyles({
   navContainer: {
@@ -104,14 +105,10 @@ const useStyles = createUseStyles({
 interface SidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
-  setSelectedTag: (tag: string) => void;
 }
-export const LoggedSidebar: React.FC<SidebarProps> = ({
-  user,
-  isLoading,
-  setSelectedTag,
-}) => {
+export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const classes = useStyles();
+  const router = useRouter();
   const { data: tags } = useRichTags();
   const logout = useLogout();
   const [showTags, setShowTags] = React.useState(false);
@@ -121,7 +118,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
 
   const handleTagsClick = () => {
     setShowTags(!showTags);
-    setSelectedTag('');
+    router.push('/my');
   };
 
   const handleAccountMenuClick = (
@@ -187,9 +184,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({
           </Button>
         )}
       </Button>
-      {showTags && (
-        <TagsView tags={tags || []} setSelectedTag={setSelectedTag} />
-      )}
+      {showTags && <TagsView tags={tags || []} />}
     </Stack>
   );
 };

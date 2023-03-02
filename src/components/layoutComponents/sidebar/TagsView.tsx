@@ -7,6 +7,7 @@ import Typography from '../../muiOverrides/Typography';
 import { IconButton, InputBase, Popover } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
+import { useRouter } from 'next/navigation';
 
 const useStyles = createUseStyles({
   treeView: {
@@ -65,10 +66,10 @@ const useStyles = createUseStyles({
 
 interface TagsViewProps {
   tags: TagRich[];
-  setSelectedTag: (tagId: string) => void;
 }
-export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
+export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const classes = useStyles();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = React.useState<string>('');
@@ -105,7 +106,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags, setSelectedTag }) => {
       <TreeItem
         key={_id}
         nodeId={_id}
-        onClick={() => setSelectedTag(_id)}
+        onClick={() => router.push(`/my/tag/${_id}`)}
         label={
           <Stack
             direction={'row'}
