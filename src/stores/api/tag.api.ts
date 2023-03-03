@@ -1,19 +1,5 @@
-import {
-  CreateTagDTO,
-  Tag,
-  TagRich,
-  UpdateTagDTO,
-  ViewTags,
-} from '../types/tag.types';
+import { CreateTagDTO, Tag, UpdateTagDTO, ViewTags } from '../types/tag.types';
 import { apiRequest } from '../../utils/api';
-
-export const fetchTag = async (tagId: string): Promise<Tag | null> => {
-  try {
-    return await apiRequest<Tag>('GET', '/tag/' + tagId);
-  } catch (error) {
-    return null;
-  }
-};
 
 export const createTag = async (tag: CreateTagDTO): Promise<Tag | null> => {
   try {
