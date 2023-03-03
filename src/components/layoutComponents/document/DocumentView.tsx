@@ -66,7 +66,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           <Close />
         </IconButton>
         {document?.url && (
-          <a href={document?.url} target={'_blank'} rel={'noreferrer'}>
+          <a href={document.url} target={'_blank'} rel={'noreferrer'}>
             <IconButton sx={{ padding: '0 2px', borderRadius: '4px' }}>
               <OpenInNew />
             </IconButton>

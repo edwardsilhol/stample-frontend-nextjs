@@ -78,6 +78,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const updateTag = useUpdateTag();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget.parentElement);
     setParentTagId(id);
   };
@@ -119,7 +120,6 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
               aria-describedby={_id}
               className={classes.tagAddButton}
               onClick={(event) => {
-                event.stopPropagation();
                 handleClick(event, _id);
               }}
             >
@@ -153,9 +153,6 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        onClick={(event) => {
-          event.stopPropagation();
-        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -174,7 +171,6 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
           <InputBase
             size={'small'}
             className={classes.popoverInput}
-            autoFocus
             placeholder={'Name'}
             value={newTagName}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

@@ -66,6 +66,7 @@ const useStyles = createUseStyles({
       width: '170px',
       border: '1px solid #d3d4d5',
       borderRadius: '4px',
+      boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
       '& .MuiMenu-list': {
         padding: 0,
       },
@@ -132,9 +133,9 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     setAnchorAccountMenu(null);
   };
 
-  return (
-    <Stack className={classes.navContainer}>
-      {!isLoading && user && (
+  const getAccountMenu = () => {
+    return !isLoading && user ? (
+      <>
         <Button
           disableRipple
           onClick={handleAccountMenuClick}
@@ -149,18 +150,23 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           >{`${user?.firstName} ${user?.lastName}`}</Typography>
           <ArrowDropDown sx={{ width: '12px', height: '12px' }} />
         </Button>
-      )}
-      <Menu
-        anchorEl={anchorAccountMenu}
-        open={openAccountMenu}
-        onClose={handleAccountMenuClose}
-        className={classes.menuPaper}
-      >
-        <MenuItem onClick={() => logout.mutate()}>
-          <Typography fontSize={12}>Logout</Typography>
-          <LogoutOutlined sx={{ height: '18px' }} />
-        </MenuItem>
-      </Menu>
+        <Menu
+          anchorEl={anchorAccountMenu}
+          open={openAccountMenu}
+          onClose={handleAccountMenuClose}
+          className={classes.menuPaper}
+        >
+          <MenuItem onClick={() => logout.mutate()}>
+            <Typography fontSize={12}>Logout</Typography>
+            <LogoutOutlined sx={{ height: '18px' }} />
+          </MenuItem>
+        </Menu>
+      </>
+    ) : null;
+  };
+
+  const getToggleTagsButton = () => {
+    return (
       <Button
         disableRipple
         className={classes.tagsButton}
@@ -185,6 +191,13 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           </Button>
         )}
       </Button>
+    );
+  };
+
+  return (
+    <Stack className={classes.navContainer}>
+      {getAccountMenu()}
+      {getToggleTagsButton()}
       {showTags && <TagsView tags={tags || []} />}
     </Stack>
   );
