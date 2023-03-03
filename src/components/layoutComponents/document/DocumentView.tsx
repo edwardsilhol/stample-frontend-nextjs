@@ -1,11 +1,11 @@
 import React from 'react';
 import Stack from '../../muiOverrides/Stack';
-import { Divider, IconButton } from '@mui/material';
+import { CircularProgress, Divider, IconButton } from '@mui/material';
 import { Close, OpenInNew } from '@mui/icons-material';
 import { createUseStyles } from 'react-jss';
-import { Document } from '../../../stores/types/document.types';
 import Typography from '../../muiOverrides/Typography';
 import { Tag } from '../../../stores/types/tag.types';
+import { useDocument } from '../../../stores/hooks/document.hooks';
 
 const useStyles = createUseStyles({
   container: {
@@ -14,16 +14,17 @@ const useStyles = createUseStyles({
 });
 
 interface DocumentViewProps {
-  document?: Document;
+  documentId: string;
   setDocumentId: (id: string) => void;
   tags?: Tag[];
 }
 export const DocumentView: React.FC<DocumentViewProps> = ({
-  document,
+  documentId,
   setDocumentId,
   tags,
 }) => {
   const classes = useStyles();
+  const { data: document, isLoading } = useDocument(documentId);
 
   const getDocumentView = () => {
     return (
@@ -31,7 +32,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
         direction={'column'}
         width={'100%'}
         padding={'10px 30px'}
-        sx={{ maxHeight: 'calc(100vh - 42px)', flexGrow: 1, overflowY: 'auto' }}
+        sx={{ maxHeight: 'calc(100vh - 83px)', flexGrow: 1, overflowY: 'auto' }}
       >
         <Typography variant={'h1'}>{document?.title}</Typography>
         <Typography
@@ -73,9 +74,13 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           </a>
         )}
       </Stack>
-      {!document ? (
+      {!document && !isLoading ? (
         <Stack justifyContent={'center'} alignItems={'center'} height={'100%'}>
           <h1>Document not found</h1>
+        </Stack>
+      ) : isLoading ? (
+        <Stack justifyContent={'center'} alignItems={'center'} height={'100%'}>
+          <CircularProgress />
         </Stack>
       ) : (
         getDocumentView()

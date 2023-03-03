@@ -28,3 +28,8 @@ export interface TagRich {
   name: string;
   children: TagRich[];
 }
+
+export interface ViewTags {
+  richTags: TagRich[];
+  flatTags: Tag[];
+}

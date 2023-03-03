@@ -1,24 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  createTag,
-  fetchRawTags,
-  fetchRichTags,
-  updateTag,
-} from '../api/tag.api';
+import { createTag, fetchTags, updateTag } from '../api/tag.api';
 import { CreateTagDTO, HooksUpdateTagDTO } from '../types/tag.types';
 
-export const useRichTags = () => {
-  return useQuery(['richTags'], fetchRichTags, {
-    cacheTime: Infinity,
-    staleTime: Infinity,
-    refetchInterval: 1000 * 60 * 2,
-  });
-};
-export const useRawTags = () => {
-  return useQuery(['rawTags'], fetchRawTags, {
-    cacheTime: Infinity,
-    staleTime: Infinity,
-    refetchInterval: 1000 * 60 * 2,
+export const useTags = () => {
+  return useQuery(['Tags'], fetchTags, {
+    initialData: {
+      richTags: [],
+      flatTags: [],
+    },
   });
 };
 
@@ -29,8 +18,7 @@ export const useCreateTag = () => {
     {
       onSuccess: (tag) => {
         console.log('successfully created:', tag);
-        queryClient.invalidateQueries(['rawTags']);
-        queryClient.invalidateQueries(['richTags']);
+        queryClient.invalidateQueries(['Tags']);
       },
     },
   );
@@ -43,8 +31,7 @@ export const useUpdateTag = () => {
     {
       onSuccess: (tag) => {
         console.log('successfully updated:', tag);
-        queryClient.invalidateQueries(['rawTags']);
-        queryClient.invalidateQueries(['richTags']);
+        queryClient.invalidateQueries(['Tags']);
       },
     },
   );

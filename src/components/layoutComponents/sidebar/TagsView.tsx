@@ -115,7 +115,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
             className={classes.tagsContainer}
             onClick={() => router.push(`/my/tag/${_id}`)}
           >
-            <Typography className={classes.tagsLabel}>{`#${name}`}</Typography>
+            <Typography className={classes.tagsLabel}>{name}</Typography>
             <IconButton
               aria-describedby={_id}
               className={classes.tagAddButton}

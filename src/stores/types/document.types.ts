@@ -1,3 +1,12 @@
+export type CreateDocumentDTO = {
+  title: string;
+  content: string;
+  summary: string;
+  url: string;
+  type: 'webpage' | 'note' | 'file';
+  tags: string[];
+};
+
 export interface Document {
   _id: string;
   title: string;

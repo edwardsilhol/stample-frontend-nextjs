@@ -12,7 +12,7 @@ import { createUseStyles } from 'react-jss';
 import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
-import { useRichTags } from '../../../stores/hooks/tag.hooks';
+import { useTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -110,7 +110,9 @@ interface SidebarProps {
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const classes = useStyles();
   const router = useRouter();
-  const { data: tags } = useRichTags();
+  const {
+    data: { richTags },
+  } = useTags();
   const logout = useLogout();
   const path = usePathname()?.split('/');
   const [showTags, setShowTags] = React.useState(path?.includes('tag'));
@@ -198,7 +200,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     <Stack className={classes.navContainer}>
       {getAccountMenu()}
       {getToggleTagsButton()}
-      {showTags && <TagsView tags={tags || []} />}
+      {showTags && <TagsView tags={richTags} />}
     </Stack>
   );
 };

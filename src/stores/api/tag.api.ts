@@ -1,13 +1,11 @@
-import { CreateTagDTO, Tag, TagRich, UpdateTagDTO } from '../types/tag.types';
+import {
+  CreateTagDTO,
+  Tag,
+  TagRich,
+  UpdateTagDTO,
+  ViewTags,
+} from '../types/tag.types';
 import { apiRequest } from '../../utils/api';
-
-export const fetchRawTags = async (): Promise<Tag[]> => {
-  try {
-    return await apiRequest<Tag[]>('GET', '/tag/all/raw');
-  } catch (error) {
-    return [];
-  }
-};
 
 export const fetchTag = async (tagId: string): Promise<Tag | null> => {
   try {
@@ -36,10 +34,13 @@ export const updateTag = async (
   }
 };
 
-export const fetchRichTags = async (): Promise<TagRich[]> => {
+export const fetchTags = async (): Promise<ViewTags> => {
   try {
-    return await apiRequest<TagRich[]>('GET', '/tag/all/rich');
+    return await apiRequest<ViewTags>('GET', '/tag/all/tags');
   } catch (error) {
-    return [];
+    return {
+      richTags: [],
+      flatTags: [],
+    };
   }
 };
