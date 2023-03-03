@@ -3,11 +3,9 @@ import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Card, CardContent, IconButton, Stack } from '@mui/material';
+import { Card } from '@mui/material';
 import { Document } from '../../stores/types/document.types';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -107,30 +105,7 @@ export default function FullWidthTabs({
           selectedDocument={selectedDocument}
           setShowDocument={setShowDocument}
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="center">
-              <IconButton aria-label="full screen">
-                <OpenInFullIcon />
-              </IconButton>
-            </Stack>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              {selectedDocument?.title}
-            </Typography>
-          </Stack>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {selectedDocument?.summary}
-            </Typography>
-            <Typography variant="body2"></Typography>
-          </CardContent>
+          apercu
         </TabPanel>
       </SwipeableViews>
     </Box>
