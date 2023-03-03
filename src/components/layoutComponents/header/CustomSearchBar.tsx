@@ -1,11 +1,10 @@
 import React from 'react';
 import { InputBase } from '@mui/material';
-import { createUseStyles } from 'react-jss';
 import Stack from '../../muiOverrides/Stack';
 import { Search } from '@mui/icons-material';
 import Box from '../../muiOverrides/Box';
 
-const useStyles = createUseStyles({
+const useStyles = () => ({
   container: {
     backgroundColor: '#f6f5f4',
     minWidth: '100px',
@@ -37,15 +36,15 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
   searchValue,
   setSearchValue,
 }) => {
-  const classes = useStyles();
+  const styles = useStyles();
 
   return (
-    <Box className={classes.container}>
+    <Box sx={styles.container}>
       <Stack
         direction={'row'}
         alignItems={'center'}
         justifyContent={'flex-start'}
-        className={classes.input}
+        sx={styles.input}
       >
         <Search sx={{ height: '20px' }} />
         <InputBase

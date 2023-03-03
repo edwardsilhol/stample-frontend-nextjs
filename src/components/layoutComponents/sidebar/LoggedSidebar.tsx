@@ -8,7 +8,6 @@ import {
   ArrowDropDown,
   LogoutOutlined,
 } from '@mui/icons-material';
-import { createUseStyles } from 'react-jss';
 import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
@@ -16,7 +15,7 @@ import { useTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 import { usePathname, useRouter } from 'next/navigation';
 
-const useStyles = createUseStyles({
+const useStyles = () => ({
   navContainer: {
     minHeight: '100vh',
     minWidth: '200px',
@@ -108,7 +107,7 @@ interface SidebarProps {
   isLoading: boolean;
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const router = useRouter();
   const {
     data: { richTags },
@@ -141,7 +140,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         <Button
           disableRipple
           onClick={handleAccountMenuClick}
-          className={classes.accountButton}
+          sx={styles.accountButton}
         >
           <AccountCircleOutlined
             sx={{ width: '18px', height: '20px', paddingBottom: '2px' }}
@@ -156,7 +155,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           anchorEl={anchorAccountMenu}
           open={openAccountMenu}
           onClose={handleAccountMenuClose}
-          className={classes.menuPaper}
+          sx={styles.menuPaper}
         >
           <MenuItem onClick={() => logout.mutate()}>
             <Typography fontSize={12}>Logout</Typography>
@@ -169,15 +168,11 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
 
   const getToggleTagsButton = () => {
     return (
-      <Button
-        disableRipple
-        className={classes.tagsButton}
-        onClick={handleTagsClick}
-      >
+      <Button disableRipple sx={styles.tagsButton} onClick={handleTagsClick}>
         <Typography fontSize={12}>Tags</Typography>
         {showTags ? (
           <IconButton
-            className={classes.tagAddButton}
+            sx={styles.tagAddButton}
             onClick={(event) => {
               event.stopPropagation();
               console.log('add tag');
@@ -186,7 +181,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
             <Add sx={{ height: '12px' }} />
           </IconButton>
         ) : (
-          <Button className={classes.showButton}>
+          <Button sx={styles.showButton}>
             <Typography fontSize={10} lineHeight={1.4}>
               Show
             </Typography>
@@ -197,7 +192,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   };
 
   return (
-    <Stack className={classes.navContainer}>
+    <Stack sx={styles.navContainer}>
       {getAccountMenu()}
       {getToggleTagsButton()}
       {showTags && <TagsView tags={richTags} />}

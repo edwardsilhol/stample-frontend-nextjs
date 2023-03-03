@@ -1,11 +1,9 @@
 import React from 'react';
 import Stack from '../../muiOverrides/Stack';
 import { CustomSearchBar } from './CustomSearchBar';
-import { createUseStyles } from 'react-jss';
-import { Button, Dialog } from '@mui/material';
-import { CreateDocumentForm } from '../../forms/document/CreateDocumentForm';
+import { Button } from '@mui/material';
 
-const useStyles = createUseStyles({
+const useStyles = () => ({
   container: {
     height: '42px',
     borderBottom: '1px solid #d3d4d5',
@@ -15,30 +13,19 @@ const useStyles = createUseStyles({
 interface LoggedHeaderProps {
   searchValue: string;
   setSearchValue: (value: string) => void;
+  setToggledAddButton: () => void;
 }
 
 export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
   searchValue,
   setSearchValue,
+  setToggledAddButton,
 }) => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpenCreateDocument = () => {
-    setOpen(true);
-  };
-
-  const getCreateDocumentDialog = () => {
-    return (
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <CreateDocumentForm />
-      </Dialog>
-    );
-  };
+  const styles = useStyles();
 
   return (
     <>
-      <Stack direction={'column'} className={classes.container}>
+      <Stack direction={'column'} sx={styles.container}>
         <Stack
           direction={'row'}
           padding={'8px 16px'}
@@ -52,13 +39,12 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
             variant="contained"
             color="primary"
             size="small"
-            onClick={handleOpenCreateDocument}
+            onClick={setToggledAddButton}
           >
             Add
           </Button>
         </Stack>
       </Stack>
-      {getCreateDocumentDialog()}
     </>
   );
 };

@@ -12,8 +12,20 @@ import { Button } from '@mui/material';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
+import 'draft-js/dist/Draft.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Stack from '../../muiOverrides/Stack';
+const useStyles = () => ({
+  container: {
+    margin: '16px',
+  },
+  editorContainer: {
+    height: '300px',
+  },
+});
 
 export const CreateDocumentForm: React.FC = () => {
+  const styles = useStyles();
   // TODO: handle errors in form
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState(undefined);
@@ -48,6 +60,7 @@ export const CreateDocumentForm: React.FC = () => {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
+    console.log('values', values);
     try {
       setError(undefined);
       const { title, summary, url, type } = values;
@@ -68,41 +81,42 @@ export const CreateDocumentForm: React.FC = () => {
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <TextFieldForm
-        control={control}
-        name={'title'}
-        required
-        fullWidth
-        id={'title'}
-        label={'Title'}
-        autoFocus
-      />
-      <Editor
-        editorState={editorState}
-        onEditorStateChange={handleEditorStateChange}
-        toolbarClassName="toolbarClassName"
-        wrapperClassName="wrapperClassName"
-        editorClassName="editorClassName"
-      />
-      <TextFieldForm
-        control={control}
-        name={'summary'}
-        required
-        fullWidth
-        id={'summary'}
-        label={'Summary'}
-        multiline
-      />
-      <TextFieldForm
-        control={control}
-        name={'url'}
-        required
-        fullWidth
-        id={'url'}
-        label={'URL'}
-      />
-      <SelectOrCreateTags onChange={setSelectedTags} />
-      <Button type={'submit'}>Submit</Button>
+      <Stack direction={'column'} spacing={2} sx={styles.container}>
+        <TextFieldForm
+          control={control}
+          name={'title'}
+          required
+          fullWidth
+          id={'title'}
+          label={'Title'}
+          autoFocus
+        />
+        <Stack sx={styles.editorContainer}>
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleEditorStateChange}
+          />
+        </Stack>
+        <TextFieldForm
+          control={control}
+          name={'summary'}
+          required
+          fullWidth
+          id={'summary'}
+          label={'Summary'}
+          multiline
+        />
+        <TextFieldForm
+          control={control}
+          name={'url'}
+          required
+          fullWidth
+          id={'url'}
+          label={'URL'}
+        />
+        <SelectOrCreateTags onChange={setSelectedTags} />
+        <Button type={'submit'}>Submit</Button>
+      </Stack>
     </Box>
   );
 };

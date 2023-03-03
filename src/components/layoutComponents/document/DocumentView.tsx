@@ -2,12 +2,11 @@ import React from 'react';
 import Stack from '../../muiOverrides/Stack';
 import { CircularProgress, Divider, IconButton } from '@mui/material';
 import { Close, OpenInNew } from '@mui/icons-material';
-import { createUseStyles } from 'react-jss';
 import Typography from '../../muiOverrides/Typography';
 import { Tag } from '../../../stores/types/tag.types';
 import { useDocument } from '../../../stores/hooks/document.hooks';
 
-const useStyles = createUseStyles({
+const useStyles = () => ({
   container: {
     borderLeft: '1px solid #d3d4d5',
   },
@@ -23,7 +22,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   setDocumentId,
   tags,
 }) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const { data: document, isLoading } = useDocument(documentId);
 
   const getDocumentView = () => {
@@ -54,7 +53,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   };
 
   return (
-    <Stack direction={'column'} width={'100%'} className={classes.container}>
+    <Stack direction={'column'} width={'100%'} sx={styles.container}>
       <Stack
         direction={'row'}
         padding={'8px 16px'}

@@ -26,9 +26,9 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     ? { xs: 12, sm: 12, md: 12, lg: 12 }
     : { xs: 12, sm: 6, md: 4, lg: 3 };
 
-  const getGridItem = (document: Document) => {
+  const getGridItem = (document: Document, index: number) => {
     return (
-      <Grid item {...gridWidth} key={document._id}>
+      <Grid item {...gridWidth} key={index}>
         <Stack
           direction={'column'}
           justifyContent={'center'}
@@ -84,7 +84,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
               }
               return true;
             })
-            .map((document) => getGridItem(document))}
+            .map((document, index) => getGridItem(document, index))}
         </Grid>
       </Box>
       {documentId && (

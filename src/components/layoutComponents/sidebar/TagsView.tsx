@@ -5,11 +5,10 @@ import { TagRich } from '../../../stores/types/tag.types';
 import Stack from '../../muiOverrides/Stack';
 import Typography from '../../muiOverrides/Typography';
 import { IconButton, InputBase, Popover } from '@mui/material';
-import { createUseStyles } from 'react-jss';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useRouter } from 'next/navigation';
 
-const useStyles = createUseStyles({
+const useStyles = () => ({
   treeView: {
     maxHeight: '80vh',
     flexGrow: 1,
@@ -68,7 +67,7 @@ interface TagsViewProps {
   tags: TagRich[];
 }
 export const TagsView: FC<TagsViewProps> = ({ tags }) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
@@ -112,13 +111,13 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
             direction={'row'}
             alignItems={'center'}
             justifyContent={'space-between'}
-            className={classes.tagsContainer}
+            sx={styles.tagsContainer}
             onClick={() => router.push(`/my/tag/${_id}`)}
           >
-            <Typography className={classes.tagsLabel}>{name}</Typography>
+            <Typography sx={styles.tagsLabel}>{name}</Typography>
             <IconButton
               aria-describedby={_id}
-              className={classes.tagAddButton}
+              sx={styles.tagAddButton}
               onClick={(event) => {
                 handleClick(event, _id);
               }}
@@ -138,7 +137,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   return (
     <>
       <TreeView
-        className={classes.treeView}
+        sx={styles.treeView}
         defaultCollapseIcon={
           <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
         }
@@ -149,7 +148,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
         {tags && tags.map((tag) => renderTags(tag))}
       </TreeView>
       <Popover
-        className={classes.popover}
+        sx={styles.popover}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -170,7 +169,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
         >
           <InputBase
             size={'small'}
-            className={classes.popoverInput}
+            sx={styles.popoverInput}
             placeholder={'Name'}
             value={newTagName}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
