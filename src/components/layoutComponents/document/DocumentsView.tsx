@@ -70,7 +70,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   documents,
 }) => {
   const {
-    data: { flatTags },
+    data: { raw: flatTags },
     isLoading,
   } = useTags();
   const [documentId, setDocumentId] = React.useState<string | null>(null);

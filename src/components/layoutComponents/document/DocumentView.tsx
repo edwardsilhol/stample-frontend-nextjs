@@ -4,13 +4,13 @@ import { CircularProgress, Divider, IconButton } from '@mui/material';
 import { Close, OpenInNew } from '@mui/icons-material';
 import Typography from '../../muiOverrides/Typography';
 import { Tag } from '../../../stores/types/tag.types';
-import { useDocument } from '../../../stores/hooks/document.hooks';
 
 interface DocumentViewProps {
   documentId: string;
   setDocumentId: (id: string) => void;
   tags?: Tag[];
 }
+
 export const DocumentView: React.FC<DocumentViewProps> = ({
   documentId,
   setDocumentId,
@@ -19,30 +19,46 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const { data: document, isLoading } = useDocument(documentId);
 
   const getDocumentView = () => {
-    return (
-      <Stack
-        direction={'column'}
-        width={'100%'}
-        padding={'10px 30px'}
-        sx={{ maxHeight: 'calc(100vh - 83px)', flexGrow: 1, overflowY: 'auto' }}
-      >
-        <Typography variant={'h1'}>{document?.title}</Typography>
-        <Typography
-          fontSize={'11px'}
-          fontWeight={400}
-          color={'rgba(0, 0, 255, 0.8)'}
+    if (!document?.url) {
+      return (
+        <>
+          <Typography variant={'h1'}>{document?.title}</Typography>
+          <Typography
+            fontSize={'11px'}
+            fontWeight={400}
+            color={'rgba(0, 0, 255, 0.8)'}
+          >
+            {document?.tags
+              .map((tag) => tags?.find((t) => t._id === tag)?.name)
+              .map((tag) => `#${tag}`)
+              .join(' ')}
+          </Typography>
+          <Divider sx={{ margin: '10px 0' }} />
+          {document?.content && (
+            <div dangerouslySetInnerHTML={{ __html: document.content }} />
+          )}
+        </>
+      );
+    } else {
+      return (
+        <Stack
+          direction="column"
+          width="100%"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
         >
-          {document?.tags
-            .map((tag) => tags?.find((t) => t._id === tag)?.name)
-            .map((tag) => `#${tag}`)
-            .join(' ')}
-        </Typography>
-        <Divider sx={{ margin: '10px 0' }} />
-        {document?.content && (
-          <div dangerouslySetInnerHTML={{ __html: document.content }} />
-        )}
-      </Stack>
-    );
+          <iframe
+            src={document.url}
+            style={{
+              height: 'calc(100vh - 42px)',
+              width: '100%',
+              border: 'none',
+            }}
+          />
+        </Stack>
+      );
+    }
   };
 
   return (
@@ -81,7 +97,18 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           <CircularProgress />
         </Stack>
       ) : (
-        getDocumentView()
+        <Stack
+          direction={'column'}
+          width={'100%'}
+          padding={'10px 30px'}
+          sx={{
+            maxHeight: 'calc(100vh - 42px)',
+            flexGrow: 1,
+            overflowY: 'auto',
+          }}
+        >
+          {getDocumentView()}
+        </Stack>
       )}
     </Stack>
   );

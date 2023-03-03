@@ -30,6 +30,6 @@ export interface TagRich {
 }
 
 export interface ViewTags {
-  richTags: TagRich[];
-  flatTags: Tag[];
+  rich: TagRich[];
+  raw: Tag[];
 }
