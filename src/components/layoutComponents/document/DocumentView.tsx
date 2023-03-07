@@ -66,11 +66,12 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           <Close />
         </IconButton>
         {document?.url && (
-          <a href={document.url} target={'_blank'} rel={'noreferrer'}>
-            <IconButton sx={{ padding: '0 2px', borderRadius: '4px' }}>
-              <OpenInNew />
-            </IconButton>
-          </a>
+          <a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/LV_MOTOR_DOCUMENT_OF_INSURANCE.pdf" target="_blank">
+          <IconButton sx={{ padding: '0 2px', borderRadius: '4px' }}>
+            <OpenInNew />
+          </IconButton>
+        </a>
+        
         )}
       </Stack>
       {!document && !isLoading ? (
