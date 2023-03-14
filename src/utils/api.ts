@@ -96,7 +96,7 @@ export async function apiRequest<T>(
             accessToken: localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY),
             refreshToken: localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY),
           }))
-        : handleRefreshToken(refreshToken, API_URL));
+        : handleRefreshToken(API_URL, refreshToken));
 
       if (tokens?.accessToken) {
         fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
