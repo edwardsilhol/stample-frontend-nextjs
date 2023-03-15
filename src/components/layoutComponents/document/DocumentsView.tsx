@@ -110,16 +110,15 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
         }}
       >
         <Grid container spacing={2}>
-          {filteredDocuments
-            .map((document, index) => (
-              <DocumentGridItem
-                key={index}
-                document={document}
-                selectedDocumentId={documentId}
-                setDocumentId={setDocumentId}
-                flatTags={flatTags}
-              />
-            ))}
+          {filteredDocuments.map((document, index) => (
+            <DocumentGridItem
+              key={index}
+              document={document}
+              selectedDocumentId={documentId}
+              setDocumentId={setDocumentId}
+              flatTags={flatTags}
+            />
+          ))}
         </Grid>
       </Box>
       {documentId && (
@@ -129,5 +128,6 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
           tags={flatTags}
         />
       )}
-    </Stack>)
-}
+    </Stack>
+  );
+};

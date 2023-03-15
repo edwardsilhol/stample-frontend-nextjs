@@ -134,14 +134,20 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
     setTabIndex(newIndex);
   };
   const getDocumentView = () => {
-    const tagString = document?.tags
+    const tagsString = document?.tags
       ?.map((tag) => tags?.find((t) => t._id === tag)?.name)
       ?.map((tag) => `#${tag}`)
       ?.join(' ');
 
     switch (tabIndex) {
       case 0:
-        return <EditCase document={document} tags={tags} showDocument={true} />;
+        return (
+          <EditCase
+            document={document ?? undefined}
+            tags={tags}
+            showDocument={true}
+          />
+        );
       case 1:
         return document?.url ? (
           <Stack
@@ -170,10 +176,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
               fontWeight={400}
               color={'rgba(0, 0, 255, 0.8)'}
             >
-              {document.tags
-                .map((tag) => tags?.find((t) => t._id === tag)?.name)
-                .map((tag) => `#${tag}`)
-                .join(' ')}
+              {tagsString}
             </Typography>
             <Divider sx={{ margin: '10px 0' }} />
             <div dangerouslySetInnerHTML={{ __html: document.content }} />
