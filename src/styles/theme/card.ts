@@ -1,5 +1,4 @@
 import { Components } from '@mui/material';
-import { ThemeOptions } from '@mui/system';
 
 const cardTheme: Components['MuiCard'] = {
   styleOverrides: {

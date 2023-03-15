@@ -26,6 +26,7 @@ const useStyles = () => ({
 
 export const CreateDocumentForm: React.FC = () => {
   const styles = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [editorState, setEditorState] = React.useState(
