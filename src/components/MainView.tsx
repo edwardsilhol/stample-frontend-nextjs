@@ -14,7 +14,6 @@ export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [toggledAddButton, setToggledAddButton] =
     React.useState<boolean>(false);
-
   return (
     <Stack direction={'column'} width={'100%'}>
       <LoggedHeader

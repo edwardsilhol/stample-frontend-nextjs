@@ -64,17 +64,40 @@ const DocumentGridItem: React.FC<{
 interface DocumentViewProps {
   searchValue: string;
   documents: Document[];
+  tagId?: string;
 }
 export const DocumentsView: React.FC<DocumentViewProps> = ({
   searchValue,
   documents,
+  tagId,
 }) => {
   const {
     data: { raw: flatTags },
     isLoading,
   } = useTags();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
-
+  const filteredDocuments = useMemo(
+    () =>
+      documents.filter((document) => {
+        const searchValueLowerCase = searchValue.toLowerCase();
+        if (
+          (searchValueLowerCase === '' || !searchValueLowerCase) &&
+          (tagId === '' || !tagId)
+        ) {
+          return true;
+        } else if (searchValueLowerCase === '' || !searchValueLowerCase) {
+          return document.tags.includes(tagId || '');
+        } else if (tagId === '' || !tagId) {
+          return document.title.toLowerCase().includes(searchValueLowerCase);
+        } else {
+          return (
+            document.tags.includes(tagId || '') &&
+            document.title.toLowerCase().includes(searchValueLowerCase)
+          );
+        }
+      }),
+    [documents, searchValue, tagId],
+  );
   return isLoading ? null : (
     <Stack direction={'row'} width={'100%'}>
       <Box
@@ -87,14 +110,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
         }}
       >
         <Grid container spacing={2}>
-          {documents
-            .filter((document) => {
-              if (searchValue !== '') {
-                searchValue = searchValue.toLowerCase();
-                return document.title.toLowerCase().includes(searchValue);
-              }
-              return true;
-            })
+          {filteredDocuments
             .map((document, index) => (
               <DocumentGridItem
                 key={index}
@@ -113,6 +129,5 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
           tags={flatTags}
         />
       )}
-    </Stack>
-  );
-};
+    </Stack>)
+}
