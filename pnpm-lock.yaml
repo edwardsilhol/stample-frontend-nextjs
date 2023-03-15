@@ -58,6 +58,7 @@ specifiers:
   react-draft-wysiwyg: ^1.15.0
   react-hook-form: ^7.43.1
   react-i18next: ^12.1.5
+  react-jss: ^10.10.0
   react-swipeable-views: ^0.14.0
   require-from-string: ^2.0.2
   typescript: 4.9.5
@@ -96,6 +97,7 @@ dependencies:
   react-draft-wysiwyg: 1.15.0_u2uddnr2lenfwn7luyp53wziye
   react-hook-form: 7.43.1_react@18.2.0
   react-i18next: 12.1.5_3yopsigl4h4eb2nqrqfsy65uwi
+  react-jss: 10.10.0_react@18.2.0
   react-swipeable-views: 0.14.0_react@18.2.0
   require-from-string: 2.0.2
   typescript: 4.9.5
@@ -118,7 +120,6 @@ devDependencies:
   '@types/draft-js': 0.11.10
   '@types/draftjs-to-html': 0.8.1
   '@types/react-draft-wysiwyg': 1.13.4
-  '@types/react-swipeable-views': 0.13.1
   '@typescript-eslint/eslint-plugin': 5.52.0_6cfvjsbua5ptj65675bqcn6oza
   '@typescript-eslint/parser': 5.52.0_7kw3g6rralp5ps6mg3uyzz6azm
   babel-loader: 9.1.2_la66t7xldg4uecmyawueag5wkm
