@@ -110,7 +110,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
   const router = useRouter();
   const {
-    data: { richTags },
+    data: { rich: richTags },
   } = useTags();
   const logout = useLogout();
   const path = usePathname()?.split('/');

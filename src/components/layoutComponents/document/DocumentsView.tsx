@@ -64,17 +64,40 @@ const DocumentGridItem: React.FC<{
 interface DocumentViewProps {
   searchValue: string;
   documents: Document[];
+  tagId?: string;
 }
 export const DocumentsView: React.FC<DocumentViewProps> = ({
   searchValue,
   documents,
+  tagId,
 }) => {
   const {
-    data: { flatTags },
+    data: { raw: flatTags },
     isLoading,
   } = useTags();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
-
+  const filteredDocuments = useMemo(
+    () =>
+      documents.filter((document) => {
+        const searchValueLowerCase = searchValue.toLowerCase();
+        if (
+          (searchValueLowerCase === '' || !searchValueLowerCase) &&
+          (tagId === '' || !tagId)
+        ) {
+          return true;
+        } else if (searchValueLowerCase === '' || !searchValueLowerCase) {
+          return document.tags.includes(tagId || '');
+        } else if (tagId === '' || !tagId) {
+          return document.title.toLowerCase().includes(searchValueLowerCase);
+        } else {
+          return (
+            document.tags.includes(tagId || '') &&
+            document.title.toLowerCase().includes(searchValueLowerCase)
+          );
+        }
+      }),
+    [documents, searchValue, tagId],
+  );
   return isLoading ? null : (
     <Stack direction={'row'} width={'100%'}>
       <Box
@@ -87,23 +110,15 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
         }}
       >
         <Grid container spacing={2}>
-          {documents
-            .filter((document) => {
-              if (searchValue !== '') {
-                searchValue = searchValue.toLowerCase();
-                return document.title.toLowerCase().includes(searchValue);
-              }
-              return true;
-            })
-            .map((document, index) => (
-              <DocumentGridItem
-                key={index}
-                document={document}
-                selectedDocumentId={documentId}
-                setDocumentId={setDocumentId}
-                flatTags={flatTags}
-              />
-            ))}
+          {filteredDocuments.map((document, index) => (
+            <DocumentGridItem
+              key={index}
+              document={document}
+              selectedDocumentId={documentId}
+              setDocumentId={setDocumentId}
+              flatTags={flatTags}
+            />
+          ))}
         </Grid>
       </Box>
       {documentId && (

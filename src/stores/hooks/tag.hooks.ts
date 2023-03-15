@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createTag, fetchTags, updateTag } from '../api/tag.api';
-import { CreateTagDTO, HooksUpdateTagDTO } from '../types/tag.types';
+import { CreateTagDTO, HooksUpdateTagDTO, ViewTags } from '../types/tag.types';
 
 export const useTags = () => {
-  return useQuery(['Tags'], fetchTags, {
+  return useQuery<ViewTags>(['Tags'], fetchTags, {
     initialData: {
-      richTags: [],
-      flatTags: [],
+      rich: [],
+      raw: [],
     },
   });
 };

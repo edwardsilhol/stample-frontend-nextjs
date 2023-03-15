@@ -22,11 +22,11 @@ export const updateTag = async (
 
 export const fetchTags = async (): Promise<ViewTags> => {
   try {
-    return await apiRequest<ViewTags>('GET', '/tag/all/tags');
+    return await apiRequest<ViewTags>('GET', '/tag/all');
   } catch (error) {
     return {
-      richTags: [],
-      flatTags: [],
+      rich: [],
+      raw: [],
     };
   }
 };
