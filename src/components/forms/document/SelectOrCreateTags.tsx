@@ -11,7 +11,7 @@ const TagTextField: React.FC<TagTextFieldProps> = ({ onChange }) => {
   const [inputValue, setInputValue] = React.useState('');
   const [selectedTags, setSelectedTags] = React.useState<Tag[]>([]);
   const {
-    data: { flatTags },
+    data: { raw: flatTags },
     isLoading,
   } = useTags();
 
