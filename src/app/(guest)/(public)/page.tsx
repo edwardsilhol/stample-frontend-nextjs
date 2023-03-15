@@ -1,26 +1,44 @@
+'use client';
+
 import React from 'react';
-import Box from '../../../components/muiOverrides/Box';
 import Typography from '../../../components/muiOverrides/Typography';
+import Stack from '../../../components/muiOverrides/Stack';
+import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation';
 
 function useStyles() {
   return {
     container: {
       height: '100vh',
       my: 8,
-      display: 'flex',
-      flexDirection: 'column',
       alignItems: 'center',
     },
   };
 }
 
-async function HomePage() {
+export default function HomePage() {
   const styles = useStyles();
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    router.push('/signIn');
+  };
+
+  const handleSignUp = () => {
+    router.push('/signUp');
+  };
 
   return (
-    <Box sx={styles.container}>
-      <Typography variant="h1">Home</Typography>
-    </Box>
+    <Stack sx={styles.container} spacing={3}>
+      <Typography variant="h1">Welcome to Stample!</Typography>
+      <Stack direction="row" spacing={3}>
+        <Button variant="contained" onClick={handleSignIn}>
+          Sign In
+        </Button>
+        <Button variant="outlined" onClick={handleSignUp}>
+          Sign Up
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
-export default HomePage;

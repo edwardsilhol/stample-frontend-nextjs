@@ -5,6 +5,7 @@ export interface ExtendedPalette {
   additionalColors: {
     additionalMain: string;
     link: string;
+    sidebarBackground: string;
   };
 }
 
@@ -12,6 +13,7 @@ const lightPaletteExtended: ExtendedPalette = {
   additionalColors: {
     additionalMain: '#1976d2',
     link: '#1976d2',
+    sidebarBackground: '#f6f5f4',
   },
 };
 
@@ -19,6 +21,7 @@ const darkPaletteExtended: ExtendedPalette = {
   additionalColors: {
     additionalMain: '#00070e',
     link: '#1976d2',
+    sidebarBackground: '#f6f5f4',
   },
 };
 

@@ -48,9 +48,9 @@ describe('SignInForm.cy.tsx', () => {
   it('doSubmit', () => {
     cy.get('input[name="email"]').type('test@test.com');
     cy.get('input[name="password"]').type('password');
-    cy.intercept('PUT', `**/auth/signInLocal`).as('signInLocal');
+    cy.intercept('PUT', `**/auth/signIn`).as('signIn');
     cy.get('form').submit();
-    cy.wait('@signInLocal').then((interception) => {
+    cy.wait('@signIn').then((interception) => {
       expect(interception.request.body).to.deep.equal({
         email: 'test@test.com',
         password: 'password',
