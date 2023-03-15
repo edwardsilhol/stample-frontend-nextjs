@@ -46,6 +46,7 @@
     "react-hook-form": "^7.43.1",
     "react-i18next": "^12.1.5",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react-swipeable-views": "^0.14.0",
 =======
 <<<<<<< HEAD
@@ -54,6 +55,10 @@
     "react-swipeable-views": "^0.14.0",
 >>>>>>> 4f94aae (edit document part)
 >>>>>>> 214bbac (edit document part)
+=======
+    "react-jss": "^10.10.0",
+    "react-swipeable-views": "^0.14.0",
+>>>>>>> 1d60346 (Fix rebase conflict)
     "require-from-string": "^2.0.2",
     "typescript": "4.9.5",
     "yup": "^1.0.0"
@@ -77,13 +82,10 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
-<<<<<<< HEAD
     "@types/draft-js": "^0.11.10",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/react-draft-wysiwyg": "^1.13.4",
-=======
     "@types/react-swipeable-views": "^0.13.1",
->>>>>>> 4f94aae (edit document part)
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "babel-loader": "^9.1.2",

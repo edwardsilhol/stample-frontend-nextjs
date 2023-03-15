@@ -19,7 +19,6 @@ export const fetchDocuments = async (): Promise<Document[]> => {
   }
 };
 
-<<<<<<< HEAD
 export const createDocument = async (
   createDocumentDto: CreateDocumentDTO,
 ): Promise<Document> => {
@@ -38,14 +37,3 @@ export const fetchDocumentsByTag = async (tag: string): Promise<Document[]> => {
     return [];
   }
 };
-=======
-export const postDocument = async (document: Document): Promise<Document> => {
-  try {
-    const response = await apiRequest<Document>('POST', '/document', document);
-    return response;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
->>>>>>> 4f94aae (edit document part)

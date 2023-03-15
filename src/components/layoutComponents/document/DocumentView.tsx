@@ -2,9 +2,6 @@ import React from 'react';
 import Stack from '../../muiOverrides/Stack';
 import { CircularProgress, Divider, IconButton } from '@mui/material';
 import { Close, OpenInNew } from '@mui/icons-material';
-import { Button, Checkbox, Divider, IconButton, TextField } from '@mui/material';
-import { Close, Folder, OpenInNew } from '@mui/icons-material';
-import { createUseStyles } from 'react-jss';
 import { Document } from '../../../stores/types/document.types';
 import Typography from '../../muiOverrides/Typography';
 import { Tag } from '../../../stores/types/tag.types';
@@ -14,8 +11,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useDocument } from '../../../stores/hooks/document.hooks';
-
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditCase from './EditCase';
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -138,15 +133,15 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   ) => {
     setTabIndex(newIndex);
   };
-  const getDocumentView = () => {const tagString = (document?.tags   ?.map((tag) => tags?.find((t) => t._id === tag)?.name) )  ?.map((tag) => `#${tag}`)   ?.join(' ');
-  
-  switch (tabIndex) {
-      case 0:
-        return (
-          <EditCase document={document} tags={tags} showDocument={true} />
-          
+  const getDocumentView = () => {
+    const tagString = document?.tags
+      ?.map((tag) => tags?.find((t) => t._id === tag)?.name)
+      ?.map((tag) => `#${tag}`)
+      ?.join(' ');
 
-        );
+    switch (tabIndex) {
+      case 0:
+        return <EditCase document={document} tags={tags} showDocument={true} />;
       case 1:
         return document?.url ? (
           <Stack
