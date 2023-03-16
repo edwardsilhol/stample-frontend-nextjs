@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 pnpm build
-lint-staged
+pnpm lint-staged
 pnpm cypress:headless:component
