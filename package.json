@@ -11,7 +11,8 @@
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "cypress": "cypress open",
-    "cypress:headless:component": "cypress run --component"
+    "cypress:headless:component": "cypress run --component",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
