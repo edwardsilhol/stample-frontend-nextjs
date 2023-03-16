@@ -9,10 +9,8 @@ import Stack from '../../components/muiOverrides/Stack';
 interface Props {
   children: ReactNode;
 }
-
 function LoggedLayout({ children }: Props) {
   const { data: user, isLoading } = useSession();
-
   return (
     <LoggedAuthProvider>
       <Stack direction={'row'}>
