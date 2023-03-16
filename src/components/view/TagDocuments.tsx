@@ -18,6 +18,10 @@ export const TagDocuments: React.FC<Props> = ({ tagId, searchValue }) => {
       <CircularProgress />
     </Stack>
   ) : (
-    <DocumentsView searchValue={searchValue} documents={documents} />
+    <DocumentsView
+      searchValue={searchValue}
+      documents={documents}
+      tagId={tagId}
+    />
   );
 };
