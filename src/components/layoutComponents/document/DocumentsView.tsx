@@ -27,12 +27,14 @@ const DocumentGridItem: React.FC<{
 
   return (
     <Grid item xs={12} {...(selectedDocumentId ? {} : { md: 6, lg: 4, xl: 3 })}>
-      <Card sx={{ height: '100%' }}>
+      <Card
+        sx={{ height: '100%', cursor: 'pointer' }}
+        onClick={() => setDocumentId(document._id)}
+      >
         {/*TODO add image
           <CardMedia
             sx={{ height: 140 }}
             image={document.url}
-            title="green iguana"
           />
   */}
         <CardContent
@@ -40,7 +42,6 @@ const DocumentGridItem: React.FC<{
             overflow: 'hidden',
             height: '100%',
           }}
-          onClick={() => setDocumentId(document._id)}
         >
           <Typography fontSize={'13px'} fontWeight={500}>
             {document.title}
@@ -64,7 +65,7 @@ const DocumentGridItem: React.FC<{
 interface DocumentViewProps {
   searchValue: string;
   documents: Document[];
-  tagId?: string;
+  tagId: string | null;
 }
 export const DocumentsView: React.FC<DocumentViewProps> = ({
   searchValue,
@@ -76,27 +77,32 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     isLoading,
   } = useTags();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
+  const documentsByTag = useMemo<Record<string, Document[]>>(
+    () =>
+      documents.reduce((accumulator: Record<string, Document[]>, document) => {
+        document.tags.forEach((tag) => {
+          if (accumulator[tag]) {
+            accumulator[tag].push(document);
+          } else {
+            accumulator[tag] = [document];
+          }
+        });
+        return accumulator;
+      }, {}),
+    [documents],
+  );
+  const selectedDocumentsByTag = useMemo<Document[]>(
+    () => (tagId ? documentsByTag[tagId] ?? [] : documents),
+    [documents, documentsByTag, tagId],
+  );
   const filteredDocuments = useMemo(
     () =>
-      documents.filter((document) => {
-        const searchValueLowerCase = searchValue.toLowerCase();
-        if (
-          (searchValueLowerCase === '' || !searchValueLowerCase) &&
-          (tagId === '' || !tagId)
-        ) {
-          return true;
-        } else if (searchValueLowerCase === '' || !searchValueLowerCase) {
-          return document.tags.includes(tagId || '');
-        } else if (tagId === '' || !tagId) {
-          return document.title.toLowerCase().includes(searchValueLowerCase);
-        } else {
-          return (
-            document.tags.includes(tagId || '') &&
-            document.title.toLowerCase().includes(searchValueLowerCase)
-          );
-        }
-      }),
-    [documents, searchValue, tagId],
+      searchValue && searchValue !== ''
+        ? selectedDocumentsByTag.filter((document) =>
+            document.title.toLowerCase().includes(searchValue.toLowerCase()),
+          )
+        : selectedDocumentsByTag,
+    [searchValue, selectedDocumentsByTag],
   );
   return isLoading ? null : (
     <Stack direction={'row'} width={'100%'}>

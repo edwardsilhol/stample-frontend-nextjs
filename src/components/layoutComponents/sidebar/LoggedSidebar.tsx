@@ -13,7 +13,7 @@ import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import { useTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
-import { usePathname, useRouter } from 'next/navigation';
+import { useSelectedTagId } from 'stores/data/tags.data';
 
 const useStyles = () => ({
   navContainer: {
@@ -108,20 +108,18 @@ interface SidebarProps {
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
-  const router = useRouter();
   const {
     data: { rich: richTags },
   } = useTags();
   const logout = useLogout();
-  const path = usePathname()?.split('/');
-  const [showTags, setShowTags] = React.useState(path?.includes('tag'));
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSelectedTagId] = useSelectedTagId();
   const openAccountMenu = Boolean(anchorAccountMenu);
 
   const handleTagsClick = () => {
-    setShowTags(!showTags);
-    router.push('/my');
+    setSelectedTagId(null);
   };
 
   const handleAccountMenuClick = (
@@ -170,23 +168,15 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     return (
       <Button disableRipple sx={styles.tagsButton} onClick={handleTagsClick}>
         <Typography fontSize={12}>Tags</Typography>
-        {showTags ? (
-          <IconButton
-            sx={styles.tagAddButton}
-            onClick={(event) => {
-              event.stopPropagation();
-              console.log('add tag');
-            }}
-          >
-            <Add sx={{ height: '12px' }} />
-          </IconButton>
-        ) : (
-          <Button sx={styles.showButton}>
-            <Typography fontSize={10} lineHeight={1.4}>
-              Show
-            </Typography>
-          </Button>
-        )}
+        <IconButton
+          sx={styles.tagAddButton}
+          onClick={(event) => {
+            event.stopPropagation();
+            console.log('add tag');
+          }}
+        >
+          <Add sx={{ height: '12px' }} />
+        </IconButton>
       </Button>
     );
   };
@@ -195,7 +185,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     <Stack sx={styles.navContainer}>
       {getAccountMenu()}
       {getToggleTagsButton()}
-      {showTags && <TagsView tags={richTags} />}
+      <TagsView tags={richTags} />
     </Stack>
   );
 };

@@ -6,25 +6,13 @@ import Stack from '../../muiOverrides/Stack';
 import Typography from '../../muiOverrides/Typography';
 import { IconButton, InputBase, Popover } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
-import { useRouter } from 'next/navigation';
+import { useSelectedTagId } from 'stores/data/tags.data';
 
 const useStyles = () => ({
   treeView: {
     maxHeight: '80vh',
     flexGrow: 1,
     overflowY: 'auto',
-  },
-  tagsContainer: {
-    '&:hover $tagAddButton': {
-      display: 'inline-flex',
-    },
-  },
-  tagAddButton: {
-    display: 'none',
-    borderRadius: '4px',
-    width: '20px',
-    height: '18px',
-    padding: 0,
   },
   tagsLabel: {
     width: 'calc(100% - 20px)',
@@ -68,31 +56,48 @@ interface TagsViewProps {
 }
 export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const styles = useStyles();
-  const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = React.useState<string>('');
-  const [parentTagId, setParentTagId] = React.useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSelectedTagId] = useSelectedTagId();
+  const [tagParentId, setTagParentId] = React.useState<string | null>(null);
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
+  const [hoveredTagId, setHoveredTagId] = React.useState<string | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
+  const handleClickAddTag = (
+    event: React.MouseEvent<HTMLElement>,
+    id: string,
+  ) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget.parentElement);
-    setParentTagId(id);
+    setTagParentId(id);
+  };
+
+  const handleClickSelectTag = (
+    event: React.MouseEvent<HTMLElement>,
+    id: string,
+  ) => {
+    event.stopPropagation();
+    setSelectedTagId(id);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleCreateTag = () => {
     createTag.mutateAsync({ name: newTagName }).then((tag) => {
-      tag &&
+      if (tagParentId && tag?._id) {
         updateTag.mutate({
-          tagId: parentTagId,
+          tagId: tagParentId,
           payload: { add: { children: [tag._id] } },
         });
+      }
     });
+
     setNewTagName('');
+    setTagParentId(null);
     handleClose();
   };
   const handleKeyDown = (
@@ -111,21 +116,35 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
             direction={'row'}
             alignItems={'center'}
             justifyContent={'space-between'}
-            sx={styles.tagsContainer}
-            onClick={() => router.push(`/my/tag/${_id}`)}
+            onMouseEnter={() => setHoveredTagId(_id)}
+            onMouseLeave={() => setHoveredTagId(null)}
+            sx={{
+              '&:hover $tagAddButton': {
+                display: 'inline-flex',
+              },
+            }}
           >
             <Typography sx={styles.tagsLabel}>{name}</Typography>
             <IconButton
               aria-describedby={_id}
-              sx={styles.tagAddButton}
+              sx={{
+                display: hoveredTagId === _id ? 'inline-flex' : 'none',
+                borderRadius: '4px',
+                width: '20px',
+                height: '18px',
+                padding: 0,
+              }}
               onClick={(event) => {
-                handleClick(event, _id);
+                handleClickAddTag(event, _id);
               }}
             >
               <Add sx={{ height: '12px' }} />
             </IconButton>
           </Stack>
         }
+        onClick={(event) => {
+          handleClickSelectTag(event, _id);
+        }}
       >
         {children &&
           children.length > 0 &&
