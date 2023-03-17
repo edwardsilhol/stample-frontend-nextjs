@@ -43,17 +43,14 @@ const DocumentGridItem: React.FC<{
             height: '100%',
           }}
         >
-          <Typography fontSize={'13px'} fontWeight={500}>
+          <Typography variant="subtitle2" fontWeight={500}>
             {document.title}
           </Typography>
-          <Typography
-            fontSize={'11px'}
-            fontWeight={400}
-            color={'rgba(0, 0, 255, 0.8)'}
-          >
+          <Typography variant="caption" fontWeight={400} color="blue">
             {tagsString}
           </Typography>
-          <Typography fontSize={'11px'} fontWeight={400} sx={{ opacity: 0.8 }}>
+          <br />
+          <Typography variant="caption" fontWeight={400} sx={{ opacity: 0.8 }}>
             {document.summary}
           </Typography>
         </CardContent>

@@ -23,4 +23,10 @@ export interface User {
   email: string;
   locale: string;
   isAdmin: boolean;
+  profilePictureUrl?: string;
 }
+
+export type UserForOtherClient = Pick<
+  User,
+  '_id' | 'firstName' | 'lastName' | 'profilePictureUrl'
+>;
