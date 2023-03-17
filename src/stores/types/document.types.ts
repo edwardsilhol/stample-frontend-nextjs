@@ -1,3 +1,6 @@
+import { UserForOtherClient } from './user.types';
+import { Comment } from './comment.types';
+
 export type CreateDocumentDTO = {
   title: string;
   content: string;
@@ -20,6 +23,20 @@ export interface Document {
   likes: string[];
   comments: string[];
   tags: string[];
-  creator: string;
+  author?: string;
+  guests?: string[];
+  creator: UserForOtherClient;
   createdAt: Date;
+}
+
+export interface PopulatedDocument
+  extends Omit<
+    Document,
+    'creator' | 'readers' | 'likes' | 'comments' | 'guests'
+  > {
+  creator: UserForOtherClient;
+  readers: UserForOtherClient[];
+  likes: UserForOtherClient[];
+  guests: UserForOtherClient[];
+  comments: Comment[];
 }

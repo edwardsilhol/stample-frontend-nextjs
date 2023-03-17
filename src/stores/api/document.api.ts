@@ -1,11 +1,18 @@
-import { CreateDocumentDTO, Document } from '../types/document.types';
+import {
+  CreateDocumentDTO,
+  Document,
+  PopulatedDocument,
+} from '../types/document.types';
 import { apiRequest } from '../../utils/api';
 
 export const fetchDocument = async (
   documentId: string,
-): Promise<Document | null> => {
+): Promise<PopulatedDocument | null> => {
   try {
-    return await apiRequest<Document>('GET', '/document/' + documentId);
+    return await apiRequest<PopulatedDocument>(
+      'GET',
+      '/document/' + documentId,
+    );
   } catch (error) {
     return null;
   }
