@@ -4,58 +4,21 @@ import { Add, ArrowDropDown, ArrowRight, Check } from '@mui/icons-material';
 import { TagRich } from '../../../stores/types/tag.types';
 import Stack from '../../muiOverrides/Stack';
 import Typography from '../../muiOverrides/Typography';
-import { IconButton, InputBase, Popover } from '@mui/material';
+import { Button, IconButton, InputBase, Popover } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tags.data';
-
-const useStyles = () => ({
-  treeView: {
-    maxHeight: '80vh',
-    flexGrow: 1,
-    overflowY: 'auto',
-  },
-  tagsLabel: {
-    width: 'calc(100% - 20px)',
-    color: 'black',
-    opacity: 0.6,
-    fontSize: '13px',
-    fontWeight: 600,
-  },
-  popover: {
-    '& .MuiPopover-paper': {
-      boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
-      // boxShadow: 'none',
-      border: '1px solid rgba(0,0,0,0.13)',
-      borderRadius: '4px',
-      padding: '0px',
-      margin: '-20px 0 0 -20px',
-    },
-  },
-  popoverInput: {
-    backgroundColor: '#f6f5f4',
-    width: '100px',
-    height: '24px',
-    margin: '0',
-    padding: '0',
-    borderRadius: '4px',
-    border: '1px solid rgba(0,0,0,0)',
-    '& .MuiInputBase-input': {
-      padding: '0',
-      margin: '0 4px',
-      height: '24px',
-      fontSize: '13px',
-      fontWeight: 600,
-      color: 'black',
-      opacity: 0.6,
-    },
-  },
-});
+import { Document } from 'stores/types/document.types';
+import { Box } from '@mui/system';
 
 interface TagsViewProps {
   tags: TagRich[];
+  documentsByTags: Record<string, Document[]>;
 }
-export const TagsView: FC<TagsViewProps> = ({ tags }) => {
-  const styles = useStyles();
+export const TagsView: FC<TagsViewProps> = ({
+  tags,
+
+  documentsByTags,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = React.useState<string>('');
@@ -65,6 +28,8 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
   const [hoveredTagId, setHoveredTagId] = React.useState<string | null>(null);
+  const [hoveredTagsTitle, setHoveredTagsTitle] =
+    React.useState<boolean>(false);
 
   const handleClickAddTag = (
     event: React.MouseEvent<HTMLElement>,
@@ -72,7 +37,9 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   ) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget.parentElement);
-    setTagParentId(id);
+    if (id && id !== 'root') {
+      setTagParentId(id);
+    }
   };
 
   const handleClickSelectTag = (
@@ -100,6 +67,7 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
     setTagParentId(null);
     handleClose();
   };
+
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -123,8 +91,20 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
                 display: 'inline-flex',
               },
             }}
+            paddingY={0.4}
+            paddingX={0.4}
           >
-            <Typography sx={styles.tagsLabel}>{name}</Typography>
+            <Typography variant="caption">
+              <Box component="span" sx={{ opacity: 0.5 }}>
+                #{' '}
+              </Box>
+              <Box component="span">{name}</Box>
+            </Typography>
+            {hoveredTagId === _id ? null : (
+              <Typography variant="caption" sx={{ opacity: 0.5 }}>
+                {documentsByTags[_id]?.length}
+              </Typography>
+            )}
             <IconButton
               aria-describedby={_id}
               sx={{
@@ -156,7 +136,11 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
   return (
     <>
       <TreeView
-        sx={styles.treeView}
+        sx={{
+          maxHeight: '80vh',
+          flexGrow: 1,
+          overflowY: 'auto',
+        }}
         defaultCollapseIcon={
           <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
         }
@@ -164,10 +148,86 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
           <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
         }
       >
-        {tags && tags.map((tag) => renderTags(tag))}
+        {[
+          <TreeItem
+            key="root"
+            nodeId="root"
+            sx={{
+              '.MuiTreeItem-content .MuiTreeItem-iconContainer': {
+                width: '0px',
+                margin: 0,
+              },
+              '.MuiTreeItem-label': {
+                paddingLeft: '0px',
+              },
+            }}
+            label={
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                paddingY={0.4}
+                paddingRight={0.4}
+                onMouseEnter={() => setHoveredTagsTitle(true)}
+                onMouseLeave={() => setHoveredTagsTitle(false)}
+              >
+                <Typography variant="caption">All</Typography>
+              </Stack>
+            }
+            onClick={(event) => {
+              handleClickSelectTag(event, '');
+            }}
+          />,
+          <Button
+            key="tagsTitle"
+            disableRipple
+            sx={{
+              color: '#808080',
+              width: '100%',
+              height: '22px',
+              paddingX: 1,
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              textTransform: 'none',
+            }}
+            onMouseEnter={() => setHoveredTagsTitle(true)}
+            onMouseLeave={() => setHoveredTagsTitle(false)}
+          >
+            <Typography fontSize={12}>Tags</Typography>
+            <IconButton
+              sx={{
+                display: hoveredTagsTitle ? 'inline-flex' : 'none',
+                borderRadius: '4px',
+                width: '20px',
+                height: '18px',
+                padding: 0,
+              }}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleClickAddTag(event, 'root');
+              }}
+            >
+              <Add sx={{ height: '12px' }} />
+            </IconButton>
+          </Button>,
+          ...(tags ? tags.map((tag) => renderTags(tag)) : []),
+        ]}
       </TreeView>
       <Popover
-        sx={styles.popover}
+        sx={{
+          '& .MuiPopover-paper': {
+            boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
+            // boxShadow: 'none',
+            border: '1px solid rgba(0,0,0,0.13)',
+            borderRadius: '4px',
+            padding: '0px',
+            margin: '-20px 0 0 -20px',
+          },
+        }}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -188,7 +248,24 @@ export const TagsView: FC<TagsViewProps> = ({ tags }) => {
         >
           <InputBase
             size={'small'}
-            sx={styles.popoverInput}
+            sx={{
+              backgroundColor: 'additionalColors.sidebarBackground',
+              width: '100px',
+              height: '24px',
+              margin: '0',
+              padding: '0',
+              borderRadius: '4px',
+              border: '1px solid rgba(0,0,0,0)',
+              '& .MuiInputBase-input': {
+                padding: '0',
+                margin: '0 4px',
+                height: '24px',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: 'black',
+                opacity: 0.6,
+              },
+            }}
             placeholder={'Name'}
             value={newTagName}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
