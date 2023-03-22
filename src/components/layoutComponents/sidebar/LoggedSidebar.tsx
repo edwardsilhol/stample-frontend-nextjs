@@ -1,10 +1,9 @@
-import React from 'react';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import React, { useMemo } from 'react';
+import { Menu, MenuItem } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
-  Add,
   ArrowDropDown,
   LogoutOutlined,
 } from '@mui/icons-material';
@@ -14,6 +13,9 @@ import { User } from '../../../stores/types/user.types';
 import { useTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 import { useSelectedTagId } from 'stores/data/tags.data';
+import { getDocumentsByTags } from 'helpers/document.helpers';
+import { useAllDocuments } from 'stores/hooks/document.hooks';
+import { Document } from 'stores/types/document.types';
 
 const useStyles = () => ({
   navContainer: {
@@ -111,16 +113,18 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const {
     data: { rich: richTags },
   } = useTags();
+  const { data: documents } = useAllDocuments();
+  const documentsByTag = useMemo<Record<string, Document[]>>(
+    () => getDocumentsByTags(documents || []),
+    [documents],
+  );
   const logout = useLogout();
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSelectedTagId] = useSelectedTagId();
   const openAccountMenu = Boolean(anchorAccountMenu);
-
-  const handleTagsClick = () => {
-    setSelectedTagId(null);
-  };
 
   const handleAccountMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -164,28 +168,10 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     ) : null;
   };
 
-  const getToggleTagsButton = () => {
-    return (
-      <Button disableRipple sx={styles.tagsButton} onClick={handleTagsClick}>
-        <Typography fontSize={12}>Tags</Typography>
-        <IconButton
-          sx={styles.tagAddButton}
-          onClick={(event) => {
-            event.stopPropagation();
-            console.log('add tag');
-          }}
-        >
-          <Add sx={{ height: '12px' }} />
-        </IconButton>
-      </Button>
-    );
-  };
-
   return (
     <Stack sx={styles.navContainer}>
       {getAccountMenu()}
-      {getToggleTagsButton()}
-      <TagsView tags={richTags} />
+      <TagsView tags={richTags} documentsByTags={documentsByTag} />
     </Stack>
   );
 };

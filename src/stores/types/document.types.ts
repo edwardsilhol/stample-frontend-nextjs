@@ -1,15 +1,19 @@
 import { UserForOtherClient } from './user.types';
 import { Comment } from './comment.types';
+export const documentTypes = ['webpage', 'note', 'file'] as const;
+export type DocumentType = (typeof documentTypes)[number];
 
-export type CreateDocumentDTO = {
-  title: string;
-  content: string;
-  summary: string;
-  url: string;
-  type: 'webpage' | 'note' | 'file';
-  tags: string[];
-};
-
+export type CreateDocumentDTO = Pick<
+  Document,
+  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags'
+>;
+const documentMediaTypes = ['image', 'video'] as const;
+type DocumentMediaType = (typeof documentMediaTypes)[number];
+interface DocumentMedia {
+  html: string;
+  mediaType: DocumentMediaType;
+  src?: string;
+}
 export interface Document {
   _id: string;
   title: string;
@@ -18,7 +22,7 @@ export interface Document {
   keyInsight: string;
   url: string;
   team: string;
-  type: 'webpage' | 'note' | 'file';
+  type: DocumentType;
   readers: string[];
   likes: string[];
   comments: string[];
@@ -26,6 +30,8 @@ export interface Document {
   author?: string;
   guests?: string[];
   creator: UserForOtherClient;
+  urlWebsiteName?: string;
+  mainMedia?: DocumentMedia;
   createdAt: Date;
 }
 

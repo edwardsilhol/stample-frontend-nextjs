@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import { Tag } from '../../../stores/types/tag.types';
-import { Document } from '../../../stores/types/document.types';
+import { Tag } from '../../stores/types/tag.types';
+import { Document } from '../../stores/types/document.types';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 interface EditCaseProps {

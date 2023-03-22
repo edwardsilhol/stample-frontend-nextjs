@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAllDocuments } from '../../stores/hooks/document.hooks';
-import { DocumentsView } from '../layoutComponents/document/DocumentsView';
+import { DocumentsView } from '../document/DocumentsView';
 import Stack from '../muiOverrides/Stack';
 import { CircularProgress } from '@mui/material';
 import { useSelectedTagId } from 'stores/data/tags.data';
@@ -15,7 +15,7 @@ export const AllDocuments: React.FC<Props> = ({ searchValue }) => {
   const [selectedTagId] = useSelectedTagId();
 
   return isLoading ? (
-    <Stack justifyContent={'center'} alignItems={'center'} height={'100%'}>
+    <Stack justifyContent="center" alignItems="center" flexGrow={1}>
       <CircularProgress />
     </Stack>
   ) : (
