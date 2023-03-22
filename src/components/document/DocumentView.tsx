@@ -34,7 +34,7 @@ const DocumentCreator: React.FC<{
     <Avatar src={creator.profilePictureUrl}>
       {creator.profilePictureUrl
         ? null
-        : `${creator.firstName[0]} ${creator.lastName[0]}`}
+        : `${creator.firstName[0]}${creator.lastName[0]}`}
     </Avatar>
     <Typography
       variant="body2"
