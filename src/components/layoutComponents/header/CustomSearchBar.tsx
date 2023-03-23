@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Autocomplete, InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import Box from '../../muiOverrides/Box';
 import { Tag } from 'stores/types/tag.types';
+import { uniq } from 'lodash';
 
 interface CustomSearchBarProps {
   searchValue: string;
@@ -15,9 +16,10 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
   tags,
   setSearchValue,
 }) => {
-  console.log({
-    tagsDisplayed: tags.map((tag) => tag.name),
-  });
+  const uniqueTags = useMemo(
+    () => uniq(tags.map((tag) => `#${tag.name}`)),
+    [tags],
+  );
   return (
     <Box
       sx={{
@@ -32,15 +34,9 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
       }}
     >
       <Autocomplete
-        onChange={(_, value) => {
-          if (value) {
-            setSearchValue(value);
-          }
-        }}
         onInputChange={(_, value) => {
           setSearchValue(value);
         }}
-        value={searchValue}
         inputValue={searchValue}
         freeSolo
         renderInput={({ InputProps, ...rest }) => {
@@ -60,7 +56,7 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
             />
           );
         }}
-        options={[...tags.map((tag) => `#${tag.name}`)]}
+        options={uniqueTags}
       />
     </Box>
   );

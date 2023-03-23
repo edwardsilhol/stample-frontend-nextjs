@@ -71,11 +71,17 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       <Stack
         direction="row"
         alignItems="center"
+        justifyContent="space-between"
         paddingTop={2}
         paddingBottom={1}
       >
         <IconButton
-          onClick={() => setDocumentId('')}
+          onClick={() => {
+            setDocumentId('');
+            if (isFullScreen) {
+              onToggleFullScreen();
+            }
+          }}
           sx={{ padding: 0, borderRadius: '4px' }}
         >
           <Close />
@@ -101,17 +107,20 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           alignItems="center"
         >
           <Box maxWidth="md">
-            <Typography variant="h1" paddingBottom={2}>
-              {document.title}
-            </Typography>
-            <Box paddingBottom={1}>
-              <DocumentTags tags={tags} documentTagsIds={document.tags} />
-            </Box>
-            <DocumentHeader
-              {...document}
-              likesCount={document.likes?.length ?? 0}
-              readersCount={document.readers?.length ?? 0}
-            />
+            <Stack alignItems="center" width="100%">
+              <Typography variant="h1" paddingBottom={2}>
+                {document.title}
+              </Typography>
+              <Box paddingBottom={1}>
+                <DocumentTags tags={tags} documentTagsIds={document.tags} />
+              </Box>
+              <DocumentHeader
+                {...document}
+                likesCount={document.likes?.length ?? 0}
+                readersCount={document.readers?.length ?? 0}
+                typographyProps={{ variant: 'body2' }}
+              />
+            </Stack>
             {document.creator && (
               <>
                 <Divider sx={{ marginY: 2 }} />
@@ -150,6 +159,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
                     borderRight: 'none',
                     borderBottom: 'none',
                   }}
+                  variant="outlined"
                 >
                   <CardHeader
                     avatar={

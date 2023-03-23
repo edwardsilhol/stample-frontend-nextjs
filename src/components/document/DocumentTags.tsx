@@ -29,10 +29,18 @@ export const DocumentTags: React.FC<Props> = ({
       overflow="hidden"
       width="100%"
       flexWrap="wrap"
-      maxHeight={maxLines ? `${maxLines * 32}px` : undefined}
+      maxHeight={maxLines ? `${maxLines * 26}px` : undefined}
     >
       {displayedTags.map((tag) => (
-        <Chip key={tag._id} label={`#${tag.name}`} />
+        <Chip
+          key={tag._id}
+          label={`#${tag.name}`}
+          sx={{
+            height: '26px',
+            fontSize: '14px',
+            backgroundColor: 'additionalColors.chip',
+          }}
+        />
       ))}
     </Stack>
   );
