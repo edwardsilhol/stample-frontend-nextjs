@@ -145,10 +145,10 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           sx={styles.accountButton}
         >
           <AccountCircleOutlined
-            sx={{ width: '18px', height: '20px', paddingBottom: '2px' }}
+            sx={{ width: '20px', height: '22px', paddingBottom: '2px' }}
           />
           <Typography
-            fontSize={12}
+            variant="body2"
             fontWeight={600}
           >{`${user?.firstName} ${user?.lastName}`}</Typography>
           <ArrowDropDown sx={{ width: '12px', height: '12px' }} />

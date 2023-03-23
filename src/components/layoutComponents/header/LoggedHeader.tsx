@@ -31,7 +31,8 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
         <Stack
           direction={'row'}
           padding={'8px 16px'}
-          justifyContent={'space-between'}
+          justifyContent={addButtonToggled ? 'start' : 'end'}
+          spacing={2}
         >
           {addButtonToggled ? (
             <IconButton onClick={() => setToggledAddButton(false)}>

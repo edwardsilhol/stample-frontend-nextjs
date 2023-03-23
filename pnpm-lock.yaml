@@ -52,6 +52,7 @@ specifiers:
   i18next: ^22.4.10
   jotai: ^2.0.3
   lint-staged: ^13.1.2
+  lodash: ^4.17.21
   next: ^13.1.6
   prettier: ^2.8.4
   query-string: ^8.1.0
@@ -93,6 +94,7 @@ dependencies:
   eslint-plugin-react: 7.32.2_eslint@8.34.0
   i18next: 22.4.10
   jotai: 2.0.3_react@18.2.0
+  lodash: 4.17.21
   next: 13.1.6_pjwopsidmaokadturxaafygjp4
   prettier: 2.8.4
   query-string: 8.1.0

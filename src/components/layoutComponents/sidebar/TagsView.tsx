@@ -94,14 +94,14 @@ export const TagsView: FC<TagsViewProps> = ({
             paddingY={0.4}
             paddingX={0.4}
           >
-            <Typography variant="caption">
+            <Typography variant="body2">
               <Box component="span" sx={{ opacity: 0.5 }}>
                 #{' '}
               </Box>
               <Box component="span">{name}</Box>
             </Typography>
             {hoveredTagId === _id ? null : (
-              <Typography variant="caption" sx={{ opacity: 0.5 }}>
+              <Typography variant="body2" sx={{ opacity: 0.5 }}>
                 {documentsByTags[_id]?.length}
               </Typography>
             )}
@@ -118,7 +118,7 @@ export const TagsView: FC<TagsViewProps> = ({
                 handleClickAddTag(event, _id);
               }}
             >
-              <Add sx={{ height: '12px' }} />
+              <Add sx={{ height: '14px' }} />
             </IconButton>
           </Stack>
         }
@@ -171,7 +171,7 @@ export const TagsView: FC<TagsViewProps> = ({
                 onMouseEnter={() => setHoveredTagsTitle(true)}
                 onMouseLeave={() => setHoveredTagsTitle(false)}
               >
-                <Typography variant="caption">All</Typography>
+                <Typography variant="body2">All</Typography>
               </Stack>
             }
             onClick={(event) => {

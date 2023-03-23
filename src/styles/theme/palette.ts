@@ -1,3 +1,4 @@
+import { yellow } from '@mui/material/colors';
 import { PaletteOptions } from '@mui/material/styles/createPalette';
 import { TenantThemeConfig } from '../../stores/types/tenantConfig.types';
 
@@ -6,6 +7,7 @@ export interface ExtendedPalette {
     additionalMain: string;
     link: string;
     sidebarBackground: string;
+    chip: string;
   };
 }
 
@@ -14,6 +16,7 @@ const lightPaletteExtended: ExtendedPalette = {
     additionalMain: '#1976d2',
     link: '#1976d2',
     sidebarBackground: '#f6f5f4',
+    chip: '#fff59d',
   },
 };
 
@@ -22,6 +25,7 @@ const darkPaletteExtended: ExtendedPalette = {
     additionalMain: '#00070e',
     link: '#1976d2',
     sidebarBackground: '#f6f5f4',
+    chip: yellow[400],
   },
 };
 

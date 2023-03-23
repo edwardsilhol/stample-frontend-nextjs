@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { intersection } from 'lodash';
 import { Document } from 'stores/types/document.types';
 import { Tag } from 'stores/types/tag.types';
 export const getDocumentsByTags = (documents: Document[]) =>
@@ -73,16 +74,20 @@ export const searchDocuments = ({
     return selectedDocumentsByTags;
   } else {
     return selectedDocumentsByTags.filter((document) => {
-      if (searchQuery.startsWith('#')) {
-        const tag = allTags.find((tag) => tag.name === searchQuery.slice(1));
-        if (tag) {
-          return document.tags.includes(tag._id);
-        } else {
-          return false;
-        }
-      } else {
-        return document.title.toLowerCase().includes(searchQuery.toLowerCase());
-      }
+      const tags = allTags.filter((tag) =>
+        tag.name.toLowerCase().startsWith(searchQuery.toLowerCase().slice(1)),
+      );
+
+      return (
+        (searchQuery.startsWith('#') &&
+          intersection(
+            document.tags,
+            tags.map((tag) => tag._id),
+          ).length > 0) ||
+        document.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        document.summary?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        document.content?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     });
   }
 };

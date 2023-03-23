@@ -59,7 +59,6 @@ export const CreateDocumentForm: React.FC = () => {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
-    console.log('values', values);
     try {
       setError(undefined);
       const { title, summary, url, type } = values;

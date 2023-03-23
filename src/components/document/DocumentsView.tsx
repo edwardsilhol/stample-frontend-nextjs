@@ -28,10 +28,11 @@ const DocumentGridItem: React.FC<{
           display: 'flex',
           flexDirection: 'column',
         }}
+        variant="elevation"
         onClick={() => setDocumentId(document._id)}
       >
         {document.mainMedia?.src ? (
-          <CardMedia sx={{ height: 140 }} image={document.mainMedia?.src} />
+          <CardMedia sx={{ flex: 2 }} image={document.mainMedia?.src} />
         ) : null}
         <CardContent
           sx={{
@@ -40,6 +41,7 @@ const DocumentGridItem: React.FC<{
             '&:last-child': {
               paddingBottom: 2,
             },
+            flex: 3,
           }}
         >
           <Box
@@ -152,6 +154,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
             height: '100%',
             width: documentId ? '420px' : '100%',
             overflowY: 'auto',
+            backgroundColor: 'additionalColors.sidebarBackground',
           }}
         >
           <Grid container spacing={2} height="100%" sx={{ flex: 1 }}>
