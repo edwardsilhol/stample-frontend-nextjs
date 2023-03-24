@@ -15,16 +15,17 @@ export const getDocumentsByTags = (documents: Document[]) =>
   }, {});
 
 export const getDocumentHeaderStrings = ({
-  urlWebsiteName,
   createdAt,
-  author,
   likesCount,
   readersCount,
-}: Pick<Document, 'urlWebsiteName' | 'createdAt' | 'author'> & {
+}: Pick<Document, 'createdAt'> & {
   likesCount: number;
   readersCount: number;
-}): string[] => {
-  const websiteTitle = urlWebsiteName;
+}): {
+  documentDate: string | null;
+  likeString: string;
+  openCountString: string | null;
+} => {
   const documentDate = createdAt
     ? formatDistanceToNow(new Date(createdAt), {
         addSuffix: true,
@@ -45,13 +46,11 @@ export const getDocumentHeaderStrings = ({
         : `${readersCount} opens`
       : null;
 
-  return [
-    websiteTitle,
-    author,
+  return {
     documentDate,
     likeString,
     openCountString,
-  ].filter((header): header is string => !!header);
+  };
 };
 
 export const searchDocuments = ({

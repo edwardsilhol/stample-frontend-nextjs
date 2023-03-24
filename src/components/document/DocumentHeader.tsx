@@ -4,13 +4,18 @@ import React from 'react';
 import { Document } from 'stores/types/document.types';
 
 export const DocumentHeader: React.FC<
-  Pick<Document, 'urlWebsiteName' | 'createdAt' | 'author'> & {
+  Pick<
+    Document,
+    'urlWebsiteName' | 'createdAt' | 'author' | 'url' | 'authorUrl'
+  > & {
     likesCount: number;
     readersCount: number;
     typographyProps?: TypographyProps;
   }
 > = ({
   urlWebsiteName,
+  url,
+  authorUrl,
   createdAt,
   author,
   likesCount,
@@ -20,13 +25,11 @@ export const DocumentHeader: React.FC<
   const documentHeaderStrings = React.useMemo(
     () =>
       getDocumentHeaderStrings({
-        urlWebsiteName,
         createdAt,
-        author,
         likesCount,
         readersCount,
       }),
-    [urlWebsiteName, createdAt, author, likesCount, readersCount],
+    [createdAt, likesCount, readersCount],
   );
 
   return (
@@ -37,7 +40,43 @@ export const DocumentHeader: React.FC<
       }}
       {...typographyProps}
     >
-      {documentHeaderStrings.reduce(
+      {[
+        ...(urlWebsiteName
+          ? [
+              <Box
+                component="a"
+                color="primary.light"
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                key={0}
+              >
+                {urlWebsiteName}
+              </Box>,
+            ]
+          : []),
+        ...(author
+          ? [
+              <Box
+                component="a"
+                color="primary.light"
+                href={authorUrl}
+                target="_blank"
+                rel="noreferrer"
+                key={1}
+              >
+                {author}
+              </Box>,
+            ]
+          : []),
+        ...Object.values(documentHeaderStrings)
+          .filter((headerString): headerString is string => !!headerString)
+          .map((headerString, index) => (
+            <Box component="span" color="primary.light" key={index + 2}>
+              {headerString}
+            </Box>
+          )),
+      ].reduce(
         (accumulator, component, index) => [
           ...accumulator,
           ...(index !== 0
@@ -47,9 +86,7 @@ export const DocumentHeader: React.FC<
                 </Box>,
               ]
             : []),
-          <Box component="span" color="primary.light" key={index}>
-            {component}
-          </Box>,
+          <React.Fragment key={index}>{component}</React.Fragment>,
         ],
         [] as React.ReactNode[],
       )}
