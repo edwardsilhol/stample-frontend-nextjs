@@ -1,7 +1,7 @@
 'use-client';
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardMedia, Grid } from '@mui/material';
+import { Card, CardContent, CardMedia } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
