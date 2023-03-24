@@ -12,6 +12,7 @@ import { Tag } from 'stores/types/tag.types';
 import { getDocumentsByTags, searchDocuments } from 'helpers/document.helpers';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
+import { Masonry } from '@mui/lab';
 
 const DocumentGridItem: React.FC<{
   document: Document;
@@ -20,86 +21,102 @@ const DocumentGridItem: React.FC<{
   flatTags?: Tag[];
 }> = ({ document, selectedDocumentId, setDocumentId, flatTags }) => {
   return (
-    <Grid item xs={12} {...(selectedDocumentId ? {} : { md: 6, lg: 4, xl: 3 })}>
-      <Card
-        sx={{
-          height: '300px',
-          cursor: 'pointer',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-        variant="elevation"
-        onClick={() => setDocumentId(document._id)}
-      >
-        {document.mainMedia?.src ? (
-          <CardMedia sx={{ flex: 2 }} image={document.mainMedia?.src} />
-        ) : null}
-        <CardContent
+    <Card
+      sx={{
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: selectedDocumentId ? 'row' : 'column',
+        ...(selectedDocumentId
+          ? {
+              borderLeft: 'none',
+              borderRight: 'none',
+              borderTop: 'none',
+            }
+          : {}),
+      }}
+      variant={selectedDocumentId ? 'outlined' : 'elevation'}
+      onClick={() => setDocumentId(document._id)}
+    >
+      {document.mainMedia?.src ? (
+        <CardMedia
           sx={{
-            overflow: 'hidden',
+            flex: selectedDocumentId ? 1 : undefined,
+            ...(selectedDocumentId
+              ? {
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'unset',
+                }
+              : {}),
+            height: '100px',
+          }}
+          image={document.mainMedia?.src}
+        />
+      ) : null}
+      <CardContent
+        sx={{
+          overflow: 'hidden',
+          height: '100%',
+          '&:last-child': {
+            paddingBottom: 2,
+          },
+          flex: 3,
+        }}
+      >
+        <Box
+          sx={{
             height: '100%',
-            '&:last-child': {
-              paddingBottom: 2,
-            },
-            flex: 3,
+            overflow: 'hidden',
           }}
         >
-          <Box
+          <Typography
+            variant="body2"
+            fontWeight={550}
             sx={{
-              height: '100%',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              textOverflow: 'ellipsis',
               overflow: 'hidden',
             }}
           >
-            <Typography
-              variant="body2"
-              fontWeight={550}
-              sx={{
+            {document.title}
+          </Typography>
+          <Box paddingY={1}>
+            <DocumentTags
+              tags={flatTags}
+              documentTagsIds={document.tags}
+              maxLines={1}
+            />
+          </Box>
+          <DocumentHeader
+            {...document}
+            likesCount={document.likes?.length ?? 0}
+            readersCount={document.readers?.length ?? 0}
+            typographyProps={{
+              sx: {
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
-              }}
-            >
-              {document.title}
-            </Typography>
-            <Box paddingY={1}>
-              <DocumentTags
-                tags={flatTags}
-                documentTagsIds={document.tags}
-                maxLines={1}
-              />
-            </Box>
-            <DocumentHeader
-              {...document}
-              likesCount={document.likes?.length ?? 0}
-              readersCount={document.readers?.length ?? 0}
-              typographyProps={{
-                sx: {
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden',
-                },
-              }}
-            />
-            <Typography
-              variant="caption"
-              sx={{
-                overflow: 'hidden',
-                display: '-webkit-box',
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {document.summary}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-    </Grid>
+              },
+            }}
+          />
+          <Typography
+            variant="caption"
+            sx={{
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {document.summary}
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -149,7 +166,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     >
       {!isFullScreen && (
         <Box
-          padding={2}
+          padding={documentId ? 0 : 2}
           sx={{
             height: '100%',
             width: documentId ? '420px' : '100%',
@@ -157,7 +174,20 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
             backgroundColor: 'additionalColors.sidebarBackground',
           }}
         >
-          <Grid container spacing={2} height="100%" sx={{ flex: 1 }}>
+          <Masonry
+            columns={
+              documentId
+                ? 1
+                : {
+                    xs: 1,
+                    sm: 2,
+                    md: 3,
+                    lg: 4,
+                  }
+            }
+            spacing={documentId ? 0 : 2}
+            sx={{ flex: 1 }}
+          >
             {filteredDocuments.map((document, index) => (
               <DocumentGridItem
                 key={index}
@@ -167,7 +197,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
                 flatTags={flatTags}
               />
             ))}
-          </Grid>
+          </Masonry>
         </Box>
       )}
       {documentId && (

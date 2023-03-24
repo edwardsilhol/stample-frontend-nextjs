@@ -21,6 +21,7 @@ export interface Document {
   summary: string;
   keyInsight: string;
   url: string;
+  authorUrl?: string;
   team: string;
   type: DocumentType;
   readers: string[];
