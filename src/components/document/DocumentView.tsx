@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Stack from '../muiOverrides/Stack';
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
   Divider,
   IconButton,
+  InputBase,
 } from '@mui/material';
 import { Close, Fullscreen, FullscreenExit } from '@mui/icons-material';
 import Typography from '../muiOverrides/Typography';
 import { Tag } from '../../stores/types/tag.types';
 import { useDocument } from '../../stores/hooks/document.hooks';
 import { format } from 'date-fns';
-import { Comment } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
+import { useCreateComment } from 'stores/hooks/comment.hooks';
 
 interface DocumentViewProps {
   documentId: string;
@@ -55,13 +57,35 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   onToggleFullScreen,
 }) => {
   const { data: document, isLoading } = useDocument(documentId);
-
-  const getCommentAuthor = (comment: Comment): UserForOtherClient | null =>
-    document?.guests?.find((guest) => guest._id === comment.creatorId) || null;
+  const { mutate: createComment } = useCreateComment(documentId);
+  const [editedCommentText, setEditedCommentText] = useState('');
+  const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
+    () =>
+      [...(document?.guests || []), ...([document?.creator] || [])].reduce(
+        (accumulator, user) => ({
+          ...accumulator,
+          ...(user
+            ? {
+                [user._id]: user,
+              }
+            : {}),
+        }),
+        {} as Record<string, UserForOtherClient>,
+      ),
+    [document?.guests, document?.creator],
+  );
+  const onSubmitAddComment = () => {
+    if (editedCommentText) {
+      createComment({
+        content: editedCommentText,
+      });
+      setEditedCommentText('');
+    }
+  };
   return (
     <Stack
       direction={'column'}
-      width={'100%'}
+      width="100%"
       sx={{
         borderLeft: '1px solid #d3d4d5',
       }}
@@ -106,7 +130,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           paddingX={{ xs: 1, md: 3, lg: 5 }}
           alignItems="center"
         >
-          <Box maxWidth="md">
+          <Box maxWidth="md" width="100%">
             <Stack alignItems="center" width="100%">
               <Typography variant="h1" paddingBottom={2}>
                 {document.title}
@@ -149,7 +173,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
               Comments
             </Typography>
             {document.comments?.map((comment, index) => {
-              const author = getCommentAuthor(comment);
+              const author = commentAuthorsById[comment.creatorId];
               return (
                 <Card
                   key={comment._id}
@@ -182,6 +206,20 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
                 </Card>
               );
             })}
+            <Divider sx={{ marginBottom: 2 }} />
+            <InputBase
+              value={editedCommentText}
+              onChange={(e) => setEditedCommentText(e.target.value)}
+              placeholder="Add a comment"
+            />
+            {editedCommentText && (
+              <Stack direction="row">
+                <Button onClick={() => setEditedCommentText('')}>Cancel</Button>
+                <Button onClick={onSubmitAddComment} variant="contained">
+                  Send
+                </Button>
+              </Stack>
+            )}
           </Box>
         </Stack>
       )}
