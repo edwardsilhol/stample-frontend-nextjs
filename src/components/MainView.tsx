@@ -23,7 +23,7 @@ export const MainView: React.FC<MainViewProps> = () => {
       {!toggledAddButton ? (
         <AllDocuments searchValue={searchValue} />
       ) : (
-        <CreateDocumentForm />
+        <CreateDocumentForm onClose={() => setToggledAddButton(false)} />
       )}
     </Stack>
   );

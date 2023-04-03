@@ -149,7 +149,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
         searchQuery: searchValue,
         selectedTagId: tagId,
         allTags: flatTags,
-      }),
+      }) || [],
     [searchValue, documents, documentsByTags, tagId, flatTags],
   );
   const onToggleFullScreen = () => {

@@ -23,8 +23,11 @@ const useStyles = () => ({
     height: '300px',
   },
 });
+interface Props {
+  onClose: () => void;
+}
 
-export const CreateDocumentForm: React.FC = () => {
+export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
   const styles = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState(undefined);
@@ -40,7 +43,7 @@ export const CreateDocumentForm: React.FC = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
-    content: Yup.string().required(),
+    content: Yup.string().optional(),
     summary: Yup.string().required(),
     url: Yup.string().required(),
     tags: Yup.array().of(Yup.string()),
@@ -63,14 +66,18 @@ export const CreateDocumentForm: React.FC = () => {
       setError(undefined);
       const { title, summary, url, type } = values;
 
-      await createDocument.mutateAsync({
-        title,
-        content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-        summary,
-        url,
-        tags: selectedTags.map((tag) => tag._id),
-        type,
-      });
+      await createDocument
+        .mutateAsync({
+          title,
+          content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+          summary,
+          url,
+          tags: selectedTags.map((tag) => tag._id),
+          type,
+        })
+        .then(() => {
+          onClose();
+        });
     } catch (e: any) {
       setError(e.message);
       console.error(e);

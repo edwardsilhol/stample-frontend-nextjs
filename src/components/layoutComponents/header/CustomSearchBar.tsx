@@ -39,7 +39,7 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
         }}
         inputValue={searchValue}
         freeSolo
-        renderInput={({ InputProps, ...rest }) => {
+        renderInput={({ InputProps, InputLabelProps: _, ...rest }) => {
           return (
             <InputBase
               {...InputProps}

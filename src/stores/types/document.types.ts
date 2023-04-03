@@ -47,3 +47,8 @@ export interface PopulatedDocument
   guests: UserForOtherClient[];
   comments: Comment[];
 }
+
+export type UpdateDocumentAsGuestDTO = {
+  isLiked?: boolean;
+  isReader?: boolean;
+};

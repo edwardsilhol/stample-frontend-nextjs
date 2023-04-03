@@ -1,15 +1,11 @@
 import {
-  createDocument,
   fetchDocument,
   fetchDocumentsByTag,
   fetchDocuments,
-  updateDocumentAsGuest,
 } from '../api/document.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  CreateDocumentDTO,
-  UpdateDocumentAsGuestDTO,
-} from '../types/document.types';
+import { CreateCommentDTO } from 'stores/types/comment.types';
+import { createComment } from 'stores/api/comment.api';
 
 export const useDocument = (documentId: string) => {
   return useQuery(['document', { documentId }], () =>
@@ -29,24 +25,11 @@ export const useAllDocuments = () => {
   });
 };
 
-export const useCreateDocument = () => {
+export const useCreateComment = (documentId: string) => {
   const queryClient = useQueryClient();
   return useMutation(
-    (createDocumentDto: CreateDocumentDTO) => createDocument(createDocumentDto),
-    {
-      onSuccess: (document) => {
-        console.log('successfully created document:', document);
-        queryClient.invalidateQueries(['rawDocuments']);
-      },
-    },
-  );
-};
-
-export const useUpdateDocumentAsGuest = (documentId: string) => {
-  const queryClient = useQueryClient();
-  return useMutation(
-    (updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO) =>
-      updateDocumentAsGuest(documentId, updateDocumentAsGuestDTO),
+    (createCommentDTO: CreateCommentDTO) =>
+      createComment(documentId, createCommentDTO),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['document', { documentId }]);
