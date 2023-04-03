@@ -5,3 +5,8 @@ export interface Comment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type CreateCommentDTO = Omit<
+  Comment,
+  '_id' | 'createdAt' | 'updatedAt' | 'creatorId'
+>;
