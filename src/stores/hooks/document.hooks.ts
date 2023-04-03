@@ -3,9 +3,13 @@ import {
   fetchDocument,
   fetchDocumentsByTag,
   fetchDocuments,
+  updateDocumentAsGuest,
 } from '../api/document.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CreateDocumentDTO } from '../types/document.types';
+import {
+  CreateDocumentDTO,
+  UpdateDocumentAsGuestDTO,
+} from '../types/document.types';
 
 export const useDocument = (documentId: string) => {
   return useQuery(['document', { documentId }], () =>
@@ -33,6 +37,19 @@ export const useCreateDocument = () => {
       onSuccess: (document) => {
         console.log('successfully created document:', document);
         queryClient.invalidateQueries(['rawDocuments']);
+      },
+    },
+  );
+};
+
+export const useUpdateDocumentAsGuest = (documentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO) =>
+      updateDocumentAsGuest(documentId, updateDocumentAsGuestDTO),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['document', { documentId }]);
       },
     },
   );

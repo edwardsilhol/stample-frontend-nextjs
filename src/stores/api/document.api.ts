@@ -2,6 +2,7 @@ import {
   CreateDocumentDTO,
   Document,
   PopulatedDocument,
+  UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
 
@@ -43,4 +44,16 @@ export const fetchDocumentsByTag = async (tag: string): Promise<Document[]> => {
   } catch (error) {
     return [];
   }
+};
+
+export const updateDocumentAsGuest = async (
+  documentId: string,
+  updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO,
+): Promise<Document> => {
+  return await apiRequest<Document>(
+    'PATCH',
+    `/document/${documentId}/guest`,
+    undefined,
+    updateDocumentAsGuestDTO,
+  );
 };

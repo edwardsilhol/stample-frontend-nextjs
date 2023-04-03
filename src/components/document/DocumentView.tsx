@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Stack from '../muiOverrides/Stack';
 import {
   Avatar,
@@ -12,15 +12,25 @@ import {
   IconButton,
   InputBase,
 } from '@mui/material';
-import { Close, Fullscreen, FullscreenExit } from '@mui/icons-material';
+import {
+  Close,
+  Fullscreen,
+  FullscreenExit,
+  ThumbUp,
+  ThumbUpOffAlt,
+} from '@mui/icons-material';
 import Typography from '../muiOverrides/Typography';
 import { Tag } from '../../stores/types/tag.types';
-import { useDocument } from '../../stores/hooks/document.hooks';
+import {
+  useDocument,
+  useUpdateDocumentAsGuest,
+} from '../../stores/hooks/document.hooks';
 import { format } from 'date-fns';
 import { UserForOtherClient } from 'stores/types/user.types';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { useCreateComment } from 'stores/hooks/comment.hooks';
+import { useLoggedInUser } from 'stores/data/user.data';
 
 interface DocumentViewProps {
   documentId: string;
@@ -56,8 +66,22 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   setDocumentId,
   onToggleFullScreen,
 }) => {
+  const [loggedInUser] = useLoggedInUser();
   const { data: document, isLoading } = useDocument(documentId);
   const { mutate: createComment } = useCreateComment(documentId);
+  const { mutate: updateDocumentAsGuest } =
+    useUpdateDocumentAsGuest(documentId);
+  useEffect(() => {
+    if (
+      !document?.readers.some(
+        (user) => loggedInUser?._id.toString() === user._id.toString(),
+      )
+    ) {
+      updateDocumentAsGuest({
+        isReader: true,
+      });
+    }
+  }, [document?.readers, loggedInUser?._id, updateDocumentAsGuest]);
   const [editedCommentText, setEditedCommentText] = useState('');
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -74,6 +98,13 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       ),
     [document?.guests, document?.creator],
   );
+  const isDocumentLiked = useMemo(
+    () =>
+      document?.likes.some(
+        (user) => user._id.toString() === loggedInUser?._id.toString(),
+      ),
+    [document?.likes, loggedInUser],
+  );
   const onSubmitAddComment = () => {
     if (editedCommentText) {
       createComment({
@@ -81,6 +112,12 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       });
       setEditedCommentText('');
     }
+  };
+
+  const onClickLike = (like: boolean) => {
+    updateDocumentAsGuest({
+      isLiked: like,
+    });
   };
   return (
     <Stack
@@ -144,6 +181,13 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
                 readersCount={document.readers?.length ?? 0}
                 typographyProps={{ variant: 'body2' }}
               />
+            </Stack>
+            <Stack alignItems="end">
+              <IconButton
+                onClick={() => onClickLike(isDocumentLiked ? false : true)}
+              >
+                {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
+              </IconButton>
             </Stack>
             {document.creator && (
               <>

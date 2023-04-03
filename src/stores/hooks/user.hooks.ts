@@ -6,14 +6,22 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '../../constants/tokenConfig';
+import { useLoggedInUser } from 'stores/data/user.data';
 
 // Queries
 
 export const useSession = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setUser] = useLoggedInUser();
   return useQuery(['session'], fetchSession, {
     cacheTime: Infinity,
     staleTime: Infinity,
     refetchInterval: 1000 * 60 * 2,
+    onSuccess: (user) => {
+      if (user) {
+        setUser(user);
+      }
+    },
   });
 };
 
