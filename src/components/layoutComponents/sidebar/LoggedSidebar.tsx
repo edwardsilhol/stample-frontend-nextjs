@@ -1,21 +1,23 @@
 import React, { useMemo } from 'react';
-import { Menu, MenuItem } from '@mui/material';
+import { Drawer, IconButton, Menu, MenuItem } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
   ArrowDropDown,
   LogoutOutlined,
+  MenuOpen,
 } from '@mui/icons-material';
 import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import { useTags } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
-import { useSelectedTagId } from 'stores/data/tags.data';
 import { getDocumentsByTags } from 'helpers/document.helpers';
 import { useAllDocuments } from 'stores/hooks/document.hooks';
 import { Document } from 'stores/types/document.types';
+import { useIsSidebarOpen } from 'stores/data/layout.data';
+import { useIsMobile } from 'utils/hooks/useIsMobile';
 
 const useStyles = () => ({
   navContainer: {
@@ -110,6 +112,7 @@ interface SidebarProps {
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
+  const isMobile = useIsMobile();
   const {
     data: { rich: richTags },
   } = useTags();
@@ -121,9 +124,11 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const logout = useLogout();
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
+  const handleSidebarToggle = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setSelectedTagId] = useSelectedTagId();
   const openAccountMenu = Boolean(anchorAccountMenu);
 
   const handleAccountMenuClick = (
@@ -168,10 +173,41 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     ) : null;
   };
 
-  return (
+  const displayDrawerContent = () => (
     <Stack sx={styles.navContainer}>
+      {isMobile ? (
+        <IconButton
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          sx={{ alignSelf: 'end' }}
+        >
+          <MenuOpen />
+        </IconButton>
+      ) : null}
       {getAccountMenu()}
       <TagsView tags={richTags} documentsByTags={documentsByTag} />
     </Stack>
+  );
+  return !isMobile ? (
+    displayDrawerContent()
+  ) : (
+    <Drawer
+      variant={'temporary'}
+      open={isSidebarOpen}
+      onClose={handleSidebarToggle}
+      ModalProps={{
+        keepMounted: true,
+      }}
+      sx={{
+        '& .MuiDrawer-paper': {
+          background: 'none',
+          border: 'none',
+          minWidth: '200px',
+          width: '300px',
+          maxWidth: '25%',
+        },
+      }}
+    >
+      {displayDrawerContent()}
+    </Drawer>
   );
 };

@@ -31,6 +31,7 @@ import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useLoggedInUser } from 'stores/data/user.data';
+import { useIsMobile } from 'utils/hooks/useIsMobile';
 
 interface DocumentViewProps {
   documentId: string;
@@ -67,6 +68,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   onToggleFullScreen,
 }) => {
   const [loggedInUser] = useLoggedInUser();
+  const isMobile = useIsMobile();
   const { data: document, isLoading } = useDocument(documentId);
   const { mutate: createComment } = useCreateComment(documentId);
   const { mutate: updateDocumentAsGuest } =
@@ -147,9 +149,11 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
         >
           <Close />
         </IconButton>
-        <IconButton onClick={onToggleFullScreen}>
-          {isFullScreen ? <FullscreenExit /> : <Fullscreen />}
-        </IconButton>
+        {!isMobile && (
+          <IconButton onClick={onToggleFullScreen}>
+            {isFullScreen ? <FullscreenExit /> : <Fullscreen />}
+          </IconButton>
+        )}
       </Stack>
       {isLoading ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
