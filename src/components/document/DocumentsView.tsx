@@ -13,6 +13,7 @@ import { getDocumentsByTags, searchDocuments } from 'helpers/document.helpers';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { Masonry } from '@mui/lab';
+import { useIsMobile } from 'utils/hooks/useIsMobile';
 
 const DocumentGridItem: React.FC<{
   document: Document;
@@ -134,6 +135,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     data: { raw: flatTags },
     isLoading,
   } = useTags();
+  const isMobile = useIsMobile();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
   const documentsByTags = useMemo<Record<string, Document[]>>(
@@ -164,9 +166,9 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
         overflowY: 'hidden',
       }}
     >
-      {!isFullScreen && (
+      {!isFullScreen && !(isMobile && documentId) && (
         <Box
-          padding={documentId ? 0 : 2}
+          padding={documentId ? 0 : { xs: 1, sm: 2 }}
           sx={{
             height: '100%',
             width: documentId ? '420px' : '100%',
@@ -186,7 +188,13 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
                   }
             }
             spacing={documentId ? 0 : 2}
-            sx={{ flex: 1 }}
+            sx={{
+              flex: 1,
+              marginRight: 0,
+              '&.MuiMasonry-root': {
+                margin: 0,
+              },
+            }}
           >
             {filteredDocuments.map((document, index) => (
               <DocumentGridItem

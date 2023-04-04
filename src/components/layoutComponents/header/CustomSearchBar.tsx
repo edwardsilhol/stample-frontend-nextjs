@@ -49,9 +49,10 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
               sx={{
                 backgroundColor: 'additionalColors.sidebarBackground',
                 height: '34px',
-                width: '300px',
                 borderRadius: 0.5,
                 paddingLeft: '4px',
+                width: '300px',
+                maxWidth: '100%',
               }}
             />
           );
