@@ -1,9 +1,17 @@
-import React, { useMemo } from 'react';
-import { Drawer, IconButton, Menu, MenuItem } from '@mui/material';
+import React, { useEffect, useMemo } from 'react';
+import {
+  Box,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  TextField,
+} from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
   AccountCircleOutlined,
+  AddCircleOutlineOutlined,
   ArrowDropDown,
   LogoutOutlined,
   MenuOpen,
@@ -11,13 +19,20 @@ import {
 import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
-import { useTags } from '../../../stores/hooks/tag.hooks';
+import { useTagsByTeam } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 import { getDocumentsByTags } from 'helpers/document.helpers';
-import { useAllDocuments } from 'stores/hooks/document.hooks';
+import { useDocumentsBySelectedTeam } from 'stores/hooks/document.hooks';
 import { Document } from 'stores/types/document.types';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
+import { useAllTeams } from 'stores/hooks/team.hooks';
+import { useSelectedTeamId } from 'stores/data/teams.data';
+import { CreateTeamDialog } from 'components/tag/CreateTeamDialog';
+import {
+  getDefaultSelectedTeamId,
+  getTeamDisplayedName,
+} from 'helpers/team.helper';
 
 const useStyles = () => ({
   navContainer: {
@@ -113,10 +128,12 @@ interface SidebarProps {
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
   const isMobile = useIsMobile();
+  const { data: documents } = useDocumentsBySelectedTeam();
+  const { data: teams } = useAllTeams();
+  const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
   const {
     data: { rich: richTags },
-  } = useTags();
-  const { data: documents } = useAllDocuments();
+  } = useTagsByTeam(selectedTeamId);
   const documentsByTag = useMemo<Record<string, Document[]>>(
     () => getDocumentsByTags(documents || []),
     [documents],
@@ -125,6 +142,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
+  const [isCreateTeamOpen, setIsCreateTeamOpen] = React.useState(false);
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -140,6 +158,47 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const handleAccountMenuClose = () => {
     setAnchorAccountMenu(null);
   };
+  const handleClickCreateTeam = () => {
+    setIsCreateTeamOpen(true);
+  };
+  useEffect(() => {
+    const defaultSelectedTeamId = getDefaultSelectedTeamId(teams);
+    if (defaultSelectedTeamId && !selectedTeamId) {
+      setSelectedTeamId(defaultSelectedTeamId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teams]);
+  const displaySelectTeams = () => (
+    <Box paddingX={1} paddingY={2}>
+      <TextField
+        value={selectedTeamId !== null ? selectedTeamId : ''}
+        onChange={(e) => setSelectedTeamId(e.target.value)}
+        label="Selected team"
+        fullWidth
+        InputLabelProps={{
+          shrink: true,
+        }}
+        select
+        InputProps={{
+          sx: { height: '30px' },
+        }}
+      >
+        {teams?.map((team) => (
+          <MenuItem key={team._id} value={team._id}>
+            {getTeamDisplayedName(team)}
+          </MenuItem>
+        ))}
+        <Button
+          onClick={handleClickCreateTeam}
+          key="add-team"
+          endIcon={<AddCircleOutlineOutlined />}
+          fullWidth
+        >
+          Create team
+        </Button>
+      </TextField>
+    </Box>
+  );
 
   const getAccountMenu = () => {
     return !isLoading && user ? (
@@ -184,30 +243,39 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         </IconButton>
       ) : null}
       {getAccountMenu()}
+      {displaySelectTeams()}
       <TagsView tags={richTags} documentsByTags={documentsByTag} />
     </Stack>
   );
-  return !isMobile ? (
-    displayDrawerContent()
-  ) : (
-    <Drawer
-      variant={'temporary'}
-      open={isSidebarOpen}
-      onClose={handleSidebarToggle}
-      ModalProps={{
-        keepMounted: true,
-      }}
-      sx={{
-        '& .MuiDrawer-paper': {
-          background: 'none',
-          border: 'none',
-          minWidth: '200px',
-          width: '300px',
-          maxWidth: '25%',
-        },
-      }}
-    >
-      {displayDrawerContent()}
-    </Drawer>
+  return (
+    <>
+      {!isMobile ? (
+        displayDrawerContent()
+      ) : (
+        <Drawer
+          variant={'temporary'}
+          open={isSidebarOpen}
+          onClose={handleSidebarToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              background: 'none',
+              border: 'none',
+              minWidth: '200px',
+              width: '300px',
+              maxWidth: '25%',
+            },
+          }}
+        >
+          {displayDrawerContent()}
+        </Drawer>
+      )}
+      <CreateTeamDialog
+        open={isCreateTeamOpen}
+        onClose={() => setIsCreateTeamOpen(false)}
+      />
+    </>
   );
 };

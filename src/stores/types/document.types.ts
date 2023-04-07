@@ -5,7 +5,7 @@ export type DocumentType = (typeof documentTypes)[number];
 
 export type CreateDocumentDTO = Pick<
   Document,
-  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags'
+  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags' | 'team'
 >;
 const documentMediaTypes = ['image', 'video'] as const;
 type DocumentMediaType = (typeof documentMediaTypes)[number];
