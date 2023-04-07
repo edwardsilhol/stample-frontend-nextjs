@@ -9,6 +9,7 @@ import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tags.data';
 import { Document } from 'stores/types/document.types';
 import { Box } from '@mui/system';
+import { useSelectedTeamId } from 'stores/data/teams.data';
 
 interface TagsViewProps {
   tags: TagRich[];
@@ -19,6 +20,7 @@ export const TagsView: FC<TagsViewProps> = ({
 
   documentsByTags,
 }) => {
+  const [selectedTeamId] = useSelectedTeamId();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = React.useState<string>('');
@@ -54,14 +56,22 @@ export const TagsView: FC<TagsViewProps> = ({
   };
 
   const handleCreateTag = () => {
-    createTag.mutateAsync({ name: newTagName }).then((tag) => {
-      if (tagParentId && tag?._id) {
-        updateTag.mutate({
-          tagId: tagParentId,
-          payload: { add: { children: [tag._id] } },
-        });
-      }
-    });
+    if (selectedTeamId === null) {
+      return;
+    }
+    createTag
+      .mutateAsync({
+        tagCreationDTO: { name: newTagName },
+        teamId: selectedTeamId,
+      })
+      .then((tag) => {
+        if (tagParentId && tag?._id) {
+          updateTag.mutate({
+            tagId: tagParentId,
+            payload: { add: { children: [tag._id] } },
+          });
+        }
+      });
 
     setNewTagName('');
     setTagParentId(null);

@@ -57,3 +57,13 @@ export const updateDocumentAsGuest = async (
     updateDocumentAsGuestDTO,
   );
 };
+export const fetchDocumentsByTeam = async (
+  teamId: string,
+): Promise<Document[]> => {
+  try {
+    return await apiRequest<Document[]>('GET', `/team/${teamId}/documents`);
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};

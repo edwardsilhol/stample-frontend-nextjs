@@ -2,9 +2,9 @@ import React from 'react';
 import { CustomSearchBar } from './CustomSearchBar';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { ArrowLeft, Menu } from '@mui/icons-material';
-import { useTags } from 'stores/hooks/tag.hooks';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
+import { useSelectedTeamTags } from 'stores/hooks/tag.hooks';
 
 interface LoggedHeaderProps {
   searchValue: string;
@@ -21,7 +21,7 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
 }) => {
   const {
     data: { raw: tags },
-  } = useTags();
+  } = useSelectedTeamTags();
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
   return (

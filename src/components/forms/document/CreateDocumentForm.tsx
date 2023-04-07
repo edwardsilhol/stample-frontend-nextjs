@@ -15,6 +15,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Stack from '../../muiOverrides/Stack';
+import { useSelectedTeamId } from '../../../stores/data/teams.data';
 const useStyles = () => ({
   container: {
     margin: '16px',
@@ -35,6 +36,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty(),
   );
+  const [selectedTeamId] = useSelectedTeamId();
   const createDocument = useCreateDocument();
 
   const handleEditorStateChange = (state: EditorState) => {
@@ -62,6 +64,9 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
+    if (selectedTeamId === null) {
+      return;
+    }
     try {
       setError(undefined);
       const { title, summary, url, type } = values;
@@ -74,6 +79,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
           url,
           tags: selectedTags.map((tag) => tag._id),
           type,
+          team: selectedTeamId,
         })
         .then(() => {
           onClose();

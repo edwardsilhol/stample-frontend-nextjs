@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 import { Tag } from '../../../stores/types/tag.types';
-import { useTags } from '../../../stores/hooks/tag.hooks';
+import { useSelectedTeamTags } from '../../../stores/hooks/tag.hooks';
 
 type TagTextFieldProps = {
   onChange: (value: Tag[]) => void;
@@ -13,7 +13,7 @@ const TagTextField: React.FC<TagTextFieldProps> = ({ onChange }) => {
   const {
     data: { raw: flatTags },
     isLoading,
-  } = useTags();
+  } = useSelectedTeamTags();
 
   const handleInputChange = (event: React.SyntheticEvent, value: string) => {
     setInputValue(value);

@@ -4,12 +4,14 @@ import {
   fetchDocumentsByTag,
   fetchDocuments,
   updateDocumentAsGuest,
+  fetchDocumentsByTeam,
 } from '../api/document.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CreateDocumentDTO,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
+import { useSelectedTeamId } from 'stores/data/teams.data';
 
 export const useDocument = (documentId: string) => {
   return useQuery(['document', { documentId }], () =>
@@ -34,9 +36,8 @@ export const useCreateDocument = () => {
   return useMutation(
     (createDocumentDto: CreateDocumentDTO) => createDocument(createDocumentDto),
     {
-      onSuccess: (document) => {
-        console.log('successfully created document:', document);
-        queryClient.invalidateQueries(['rawDocuments']);
+      onSuccess: ({ team }) => {
+        queryClient.invalidateQueries(['documents', { teamId: team }]);
       },
     },
   );
@@ -53,4 +54,24 @@ export const useUpdateDocumentAsGuest = (documentId: string) => {
       },
     },
   );
+};
+
+export const useDocumentsByTeam = (teamId: string | null) => {
+  return useQuery(
+    ['documents', { teamId }],
+    () => {
+      if (teamId) {
+        return fetchDocumentsByTeam(teamId);
+      }
+      return [];
+    },
+    {
+      initialData: [],
+    },
+  );
+};
+
+export const useDocumentsBySelectedTeam = () => {
+  const [selectedTeamId] = useSelectedTeamId();
+  return useDocumentsByTeam(selectedTeamId);
 };

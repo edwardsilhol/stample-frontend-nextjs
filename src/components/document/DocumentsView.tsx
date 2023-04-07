@@ -7,7 +7,7 @@ import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
 import { Document } from '../../stores/types/document.types';
 import { DocumentView } from './DocumentView';
-import { useTags } from '../../stores/hooks/tag.hooks';
+import { useSelectedTeamTags } from '../../stores/hooks/tag.hooks';
 import { Tag } from 'stores/types/tag.types';
 import { getDocumentsByTags, searchDocuments } from 'helpers/document.helpers';
 import { DocumentHeader } from './DocumentHeader';
@@ -134,7 +134,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   const {
     data: { raw: flatTags },
     isLoading,
-  } = useTags();
+  } = useSelectedTeamTags();
   const isMobile = useIsMobile();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
