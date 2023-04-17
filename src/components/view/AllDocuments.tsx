@@ -5,7 +5,7 @@ import { useDocumentsBySelectedTeam } from '../../stores/hooks/document.hooks';
 import { DocumentsView } from '../document/DocumentsView';
 import Stack from '../muiOverrides/Stack';
 import { CircularProgress } from '@mui/material';
-import { useSelectedTagId } from 'stores/data/tags.data';
+import { useSelectedTagId } from 'stores/data/tag.data';
 
 interface Props {
   searchValue: string;

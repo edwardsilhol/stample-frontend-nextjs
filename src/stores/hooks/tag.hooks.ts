@@ -6,7 +6,7 @@ import {
   updateTag,
 } from '../api/tag.api';
 import { CreateTagDTO, HooksUpdateTagDTO, ViewTags } from '../types/tag.types';
-import { useSelectedTeamId } from 'stores/data/teams.data';
+import { useSelectedTeamId } from 'stores/data/team.data';
 
 export const useAllTags = () => {
   return useQuery<ViewTags>(['Tags'], fetchTags, {
