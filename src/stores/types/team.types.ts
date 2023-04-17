@@ -1,16 +1,16 @@
-import { UserForOtherClient } from './user.types';
+import { PopulatedUserAndPermissions, UserAndPermissions } from './user.types';
 
 export interface Team {
   _id: string;
   name: string;
-  users: string[];
+  users: UserAndPermissions[];
   tags: string[];
   isPersonal: boolean;
   createdAt: Date;
 }
 
 export interface PopulatedTeam extends Omit<Team, 'users'> {
-  users: UserForOtherClient[];
+  users: PopulatedUserAndPermissions[];
 }
 
 export type CreateTeamDTO = Pick<Team, 'name' | 'tags'>;
