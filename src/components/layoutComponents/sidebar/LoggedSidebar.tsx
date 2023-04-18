@@ -1,12 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  Box,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField,
-} from '@mui/material';
+import { Box, Drawer, IconButton, Menu, MenuItem } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
 import {
@@ -28,9 +21,6 @@ import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useAllTeams } from 'stores/hooks/team.hooks';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { getTeamDisplayedName } from 'helpers/team.helper';
-import { useSelectedOrganisationId } from 'stores/data/organisation.data';
-import { useAllOrganisations } from 'stores/hooks/organisation.hooks';
-import { capitalize } from 'lodash';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
@@ -122,19 +112,10 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const isMobile = useIsMobile();
   const { data: documents } = useDocumentsBySelectedTeam();
   const { data: teams } = useAllTeams();
-  const { data: organisations } = useAllOrganisations();
   const [selectedTeamId] = useSelectedTeamId();
-  const [selectedOrganisationId] = useSelectedOrganisationId();
   const selectedTeam = useMemo(
     () => teams?.find((team) => team._id === selectedTeamId),
     [teams, selectedTeamId],
-  );
-  const selectedOrganisation = useMemo(
-    () =>
-      organisations?.find(
-        (organisation) => organisation._id === selectedOrganisationId,
-      ),
-    [organisations, selectedOrganisationId],
   );
   const {
     data: { rich: richTags },
