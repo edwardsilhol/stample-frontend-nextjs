@@ -18,11 +18,11 @@ import { useDocumentsBySelectedTeam } from 'stores/hooks/document.hooks';
 import { Document } from 'stores/types/document.types';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useAllTeams } from 'stores/hooks/team.hooks';
+// import { useAllTeams } from 'stores/hooks/team.hooks';
 import { useSelectedTeamId } from 'stores/data/team.data';
-import { getTeamDisplayedName } from 'helpers/team.helper';
+// import { getTeamDisplayedName } from 'helpers/team.helper';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const useStyles = () => ({
   tagsButton: {
@@ -111,12 +111,12 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
   const isMobile = useIsMobile();
   const { data: documents } = useDocumentsBySelectedTeam();
-  const { data: teams } = useAllTeams();
+  // const { data: teams } = useAllTeams();
   const [selectedTeamId] = useSelectedTeamId();
-  const selectedTeam = useMemo(
-    () => teams?.find((team) => team._id === selectedTeamId),
-    [teams, selectedTeamId],
-  );
+  // const selectedTeam = useMemo(
+  //   () => teams?.find((team) => team._id === selectedTeamId),
+  //   [teams, selectedTeamId],
+  // );
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
@@ -149,7 +149,11 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   };
   const displaySelectTeams = () => (
     <Box paddingX={1} paddingY={2}>
-      <Button
+      <SelectTeamsAndOrganisationsDialog
+        open={isSelectTeamsAndOrganisationsOpen}
+        onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
+      />
+      {/* <Button
         endIcon={<ArrowDropDownIcon />}
         onClick={() => setIsSelectTeamsAndOrganisationsOpen(true)}
         variant="outlined"
@@ -164,7 +168,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         }}
       >
         {selectedTeam ? getTeamDisplayedName(selectedTeam) : ''}
-      </Button>
+      </Button> */}
     </Box>
   );
 
@@ -249,10 +253,10 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           {displayDrawerContent()}
         </Drawer>
       )}
-      <SelectTeamsAndOrganisationsDialog
+      {/* <SelectTeamsAndOrganisationsDialog
         open={isSelectTeamsAndOrganisationsOpen}
         onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
-      />
+      /> */}
     </>
   );
 };
