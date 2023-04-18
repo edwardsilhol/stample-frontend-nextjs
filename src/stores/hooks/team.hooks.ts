@@ -7,12 +7,11 @@ export const useTeam = (teamId: string) => {
   return useQuery(['team', { teamId }], () => fetchTeam(teamId));
 };
 
-export const useAllTeams = () => {
-  return useQuery(['allTeams'], fetchTeams, {
+export const useAllTeams = () =>
+  useQuery(['allTeams'], fetchTeams, {
     initialData: [],
     select: getSortedTeams,
   });
-};
 
 export const useCreateTeam = () => {
   const queryClient = useQueryClient();

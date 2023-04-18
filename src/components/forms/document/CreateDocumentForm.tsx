@@ -15,7 +15,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Stack from '../../muiOverrides/Stack';
-import { useSelectedTeamId } from '../../../stores/data/teams.data';
+import { useSelectedTeamId } from '../../../stores/data/team.data';
 const useStyles = () => ({
   container: {
     margin: '16px',

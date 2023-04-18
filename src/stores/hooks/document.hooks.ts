@@ -11,7 +11,7 @@ import {
   CreateDocumentDTO,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
-import { useSelectedTeamId } from 'stores/data/teams.data';
+import { useSelectedTeamId } from 'stores/data/team.data';
 
 export const useDocument = (documentId: string) => {
   return useQuery(['document', { documentId }], () =>

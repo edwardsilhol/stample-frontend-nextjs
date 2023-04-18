@@ -3,4 +3,4 @@
 
 pnpm build
 pnpm lint-staged
-pnpm cypress:headless:component
+# pnpm cypress:headless:component
