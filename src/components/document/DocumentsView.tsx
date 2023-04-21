@@ -1,6 +1,6 @@
 'use-client';
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
 import Typography from '../muiOverrides/Typography';
@@ -14,6 +14,7 @@ import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { Masonry } from '@mui/lab';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
+import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
 
 const DocumentGridItem: React.FC<{
   document: Document;
@@ -143,6 +144,16 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     [documents],
   );
 
+  useEffect(() => {
+    if (
+      documentId &&
+      !documents.some((document) => document._id === documentId)
+    ) {
+      setDocumentId(null);
+      setIsFullScreen(false);
+    }
+  }, [documentId, documents]);
+
   const filteredDocuments = useMemo(
     () =>
       searchDocuments({
@@ -159,11 +170,11 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   };
   return isLoading ? null : (
     <Stack
-      direction={'row'}
-      width={'100%'}
+      direction="row"
       flex={1}
       sx={{
         overflowY: 'hidden',
+        overflowX: 'hidden',
       }}
     >
       {!isFullScreen && !(isMobile && documentId) && (
@@ -171,7 +182,8 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
           padding={documentId ? 0 : { xs: 1, sm: 2 }}
           sx={{
             height: '100%',
-            width: documentId ? '420px' : '100%',
+            width: documentId ? undefined : '100%',
+            flex: documentId ? { md: 1 } : undefined,
             overflowY: 'auto',
             backgroundColor: 'additionalColors.sidebarBackground',
           }}

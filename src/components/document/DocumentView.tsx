@@ -4,13 +4,9 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
   CircularProgress,
   Divider,
   IconButton,
-  InputBase,
 } from '@mui/material';
 import {
   Close,
@@ -25,14 +21,18 @@ import {
   useDocument,
   useUpdateDocumentAsGuest,
 } from '../../stores/hooks/document.hooks';
-import { format } from 'date-fns';
 import { UserForOtherClient } from 'stores/types/user.types';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useLoggedInUser } from 'stores/data/user.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-
+import { uniqBy } from 'lodash';
+import { useSelectedTeam } from 'stores/data/team.data';
+import { CommentMention, CommentMentionType } from 'stores/types/comment.types';
+import { Editor, EditorState } from 'react-draft-wysiwyg';
+import { convertToRaw } from 'draft-js';
+import { DocumentComment } from './DocumentComment';
 interface DocumentViewProps {
   documentId: string;
   tags?: Tag[];
@@ -71,6 +71,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const isMobile = useIsMobile();
   const { data: document, isLoading } = useDocument(documentId);
   const { mutate: createComment } = useCreateComment(documentId);
+  const { data: selectedTeam } = useSelectedTeam();
   const { mutate: updateDocumentAsGuest } =
     useUpdateDocumentAsGuest(documentId);
   useEffect(() => {
@@ -84,10 +85,14 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       });
     }
   }, [document?.readers, loggedInUser?._id, updateDocumentAsGuest]);
-  const [editedCommentText, setEditedCommentText] = useState('');
+  const [editedCommentText, setEditedCommentText] = useState<EditorState>();
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
-      [...(document?.guests || []), ...([document?.creator] || [])].reduce(
+      [
+        ...(document?.guests || []),
+        ...([document?.creator] || []),
+        ...(selectedTeam?.users.map((user) => user.user) || []),
+      ].reduce(
         (accumulator, user) => ({
           ...accumulator,
           ...(user
@@ -98,7 +103,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
         }),
         {} as Record<string, UserForOtherClient>,
       ),
-    [document?.guests, document?.creator],
+    [document?.guests, document?.creator, selectedTeam?.users],
   );
   const isDocumentLiked = useMemo(
     () =>
@@ -107,15 +112,69 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       ),
     [document?.likes, loggedInUser],
   );
+  const userMentions = useMemo(
+    () => [
+      {
+        text: 'Everyone',
+        value: 'Everyone',
+        url: CommentMentionType.EVERYONE,
+      },
+      ...uniqBy(
+        [
+          ...(document?.guests || []),
+          document?.creator,
+          ...(selectedTeam?.users.map((user) => user.user) || []),
+        ],
+        (user) => user?._id,
+      )
+        .filter((user): user is UserForOtherClient => !!user)
+        .map((user) => ({
+          text: `${user.firstName} ${user.lastName}`,
+          value: `${user.firstName} ${user.lastName}`,
+          url: user._id,
+        })),
+    ],
+    [document?.guests, document?.creator, selectedTeam?.users],
+  );
   const onSubmitAddComment = () => {
-    if (editedCommentText) {
+    if (!editedCommentText) {
+      return;
+    }
+    let plainText = editedCommentText.getCurrentContent().getPlainText();
+    const text = convertToRaw(editedCommentText.getCurrentContent());
+    const entityMap = text.entityMap;
+
+    let latestMentionStartIndex = 0;
+    const mentions: CommentMention[] = Object.values(entityMap).map(
+      (entity) => {
+        const mentionStartIndex = plainText.indexOf(
+          entity.data.text,
+          latestMentionStartIndex,
+        );
+        latestMentionStartIndex = mentionStartIndex;
+        plainText = plainText.replace(entity.data.text, '');
+        return {
+          type:
+            entity.data.url === CommentMentionType.EVERYONE
+              ? CommentMentionType.EVERYONE
+              : CommentMentionType.USER,
+          user:
+            entity.data.url === CommentMentionType.USER
+              ? entity.data.url
+              : undefined,
+          start: mentionStartIndex,
+        };
+      },
+    );
+
+    if (plainText && mentions) {
       createComment({
-        content: editedCommentText,
+        content: plainText,
+        mentions,
       });
-      setEditedCommentText('');
+      setEditedCommentText(undefined);
     }
   };
-
   const onClickLike = (like: boolean) => {
     updateDocumentAsGuest({
       isLiked: like,
@@ -123,10 +182,11 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   };
   return (
     <Stack
-      direction={'column'}
-      width="100%"
+      direction="column"
+      flex={{ md: 2, lg: 3 }}
       sx={{
-        borderLeft: '1px solid #d3d4d5',
+        borderLeft: isFullScreen ? undefined : '1px solid #d3d4d5',
+        overflowX: 'hidden',
       }}
       paddingX={2}
       height="100%"
@@ -171,7 +231,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           paddingX={{ xs: 1, md: 3, lg: 5 }}
           alignItems="center"
         >
-          <Box maxWidth="md" width="100%">
+          <Box maxWidth="md" width="100%" paddingBottom={2}>
             <Stack alignItems="center" width="100%">
               <Typography variant="h1" paddingBottom={2}>
                 {document.title}
@@ -220,49 +280,39 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
             <Typography variant="h2" marginBottom={2}>
               Comments
             </Typography>
-            {document.comments?.map((comment, index) => {
-              const author = commentAuthorsById[comment.creatorId];
-              return (
-                <Card
-                  key={comment._id}
-                  sx={{
-                    marginTop: index === 0 ? 0 : 1,
-                    borderLeft: 'none',
-                    borderRight: 'none',
-                    borderBottom: 'none',
-                  }}
-                  variant="outlined"
-                >
-                  <CardHeader
-                    avatar={
-                      <Avatar src={author?.profilePictureUrl}>
-                        {author?.profilePictureUrl
-                          ? null
-                          : `${author?.firstName[0]}${author?.lastName[0]}`}
-                      </Avatar>
-                    }
-                    title={`${author?.firstName} ${author?.lastName}`}
-                    subheader={
-                      comment.createdAt
-                        ? format(new Date(comment.createdAt), 'dd/MM/yyyy')
-                        : undefined
-                    }
-                  />
-                  <CardContent>
-                    <Typography variant="body1">{comment.content}</Typography>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {document.comments?.map((comment, index) => (
+              <DocumentComment
+                key={index}
+                index={index}
+                commentAuthorsById={commentAuthorsById}
+                comment={comment}
+              />
+            ))}
             <Divider sx={{ marginBottom: 2 }} />
-            <InputBase
-              value={editedCommentText}
-              onChange={(e) => setEditedCommentText(e.target.value)}
+            <Editor
+              editorState={editedCommentText}
+              onEditorStateChange={(value) => setEditedCommentText(value)}
+              mention={{
+                separator: ' ',
+                trigger: '@',
+                suggestions: userMentions,
+              }}
               placeholder="Add a comment"
+              wrapperStyle={{
+                width: '100%',
+                overflowY: 'visible',
+              }}
+              editorStyle={{
+                overflowY: 'visible',
+                overflow: 'unset',
+              }}
+              toolbarHidden
             />
             {editedCommentText && (
               <Stack direction="row">
-                <Button onClick={() => setEditedCommentText('')}>Cancel</Button>
+                <Button onClick={() => setEditedCommentText(undefined)}>
+                  Cancel
+                </Button>
                 <Button onClick={onSubmitAddComment} variant="contained">
                   Send
                 </Button>
