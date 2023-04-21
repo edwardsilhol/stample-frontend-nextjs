@@ -14,7 +14,6 @@ import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { Masonry } from '@mui/lab';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
 
 const DocumentGridItem: React.FC<{
   document: Document;
