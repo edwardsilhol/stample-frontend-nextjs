@@ -13,7 +13,12 @@ export const MainView: React.FC<MainViewProps> = () => {
     React.useState<boolean>(false);
 
   return (
-    <Stack direction="column" width="100%" height="100vh">
+    <Stack
+      direction="column"
+      flex={1}
+      height="100vh"
+      sx={{ overflowX: 'hidden' }}
+    >
       <LoggedHeader
         searchValue={searchValue}
         setSearchValue={setSearchValue}

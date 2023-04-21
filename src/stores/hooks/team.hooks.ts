@@ -3,8 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CreateTeamDTO } from '../types/team.types';
 import { getSortedTeams } from 'helpers/team.helper';
 
-export const useTeam = (teamId: string) => {
-  return useQuery(['team', { teamId }], () => fetchTeam(teamId));
+export const useTeam = (teamId: string | null) => {
+  return useQuery(['team', { teamId }], () =>
+    teamId ? fetchTeam(teamId) : null,
+  );
 };
 
 export const useAllTeams = () =>
