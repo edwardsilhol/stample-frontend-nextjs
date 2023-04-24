@@ -14,3 +14,4 @@ export interface PopulatedTeam extends Omit<Team, 'users'> {
 }
 
 export type CreateTeamDTO = Pick<Team, 'name' | 'tags'>;
+export type UpdateTeamDTO = Partial<CreateTeamDTO>;

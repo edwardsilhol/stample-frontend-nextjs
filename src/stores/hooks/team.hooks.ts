@@ -26,3 +26,15 @@ export const useCreateTeam = () => {
     },
   );
 };
+
+export const useUpdateTeam = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (updateTeamDto: CreateTeamDTO) => createTeam(updateTeamDto),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['allTeams']);
+      },
+    },
+  );
+};
