@@ -1,15 +1,10 @@
-import {
-  STAMPLE_TAB_TITLE_ID,
-  GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME,
-  GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
-  GOOGLE_TAB_BAR_ITEM_CSS_ANCHOR_CLASSNAME,
-} from '@src/helpers/constants/content';
+import { STAMPLE_TAB_TITLE_ID } from '@src/constants/content';
 import {
   injectStampleTabContent,
   selectStampleTab,
   unselectStampleTab,
-} from '@src/helpers/content-script.helpers';
-import { findTabBarItems } from '@src/helpers/content-script.helpers';
+} from '@src/helpers/content.helpers';
+import { findTabBarItems } from '@src/helpers/content.helpers';
 import { useEffect, useState } from 'react';
 
 export const StampleTabTitle: React.FC = () => {

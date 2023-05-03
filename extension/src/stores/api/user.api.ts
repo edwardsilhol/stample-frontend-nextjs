@@ -21,8 +21,6 @@ const setAccessRefreshTokenAndGetUser = async (
     );
   }
 
-  console.log('fetchSession');
-
   return fetchSession();
 };
 
@@ -51,7 +49,6 @@ export const fetchSession = async (): Promise<User | null> => {
   const accessToken = await getChromeStorageVariable(
     LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   );
-  console.log('accessToken', accessToken);
 
   if (!accessToken) {
     return null;

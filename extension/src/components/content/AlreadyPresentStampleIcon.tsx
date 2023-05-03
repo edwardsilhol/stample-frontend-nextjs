@@ -1,14 +1,15 @@
-import { Avatar, Box, Card, CardContent } from '@mui/material';
+import { Avatar } from '@mui/material';
+import { getImageUrl } from '@src/helpers/content.helpers';
 import React from 'react';
 
 export const AlreadyPresentStampleIcon: React.FC = () => (
   <Avatar
     sx={{
-      float: 'right',
       visibility: 'visible',
-      marginLeft: '40px',
+      marginLeft: '20px',
+      height: '28px',
+      width: '28px',
     }}
-  >
-    Stample
-  </Avatar>
+    src={getImageUrl('/icons/icon128.png')}
+  />
 );

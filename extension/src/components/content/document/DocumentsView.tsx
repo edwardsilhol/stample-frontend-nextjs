@@ -15,7 +15,7 @@ import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { Masonry } from '@mui/lab';
 import { useSearchDocuments } from '@src/stores/hooks/document.hooks';
-import { getGoogleSearchQuery } from '@src/helpers/content-script.helpers';
+import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import { useAllTags } from '@src/stores/hooks/tag.hooks';
 
 const DocumentGridItem: React.FC<{

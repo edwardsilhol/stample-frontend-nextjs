@@ -5,9 +5,9 @@ import {
   GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
   GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME,
   STAMPLE_TAB_TITLE_ID,
-} from './constants/content';
+} from '../constants/content';
 import { DocumentsView } from '@src/components/content/document/DocumentsView';
-import { AppProvider } from '@src/pages/providers/GuestProvider';
+import { AppProvider } from '@src/pages/providers/AppProvider';
 
 type SearchElement = {
   link: Element;
@@ -73,7 +73,7 @@ export const injectAlreadyPresentStamples = (
       const container = getInjectableContainer(element);
       container.setAttribute(
         'style',
-        'width: 100%; display: flex; align-items: center;',
+        'width: 100%; display: flex; align-items: baseline;',
       );
       const alreadyPresentStampleIcon = document.createElement('div');
       container.append(alreadyPresentStampleIcon);
@@ -133,12 +133,9 @@ export const selectStampleTab = (document: Document) => {
     selectedTabBarItem.classList.remove(
       GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
     );
-    console.log({ unselectedTabBarItem });
     selectedTabBarItem.firstChild.replaceWith(unselectedTabBarItem);
   }
-  console.log('findStampleTabBarItem(document)');
   const stampleTabBarItem = findStampleTabBarItem(document);
-  console.log({ stampleTabBarItem });
   stampleTabBarItem.classList.add(GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME);
 };
 
@@ -189,3 +186,5 @@ export const parseGoogleResults = (
     texts,
   };
 };
+
+export const getImageUrl = (url: string) => chrome.runtime.getURL(url);

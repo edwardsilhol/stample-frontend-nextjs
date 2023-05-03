@@ -2,7 +2,7 @@ import {
   injectAlreadyPresentStamples,
   injectStampleTabTitle,
   parseGoogleResults,
-} from '@src/helpers/content-script.helpers';
+} from '@src/helpers/content.helpers';
 import { useSearchDocuments } from '@src/stores/hooks/document.hooks';
 import { useSession } from '@src/stores/hooks/user.hooks';
 import { useEffect, useMemo } from 'react';

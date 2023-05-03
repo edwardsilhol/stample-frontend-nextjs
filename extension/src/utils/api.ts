@@ -49,14 +49,12 @@ export async function apiRequest<T>(
   nextConfig?: RequestInit,
   isFile?: boolean,
 ) {
-  console.log('apiRequest');
   const accessToken = await getChromeStorageVariable(
     LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   );
   const refreshToken = await getChromeStorageVariable(
     LOCAL_STORAGE_REFRESH_TOKEN_KEY,
   );
-  console.log('accessToken', accessToken);
   const API_URL = import.meta.env.VITE_PUBLIC_APP_API_URL as string;
   let query = API_URL + endpoint;
 
