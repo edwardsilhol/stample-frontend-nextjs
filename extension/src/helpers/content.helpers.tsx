@@ -12,21 +12,18 @@ import { AppProvider } from '@src/pages/providers/AppProvider';
 type SearchElement = {
   link: Element;
   title: HTMLHeadingElement;
-  description: HTMLSpanElement;
   url: string;
 };
 
 type SearchTexts = {
   title: string;
-  description: string;
+  description?: string;
 };
 
 const extractTexts = (elements: SearchElement): SearchTexts => {
   const title = elements.title.outerText;
-  const description = elements.description.outerText;
   return {
     title,
-    description,
   };
 };
 
@@ -43,14 +40,12 @@ const getGoogleSearchElements = (document: Document): SearchElement[] => {
     }
     const link = item?.children[0]?.children[0]?.querySelector('a');
     const title = item?.children[0]?.children[0]?.querySelector('h3');
-    const description = item?.children[1]?.querySelector('span');
-    if (!link || !title || !description) {
+    if (!link || !title) {
       continue;
     }
     results.push({
       link,
       title,
-      description,
       url: link.getAttribute('href'),
     });
   }

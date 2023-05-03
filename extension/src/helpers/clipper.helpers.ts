@@ -1,4 +1,4 @@
-import { Readability } from '@mozilla/readability';
+import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { CreateDocumentDTO } from '@src/stores/types/document.types';
 const parseTags = (
   document: Document,
@@ -46,9 +46,9 @@ const parseTags = (
 
   const url = tags.find((tag) => tag.name === 'og:url' && !!tag.content);
   return {
-    author: author || '',
-    authorUrl: authorUrl || '',
-    urlWebsiteName: urlWebsiteName || '',
+    author: author,
+    authorUrl: authorUrl,
+    urlWebsiteName: urlWebsiteName,
     mainMedia: mainMediaImage
       ? {
           mediaType: 'image',
@@ -60,11 +60,12 @@ const parseTags = (
           src: mainMediaVideo,
         }
       : null,
-    url: url?.content || '',
+    url: url?.content,
   };
 };
 const parseDocument = (
   document: Document,
+  url: string,
 ): Pick<
   CreateDocumentDTO,
   | 'content'
@@ -84,12 +85,17 @@ const parseDocument = (
   return {
     content: article.content,
     title: article.title,
-    url: parsedTags.url,
+    url: parsedTags.url || url,
     author: parsedTags.author,
     authorUrl: parsedTags.authorUrl,
     urlWebsiteName: article.siteName || parsedTags.urlWebsiteName,
     mainMedia: parsedTags.mainMedia,
   };
+};
+
+export const isDocumentClippable = async (): Promise<boolean> => {
+  const document = await getCurrentlyDisplayedDOM();
+  return isProbablyReaderable(document.document);
 };
 
 const getPageContent = () => {
@@ -98,6 +104,31 @@ const getPageContent = () => {
     document: new XMLSerializer().serializeToString(document),
   };
 };
+
+const getCurrentlyDisplayedDOM = async (): Promise<{
+  document: Document;
+  url: string;
+}> => {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const result = await chrome.scripting.executeScript({
+    target: { tabId: tabs[0].id },
+    func: getPageContent,
+  });
+  const deserializedDocument = new DOMParser().parseFromString(
+    result[0].result.document,
+    'text/html',
+  );
+  return {
+    document: deserializedDocument,
+    url: tabs[0].url,
+  };
+};
+
+export const getCurrentlyDisplayedDOMUrl = async (): Promise<string> => {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tabs[0].url;
+};
+
 export const getClippedPage = async (): Promise<Pick<
   CreateDocumentDTO,
   | 'content'
@@ -108,14 +139,6 @@ export const getClippedPage = async (): Promise<Pick<
   | 'urlWebsiteName'
   | 'mainMedia'
 > | null> => {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  const result = await chrome.scripting.executeScript({
-    target: { tabId: tabs[0].id },
-    func: getPageContent,
-  });
-  const deserializedDocument = new DOMParser().parseFromString(
-    result[0].result.document,
-    'text/html',
-  );
-  return parseDocument(deserializedDocument);
+  const deserializedDocument = await getCurrentlyDisplayedDOM();
+  return parseDocument(deserializedDocument.document, deserializedDocument.url);
 };

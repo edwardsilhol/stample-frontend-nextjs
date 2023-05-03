@@ -18,11 +18,11 @@ export const SelectTags: React.FC<TagTextFieldProps> = ({
 
   const tagsByIds = useMemo(() => groupBy(tags, '_id'), [tags]);
 
-  const handleInputChange = (event: React.SyntheticEvent, value: string) => {
+  const handleInputChange = (_: React.SyntheticEvent, value: string) => {
     setInputValue(value);
   };
 
-  const handleTagSelect = (event: React.SyntheticEvent, value: string[]) => {
+  const handleTagSelect = (_: React.SyntheticEvent, value: string[]) => {
     if (!Array.isArray(value)) {
       if (!selectedTags.includes(value)) {
         onChange([...selectedTags, value]);
@@ -33,19 +33,26 @@ export const SelectTags: React.FC<TagTextFieldProps> = ({
   };
 
   return (
-    <>
-      <Autocomplete
-        multiple
-        options={tags.map((tag) => tag._id)}
-        value={selectedTags}
-        onChange={handleTagSelect}
-        inputValue={inputValue}
-        onInputChange={handleInputChange}
-        getOptionLabel={(option) => tagsByIds[option][0].name}
-        renderInput={(params) => (
-          <TextField {...params} label={'Tags'} variant="outlined" fullWidth />
-        )}
-      />
-    </>
+    <Autocomplete
+      multiple
+      options={tags.map((tag) => tag._id)}
+      value={selectedTags}
+      onChange={handleTagSelect}
+      inputValue={inputValue}
+      onInputChange={handleInputChange}
+      getOptionLabel={(option) => tagsByIds[option][0].name}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="standard"
+          label="Select tags"
+          placeholder="Select tags..."
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      )}
+    />
   );
 };

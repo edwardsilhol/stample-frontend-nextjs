@@ -9,8 +9,10 @@ import { useEffect, useMemo } from 'react';
 
 export default function App() {
   useSession();
-  const { searchElements, texts }: ReturnType<typeof parseGoogleResults> =
-    useMemo(() => parseGoogleResults(document), [document.URL]);
+  const { searchElements }: ReturnType<typeof parseGoogleResults> = useMemo(
+    () => parseGoogleResults(document),
+    [document.URL],
+  );
   const { data: documents } = useSearchDocuments({
     url: searchElements.map((element) => element.url),
   });

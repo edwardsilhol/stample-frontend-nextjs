@@ -24,7 +24,6 @@ export const useSignIn = () => {
   const queryClient = useQueryClient();
   return useMutation((signInDTO: SignInDTO) => signIn(signInDTO), {
     onSuccess: (user) => {
-      console.log('user', user);
       queryClient.setQueryData(['session'], user);
     },
   });
