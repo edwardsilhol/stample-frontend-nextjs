@@ -68,11 +68,11 @@ const DocumentGridItem: React.FC<{
               fontFamily: 'Google Sans,arial,sans-serif;',
             }}
           >
-            <span style={{ color: 'grey', fontSize: '12px' }}>
+            <a style={{ color: 'grey', fontSize: '12px' }} href={document.url}>
               {document.urlWebsiteName ? (
                 <>{document.urlWebsiteName}&nbsp;&nbsp;</>
               ) : null}
-            </span>
+            </a>
             {document.title}
           </Typography>
           <Typography

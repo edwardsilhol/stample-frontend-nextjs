@@ -70,6 +70,7 @@ const parseDocument = (
   CreateDocumentDTO,
   | 'content'
   | 'title'
+  | 'summary'
   | 'url'
   | 'author'
   | 'authorUrl'
@@ -85,6 +86,7 @@ const parseDocument = (
   return {
     content: article.content,
     title: article.title,
+    summary: article.excerpt,
     url: parsedTags.url || url,
     author: parsedTags.author,
     authorUrl: parsedTags.authorUrl,
@@ -133,6 +135,7 @@ export const getClippedPage = async (): Promise<Pick<
   CreateDocumentDTO,
   | 'content'
   | 'title'
+  | 'summary'
   | 'url'
   | 'author'
   | 'authorUrl'

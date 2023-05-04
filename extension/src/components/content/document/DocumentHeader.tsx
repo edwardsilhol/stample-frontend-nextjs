@@ -42,20 +42,20 @@ export const DocumentHeader: React.FC<
       {...typographyProps}
     >
       {[
-        ...(urlWebsiteName
-          ? [
-              <Box
-                component="a"
-                color="primary.light"
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                key={0}
-              >
-                {urlWebsiteName}
-              </Box>,
-            ]
-          : []),
+        // ...(urlWebsiteName
+        //   ? [
+        //       <Box
+        //         component="a"
+        //         color="primary.light"
+        //         href={url}
+        //         target="_blank"
+        //         rel="noreferrer"
+        //         key={0}
+        //       >
+        //         {urlWebsiteName}
+        //       </Box>,
+        //     ]
+        //   : []),
         ...(author
           ? [
               <Box

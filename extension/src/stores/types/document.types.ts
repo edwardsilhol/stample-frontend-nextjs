@@ -12,6 +12,7 @@ export type CreateDocumentDTO = Pick<
   | 'type'
   | 'tags'
   | 'team'
+  | 'keyInsight'
   | 'author'
   | 'authorUrl'
   | 'urlWebsiteName'
