@@ -13,10 +13,12 @@ import {
 } from '../types/document.types';
 import { useSelectedTeamId } from 'stores/data/team.data';
 
-export const useDocument = (documentId: string) => {
-  return useQuery(['document', { documentId }], () =>
-    fetchDocument(documentId),
-  );
+export const useDocument = (teamId: string | null, documentId: string) => {
+  return useQuery(['document', { documentId }], () => {
+    if (teamId) {
+      return fetchDocument(teamId, documentId);
+    }
+  });
 };
 
 export const useDocumentByTag = (tag: string) => {

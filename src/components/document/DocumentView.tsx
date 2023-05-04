@@ -28,7 +28,7 @@ import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useLoggedInUser } from 'stores/data/user.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { uniqBy } from 'lodash';
-import { useSelectedTeam } from 'stores/data/team.data';
+import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
 import { CommentMention, CommentMentionType } from 'stores/types/comment.types';
 import { Editor, EditorState } from 'react-draft-wysiwyg';
 import { convertToRaw } from 'draft-js';
@@ -69,7 +69,8 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
 }) => {
   const [loggedInUser] = useLoggedInUser();
   const isMobile = useIsMobile();
-  const { data: document, isLoading } = useDocument(documentId);
+  const [selectedTeamId] = useSelectedTeamId();
+  const { data: document, isLoading } = useDocument(selectedTeamId, documentId);
   const { mutate: createComment } = useCreateComment(documentId);
   const { data: selectedTeam } = useSelectedTeam();
   const { mutate: updateDocumentAsGuest } =

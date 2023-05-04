@@ -7,12 +7,13 @@ import {
 import { apiRequest } from '../../utils/api';
 
 export const fetchDocument = async (
+  teamId: string,
   documentId: string,
 ): Promise<PopulatedDocument | null> => {
   try {
     return await apiRequest<PopulatedDocument>(
       'GET',
-      '/document/' + documentId,
+      `/team/${teamId}/document/${documentId}`,
     );
   } catch (error) {
     return null;
@@ -61,7 +62,7 @@ export const fetchDocumentsByTeam = async (
   teamId: string,
 ): Promise<Document[]> => {
   try {
-    return await apiRequest<Document[]>('GET', `/team/${teamId}/documents`);
+    return await apiRequest<Document[]>('GET', `/team/${teamId}/document`);
   } catch (error) {
     console.log(error);
     return [];
