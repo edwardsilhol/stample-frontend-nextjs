@@ -1,7 +1,7 @@
 'use-client';
 
 import React, { useEffect, useMemo } from 'react';
-import { Card, CardContent, CardMedia } from '@mui/material';
+import { Card, CardContent, CardMedia, CircularProgress } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
@@ -167,7 +167,9 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   const onToggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
-  return isLoading ? null : (
+  return isLoading ? (
+    <CircularProgress />
+  ) : (
     <Stack
       direction="row"
       flex={1}
