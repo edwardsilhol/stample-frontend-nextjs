@@ -73,13 +73,15 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
 
       await createDocument
         .mutateAsync({
-          title,
-          content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-          summary,
-          url,
-          tags: selectedTags.map((tag) => tag._id),
-          type,
-          team: selectedTeamId,
+          teamId: selectedTeamId,
+          createDocumentDto: {
+            title,
+            content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+            summary,
+            url,
+            tags: selectedTags.map((tag) => tag._id),
+            type,
+          },
         })
         .then(() => {
           onClose();
