@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Stack from '../muiOverrides/Stack';
 import {
   Avatar,
@@ -73,19 +73,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const { data: document, isLoading } = useDocument(selectedTeamId, documentId);
   const { mutate: createComment } = useCreateComment(documentId);
   const { data: selectedTeam } = useSelectedTeam();
-  const { mutate: updateDocumentAsGuest } =
-    useUpdateDocumentAsGuest(documentId);
-  useEffect(() => {
-    if (
-      !document?.readers.some(
-        (user) => loggedInUser?._id.toString() === user._id.toString(),
-      )
-    ) {
-      updateDocumentAsGuest({
-        isReader: true,
-      });
-    }
-  }, [document?.readers, loggedInUser?._id, updateDocumentAsGuest]);
+  const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
   const [editedCommentText, setEditedCommentText] = useState<EditorState>();
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -177,8 +165,15 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
     }
   };
   const onClickLike = (like: boolean) => {
+    if (!selectedTeamId) {
+      return;
+    }
     updateDocumentAsGuest({
-      isLiked: like,
+      documentId: documentId,
+      teamId: selectedTeamId,
+      updateDocumentAsGuestDTO: {
+        isLiked: like,
+      },
     });
   };
   return (

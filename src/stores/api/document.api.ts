@@ -35,12 +35,13 @@ export const createDocument = async (
 };
 
 export const updateDocumentAsGuest = async (
+  teamId: string,
   documentId: string,
   updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO,
 ): Promise<Document> => {
   return await apiRequest<Document>(
     'PATCH',
-    `/document/${documentId}/guest`,
+    `/team/${teamId}/document/${documentId}/guest`,
     undefined,
     updateDocumentAsGuestDTO,
   );

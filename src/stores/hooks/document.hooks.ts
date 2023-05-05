@@ -39,13 +39,20 @@ export const useCreateDocument = () => {
   );
 };
 
-export const useUpdateDocumentAsGuest = (documentId: string) => {
+export const useUpdateDocumentAsGuest = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    (updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO) =>
-      updateDocumentAsGuest(documentId, updateDocumentAsGuestDTO),
+    ({
+      teamId,
+      documentId,
+      updateDocumentAsGuestDTO,
+    }: {
+      teamId: string;
+      documentId: string;
+      updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO;
+    }) => updateDocumentAsGuest(teamId, documentId, updateDocumentAsGuestDTO),
     {
-      onSuccess: () => {
+      onSuccess: (_, { documentId }) => {
         queryClient.invalidateQueries(['document', { documentId }]);
       },
     },
