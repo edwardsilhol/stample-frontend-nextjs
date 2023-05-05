@@ -1,18 +1,19 @@
 import { formatDistanceToNow } from 'date-fns';
-import { intersection } from 'lodash';
-import { Document } from 'stores/types/document.types';
-import { Tag } from 'stores/types/tag.types';
-export const getDocumentsByTags = (documents: Document[]) =>
-  documents.reduce((accumulator: Record<string, Document[]>, document) => {
-    document.tags.forEach((tag) => {
-      if (accumulator[tag]) {
-        accumulator[tag].push(document);
-      } else {
-        accumulator[tag] = [document];
-      }
-    });
-    return accumulator;
-  }, {});
+import { Document, MinimalDocument } from 'stores/types/document.types';
+export const getDocumentsByTags = (documents: MinimalDocument[]) =>
+  documents.reduce(
+    (accumulator: Record<string, MinimalDocument[]>, document) => {
+      document.tags.forEach((tag) => {
+        if (accumulator[tag]) {
+          accumulator[tag].push(document);
+        } else {
+          accumulator[tag] = [document];
+        }
+      });
+      return accumulator;
+    },
+    {},
+  );
 
 export const getDocumentHeaderStrings = ({
   createdAt,
@@ -51,42 +52,4 @@ export const getDocumentHeaderStrings = ({
     likeString,
     openCountString,
   };
-};
-
-export const searchDocuments = ({
-  documentsByTags,
-  allDocuments,
-  searchQuery,
-  selectedTagId,
-  allTags,
-}: {
-  documentsByTags: Record<string, Document[]>;
-  allDocuments: Document[];
-  searchQuery: string | null;
-  selectedTagId: string | null;
-  allTags: Tag[];
-}): Document[] => {
-  const selectedDocumentsByTags = selectedTagId
-    ? documentsByTags[selectedTagId]
-    : allDocuments;
-  if (!searchQuery || searchQuery === '') {
-    return selectedDocumentsByTags;
-  } else {
-    return selectedDocumentsByTags.filter((document) => {
-      const tags = allTags.filter((tag) =>
-        tag.name.toLowerCase().startsWith(searchQuery.toLowerCase().slice(1)),
-      );
-
-      return (
-        (searchQuery.startsWith('#') &&
-          intersection(
-            document.tags,
-            tags.map((tag) => tag._id),
-          ).length > 0) ||
-        document.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        document.summary?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        document.content?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
-  }
 };

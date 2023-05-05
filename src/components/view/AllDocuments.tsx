@@ -1,28 +1,33 @@
 'use client';
 
 import React from 'react';
-import { useDocumentsBySelectedTeam } from '../../stores/hooks/document.hooks';
+import { useSearchDocuments } from '../../stores/hooks/document.hooks';
 import { DocumentsView } from '../document/DocumentsView';
 import Stack from '../muiOverrides/Stack';
 import { CircularProgress } from '@mui/material';
 import { useSelectedTagId } from 'stores/data/tag.data';
+import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import { useSelectedTeamId } from 'stores/data/team.data';
 
-interface Props {
-  searchValue: string;
-}
-export const AllDocuments: React.FC<Props> = ({ searchValue }) => {
-  const { data: documents, isLoading } = useDocumentsBySelectedTeam();
+export const AllDocuments: React.FC = () => {
+  const [selectedTeamId] = useSelectedTeamId();
   const [selectedTagId] = useSelectedTagId();
+  const [searchDocumentsQuery] = useSearchDocumentsQuery();
+  const { data: documents, isLoading } = useSearchDocuments({
+    ...(searchDocumentsQuery
+      ? {
+          text: searchDocumentsQuery,
+        }
+      : {}),
+    tags: selectedTagId ? [selectedTagId] : undefined,
+    team: selectedTeamId ? selectedTeamId : undefined,
+  });
 
   return isLoading ? (
     <Stack justifyContent="center" alignItems="center" flexGrow={1}>
       <CircularProgress />
     </Stack>
   ) : (
-    <DocumentsView
-      searchValue={searchValue}
-      documents={documents}
-      tagId={selectedTagId}
-    />
+    <DocumentsView documents={documents} tagId={selectedTagId} />
   );
 };

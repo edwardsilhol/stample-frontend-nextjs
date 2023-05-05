@@ -15,14 +15,11 @@ import { useTagsByTeam } from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
 import { getDocumentsByTags } from 'helpers/document.helpers';
 import { useDocumentsBySelectedTeam } from 'stores/hooks/document.hooks';
-import { Document } from 'stores/types/document.types';
+import { MinimalDocument } from 'stores/types/document.types';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-// import { useAllTeams } from 'stores/hooks/team.hooks';
 import { useSelectedTeamId } from 'stores/data/team.data';
-// import { getTeamDisplayedName } from 'helpers/team.helper';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
-// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const useStyles = () => ({
   tagsButton: {
@@ -120,7 +117,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
-  const documentsByTag = useMemo<Record<string, Document[]>>(
+  const documentsByTag = useMemo<Record<string, MinimalDocument[]>>(
     () => getDocumentsByTags(documents || []),
     [documents],
   );

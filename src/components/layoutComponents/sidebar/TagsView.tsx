@@ -7,13 +7,13 @@ import Typography from '../../muiOverrides/Typography';
 import { Button, IconButton, InputBase, Popover } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tag.data';
-import { Document } from 'stores/types/document.types';
+import { MinimalDocument } from 'stores/types/document.types';
 import { Box } from '@mui/system';
 import { useSelectedTeamId } from 'stores/data/team.data';
 
 interface TagsViewProps {
   tags: TagRich[];
-  documentsByTags: Record<string, Document[]>;
+  documentsByTags: Record<string, MinimalDocument[]>;
 }
 export const TagsView: FC<TagsViewProps> = ({
   tags,

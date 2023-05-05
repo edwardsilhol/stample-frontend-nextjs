@@ -4,18 +4,15 @@ import { Search } from '@mui/icons-material';
 import Box from '../../muiOverrides/Box';
 import { Tag } from 'stores/types/tag.types';
 import { uniq } from 'lodash';
+import { useSearchDocumentsQuery } from 'stores/data/document.data';
 
 interface CustomSearchBarProps {
-  searchValue: string;
   tags: Tag[];
-  setSearchValue: (value: string) => void;
 }
 
-export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
-  searchValue,
-  tags,
-  setSearchValue,
-}) => {
+export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
+  const [searchDocumentsQuery, setSearchDocumentsQuery] =
+    useSearchDocumentsQuery();
   const uniqueTags = useMemo(
     () => uniq(tags.map((tag) => `#${tag.name}`)),
     [tags],
@@ -35,9 +32,9 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
     >
       <Autocomplete
         onInputChange={(_, value) => {
-          setSearchValue(value);
+          setSearchDocumentsQuery(value);
         }}
-        inputValue={searchValue}
+        inputValue={searchDocumentsQuery ?? ''}
         freeSolo
         renderInput={({ InputProps, InputLabelProps: _, ...rest }) => {
           return (

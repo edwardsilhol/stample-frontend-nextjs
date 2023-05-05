@@ -1,7 +1,9 @@
 import {
   CreateDocumentDTO,
   Document,
+  MinimalDocument,
   PopulatedDocument,
+  SearchDocumentsDTO,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
@@ -20,31 +22,16 @@ export const fetchDocument = async (
   }
 };
 
-export const fetchDocuments = async (): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', '/document/all/raw');
-  } catch (error) {
-    return [];
-  }
-};
-
 export const createDocument = async (
+  teamId: string,
   createDocumentDto: CreateDocumentDTO,
 ): Promise<Document> => {
   return await apiRequest<Document>(
     'POST',
-    '/document',
+    `/team/${teamId}/document`,
     undefined,
     createDocumentDto,
   );
-};
-
-export const fetchDocumentsByTag = async (tag: string): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', `/document/byTag/${tag}`);
-  } catch (error) {
-    return [];
-  }
 };
 
 export const updateDocumentAsGuest = async (
@@ -60,11 +47,22 @@ export const updateDocumentAsGuest = async (
 };
 export const fetchDocumentsByTeam = async (
   teamId: string,
-): Promise<Document[]> => {
+): Promise<MinimalDocument[]> => {
   try {
     return await apiRequest<Document[]>('GET', `/team/${teamId}/document`);
   } catch (error) {
     console.log(error);
     return [];
   }
+};
+
+export const searchDocuments = async (
+  searchDocumentsDTO: SearchDocumentsDTO,
+): Promise<MinimalDocument[]> => {
+  return await apiRequest<MinimalDocument[]>(
+    'POST',
+    '/document/search',
+    undefined,
+    searchDocumentsDTO,
+  );
 };

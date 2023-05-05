@@ -5,7 +5,7 @@ export type DocumentType = (typeof documentTypes)[number];
 
 export type CreateDocumentDTO = Pick<
   Document,
-  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags' | 'team'
+  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags'
 >;
 const documentMediaTypes = ['image', 'video'] as const;
 type DocumentMediaType = (typeof documentMediaTypes)[number];
@@ -51,4 +51,11 @@ export interface PopulatedDocument
 export type UpdateDocumentAsGuestDTO = {
   isLiked?: boolean;
   isReader?: boolean;
+};
+
+export type MinimalDocument = Omit<Document, 'content' | 'comments'>;
+export type SearchDocumentsDTO = {
+  text?: string;
+  tags?: string[];
+  team?: string;
 };

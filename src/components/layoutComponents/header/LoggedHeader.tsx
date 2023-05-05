@@ -7,16 +7,12 @@ import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamTags } from 'stores/hooks/tag.hooks';
 
 interface LoggedHeaderProps {
-  searchValue: string;
   addButtonToggled: boolean;
-  setSearchValue: (value: string) => void;
   setToggledAddButton: (toggled: boolean) => void;
 }
 
 export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
-  searchValue,
   addButtonToggled,
-  setSearchValue,
   setToggledAddButton,
 }) => {
   const {
@@ -46,11 +42,7 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
               </Grid>
             ) : null}
             <Grid item xs={isMobile && !isSidebarOpen ? 7 : 9}>
-              <CustomSearchBar
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                tags={tags}
-              />
+              <CustomSearchBar tags={tags} />
             </Grid>
             <Grid item xs={3} display="flex" justifyContent="end">
               <Button

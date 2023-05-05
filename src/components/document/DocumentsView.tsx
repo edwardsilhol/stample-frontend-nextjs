@@ -1,22 +1,23 @@
 'use-client';
 
 import React, { useEffect, useMemo } from 'react';
-import { Card, CardContent, CardMedia, CircularProgress } from '@mui/material';
+import { Card, CardContent, CardMedia } from '@mui/material';
 import Stack from '../muiOverrides/Stack';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
-import { Document } from '../../stores/types/document.types';
+import { MinimalDocument } from '../../stores/types/document.types';
 import { DocumentView } from './DocumentView';
 import { useSelectedTeamTags } from '../../stores/hooks/tag.hooks';
 import { Tag } from 'stores/types/tag.types';
-import { getDocumentsByTags, searchDocuments } from 'helpers/document.helpers';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { Masonry } from '@mui/lab';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
+import { getDocumentsByTags } from 'helpers/document.helpers';
+import { useSelectedTagId } from 'stores/data/tag.data';
 
 const DocumentGridItem: React.FC<{
-  document: Document;
+  document: MinimalDocument;
   selectedDocumentId: string | null;
   setDocumentId: (id: string) => void;
   flatTags?: Tag[];
@@ -122,27 +123,28 @@ const DocumentGridItem: React.FC<{
 };
 
 interface DocumentViewProps {
-  searchValue: string;
-  documents: Document[];
+  documents: MinimalDocument[];
   tagId: string | null;
 }
-export const DocumentsView: React.FC<DocumentViewProps> = ({
-  searchValue,
-  documents,
-  tagId,
-}) => {
+export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
   const {
     data: { raw: flatTags },
-    isLoading,
   } = useSelectedTeamTags();
   const isMobile = useIsMobile();
   const [documentId, setDocumentId] = React.useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
-  const documentsByTags = useMemo<Record<string, Document[]>>(
+  const [selectedTagId] = useSelectedTagId();
+  const documentsByTags = useMemo<Record<string, MinimalDocument[]>>(
     () => getDocumentsByTags(documents),
     [documents],
   );
 
+  const filteredDocuments = useMemo<MinimalDocument[]>(() => {
+    if (!selectedTagId) {
+      return documents;
+    }
+    return documentsByTags[selectedTagId] ?? [];
+  }, [documents, documentsByTags, selectedTagId]);
   useEffect(() => {
     if (
       documentId &&
@@ -153,23 +155,10 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     }
   }, [documentId, documents]);
 
-  const filteredDocuments = useMemo(
-    () =>
-      searchDocuments({
-        documentsByTags,
-        allDocuments: documents,
-        searchQuery: searchValue,
-        selectedTagId: tagId,
-        allTags: flatTags,
-      }) || [],
-    [searchValue, documents, documentsByTags, tagId, flatTags],
-  );
   const onToggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
-  return isLoading ? (
-    <CircularProgress />
-  ) : (
+  return (
     <Stack
       direction="row"
       flex={1}

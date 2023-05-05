@@ -8,7 +8,6 @@ import { CreateDocumentForm } from './forms/document/CreateDocumentForm';
 
 type MainViewProps = Record<string, never>;
 export const MainView: React.FC<MainViewProps> = () => {
-  const [searchValue, setSearchValue] = React.useState<string>('');
   const [toggledAddButton, setToggledAddButton] =
     React.useState<boolean>(false);
 
@@ -20,13 +19,11 @@ export const MainView: React.FC<MainViewProps> = () => {
       sx={{ overflowX: 'hidden' }}
     >
       <LoggedHeader
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
         addButtonToggled={toggledAddButton}
         setToggledAddButton={setToggledAddButton}
       />
       {!toggledAddButton ? (
-        <AllDocuments searchValue={searchValue} />
+        <AllDocuments />
       ) : (
         <CreateDocumentForm onClose={() => setToggledAddButton(false)} />
       )}
