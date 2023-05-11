@@ -7,18 +7,16 @@ import Typography from '../../muiOverrides/Typography';
 import { Button, IconButton, InputBase, Popover } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tag.data';
-import { MinimalDocument } from 'stores/types/document.types';
 import { Box } from '@mui/system';
 import { useSelectedTeamId } from 'stores/data/team.data';
 
 interface TagsViewProps {
   tags: TagRich[];
-  documentsByTags: Record<string, MinimalDocument[]>;
+  documentsCountPerTags: Record<string, number>;
 }
 export const TagsView: FC<TagsViewProps> = ({
   tags,
-
-  documentsByTags,
+  documentsCountPerTags,
 }) => {
   const [selectedTeamId] = useSelectedTeamId();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -112,7 +110,7 @@ export const TagsView: FC<TagsViewProps> = ({
             </Typography>
             {hoveredTagId === _id ? null : (
               <Typography variant="body2" sx={{ opacity: 0.5 }}>
-                {documentsByTags[_id]?.length}
+                {documentsCountPerTags[_id] || ''}
               </Typography>
             )}
             <IconButton

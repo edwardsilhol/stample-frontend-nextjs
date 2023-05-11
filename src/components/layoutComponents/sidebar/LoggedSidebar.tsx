@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, Drawer, IconButton, Menu, MenuItem } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import Button from '@mui/material/Button';
@@ -11,11 +11,11 @@ import {
 import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
-import { useTagsByTeam } from '../../../stores/hooks/tag.hooks';
+import {
+  useDocumentsCountPerTag,
+  useTagsByTeam,
+} from '../../../stores/hooks/tag.hooks';
 import { TagsView } from './TagsView';
-import { getDocumentsByTags } from 'helpers/document.helpers';
-import { useDocumentsBySelectedTeam } from 'stores/hooks/document.hooks';
-import { MinimalDocument } from 'stores/types/document.types';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamId } from 'stores/data/team.data';
@@ -107,20 +107,11 @@ interface SidebarProps {
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const styles = useStyles();
   const isMobile = useIsMobile();
-  const { data: documents } = useDocumentsBySelectedTeam();
-  // const { data: teams } = useAllTeams();
+  const { data: documentsCountPerTags } = useDocumentsCountPerTag();
   const [selectedTeamId] = useSelectedTeamId();
-  // const selectedTeam = useMemo(
-  //   () => teams?.find((team) => team._id === selectedTeamId),
-  //   [teams, selectedTeamId],
-  // );
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
-  const documentsByTag = useMemo<Record<string, MinimalDocument[]>>(
-    () => getDocumentsByTags(documents || []),
-    [documents],
-  );
   const logout = useLogout();
   const [anchorAccountMenu, setAnchorAccountMenu] =
     React.useState<null | HTMLElement>(null);
@@ -206,7 +197,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       ) : null}
       {getAccountMenu()}
       {displaySelectTeams()}
-      <TagsView tags={richTags} documentsByTags={documentsByTag} />
+      <TagsView tags={richTags} documentsCountPerTags={documentsCountPerTags} />
     </Stack>
   );
   return (

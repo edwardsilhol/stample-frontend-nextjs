@@ -58,4 +58,13 @@ export type SearchDocumentsDTO = {
   text?: string;
   tags?: string[];
   team?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export type SearchDocumentsReturnType = {
+  documents: MinimalDocument[];
+  total: number;
+  page: number;
+  nextPage?: number;
 };

@@ -4,9 +4,11 @@ import {
   MinimalDocument,
   PopulatedDocument,
   SearchDocumentsDTO,
+  SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
+import { SEARCH_DOCUMENT_PAGE_SIZE } from 'constants/document.constant';
 
 export const fetchDocument = async (
   teamId: string,
@@ -59,11 +61,15 @@ export const fetchDocumentsByTeam = async (
 
 export const searchDocuments = async (
   searchDocumentsDTO: SearchDocumentsDTO,
-): Promise<MinimalDocument[]> => {
-  return await apiRequest<MinimalDocument[]>(
+): Promise<SearchDocumentsReturnType> => {
+  return await apiRequest<SearchDocumentsReturnType>(
     'POST',
     '/document/search',
     undefined,
-    searchDocumentsDTO,
+    {
+      ...searchDocumentsDTO,
+      page: searchDocumentsDTO.page || 0,
+      pageSize: SEARCH_DOCUMENT_PAGE_SIZE,
+    },
   );
 };
