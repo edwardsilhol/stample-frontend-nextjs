@@ -33,6 +33,7 @@
     "src"
 , "src/stores/data/.data.ts"  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "extension"
   ]
 }
