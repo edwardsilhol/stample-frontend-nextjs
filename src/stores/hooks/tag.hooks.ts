@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createTag,
+  fetchDocumentsCountPerTag,
   fetchTags,
   fetchTagsByTeam,
   updateTag,
@@ -77,4 +78,15 @@ export const useTagsByTeam = (teamId: string | null) => {
 export const useSelectedTeamTags = () => {
   const [selectedTeamId] = useSelectedTeamId();
   return useTagsByTeam(selectedTeamId);
+};
+
+export const useDocumentsCountPerTag = () => {
+  const [selectedTeamId] = useSelectedTeamId();
+  return useQuery(
+    ['DocumentsCountPerTag', { teamId: selectedTeamId }],
+    () => (selectedTeamId ? fetchDocumentsCountPerTag(selectedTeamId) : {}),
+    {
+      initialData: {},
+    },
+  );
 };

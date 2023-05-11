@@ -44,3 +44,12 @@ export const fetchTagsByTeam = async (teamId: string): Promise<ViewTags> => {
     };
   }
 };
+
+export const fetchDocumentsCountPerTag = async (
+  teamId: string,
+): Promise<Record<string, number>> => {
+  return await apiRequest<Record<string, number>>(
+    'GET',
+    `/team/${teamId}/documents-per-tag`,
+  );
+};

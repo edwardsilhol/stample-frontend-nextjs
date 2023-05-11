@@ -20,14 +20,6 @@ export const fetchDocument = async (
   }
 };
 
-export const fetchDocuments = async (): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', '/document/all/raw');
-  } catch (error) {
-    return [];
-  }
-};
-
 export const createDocument = async (
   createDocumentDto: CreateDocumentDTO,
 ): Promise<Document> => {
@@ -37,14 +29,6 @@ export const createDocument = async (
     undefined,
     createDocumentDto,
   );
-};
-
-export const fetchDocumentsByTag = async (tag: string): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', `/document/byTag/${tag}`);
-  } catch (error) {
-    return [];
-  }
 };
 
 export const updateDocumentAsGuest = async (
@@ -57,16 +41,6 @@ export const updateDocumentAsGuest = async (
     undefined,
     updateDocumentAsGuestDTO,
   );
-};
-export const fetchDocumentsByTeam = async (
-  teamId: string,
-): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', `/team/${teamId}/documents`);
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
 };
 export const searchDocuments = async (
   searchDocumentsDTO: SearchDocumentsDTO,

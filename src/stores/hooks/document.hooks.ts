@@ -5,13 +5,22 @@ import {
   fetchDocumentsByTeam,
   searchDocuments,
 } from '../api/document.api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   CreateDocumentDTO,
   SearchDocumentsDTO,
+  SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
 import { useSelectedTeamId } from 'stores/data/team.data';
+import { useSelectedTagId } from 'stores/data/tag.data';
+import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import { useMemo } from 'react';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
   return useQuery(['document', { documentId }], () => {
@@ -74,16 +83,50 @@ export const useDocumentsByTeam = (teamId: string | null) => {
   );
 };
 
-export const useDocumentsBySelectedTeam = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  return useDocumentsByTeam(selectedTeamId);
-};
-
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
-  useQuery(
+  useInfiniteQuery<SearchDocumentsReturnType>(
     ['documents', { searchDocumentsDTO }],
-    () => searchDocuments(searchDocumentsDTO),
+    ({ pageParam = 0 }) =>
+      searchDocuments({
+        ...searchDocumentsDTO,
+        page: pageParam,
+      }),
     {
-      initialData: [],
+      initialData: {
+        pages: [],
+        pageParams: [],
+      },
+      getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
     },
   );
+
+export const useSearchedDocuments = () => {
+  const [selectedTeamId] = useSelectedTeamId();
+  const [selectedTagId] = useSelectedTagId();
+  const [searchDocumentsQuery] = useSearchDocumentsQuery();
+  const { data, ...other } = useSearchDocuments({
+    ...(searchDocumentsQuery
+      ? {
+          text: searchDocumentsQuery,
+        }
+      : {}),
+    tags: selectedTagId ? [selectedTagId] : undefined,
+    team: selectedTeamId ? selectedTeamId : undefined,
+  });
+
+  const allDocuments = useMemo(
+    () => data?.pages.flatMap((page) => page.documents) || [],
+    [data?.pages],
+  );
+
+  const total = useMemo(
+    () => data?.pages[0]?.total || 0,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data?.pages[0]?.total],
+  );
+  return {
+    ...other,
+    allDocuments,
+    total,
+  };
+};

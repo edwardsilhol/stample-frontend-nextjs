@@ -1,6 +1,6 @@
 'use-client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
@@ -14,15 +14,17 @@ import { useSelectedTagId } from 'stores/data/tag.data';
 
 import {
   useContainerPosition,
+  useInfiniteLoader,
   useMasonry,
   usePositioner,
   useResizeObserver,
 } from 'masonic';
 import { useSearchDocumentsQuery } from 'stores/data/document.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
-import { useWindowScroll } from 'utils/hooks/useWindowScroll';
 import { useWindowHeight } from '@react-hook/window-size';
 import { DocumentView } from 'components/document/DocumentView';
+import { useScroller } from 'utils/hooks/useScroller';
+const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID = 'documents-view-scrollable';
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
   selectedDocumentId: string | null;
@@ -131,56 +133,93 @@ const DocumentGridItem: React.FC<{
     </Card>
   );
 };
-
 const DocumentsMasonry: React.FC<{
   documents: MinimalDocument[];
+  total: number;
   selectedDocumentId: string | null;
   setDocumentId: (id: string) => void;
   flatTags?: Tag[];
   searchId: string;
-}> = ({ documents, selectedDocumentId, setDocumentId, flatTags, searchId }) => {
+  fetchNextPage: () => void;
+}> = ({
+  documents,
+  total,
+  selectedDocumentId,
+  setDocumentId,
+  flatTags,
+  searchId,
+  fetchNextPage,
+}) => {
   const isMobile = useIsMobile();
   const containerRef = React.useRef(null);
-  const { width } = useContainerPosition(containerRef, [selectedDocumentId]);
+  const { width } = useContainerPosition(containerRef, [!!selectedDocumentId]);
   const positioner = usePositioner(
     {
       width,
       columnCount: isMobile || selectedDocumentId ? 1 : 3,
       columnGutter: selectedDocumentId ? 0 : 16,
     },
-    [documents, selectedDocumentId],
+    [searchId, !!selectedDocumentId],
   );
-  const scrollTop = useWindowScroll('documents-view-scrollable');
+  const { scrollTop, isScrolling } = useScroller(
+    DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID,
+  );
   const height = useWindowHeight();
   const resizeObserver = useResizeObserver(positioner);
+  const infiniteLoader = useInfiniteLoader(fetchNextPage, {
+    totalItems: total,
+    minimumBatchSize: 20,
+  });
+  const renderItem = useCallback(
+    (props: { index: number; data: MinimalDocument }) => {
+      return (
+        <DocumentGridItem
+          document={props.data}
+          selectedDocumentId={selectedDocumentId}
+          setDocumentId={setDocumentId}
+          flatTags={flatTags}
+        />
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [!!selectedDocumentId],
+  );
 
   return useMasonry({
     id: searchId,
     itemKey: (data) => data?._id,
     positioner,
     scrollTop,
+    isScrolling,
     height,
     containerRef,
     items: documents,
     overscanBy: 2,
     resizeObserver,
     role: 'grid',
-    render: ({ data }) => (
-      <DocumentGridItem
-        document={data}
-        selectedDocumentId={selectedDocumentId}
-        setDocumentId={setDocumentId}
-        flatTags={flatTags}
-      />
-    ),
+    render: renderItem,
+    onRender: infiniteLoader,
   });
 };
+const MemoizedDocumentsMasonry = React.memo(DocumentsMasonry, (prev, next) => {
+  return (
+    !!prev.selectedDocumentId === !!next.selectedDocumentId &&
+    prev.documents === next.documents &&
+    prev.flatTags === next.flatTags &&
+    prev.searchId === next.searchId
+  );
+});
 interface DocumentViewProps {
   documents: MinimalDocument[];
-  tagId: string | null;
+  fetchNextPage: () => void;
+  totalDocumentsCount: number;
 }
 
-export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
+export const DocumentsView: React.FC<DocumentViewProps> = ({
+  documents,
+  totalDocumentsCount,
+  fetchNextPage,
+}) => {
   const {
     data: { raw: flatTags },
   } = useSelectedTeamTags();
@@ -190,22 +229,23 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
   const [selectedTagId] = useSelectedTagId();
   const [searchDocumentsQuery] = useSearchDocumentsQuery();
   const [selectedTeamId] = useSelectedTeamId();
-
+  const searchId = useMemo(
+    () => `${selectedTeamId}-${selectedTagId}-${searchDocumentsQuery}`,
+    [selectedTagId, searchDocumentsQuery, selectedTeamId],
+  );
   useEffect(() => {
     if (documentId) {
       setDocumentId(null);
     }
+    if (isFullScreen) {
+      setIsFullScreen(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [documents]);
+  }, [searchId]);
 
   const onToggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
-  const searchId = useMemo(
-    () =>
-      `${selectedTeamId}-${selectedTagId}-${searchDocumentsQuery}-${documents.length}`,
-    [selectedTagId, searchDocumentsQuery, selectedTeamId, documents.length],
-  );
   return (
     <Box
       flex={1}
@@ -231,14 +271,16 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
             overflowX: 'hidden',
             overflowY: 'scroll',
           }}
-          id="documents-view-scrollable"
+          id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
         >
-          <DocumentsMasonry
+          <MemoizedDocumentsMasonry
             documents={documents}
             selectedDocumentId={documentId}
             setDocumentId={setDocumentId}
             flatTags={flatTags}
             searchId={searchId}
+            fetchNextPage={fetchNextPage}
+            total={totalDocumentsCount}
           />
         </Box>
       )}
