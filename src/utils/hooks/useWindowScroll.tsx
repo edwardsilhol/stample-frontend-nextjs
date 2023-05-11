@@ -14,7 +14,7 @@ export const useWindowScroll = (elementId: string) => {
     return () => {
       document
         .getElementById(elementId)
-        ?.removeEventListener('scroll', onScroll, { passive: true });
+        ?.removeEventListener('scroll', onScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
