@@ -1,27 +1,37 @@
 'use-client';
 
 import React, { useEffect, useMemo } from 'react';
-import { Card, CardContent, CardMedia } from '@mui/material';
-import Stack from '../muiOverrides/Stack';
+import { Card, CardContent, CardMedia, Stack } from '@mui/material';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
 import { MinimalDocument } from '../../stores/types/document.types';
-import { DocumentView } from './DocumentView';
 import { useSelectedTeamTags } from '../../stores/hooks/tag.hooks';
 import { Tag } from 'stores/types/tag.types';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
-import { Masonry } from '@mui/lab';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { getDocumentsByTags } from 'helpers/document.helpers';
 import { useSelectedTagId } from 'stores/data/tag.data';
 
+import {
+  useContainerPosition,
+  useMasonry,
+  usePositioner,
+  useResizeObserver,
+} from 'masonic';
+import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import { useSelectedTeamId } from 'stores/data/team.data';
+import { useWindowScroll } from 'utils/hooks/useWindowScroll';
+import { useWindowHeight } from '@react-hook/window-size';
+import { DocumentView } from 'components/document/DocumentView';
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
   selectedDocumentId: string | null;
   setDocumentId: (id: string) => void;
   flatTags?: Tag[];
 }> = ({ document, selectedDocumentId, setDocumentId, flatTags }) => {
+  if (!document) {
+    return null;
+  }
   return (
     <Card
       sx={{
@@ -122,10 +132,54 @@ const DocumentGridItem: React.FC<{
   );
 };
 
+const DocumentsMasonry: React.FC<{
+  documents: MinimalDocument[];
+  selectedDocumentId: string | null;
+  setDocumentId: (id: string) => void;
+  flatTags?: Tag[];
+  searchId: string;
+}> = ({ documents, selectedDocumentId, setDocumentId, flatTags, searchId }) => {
+  const isMobile = useIsMobile();
+  const containerRef = React.useRef(null);
+  const { width } = useContainerPosition(containerRef, [selectedDocumentId]);
+  const positioner = usePositioner(
+    {
+      width,
+      columnCount: isMobile || selectedDocumentId ? 1 : 3,
+      columnGutter: selectedDocumentId ? 0 : 16,
+    },
+    [documents, selectedDocumentId],
+  );
+  const scrollTop = useWindowScroll('documents-view-scrollable');
+  const height = useWindowHeight();
+  const resizeObserver = useResizeObserver(positioner);
+
+  return useMasonry({
+    id: searchId,
+    itemKey: (data) => data?._id,
+    positioner,
+    scrollTop,
+    height,
+    containerRef,
+    items: documents,
+    overscanBy: 2,
+    resizeObserver,
+    role: 'grid',
+    render: ({ data }) => (
+      <DocumentGridItem
+        document={data}
+        selectedDocumentId={selectedDocumentId}
+        setDocumentId={setDocumentId}
+        flatTags={flatTags}
+      />
+    ),
+  });
+};
 interface DocumentViewProps {
   documents: MinimalDocument[];
   tagId: string | null;
 }
+
 export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
   const {
     data: { raw: flatTags },
@@ -134,80 +188,58 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
   const [documentId, setDocumentId] = React.useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
   const [selectedTagId] = useSelectedTagId();
-  const documentsByTags = useMemo<Record<string, MinimalDocument[]>>(
-    () => getDocumentsByTags(documents),
-    [documents],
-  );
+  const [searchDocumentsQuery] = useSearchDocumentsQuery();
+  const [selectedTeamId] = useSelectedTeamId();
 
-  const filteredDocuments = useMemo<MinimalDocument[]>(() => {
-    if (!selectedTagId) {
-      return documents;
-    }
-    return documentsByTags[selectedTagId] ?? [];
-  }, [documents, documentsByTags, selectedTagId]);
   useEffect(() => {
-    if (
-      documentId &&
-      !documents.some((document) => document._id === documentId)
-    ) {
+    if (documentId) {
       setDocumentId(null);
-      setIsFullScreen(false);
     }
-  }, [documentId, documents]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [documents]);
 
   const onToggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
+  const searchId = useMemo(
+    () =>
+      `${selectedTeamId}-${selectedTagId}-${searchDocumentsQuery}-${documents.length}`,
+    [selectedTagId, searchDocumentsQuery, selectedTeamId, documents.length],
+  );
   return (
-    <Stack
-      direction="row"
+    <Box
       flex={1}
       sx={{
-        overflowY: 'hidden',
         overflowX: 'hidden',
+        minHeight: '100vh',
+        width: '100%',
+        overflowY: 'hidden',
+        display: documentId ? 'flex' : undefined,
       }}
     >
       {!isFullScreen && !(isMobile && documentId) && (
         <Box
-          padding={documentId ? 0 : { xs: 1, sm: 2 }}
+          paddingBottom={6}
+          paddingX={documentId ? 0 : { xs: 1, sm: 2 }}
+          paddingTop={documentId ? 0 : { xs: 1, sm: 2 }}
           sx={{
             height: '100%',
             width: documentId ? undefined : '100%',
             flex: documentId ? { md: 1 } : undefined,
-            overflowY: 'auto',
             backgroundColor: 'additionalColors.sidebarBackground',
+            boxSizing: 'border-box',
+            overflowX: 'hidden',
+            overflowY: 'scroll',
           }}
+          id="documents-view-scrollable"
         >
-          <Masonry
-            columns={
-              documentId
-                ? 1
-                : {
-                    xs: 1,
-                    sm: 2,
-                    md: 3,
-                    lg: 4,
-                  }
-            }
-            spacing={documentId ? 0 : 2}
-            sx={{
-              flex: 1,
-              marginRight: 0,
-              '&.MuiMasonry-root': {
-                margin: 0,
-              },
-            }}
-          >
-            {filteredDocuments.map((document, index) => (
-              <DocumentGridItem
-                key={index}
-                document={document}
-                selectedDocumentId={documentId}
-                setDocumentId={setDocumentId}
-                flatTags={flatTags}
-              />
-            ))}
-          </Masonry>
+          <DocumentsMasonry
+            documents={documents}
+            selectedDocumentId={documentId}
+            setDocumentId={setDocumentId}
+            flatTags={flatTags}
+            searchId={searchId}
+          />
         </Box>
       )}
       {documentId && (
@@ -219,6 +251,6 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({ documents }) => {
           onToggleFullScreen={onToggleFullScreen}
         />
       )}
-    </Stack>
+    </Box>
   );
 };

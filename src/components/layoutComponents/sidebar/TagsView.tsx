@@ -147,9 +147,9 @@ export const TagsView: FC<TagsViewProps> = ({
     <>
       <TreeView
         sx={{
-          maxHeight: '80vh',
-          flexGrow: 1,
+          flex: 1,
           overflowY: 'auto',
+          marginBottom: 2,
         }}
         defaultCollapseIcon={
           <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />

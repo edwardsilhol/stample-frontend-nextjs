@@ -73,7 +73,11 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({}) => {
   return (
     <>
       <TextField
-        value={selectedTeamId}
+        value={
+          selectedTeamId === null || selectedTeamId === undefined
+            ? ''
+            : selectedTeamId
+        }
         onChange={(event) => setSelectedTeamId(event.target.value as string)}
         label="Select Team"
         select

@@ -150,22 +150,6 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         open={isSelectTeamsAndOrganisationsOpen}
         onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
       />
-      {/* <Button
-        endIcon={<ArrowDropDownIcon />}
-        onClick={() => setIsSelectTeamsAndOrganisationsOpen(true)}
-        variant="outlined"
-        sx={{
-          paddingY: 0,
-          color: 'gray',
-          borderColor: 'gray',
-          ':hover': {
-            borderColor: 'gray',
-          },
-          textTransform: 'none',
-        }}
-      >
-        {selectedTeam ? getTeamDisplayedName(selectedTeam) : ''}
-      </Button> */}
     </Box>
   );
 

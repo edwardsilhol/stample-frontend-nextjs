@@ -3,6 +3,7 @@ import { Team } from 'stores/types/team.types';
 
 export const getDefaultSelectedTeamId = (teams: Team[]): string | null => {
   const personalTeam = teams.find((team) => team.isPersonal);
+  return teams[1]?._id;
   if (personalTeam) {
     return personalTeam._id;
   } else if (teams.length > 0) {

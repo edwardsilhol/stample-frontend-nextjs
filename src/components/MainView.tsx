@@ -16,7 +16,7 @@ export const MainView: React.FC<MainViewProps> = () => {
       direction="column"
       flex={1}
       height="100vh"
-      sx={{ overflowX: 'hidden' }}
+      sx={{ overflowX: 'hidden', overflowY: 'hidden' }}
     >
       <LoggedHeader
         addButtonToggled={toggledAddButton}
