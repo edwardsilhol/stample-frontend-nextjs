@@ -1,7 +1,7 @@
 'use-client';
 
 import React, { useEffect, useMemo } from 'react';
-import { Card, CardContent, CardMedia, Stack } from '@mui/material';
+import { Card, CardContent, CardMedia } from '@mui/material';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
 import { MinimalDocument } from '../../stores/types/document.types';

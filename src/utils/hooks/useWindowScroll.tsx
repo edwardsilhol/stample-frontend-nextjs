@@ -5,6 +5,7 @@ export const useWindowScroll = (elementId: string) => {
   const onScroll = useCallback(() => {
     const scrollTop = document.getElementById(elementId)?.scrollTop;
     setScrollTop(scrollTop || 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     document
