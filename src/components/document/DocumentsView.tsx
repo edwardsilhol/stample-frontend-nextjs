@@ -1,7 +1,14 @@
 'use-client';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardMedia } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Toolbar,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Typography from '../muiOverrides/Typography';
 import Box from '../muiOverrides/Box';
 import { MinimalDocument } from '../../stores/types/document.types';
@@ -24,7 +31,10 @@ import { useSelectedTeamId } from 'stores/data/team.data';
 import { useWindowHeight } from '@react-hook/window-size';
 import { DocumentView } from 'components/document/DocumentView';
 import { useScroller } from 'utils/hooks/useScroller';
-const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID = 'documents-view-scrollable';
+export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
+  'documents-view-scrollable';
+
+const DOCUMENT_SELECTED_CONTAINER_ID = 'documents-selected';
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
   selectedDocumentId: string | null;
@@ -150,19 +160,20 @@ const DocumentsMasonry: React.FC<{
   searchId,
   fetchNextPage,
 }) => {
-  const isMobile = useIsMobile();
   const containerRef = React.useRef(null);
   const { width } = useContainerPosition(containerRef, [!!selectedDocumentId]);
   const positioner = usePositioner(
     {
       width,
-      columnCount: isMobile || selectedDocumentId ? 1 : 3,
+      columnWidth: 200,
       columnGutter: selectedDocumentId ? 0 : 16,
     },
-    [searchId, !!selectedDocumentId],
+    [searchId, !!selectedDocumentId, width],
   );
   const { scrollTop, isScrolling } = useScroller(
-    DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID,
+    selectedDocumentId
+      ? DOCUMENT_SELECTED_CONTAINER_ID
+      : DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID,
   );
   const height = useWindowHeight();
   const resizeObserver = useResizeObserver(positioner);
@@ -248,30 +259,40 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   };
   return (
     <Box
-      flex={1}
+      paddingTop={{
+        xs: '58px',
+        sm: '65px',
+      }}
       sx={{
-        overflowX: 'hidden',
-        minHeight: '100vh',
-        width: '100%',
-        overflowY: 'hidden',
-        display: documentId ? 'flex' : undefined,
+        minHeight: '100%',
+        ...(isFullScreen && !isMobile
+          ? {
+              width: '100%',
+            }
+          : {}),
+        ...(documentId && !isFullScreen && !isMobile
+          ? {
+              overflowX: 'hidden',
+              overflowY: 'hidden',
+              display: documentId ? 'flex' : undefined,
+            }
+          : {}),
       }}
     >
       {!isFullScreen && !(isMobile && documentId) && (
         <Box
-          paddingBottom={6}
           paddingX={documentId ? 0 : { xs: 1, sm: 2 }}
-          paddingTop={documentId ? 0 : { xs: 1, sm: 2 }}
+          paddingY={documentId ? 0 : { xs: 1 }}
           sx={{
-            height: '100%',
             width: documentId ? undefined : '100%',
             flex: documentId ? { md: 1 } : undefined,
             backgroundColor: 'additionalColors.sidebarBackground',
-            boxSizing: 'border-box',
             overflowX: 'hidden',
-            overflowY: 'scroll',
+            overflowY: documentId ? 'scroll' : 'hidden',
+            height: documentId ? undefined : 'auto',
+            minHeight: '100%',
           }}
-          id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
+          id={DOCUMENT_SELECTED_CONTAINER_ID}
         >
           <MemoizedDocumentsMasonry
             documents={documents}

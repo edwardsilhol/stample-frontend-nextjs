@@ -1,12 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import Stack from '../muiOverrides/Stack';
 import {
+  AppBar,
   Avatar,
   Box,
   Button,
   CircularProgress,
   Divider,
   IconButton,
+  Slide,
+  Toolbar,
+  useScrollTrigger,
 } from '@mui/material';
 import {
   Close,
@@ -33,6 +37,8 @@ import { CommentMention, CommentMentionType } from 'stores/types/comment.types';
 import { Editor, EditorState } from 'react-draft-wysiwyg';
 import { convertToRaw } from 'draft-js';
 import { DocumentComment } from './DocumentComment';
+import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './DocumentsView';
+
 interface DocumentViewProps {
   documentId: string;
   tags?: Tag[];
@@ -59,6 +65,71 @@ const DocumentCreator: React.FC<{
     </Typography>
   </Stack>
 );
+const DocumentViewHeaderContent: React.FC<{
+  isFullScreen: boolean;
+  isMobile: boolean;
+  onToggleFullScreen: () => void;
+  setDocumentId: (id: string) => void;
+}> = ({ isFullScreen, isMobile, onToggleFullScreen, setDocumentId }) => {
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      paddingY={1}
+    >
+      <IconButton
+        onClick={() => {
+          setDocumentId('');
+          if (isFullScreen) {
+            onToggleFullScreen();
+          }
+        }}
+        sx={{ padding: 0, borderRadius: '4px' }}
+      >
+        <Close />
+      </IconButton>
+      {!isMobile && (
+        <IconButton onClick={onToggleFullScreen}>
+          {isFullScreen ? <FullscreenExit /> : <Fullscreen />}
+        </IconButton>
+      )}
+    </Stack>
+  );
+};
+
+const DocumentViewHeader: React.FC<{
+  isFullScreen: boolean;
+  isMobile: boolean;
+  onToggleFullScreen: () => void;
+  setDocumentId: (id: string) => void;
+}> = (props) => {
+  const isMobile = useIsMobile();
+  const trigger = useScrollTrigger({
+    target:
+      document.getElementById(DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID) ??
+      undefined,
+  });
+  return isMobile ? (
+    <>
+      <Slide appear={false} direction="down" in={!trigger}>
+        <AppBar
+          sx={{
+            backgroundColor: 'background.paper',
+            marginTop: 7,
+            paddingX: 2,
+          }}
+          elevation={0}
+        >
+          <DocumentViewHeaderContent {...props} />
+        </AppBar>
+      </Slide>
+      <Toolbar />
+    </>
+  ) : (
+    <DocumentViewHeaderContent {...props} />
+  );
+};
 
 export const DocumentView: React.FC<DocumentViewProps> = ({
   documentId,
@@ -70,7 +141,10 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const [loggedInUser] = useLoggedInUser();
   const isMobile = useIsMobile();
   const [selectedTeamId] = useSelectedTeamId();
-  const { data: document, isLoading } = useDocument(selectedTeamId, documentId);
+  const { data: viewedDocument, isLoading } = useDocument(
+    selectedTeamId,
+    documentId,
+  );
   const { mutate: createComment } = useCreateComment(documentId);
   const { data: selectedTeam } = useSelectedTeam();
   const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
@@ -78,8 +152,8 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
       [
-        ...(document?.guests || []),
-        ...([document?.creator] || []),
+        ...(viewedDocument?.guests || []),
+        ...([viewedDocument?.creator] || []),
         ...(selectedTeam?.users.map((user) => user.user) || []),
       ].reduce(
         (accumulator, user) => ({
@@ -92,14 +166,14 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
         }),
         {} as Record<string, UserForOtherClient>,
       ),
-    [document?.guests, document?.creator, selectedTeam?.users],
+    [viewedDocument?.guests, viewedDocument?.creator, selectedTeam?.users],
   );
   const isDocumentLiked = useMemo(
     () =>
-      document?.likes.some(
+      viewedDocument?.likes.some(
         (user) => user._id.toString() === loggedInUser?._id.toString(),
       ),
-    [document?.likes, loggedInUser],
+    [viewedDocument?.likes, loggedInUser],
   );
   const userMentions = useMemo(
     () => [
@@ -110,8 +184,8 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       },
       ...uniqBy(
         [
-          ...(document?.guests || []),
-          document?.creator,
+          ...(viewedDocument?.guests || []),
+          viewedDocument?.creator,
           ...(selectedTeam?.users.map((user) => user.user) || []),
         ],
         (user) => user?._id,
@@ -123,7 +197,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
           url: user._id,
         })),
     ],
-    [document?.guests, document?.creator, selectedTeam?.users],
+    [viewedDocument?.guests, viewedDocument?.creator, selectedTeam?.users],
   );
   const onSubmitAddComment = () => {
     if (!editedCommentText) {
@@ -181,64 +255,49 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
       direction="column"
       flex={{ md: 2, lg: 3 }}
       sx={{
-        borderLeft: isFullScreen ? undefined : '1px solid #d3d4d5',
+        borderLeft: isFullScreen || isMobile ? undefined : '1px solid #d3d4d5',
         overflowX: 'hidden',
+        overflowY: isMobile || isFullScreen ? 'hidden' : 'auto',
       }}
       paddingX={2}
-      height="100%"
+      minHeight="100%"
     >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        paddingTop={2}
-        paddingBottom={1}
-      >
-        <IconButton
-          onClick={() => {
-            setDocumentId('');
-            if (isFullScreen) {
-              onToggleFullScreen();
-            }
-          }}
-          sx={{ padding: 0, borderRadius: '4px' }}
-        >
-          <Close />
-        </IconButton>
-        {!isMobile && (
-          <IconButton onClick={onToggleFullScreen}>
-            {isFullScreen ? <FullscreenExit /> : <Fullscreen />}
-          </IconButton>
-        )}
-      </Stack>
+      <DocumentViewHeader
+        isFullScreen={isFullScreen}
+        isMobile={isMobile}
+        setDocumentId={setDocumentId}
+        onToggleFullScreen={onToggleFullScreen}
+      />
       {isLoading ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
           <CircularProgress />
         </Stack>
-      ) : !document ? (
+      ) : !viewedDocument ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
           <h1>Document not found</h1>
         </Stack>
       ) : (
         <Stack
           width="100%"
-          sx={{ overflowY: 'auto' }}
-          height="100%"
+          minHeight="100%"
           paddingX={{ xs: 1, md: 3, lg: 5 }}
           alignItems="center"
         >
           <Box maxWidth="md" width="100%" paddingBottom={2}>
             <Stack alignItems="center" width="100%">
               <Typography variant="h1" paddingBottom={2}>
-                {document.title}
+                {viewedDocument.title}
               </Typography>
               <Box paddingBottom={1}>
-                <DocumentTags tags={tags} documentTagsIds={document.tags} />
+                <DocumentTags
+                  tags={tags}
+                  documentTagsIds={viewedDocument.tags}
+                />
               </Box>
               <DocumentHeader
-                {...document}
-                likesCount={document.likes?.length ?? 0}
-                readersCount={document.readers?.length ?? 0}
+                {...viewedDocument}
+                likesCount={viewedDocument.likes?.length ?? 0}
+                readersCount={viewedDocument.readers?.length ?? 0}
                 typographyProps={{ variant: 'body2' }}
               />
             </Stack>
@@ -249,34 +308,34 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
                 {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
               </IconButton>
             </Stack>
-            {document.creator && (
+            {viewedDocument.creator && (
               <>
                 <Divider sx={{ marginY: 2 }} />
-                <DocumentCreator creator={document.creator} />
+                <DocumentCreator creator={viewedDocument.creator} />
               </>
             )}
             <Divider sx={{ marginY: 2 }} />
-            {document?.mainMedia?.src ? (
+            {viewedDocument?.mainMedia?.src ? (
               <Box
                 component="img"
-                src={document.mainMedia.src}
+                src={viewedDocument.mainMedia.src}
                 width="100%"
                 paddingX={8}
               />
-            ) : document?.mainMedia?.html ? (
+            ) : viewedDocument?.mainMedia?.html ? (
               <Box
                 sx={{ maxWidth: '100px' }}
                 dangerouslySetInnerHTML={{
-                  __html: document.mainMedia.html,
+                  __html: viewedDocument.mainMedia.html,
                 }}
               />
             ) : null}
-            <div dangerouslySetInnerHTML={{ __html: document.content }} />
+            <div dangerouslySetInnerHTML={{ __html: viewedDocument.content }} />
             <Divider sx={{ marginY: 2 }} />
             <Typography variant="h2" marginBottom={2}>
               Comments
             </Typography>
-            {document.comments?.map((comment, index) => (
+            {viewedDocument.comments?.map((comment, index) => (
               <DocumentComment
                 key={index}
                 index={index}
