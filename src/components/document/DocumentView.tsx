@@ -121,10 +121,11 @@ const DocumentViewHeader: React.FC<{
           }}
           elevation={0}
         >
-          <DocumentViewHeaderContent {...props} />
+          <Toolbar>
+            <DocumentViewHeaderContent {...props} />
+          </Toolbar>
         </AppBar>
       </Slide>
-      <Toolbar />
     </>
   ) : (
     <DocumentViewHeaderContent {...props} />
@@ -268,6 +269,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({
         setDocumentId={setDocumentId}
         onToggleFullScreen={onToggleFullScreen}
       />
+      <Toolbar />
       {isLoading ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
           <CircularProgress />

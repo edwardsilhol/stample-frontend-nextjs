@@ -139,7 +139,12 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     <Box paddingX={1} paddingY={2}>
       <SelectTeamsAndOrganisationsDialog
         open={isSelectTeamsAndOrganisationsOpen}
-        onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
+        onClose={() => {
+          setIsSelectTeamsAndOrganisationsOpen(false);
+          if (isMobile) {
+            setIsSidebarOpen(false);
+          }
+        }}
       />
     </Box>
   );
@@ -197,7 +202,15 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       ) : null}
       {getAccountMenu()}
       {displaySelectTeams()}
-      <TagsView tags={richTags} documentsCountPerTags={documentsCountPerTags} />
+      <TagsView
+        tags={richTags}
+        documentsCountPerTags={documentsCountPerTags}
+        onSelectTag={() => {
+          if (isMobile) {
+            setIsSidebarOpen(false);
+          }
+        }}
+      />
     </Stack>
   );
   return (

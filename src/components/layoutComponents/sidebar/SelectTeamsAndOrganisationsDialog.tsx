@@ -21,7 +21,9 @@ interface Props {
   open: boolean;
   onClose: () => void;
 }
-export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({}) => {
+export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
+  onClose,
+}) => {
   // const [selectedOrganisationId, setSelectedOrganisationId] =
   //   useSelectedOrganisationId();
   const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
@@ -78,7 +80,10 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({}) => {
             ? ''
             : selectedTeamId
         }
-        onChange={(event) => setSelectedTeamId(event.target.value as string)}
+        onChange={(event) => {
+          setSelectedTeamId(event.target.value as string);
+          onClose();
+        }}
         label="Select Team"
         select
         sx={{

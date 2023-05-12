@@ -1,19 +1,22 @@
-import { atom, useAtom } from 'jotai';
+import { SetStateAction, atom, useAtom } from 'jotai';
 import { useTeam } from 'stores/hooks/team.hooks';
 import { useSelectedTagId } from './tag.data';
-import { useEffect } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const selectedTeamIdAtom = atom<string | null>(null);
-export const useSelectedTeamId = () => {
-  const [selectedTagId, setSelectedTagId] = useSelectedTagId();
-  const teamIdHook = useAtom(selectedTeamIdAtom);
-  useEffect(() => {
-    if (selectedTagId) {
+export const useSelectedTeamId = (): [
+  string | null,
+  (id: SetStateAction<string | null>) => void,
+] => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSelectedTagId] = useSelectedTagId();
+  const [selectedTeamId, setSelectedTeamId] = useAtom(selectedTeamIdAtom);
+  return [
+    selectedTeamId,
+    (id: SetStateAction<string | null>) => {
       setSelectedTagId(null);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [teamIdHook[0]]);
-  return teamIdHook;
+      setSelectedTeamId(id);
+    },
+  ];
 };
 export const useSelectedTeam = () => {
   const [selectedTeamId] = useSelectedTeamId();

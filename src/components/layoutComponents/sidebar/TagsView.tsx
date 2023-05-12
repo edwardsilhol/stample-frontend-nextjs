@@ -13,10 +13,12 @@ import { useSelectedTeamId } from 'stores/data/team.data';
 interface TagsViewProps {
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
+  onSelectTag: () => void;
 }
 export const TagsView: FC<TagsViewProps> = ({
   tags,
   documentsCountPerTags,
+  onSelectTag,
 }) => {
   const [selectedTeamId] = useSelectedTeamId();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -48,6 +50,7 @@ export const TagsView: FC<TagsViewProps> = ({
   ) => {
     event.stopPropagation();
     setSelectedTagId(id);
+    onSelectTag();
   };
   const handleClose = () => {
     setAnchorEl(null);
