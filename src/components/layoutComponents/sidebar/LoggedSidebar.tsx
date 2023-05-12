@@ -202,29 +202,26 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   );
   return (
     <>
-      {!isMobile ? (
-        displayDrawerContent()
-      ) : (
-        <Drawer
-          variant={'temporary'}
-          open={isSidebarOpen}
-          onClose={handleSidebarToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            '& .MuiDrawer-paper': {
-              background: 'none',
-              border: 'none',
-              minWidth: '200px',
-              width: '300px',
-              maxWidth: '25%',
-            },
-          }}
-        >
-          {displayDrawerContent()}
-        </Drawer>
-      )}
+      <Drawer
+        variant={isMobile ? 'temporary' : 'permanent'}
+        open={isSidebarOpen}
+        onClose={handleSidebarToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            background: 'none',
+            border: 'none',
+            minWidth: '200px',
+            width: '300px',
+            maxWidth: '25%',
+          },
+        }}
+      >
+        {displayDrawerContent()}
+      </Drawer>
+
       {/* <SelectTeamsAndOrganisationsDialog
         open={isSelectTeamsAndOrganisationsOpen}
         onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
