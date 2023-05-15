@@ -1,25 +1,31 @@
-'use-client';
-
-import React from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { Document } from '../../../stores/types/document.types';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { MinimalDocument } from '../../../stores/types/document.types';
 import { Tag } from '@src/stores/types/tag.types';
 import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
-import { Masonry } from '@mui/lab';
-import { useSearchDocuments } from '@src/stores/hooks/document.hooks';
-import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import { useAllTags } from '@src/stores/hooks/tag.hooks';
+import { useWindowHeight } from '@react-hook/window-size';
+import {
+  useContainerPosition,
+  useInfiniteLoader,
+  useMasonry,
+  usePositioner,
+  useResizeObserver,
+  useScroller,
+} from 'masonic';
+import { useIsMobile } from '@src/utils/hooks/useIsMobile';
+import { useSearchDocumentsQuery } from '@src/stores/data/document.data';
+import {
+  useSearchDocuments,
+  useSearchedDocuments,
+} from '@src/stores/hooks/document.hooks';
+import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
+import { SelectTeam } from '../SelectTeam';
+import { useSelectedTeamId } from '@src/stores/data/team.data';
 
 const DocumentGridItem: React.FC<{
-  document: Document;
+  document: MinimalDocument;
   flatTags?: Tag[];
 }> = ({ document, flatTags }) => {
   return (
@@ -117,56 +123,104 @@ const DocumentGridItem: React.FC<{
   );
 };
 
+export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
+  'documents-view-scrollable';
+
+const DOCUMENT_SELECTED_CONTAINER_ID = 'documents-selected';
+const DocumentsMasonry: React.FC<{
+  documents: MinimalDocument[];
+  total: number;
+  flatTags?: Tag[];
+  searchId: string;
+  fetchNextPage: () => void;
+}> = ({ documents, total, flatTags, searchId, fetchNextPage }) => {
+  const containerRef = React.useRef(null);
+  const { width } = useContainerPosition(containerRef);
+  const positioner = usePositioner(
+    {
+      width,
+      columnWidth: 200,
+      columnGutter: 16,
+    },
+    [searchId, width],
+  );
+  const { scrollTop, isScrolling } = useScroller();
+  const height = useWindowHeight();
+  const resizeObserver = useResizeObserver(positioner);
+  const infiniteLoader = useInfiniteLoader(fetchNextPage, {
+    totalItems: total,
+    minimumBatchSize: 20,
+  });
+  const renderItem = useCallback(
+    (props: { index: number; data: MinimalDocument }) => {
+      return <DocumentGridItem document={props.data} flatTags={flatTags} />;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  return useMasonry<MinimalDocument>({
+    id: searchId,
+    itemKey: (data) => data?._id,
+    positioner,
+    scrollTop,
+    isScrolling,
+    height,
+    containerRef,
+    items: documents,
+    overscanBy: 2,
+    resizeObserver,
+    role: 'grid',
+    render: renderItem,
+    onRender: infiniteLoader,
+  });
+};
+const MemoizedDocumentsMasonry = React.memo(DocumentsMasonry, (prev, next) => {
+  return (
+    prev.documents === next.documents &&
+    prev.flatTags === next.flatTags &&
+    prev.searchId === next.searchId
+  );
+});
+
 export const DocumentsView: React.FC = () => {
   const {
     data: { raw: flatTags },
-    isLoading,
   } = useAllTags();
-  const { data: documents } = useSearchDocuments({
-    text: getGoogleSearchQuery(document),
-  });
-  return isLoading ? null : (
-    <Stack
-      direction="row"
-      flex={1}
+
+  const { allDocuments, fetchNextPage, total } = useSearchedDocuments();
+  const [selectedTeamId] = useSelectedTeamId();
+  const [searchDocumentsQuery, setSearchDocumentsQuery] =
+    useSearchDocumentsQuery();
+  useEffect(() => {
+    // @ts-ignore
+    setSearchDocumentsQuery(getGoogleSearchQuery(document));
+  }, [document]);
+  useEffect(() => {
+    console.log('allDocuments', allDocuments);
+  }, [allDocuments]);
+  const searchId = useMemo(
+    () => `${searchDocumentsQuery}-${selectedTeamId}-${allDocuments.length}`,
+    [searchDocumentsQuery, selectedTeamId, allDocuments.length],
+  );
+  return (
+    <Box
+      paddingX={{ xs: 1, sm: 2 }}
+      paddingBottom={2}
       sx={{
-        overflowY: 'hidden',
-        overflowX: 'hidden',
-        width: 'var(--center-width);',
+        minHeight: '100%',
       }}
     >
-      <Box
-        padding={{ xs: 1, sm: 2 }}
-        sx={{
-          height: '100%',
-          width: '100%',
-          flex: { md: 1 },
-          overflowY: 'auto',
-        }}
-      >
-        <Masonry
-          columns={{
-            xs: 1,
-            sm: 2,
-          }}
-          spacing={2}
-          sx={{
-            flex: 1,
-            marginRight: 0,
-            '&.MuiMasonry-root': {
-              margin: 0,
-            },
-          }}
-        >
-          {(documents || []).map((document, index) => (
-            <DocumentGridItem
-              key={index}
-              document={document}
-              flatTags={flatTags}
-            />
-          ))}
-        </Masonry>
+      <SelectTeam />
+      <Box paddingTop={2}>
+        <MemoizedDocumentsMasonry
+          documents={allDocuments}
+          flatTags={flatTags}
+          searchId={searchId}
+          fetchNextPage={fetchNextPage}
+          total={total}
+        />
       </Box>
-    </Stack>
+    </Box>
   );
 };

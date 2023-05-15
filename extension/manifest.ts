@@ -8,7 +8,6 @@ const manifest: chrome.runtime.ManifestV3 = {
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description,
-  options_page: 'src/pages/options/index.html',
   background: {
     service_worker: 'src/pages/background/index.js',
     type: 'module',
@@ -22,13 +21,11 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   content_scripts: [
     {
-      matches: ['https:/google.com/search*'],
+      matches: ['https://*.google.com/search?*'],
       js: ['src/pages/content/index.js'],
-      // KEY for cache invalidation
       css: [],
     },
   ],
-  devtools_page: 'src/pages/devtools/index.html',
   web_accessible_resources: [
     {
       resources: ['assets/js/*.js', 'assets/css/*.css', 'icons/*.png'],
