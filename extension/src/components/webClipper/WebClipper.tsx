@@ -27,7 +27,10 @@ import { MenuItem } from '@mui/material';
 import { useTagsByTeam } from '../../stores/hooks/tag.hooks';
 import { SelectTags } from './SelectTags';
 import { Button } from '@mui/material';
-import { useCreateDocument } from '../../stores/hooks/document.hooks';
+import {
+  useCreateDocument,
+  useSearchDocumentsUrlsByUrls,
+} from '../../stores/hooks/document.hooks';
 import { useCreateComment } from '../../stores/hooks/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
 import { useSearchDocuments } from '../../stores/hooks/document.hooks';
@@ -59,10 +62,10 @@ export const WebClipper: React.FC<Props> = () => {
     isSuccess: isCreateCommentSuccess,
   } = useCreateComment();
   const { data: currentPageUrl } = useCurrentPageUrl();
-  const { data: alreadyPresentDocument, isLoading: isSearchDocumentsLoading } =
-    useSearchDocuments({
-      url: [currentPageUrl],
-    });
+  const {
+    data: alreadyPresentDocumentUrls,
+    isLoading: isSearchDocumentsLoading,
+  } = useSearchDocumentsUrlsByUrls([currentPageUrl]);
   const isCreateDocumentAndCommentLoading = useMemo(
     () => isCreateDocumentLoading || isCreateCommentLoading,
     [isCreateDocumentLoading, isCreateCommentLoading],
@@ -72,8 +75,8 @@ export const WebClipper: React.FC<Props> = () => {
     [isCreateDocumentSuccess, isCreateCommentSuccess],
   );
   const isAlreadyPresent = useMemo(
-    () => alreadyPresentDocument?.length > 0 && !isSuccess,
-    [alreadyPresentDocument, isSuccess],
+    () => alreadyPresentDocumentUrls?.length > 0 && !isSuccess,
+    [alreadyPresentDocumentUrls, isSuccess],
   );
   useEffect(() => {
     if (!teams) {
@@ -148,11 +151,13 @@ export const WebClipper: React.FC<Props> = () => {
       return;
     }
     const document = await createDocument({
-      team: selectedTeamId,
-      tags: selectedTagsIds,
-      keyInsight: insight,
-      type: 'webpage',
-      ...clippedPage,
+      teamId: selectedTeamId,
+      createDocumentDTO: {
+        tags: selectedTagsIds,
+        keyInsight: insight,
+        type: 'webpage',
+        ...clippedPage,
+      },
     });
     if (comment?.content) {
       await createComment({

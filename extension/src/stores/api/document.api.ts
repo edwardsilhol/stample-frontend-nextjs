@@ -4,8 +4,11 @@ import {
   PopulatedDocument,
   UpdateDocumentAsGuestDTO,
   SearchDocumentsDTO,
+  SearchDocumentsReturnType,
+  MinimalDocument,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
+import { SEARCH_DOCUMENT_PAGE_SIZE } from '@src/constants/document.constant';
 
 export const fetchDocument = async (
   documentId: string,
@@ -21,11 +24,12 @@ export const fetchDocument = async (
 };
 
 export const createDocument = async (
+  teamId: string,
   createDocumentDto: CreateDocumentDTO,
 ): Promise<Document> => {
   return await apiRequest<Document>(
     'POST',
-    '/document',
+    `/team/${teamId}/document`,
     undefined,
     createDocumentDto,
   );
@@ -44,15 +48,28 @@ export const updateDocumentAsGuest = async (
 };
 export const searchDocuments = async (
   searchDocumentsDTO: SearchDocumentsDTO,
-): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>(
-      'POST',
-      '/document/search',
-      undefined,
-      searchDocumentsDTO,
-    );
-  } catch (error) {
-    return [];
-  }
+): Promise<SearchDocumentsReturnType> => {
+  return await apiRequest<SearchDocumentsReturnType>(
+    'POST',
+    '/document/search',
+    undefined,
+    {
+      ...searchDocumentsDTO,
+      page: searchDocumentsDTO.page || 0,
+      pageSize: SEARCH_DOCUMENT_PAGE_SIZE,
+    },
+  );
+};
+
+export const searchDocumentsUrlsByUrls = async (
+  urls: string[],
+): Promise<string[]> => {
+  return await apiRequest<string[]>(
+    'POST',
+    '/document/search/urls',
+    undefined,
+    {
+      urls,
+    },
+  );
 };

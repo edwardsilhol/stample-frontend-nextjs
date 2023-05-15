@@ -1,5 +1,5 @@
 import { AlreadyPresentStampleIcon } from '@src/components/content/AlreadyPresentStampleIcon';
-import { StampleTabTitle } from '@src/pages/content/components/StampleTabTitle';
+import { StampleTabTitle } from '@src/components/content/StampleTabTitle';
 import { createRoot } from 'react-dom/client';
 import {
   GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
@@ -104,8 +104,13 @@ const findStampleTabBarItem = (document: Document) => {
 };
 
 export const injectStampleTabTitle = (document: Document) => {
+  console.log('injectStampleTabTitle');
   const tabBarItems = findTabBarItems(document);
   const container = tabBarItems[0].parentElement;
+  console.log({
+    container,
+    tabBarItems,
+  });
   const stampleTabTitle = document.createElement('div');
   container.append(stampleTabTitle);
   stampleTabTitle.id = STAMPLE_TAB_TITLE_ID;

@@ -1,0 +1,1 @@
+export const SEARCH_DOCUMENT_PAGE_SIZE = 100;

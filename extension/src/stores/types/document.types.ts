@@ -11,7 +11,6 @@ export type CreateDocumentDTO = Pick<
   | 'url'
   | 'type'
   | 'tags'
-  | 'team'
   | 'keyInsight'
   | 'author'
   | 'authorUrl'
@@ -64,7 +63,18 @@ export type UpdateDocumentAsGuestDTO = {
   isReader?: boolean;
 };
 
+export type MinimalDocument = Omit<Document, 'content' | 'comments'>;
 export type SearchDocumentsDTO = {
   text?: string;
-  url?: string[];
+  tags?: string[];
+  team?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export type SearchDocumentsReturnType = {
+  documents: MinimalDocument[];
+  total: number;
+  page: number;
+  nextPage?: number;
 };
