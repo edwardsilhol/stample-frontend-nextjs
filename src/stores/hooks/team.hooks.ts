@@ -1,6 +1,17 @@
-import { createTeam, fetchTeam, fetchTeams } from '../api/team.api';
+import {
+  answerInvitation,
+  createTeam,
+  fetchTeam,
+  fetchTeamByInvitation,
+  fetchTeams,
+  updateTeam,
+} from '../api/team.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CreateTeamDTO } from '../types/team.types';
+import {
+  AnswerInvitationDTO,
+  CreateTeamDTO,
+  UpdateTeamDTO,
+} from '../types/team.types';
 import { getSortedTeams } from 'helpers/team.helper';
 
 export const useTeam = (teamId: string | null) => {
@@ -24,5 +35,41 @@ export const useCreateTeam = () => {
         queryClient.invalidateQueries(['allTeams']);
       },
     },
+  );
+};
+
+export const useUpdateTeam = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({
+      teamId,
+      updateTeamDto,
+    }: {
+      teamId: string;
+      updateTeamDto: UpdateTeamDTO;
+    }) => updateTeam(teamId, updateTeamDto),
+    {
+      onSuccess: (_, { teamId }) => {
+        queryClient.invalidateQueries(['team', { teamId }]);
+      },
+    },
+  );
+};
+
+export const useTeamByInvitation = (teamId: string) => {
+  return useQuery(['teamByInvitation', { teamId }], () =>
+    fetchTeamByInvitation(teamId),
+  );
+};
+
+export const useAnswerInvitation = () => {
+  return useMutation(
+    ({
+      teamId,
+      answerInvitationDto,
+    }: {
+      teamId: string;
+      answerInvitationDto: AnswerInvitationDTO;
+    }) => answerInvitation(teamId, answerInvitationDto),
   );
 };

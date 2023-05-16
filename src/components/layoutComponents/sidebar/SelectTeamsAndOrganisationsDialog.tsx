@@ -1,6 +1,7 @@
-import { Add } from '@mui/icons-material';
+import { Add, Edit } from '@mui/icons-material';
 import {
   Button,
+  IconButton,
   // Dialog,
   // DialogContent,
   MenuItem,
@@ -12,10 +13,11 @@ import { CreateTeamDialog } from 'components/team/CreateTeamDialog';
 import { getDefaultSelectedTeamId } from 'helpers/team.helper';
 import React, { useEffect } from 'react';
 // import { useSelectedOrganisationId } from 'stores/data/organisation.data';
-import { useSelectedTeamId } from 'stores/data/team.data';
+import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
 // import { useAllOrganisations } from 'stores/hooks/organisation.hooks';
 import { useAllTeams } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../helpers/team.helper';
+import { Team } from 'stores/types/team.types';
 
 interface Props {
   open: boolean;
@@ -27,10 +29,26 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   // const [selectedOrganisationId, setSelectedOrganisationId] =
   //   useSelectedOrganisationId();
   const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
-  const [isCreateTeamOpen, setIsCreateTeamOpen] = React.useState(false);
+  const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] =
+    React.useState(false);
+  const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] =
+    React.useState(false);
+  const [isSelectOpen, setIsSelectOpen] = React.useState(false);
+
   // const [isCreateOrganisationOpen, setIsCreateOrganisationOpen] =
   //   React.useState(false);
   const { data: teams } = useAllTeams();
+  const { data: team } = useSelectedTeam();
+  const teamsByIds: Record<string, Team> = React.useMemo(() => {
+    if (!teams) return {};
+    return teams.reduce((accumulator, team) => {
+      return {
+        ...accumulator,
+        [team._id]: team,
+      };
+    }, {});
+  }, [teams]);
+
   // const { data: organisations } = useAllOrganisations();
 
   // useEffect(() => {
@@ -40,10 +58,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [organisations]);
-  const handleClickCreateTeam = () => {
-    setIsCreateTeamOpen(true);
-  };
-
   // const handleClickCreateOrganisation = () => {
   //   setIsCreateOrganisationOpen(true);
   // };
@@ -80,6 +94,15 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
             ? ''
             : selectedTeamId
         }
+        SelectProps={{
+          open: isSelectOpen,
+          onOpen: () => setIsSelectOpen(true),
+          onClose: () => setIsSelectOpen(false),
+          renderValue: (value) => {
+            const selectedTeam = teamsByIds[value as string];
+            return selectedTeam ? getTeamDisplayedName(selectedTeam) : '';
+          },
+        }}
         onChange={(event) => {
           setSelectedTeamId(event.target.value as string);
           onClose();
@@ -100,12 +123,35 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
         fullWidth
       >
         {teams?.map((team) => (
-          <MenuItem key={team._id} value={team._id}>
+          <MenuItem
+            key={team._id}
+            value={team._id}
+            sx={{
+              ...(team._id === selectedTeamId
+                ? {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }
+                : {}),
+            }}
+          >
             {getTeamDisplayedName(team)}
+            {team._id === selectedTeamId ? (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsUpdateTeamDialogOpen(true);
+                }}
+                size="small"
+              >
+                <Edit />
+              </IconButton>
+            ) : null}
           </MenuItem>
         ))}
         <Button
-          onClick={handleClickCreateTeam}
+          onClick={() => setIsCreateTeamDialogOpen(true)}
           endIcon={<Add />}
           key="create-team"
           fullWidth
@@ -114,8 +160,13 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
         </Button>
       </TextField>
       <CreateTeamDialog
-        open={isCreateTeamOpen}
-        onClose={() => setIsCreateTeamOpen(false)}
+        open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
+        team={isUpdateTeamDialogOpen ? team ?? undefined : undefined}
+        onClose={() => {
+          setIsCreateTeamDialogOpen(false);
+          setIsUpdateTeamDialogOpen(false);
+          setIsSelectOpen(false);
+        }}
       />
       {/* <CreateOrganisationDialog
         open={isCreateOrganisationOpen}
