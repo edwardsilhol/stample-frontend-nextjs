@@ -1,4 +1,10 @@
-import { CreateTeamDTO, Team, PopulatedTeam } from '../types/team.types';
+import {
+  CreateTeamDTO,
+  Team,
+  PopulatedTeam,
+  UpdateTeamDTO,
+  AnswerInvitationDTO,
+} from '../types/team.types';
 import { apiRequest } from '../../utils/api';
 
 export const fetchTeam = async (
@@ -23,4 +29,33 @@ export const createTeam = async (
   createTeamDto: CreateTeamDTO,
 ): Promise<Team> => {
   return await apiRequest<Team>('POST', '/team', undefined, createTeamDto);
+};
+
+export const updateTeam = async (
+  teamId: string,
+  updateTeamDto: UpdateTeamDTO,
+): Promise<Team> => {
+  return await apiRequest<Team>(
+    'PATCH',
+    `/team/${teamId}`,
+    undefined,
+    updateTeamDto,
+  );
+};
+export const fetchTeamByInvitation = async (
+  teamId: string,
+): Promise<Team | null> => {
+  return await apiRequest<Team>('GET', `/team/${teamId}/invitation`);
+};
+
+export const answerInvitation = async (
+  teamId: string,
+  answerInvitationDto: AnswerInvitationDTO,
+): Promise<Team> => {
+  return await apiRequest<Team>(
+    'PATCH',
+    `/team/${teamId}/invitation`,
+    undefined,
+    answerInvitationDto,
+  );
 };

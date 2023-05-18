@@ -34,6 +34,7 @@ export type UserForOtherClient = Pick<
 export enum LocalRole {
   ADMIN = 'admin',
   MEMBER = 'member',
+  OWNER = 'owner',
 }
 
 export type UserAndPermissions = {
