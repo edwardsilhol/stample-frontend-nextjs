@@ -104,20 +104,23 @@ const findStampleTabBarItem = (document: Document) => {
 };
 
 export const injectStampleTabTitle = (document: Document) => {
-  console.log('injectStampleTabTitle');
   const tabBarItems = findTabBarItems(document);
   const container = tabBarItems[0].parentElement;
-  console.log({
-    container,
-    tabBarItems,
-  });
   const stampleTabTitle = document.createElement('div');
-  container.append(stampleTabTitle);
+  container.insertBefore(stampleTabTitle, tabBarItems[1]);
   stampleTabTitle.id = STAMPLE_TAB_TITLE_ID;
   stampleTabTitle.className = GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME;
   createRoot(stampleTabTitle).render(<StampleTabTitle />);
 };
+const hideOrShowResultsStats = (document: Document, show: boolean) => {
+  const resultsStats = document.getElementById('slim_appbar');
 
+  if (!show) {
+    resultsStats?.setAttribute('style', 'display: none;');
+  } else {
+    resultsStats?.setAttribute('style', 'display: unset;');
+  }
+};
 export const selectStampleTab = (document: Document) => {
   const selectedTabBarItem = findSelectedTabBarItem(document);
   if (selectedTabBarItem) {
@@ -137,6 +140,7 @@ export const selectStampleTab = (document: Document) => {
   }
   const stampleTabBarItem = findStampleTabBarItem(document);
   stampleTabBarItem.classList.add(GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME);
+  hideOrShowResultsStats(document, false);
 };
 
 export const unselectStampleTab = (document: Document) => {
@@ -145,6 +149,7 @@ export const unselectStampleTab = (document: Document) => {
     return;
   }
   stampleTabBarItem.classList.remove(GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME);
+  hideOrShowResultsStats(document, true);
 };
 
 export const injectStampleTabContent = (document: Document) => {
@@ -155,7 +160,7 @@ export const injectStampleTabContent = (document: Document) => {
   const stampleTabContent = document.createElement('div');
   container.replaceWith(stampleTabContent);
   stampleTabContent.id = 'stample-tab-content';
-  stampleTabContent.setAttribute('style', "width: 'var(--center-width);'");
+  stampleTabContent.setAttribute('style', ' margin-top: 16px');
   createRoot(stampleTabContent).render(
     <AppProvider>
       <DocumentsView />
