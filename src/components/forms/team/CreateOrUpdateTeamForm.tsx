@@ -101,10 +101,6 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
               : []),
           ].map((member, index) => {
             const isAuthenticatedUser = member.user === authenticatedUser?._id;
-            console.log({
-              member: member,
-              index,
-            });
             const user: UserForOtherClient | undefined = usersById[member.user];
             return (
               <TableRow key={index}>
