@@ -22,7 +22,6 @@ import {
 } from '../../stores/types/comment.types';
 import { uniqBy } from 'lodash';
 import { EditorState, convertToRaw } from 'draft-js';
-import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { useTagsByTeam } from '../../stores/hooks/tag.hooks';
 import { SelectTags } from './SelectTags';
@@ -33,13 +32,9 @@ import {
 } from '../../stores/hooks/document.hooks';
 import { useCreateComment } from '../../stores/hooks/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
-import { useSearchDocuments } from '../../stores/hooks/document.hooks';
 import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
-interface Props {
-  //
-}
 
-export const WebClipper: React.FC<Props> = () => {
+export const WebClipper: React.FC = () => {
   const { data: teams } = useAllTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const { data: selectedTeam } = useTeam(selectedTeamId);
@@ -65,7 +60,7 @@ export const WebClipper: React.FC<Props> = () => {
   const {
     data: alreadyPresentDocumentUrls,
     isLoading: isSearchDocumentsLoading,
-  } = useSearchDocumentsUrlsByUrls([currentPageUrl]);
+  } = useSearchDocumentsUrlsByUrls(currentPageUrl ? [currentPageUrl] : null);
   const isCreateDocumentAndCommentLoading = useMemo(
     () => isCreateDocumentLoading || isCreateCommentLoading,
     [isCreateDocumentLoading, isCreateCommentLoading],

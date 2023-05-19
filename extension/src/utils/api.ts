@@ -4,7 +4,6 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '../constants/tokenConfig';
-import { getCookie } from 'cookies-next';
 import { stringify } from 'qs';
 import {
   getChromeStorageVariable,

@@ -7,7 +7,6 @@ import { useSearchDocumentsUrlsByUrls } from '@src/stores/hooks/document.hooks';
 import { useSession } from '@src/stores/hooks/user.hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 import { AppProvider } from '@src/pages/providers/AppProvider';
 
 const ContentScript = () => {
@@ -37,7 +36,6 @@ const ContentScriptPage = () => {
   return <ContentScript />;
 };
 
-refreshOnUpdate('pages/content');
 const root = document.createElement('div');
 root.id = 'chrome-extension-stample-content-script-root';
 document.body.append(root);

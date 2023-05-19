@@ -49,7 +49,6 @@ export const fetchSession = async (): Promise<User | null> => {
   const accessToken = await getChromeStorageVariable(
     LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   );
-
   if (!accessToken) {
     return null;
   }

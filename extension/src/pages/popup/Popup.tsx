@@ -9,15 +9,14 @@ import { Stack } from '@mui/material';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useIsDocumentClippable } from '@src/stores/hooks/clipper.hooks';
-const ContentNotClippable = () => {
-  return (
-    <Box padding={1}>
-      <Typography>
-        This page is not clippable. Please try another page.
-      </Typography>
-    </Box>
-  );
-};
+const ContentNotClippable = () => (
+  <Box padding={1}>
+    <Typography>
+      This page is not clippable. Please try another page.
+    </Typography>
+  </Box>
+);
+
 const PopupContent = () => {
   const { data: user, isLoading } = useSession();
   const { data: isClippable } = useIsDocumentClippable();

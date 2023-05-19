@@ -196,9 +196,6 @@ export const DocumentsView: React.FC = () => {
     // @ts-ignore
     setSearchDocumentsQuery(getGoogleSearchQuery(document));
   }, [document]);
-  useEffect(() => {
-    console.log('allDocuments', allDocuments);
-  }, [allDocuments]);
   const searchId = useMemo(
     () => `${searchDocumentsQuery}-${selectedTeamId}-${allDocuments.length}`,
     [searchDocumentsQuery, selectedTeamId, allDocuments.length],

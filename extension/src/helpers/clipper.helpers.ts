@@ -1,5 +1,6 @@
 import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { CreateDocumentDTO } from '@src/stores/types/document.types';
+import { getActiveBrowserTab, runScriptOnTab } from '@src/utils/browser';
 const parseTags = (
   document: Document,
 ): Pick<
@@ -97,6 +98,7 @@ const parseDocument = (
 
 export const isDocumentClippable = async (): Promise<boolean> => {
   const document = await getCurrentlyDisplayedDOM();
+  console.log('document', document);
   return isProbablyReaderable(document.document);
 };
 
@@ -111,24 +113,31 @@ const getCurrentlyDisplayedDOM = async (): Promise<{
   document: Document;
   url: string;
 }> => {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  const result = await chrome.scripting.executeScript({
-    target: { tabId: tabs[0].id },
-    func: getPageContent,
-  });
-  const deserializedDocument = new DOMParser().parseFromString(
-    result[0].result.document,
-    'text/html',
-  );
-  return {
-    document: deserializedDocument,
-    url: tabs[0].url,
-  };
+  const activeTab = await getActiveBrowserTab();
+  try {
+    const result = await runScriptOnTab(activeTab, getPageContent);
+    const deserializedDocument = new DOMParser().parseFromString(
+      result.document,
+      'text/html',
+    );
+    return {
+      document: deserializedDocument,
+      url: activeTab.url,
+    };
+  } catch (error) {
+    console.log('error', error);
+    return {
+      document: document,
+      url: activeTab.url,
+    };
+  }
 };
 
-export const getCurrentlyDisplayedDOMUrl = async (): Promise<string> => {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  return tabs[0].url;
+export const getCurrentlyDisplayedDOMUrl = async (): Promise<
+  string | undefined
+> => {
+  const tab = await getActiveBrowserTab();
+  return tab.url;
 };
 
 export const getClippedPage = async (): Promise<Pick<

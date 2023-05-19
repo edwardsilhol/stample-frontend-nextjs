@@ -83,8 +83,6 @@ export const useSearchedDocuments = () => {
 };
 
 export const useSearchDocumentsUrlsByUrls = (urls: string[]) =>
-  useQuery(['documentsUrls', { urls }], () => searchDocumentsUrlsByUrls(urls), {
-    onSuccess: (data) => {
-      console.log('data', data);
-    },
-  });
+  useQuery(['documentsUrls', { urls }], () =>
+    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : [],
+  );
