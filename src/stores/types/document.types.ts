@@ -1,5 +1,6 @@
 import { UserForOtherClient } from './user.types';
 import { Comment } from './comment.types';
+import { Tag } from './tag.types';
 export const documentTypes = ['webpage', 'note', 'file'] as const;
 export type DocumentType = (typeof documentTypes)[number];
 
@@ -39,13 +40,14 @@ export interface Document {
 export interface PopulatedDocument
   extends Omit<
     Document,
-    'creator' | 'readers' | 'likes' | 'comments' | 'guests'
+    'creator' | 'readers' | 'likes' | 'comments' | 'guests' | 'tags'
   > {
   creator: UserForOtherClient;
   readers: UserForOtherClient[];
   likes: UserForOtherClient[];
   guests: UserForOtherClient[];
   comments: Comment[];
+  tags: Tag[];
 }
 
 export type UpdateDocumentAsGuestDTO = {

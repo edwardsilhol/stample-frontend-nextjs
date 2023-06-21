@@ -10,7 +10,7 @@ import {
 import { apiRequest } from '../../utils/api';
 import { SEARCH_DOCUMENT_PAGE_SIZE } from 'constants/document.constant';
 
-export const fetchDocument = async (
+export const fetchDocumentByTeam = async (
   teamId: string,
   documentId: string,
 ): Promise<PopulatedDocument | null> => {
@@ -22,6 +22,12 @@ export const fetchDocument = async (
   } catch (error) {
     return null;
   }
+};
+
+export const fetchDocument = async (
+  documentId: string,
+): Promise<PopulatedDocument | null> => {
+  return await apiRequest<PopulatedDocument>('GET', `/document/${documentId}`);
 };
 
 export const createDocument = async (

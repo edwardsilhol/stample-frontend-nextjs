@@ -22,6 +22,8 @@ export const DocumentTags: React.FC<Props> = ({
         : [],
     [documentTagsIds, tags],
   );
+
+  console.log('displayedTags', displayedTags.length);
   return (
     <Stack
       direction="row"
@@ -38,7 +40,9 @@ export const DocumentTags: React.FC<Props> = ({
           sx={{
             height: '26px',
             fontSize: '14px',
-            backgroundColor: 'additionalColors.chip',
+            fontWeight: 700,
+            backgroundColor: 'additionalColors.sidebarBackground',
+            borderRadius: '4px',
           }}
         />
       ))}

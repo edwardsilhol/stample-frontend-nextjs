@@ -1,12 +1,19 @@
-import { Add, Edit } from '@mui/icons-material';
+import {
+  Add,
+  Edit,
+  GroupsOutlined,
+  KeyboardArrowDown,
+} from '@mui/icons-material';
 import {
   Button,
   IconButton,
   // Dialog,
   // DialogContent,
   MenuItem,
+  Stack,
   // Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 // import { CreateOrganisationDialog } from 'components/organisation/CreateOrganisationDialog';
 import { CreateTeamDialog } from 'components/team/CreateTeamDialog';
@@ -88,6 +95,9 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   }, [teams]);
   return (
     <>
+      <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
+        TEAM
+      </Typography>
       <TextField
         value={
           selectedTeamId === null || selectedTeamId === undefined
@@ -100,14 +110,34 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
           onClose: () => setIsSelectOpen(false),
           renderValue: (value) => {
             const selectedTeam = teamsByIds[value as string];
-            return selectedTeam ? getTeamDisplayedName(selectedTeam) : '';
+            return selectedTeam ? (
+              <Stack direction="row" alignItems="center" spacing={1.5}>
+                <GroupsOutlined fontSize="small" />
+                <Typography
+                  variant="body2"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {getTeamDisplayedName(selectedTeam)}
+                </Typography>
+              </Stack>
+            ) : (
+              ''
+            );
+          },
+          IconComponent: KeyboardArrowDown,
+          disableUnderline: true,
+          sx: {
+            '.MuiSelect-icon': {
+              fontSize: '16px',
+              color: 'black',
+            },
           },
         }}
         onChange={(event) => {
           setSelectedTeamId(event.target.value as string);
           onClose();
         }}
-        label="Select Team"
         select
         sx={{
           width: '100%',
@@ -121,6 +151,7 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
           shrink: true,
         }}
         fullWidth
+        variant="standard"
       >
         {teams?.map((team) => (
           <MenuItem

@@ -4,6 +4,7 @@ import {
   updateDocumentAsGuest,
   fetchDocumentsByTeam,
   searchDocuments,
+  fetchDocumentByTeam,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
@@ -25,7 +26,9 @@ import { useMemo } from 'react';
 export const useDocument = (teamId: string | null, documentId: string) => {
   return useQuery(['document', { documentId }], () => {
     if (teamId) {
-      return fetchDocument(teamId, documentId);
+      return fetchDocumentByTeam(teamId, documentId);
+    } else {
+      return fetchDocument(documentId);
     }
   });
 };

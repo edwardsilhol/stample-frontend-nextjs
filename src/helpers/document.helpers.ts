@@ -24,7 +24,7 @@ export const getDocumentHeaderStrings = ({
   readersCount: number;
 }): {
   documentDate: string | null;
-  likeString: string;
+  likeString: string | null;
   openCountString: string | null;
 } => {
   const documentDate = createdAt
@@ -33,19 +33,17 @@ export const getDocumentHeaderStrings = ({
       })
     : null;
 
-  const likeString =
-    likesCount || likesCount === 0
-      ? likesCount === 1
-        ? '1 vote'
-        : `${likesCount} votes`
-      : '';
+  const likeString = likesCount
+    ? likesCount === 1
+      ? '1 vote'
+      : `${likesCount} votes`
+    : null;
 
-  const openCountString: string | null =
-    readersCount || readersCount === 0
-      ? readersCount === 1
-        ? '1 open'
-        : `${readersCount} opens`
-      : null;
+  const openCountString: string | null = readersCount
+    ? readersCount === 1
+      ? '1 open'
+      : `${readersCount} opens`
+    : null;
 
   return {
     documentDate,

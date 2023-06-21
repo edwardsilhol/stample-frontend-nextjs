@@ -11,7 +11,7 @@ interface Props {
 function LoggedLayout({ children }: Props) {
   const { data: user, isLoading } = useSession();
   return (
-    <Stack direction="row">
+    <Stack direction="row" sx={{ backgroundColor: 'white' }} height="100vh">
       <LoggedSidebar user={user} isLoading={isLoading} />
       {children}
     </Stack>

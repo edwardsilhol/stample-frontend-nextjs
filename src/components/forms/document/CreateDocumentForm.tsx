@@ -8,7 +8,7 @@ import Box from '../../muiOverrides/Box';
 import { TextFieldForm } from '../fields/TextFieldForm';
 import SelectOrCreateTags from './SelectOrCreateTags';
 import { Tag } from '../../../stores/types/tag.types';
-import { Button } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
@@ -16,20 +16,13 @@ import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Stack from '../../muiOverrides/Stack';
 import { useSelectedTeamId } from '../../../stores/data/team.data';
-const useStyles = () => ({
-  container: {
-    margin: '16px',
-  },
-  editorContainer: {
-    height: '300px',
-  },
-});
+import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
+
 interface Props {
   onClose: () => void;
 }
 
 export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
-  const styles = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -93,43 +86,110 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
   };
 
   return (
-    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction={'column'} spacing={2} sx={styles.container}>
-        <TextFieldForm
-          control={control}
-          name={'title'}
-          required
-          fullWidth
-          id={'title'}
-          label={'Title'}
-          autoFocus
-        />
-        <Stack sx={styles.editorContainer}>
-          <Editor
-            editorState={editorState}
-            onEditorStateChange={handleEditorStateChange}
-          />
-        </Stack>
-        <TextFieldForm
-          control={control}
-          name={'summary'}
-          required
-          fullWidth
-          id={'summary'}
-          label={'Summary'}
-          multiline
-        />
-        <TextFieldForm
-          control={control}
-          name={'url'}
-          required
-          fullWidth
-          id={'url'}
-          label={'URL'}
-        />
-        <SelectOrCreateTags onChange={setSelectedTags} />
-        <Button type={'submit'}>Submit</Button>
-      </Stack>
-    </Box>
+    <Grid container paddingTop={8} paddingX={3.5}>
+      <Grid item xs={2}>
+        <Button
+          onClick={onClose}
+          startIcon={<KeyboardArrowLeftOutlined />}
+          sx={{
+            color: 'black',
+            textTransform: 'none',
+          }}
+        >
+          <Typography variant="body1" fontWeight={500}>
+            Back
+          </Typography>
+        </Button>
+      </Grid>
+      <Grid item xs={8}>
+        <Typography
+          variant="h1"
+          textAlign="center"
+          fontSize="2.4rem"
+          paddingBottom={5}
+        >
+          Add a note
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Stack direction="column" spacing={2}>
+            <Typography variant="body2" fontWeight={500}>
+              Title
+            </Typography>
+            <TextFieldForm
+              control={control}
+              name="title"
+              required
+              fullWidth
+              id="title"
+              placeholder="Give a title to your note"
+              autoFocus
+            />
+            <Typography variant="body2" fontWeight={500}>
+              Content
+            </Typography>
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={handleEditorStateChange}
+              editorStyle={{
+                backgroundColor: 'white',
+                border: '1px solid',
+                borderColor: 'rgba(0, 0, 0, 0.23)',
+                borderRadius: '8px',
+                paddingLeft: '14px',
+                paddingTop: '0.5px',
+                paddingBottom: '0.5px',
+              }}
+              toolbarStyle={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                padding: 0,
+                marginLeft: '-4px',
+              }}
+              placeholder="The content of your note"
+              toolbar={{
+                options: ['inline', 'list'],
+                inline: {
+                  options: ['bold', 'italic', 'underline'],
+                },
+                list: {
+                  options: ['unordered', 'ordered'],
+                },
+              }}
+            />
+            <Typography variant="body2" fontWeight={500}>
+              Summary
+            </Typography>
+            <TextFieldForm
+              control={control}
+              name="summary"
+              required
+              fullWidth
+              id="summary"
+              placeholder="Give a summary to your note"
+              multiline
+            />
+            <Typography variant="body2" fontWeight={500}>
+              Url
+            </Typography>
+            <TextFieldForm
+              control={control}
+              name="url"
+              required
+              fullWidth
+              id="url"
+              placeholder="Give a url to your note"
+            />
+            <Typography variant="body2" fontWeight={500}>
+              Tags
+            </Typography>
+            <SelectOrCreateTags onChange={setSelectedTags} />
+            <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
+              Submit
+            </Button>
+          </Stack>
+        </Box>
+      </Grid>
+      <Grid item xs={2} />
+    </Grid>
   );
 };

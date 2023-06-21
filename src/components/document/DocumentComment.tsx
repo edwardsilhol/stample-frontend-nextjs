@@ -5,7 +5,7 @@ import {
   CardHeader,
   Typography,
 } from '@mui/material';
-import { format } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import React from 'react';
 import { useMemo } from 'react';
 import { Comment, CommentMentionType } from 'stores/types/comment.types';
@@ -116,8 +116,9 @@ export const DocumentComment: React.FC<Props> = ({
         borderLeft: 'none',
         borderRight: 'none',
         borderBottom: 'none',
+        backgroundColor: 'additionalColors.background',
       }}
-      variant="outlined"
+      variant="elevation"
     >
       <CardHeader
         avatar={
@@ -128,10 +129,14 @@ export const DocumentComment: React.FC<Props> = ({
           </Avatar>
         }
         title={`${author?.firstName} ${author?.lastName}`}
-        subheader={
-          comment.createdAt
-            ? format(new Date(comment.createdAt), 'dd/MM/yyyy')
-            : undefined
+        titleTypographyProps={{
+          variant: 'body1',
+          fontWeight: 500,
+        }}
+        action={
+          <Typography variant="caption" color="text.secondary">
+            {formatDistance(new Date(comment.createdAt), new Date())} ago
+          </Typography>
         }
       />
       <CardContent>

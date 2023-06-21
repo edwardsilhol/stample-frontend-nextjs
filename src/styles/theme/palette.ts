@@ -7,7 +7,9 @@ export interface ExtendedPalette {
     additionalMain: string;
     link: string;
     sidebarBackground: string;
+    background: string;
     chip: string;
+    primaryLighter: string;
   };
 }
 
@@ -16,7 +18,9 @@ const lightPaletteExtended: ExtendedPalette = {
     additionalMain: '#1976d2',
     link: '#1976d2',
     sidebarBackground: '#f6f5f4',
+    background: '#F8F8F8',
     chip: '#fff59d',
+    primaryLighter: '#EEF2FF',
   },
 };
 
@@ -25,7 +29,9 @@ const darkPaletteExtended: ExtendedPalette = {
     additionalMain: '#00070e',
     link: '#1976d2',
     sidebarBackground: '#f6f5f4',
+    background: '#f5f5f5',
     chip: yellow[400],
+    primaryLighter: '#EEF2FF',
   },
 };
 
@@ -85,7 +91,7 @@ export function palette(
         activatedOpacity: 0.12,
       },
       divider: 'rgba(2,2,2,0.12)',
-      ...lightPaletteExtended,
+      ...darkPaletteExtended,
     };
   } else {
     return {
@@ -139,7 +145,7 @@ export function palette(
         activatedOpacity: 0.12,
       },
       divider: 'rgba(2,2,2,0.12)',
-      ...darkPaletteExtended,
+      ...lightPaletteExtended,
     };
   }
 }
