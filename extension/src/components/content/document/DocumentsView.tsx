@@ -14,7 +14,6 @@ import {
   useResizeObserver,
   useScroller,
 } from 'masonic';
-import { useIsMobile } from '@src/utils/hooks/useIsMobile';
 import { useSearchDocumentsQuery } from '@src/stores/data/document.data';
 import {
   useSearchDocuments,

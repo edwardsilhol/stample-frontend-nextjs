@@ -78,7 +78,7 @@ const parseDocument = (
   | 'urlWebsiteName'
   | 'mainMedia'
 > | null => {
-  const reader = new Readability(document);
+  const reader = new Readability(document, {});
   const article = reader.parse();
   const parsedTags = parseTags(document);
   if (!article) {
