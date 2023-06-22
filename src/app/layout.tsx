@@ -5,6 +5,7 @@ import ReactQueryProvider from './providers/ReactQueryProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import { cookies } from 'next/headers';
 import { TenantConfig } from '../stores/types/tenantConfig.types';
+import JotaiProvider from './providers/JotaiProvider';
 
 interface Props {
   children: ReactNode;
@@ -28,7 +29,9 @@ async function RootLayout({ children }: Props) {
       <body>
         <FontProvider>
           <ThemeProvider tenantThemeConfig={tenantThemeConfig}>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <JotaiProvider>
+              <ReactQueryProvider>{children}</ReactQueryProvider>
+            </JotaiProvider>
           </ThemeProvider>
         </FontProvider>
       </body>

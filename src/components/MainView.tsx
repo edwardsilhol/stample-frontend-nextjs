@@ -3,32 +3,38 @@
 import React from 'react';
 import Stack from './muiOverrides/Stack';
 import { LoggedHeader } from './layoutComponents/header/LoggedHeader';
-import { TagDocuments } from './view/TagDocuments';
 import { AllDocuments } from './view/AllDocuments';
 import { CreateDocumentForm } from './forms/document/CreateDocumentForm';
+import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './document/DocumentsView';
 
-interface MainViewProps {
-  tagId?: string;
-}
-export const MainView: React.FC<MainViewProps> = ({ tagId }) => {
-  const [searchValue, setSearchValue] = React.useState<string>('');
+type MainViewProps = Record<string, never>;
+export const MainView: React.FC<MainViewProps> = () => {
   const [toggledAddButton, setToggledAddButton] =
     React.useState<boolean>(false);
   return (
-    <Stack direction={'column'} width={'100%'}>
-      <LoggedHeader
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-        setToggledAddButton={() => setToggledAddButton(true)}
-      />
+    <Stack
+      direction="column"
+      flex={1}
+      sx={{
+        overflowX: 'hidden',
+        overflowY: 'scroll',
+        height: '100vh',
+        backgroundColor: toggledAddButton
+          ? 'white'
+          : 'additionalColors.background',
+      }}
+      id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
+    >
       {!toggledAddButton ? (
-        tagId ? (
-          <TagDocuments tagId={tagId} searchValue={searchValue} />
-        ) : (
-          <AllDocuments searchValue={searchValue} />
-        )
+        <LoggedHeader
+          addButtonToggled={toggledAddButton}
+          setToggledAddButton={setToggledAddButton}
+        />
+      ) : null}
+      {!toggledAddButton ? (
+        <AllDocuments />
       ) : (
-        <CreateDocumentForm />
+        <CreateDocumentForm onClose={() => setToggledAddButton(false)} />
       )}
     </Stack>
   );

@@ -1,39 +1,81 @@
-import { CreateDocumentDTO, Document } from '../types/document.types';
+import {
+  CreateDocumentDTO,
+  Document,
+  MinimalDocument,
+  PopulatedDocument,
+  SearchDocumentsDTO,
+  SearchDocumentsReturnType,
+  UpdateDocumentAsGuestDTO,
+} from '../types/document.types';
 import { apiRequest } from '../../utils/api';
+import { SEARCH_DOCUMENT_PAGE_SIZE } from 'constants/document.constant';
 
-export const fetchDocument = async (
+export const fetchDocumentByTeam = async (
+  teamId: string,
   documentId: string,
-): Promise<Document | null> => {
+): Promise<PopulatedDocument | null> => {
   try {
-    return await apiRequest<Document>('GET', '/document/' + documentId);
+    return await apiRequest<PopulatedDocument>(
+      'GET',
+      `/team/${teamId}/document/${documentId}`,
+    );
   } catch (error) {
     return null;
   }
 };
 
-export const fetchDocuments = async (): Promise<Document[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', '/document/all/raw');
-  } catch (error) {
-    return [];
-  }
+export const fetchDocument = async (
+  documentId: string,
+): Promise<PopulatedDocument | null> => {
+  return await apiRequest<PopulatedDocument>('GET', `/document/${documentId}`);
 };
 
 export const createDocument = async (
+  teamId: string,
   createDocumentDto: CreateDocumentDTO,
 ): Promise<Document> => {
   return await apiRequest<Document>(
     'POST',
-    '/document',
+    `/team/${teamId}/document`,
     undefined,
     createDocumentDto,
   );
 };
 
-export const fetchDocumentsByTag = async (tag: string): Promise<Document[]> => {
+export const updateDocumentAsGuest = async (
+  teamId: string,
+  documentId: string,
+  updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO,
+): Promise<Document> => {
+  return await apiRequest<Document>(
+    'PATCH',
+    `/team/${teamId}/document/${documentId}/guest`,
+    undefined,
+    updateDocumentAsGuestDTO,
+  );
+};
+export const fetchDocumentsByTeam = async (
+  teamId: string,
+): Promise<MinimalDocument[]> => {
   try {
-    return await apiRequest<Document[]>('GET', `/document/byTag/${tag}`);
+    return await apiRequest<Document[]>('GET', `/team/${teamId}/document`);
   } catch (error) {
+    console.log(error);
     return [];
   }
+};
+
+export const searchDocuments = async (
+  searchDocumentsDTO: SearchDocumentsDTO,
+): Promise<SearchDocumentsReturnType> => {
+  return await apiRequest<SearchDocumentsReturnType>(
+    'POST',
+    '/document/search',
+    undefined,
+    {
+      ...searchDocumentsDTO,
+      page: searchDocumentsDTO.page || 0,
+      pageSize: SEARCH_DOCUMENT_PAGE_SIZE,
+    },
+  );
 };

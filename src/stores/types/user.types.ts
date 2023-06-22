@@ -23,4 +23,26 @@ export interface User {
   email: string;
   locale: string;
   isAdmin: boolean;
+  profilePictureUrl?: string;
 }
+
+export type UserForOtherClient = Pick<
+  User,
+  '_id' | 'firstName' | 'lastName' | 'profilePictureUrl'
+>;
+
+export enum LocalRole {
+  ADMIN = 'admin',
+  MEMBER = 'member',
+  OWNER = 'owner',
+}
+
+export type UserAndPermissions = {
+  user: string;
+  role: LocalRole;
+};
+
+export type PopulatedUserAndPermissions = {
+  user: UserForOtherClient;
+  role: LocalRole;
+};

@@ -1,59 +1,62 @@
-import React from 'react';
-import { InputBase } from '@mui/material';
-import Stack from '../../muiOverrides/Stack';
+import React, { useMemo } from 'react';
+import { Autocomplete, InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import Box from '../../muiOverrides/Box';
-
-const useStyles = () => ({
-  container: {
-    backgroundColor: '#f6f5f4',
-    minWidth: '100px',
-    width: '300px',
-    maxWidth: '70%',
-    height: '24px',
-    borderRadius: '4px',
-    border: '1px solid rgba(0,0,0,0)',
-  },
-  input: {
-    color: 'black',
-    opacity: 0.6,
-    '& .MuiInputBase-input': {
-      padding: '0',
-      margin: '0 5px',
-      height: '24px',
-      fontSize: '13px',
-      fontWeight: 600,
-    },
-  },
-});
+import { Tag } from 'stores/types/tag.types';
+import { uniq } from 'lodash';
+import { useSearchDocumentsQuery } from 'stores/data/document.data';
 
 interface CustomSearchBarProps {
-  searchValue: string;
-  setSearchValue: (value: string) => void;
+  tags: Tag[];
 }
 
-export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
-  searchValue,
-  setSearchValue,
-}) => {
-  const styles = useStyles();
-
+export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
+  const [searchDocumentsQuery, setSearchDocumentsQuery] =
+    useSearchDocumentsQuery();
+  const uniqueTags = useMemo(
+    () => uniq(tags.map((tag) => `#${tag.name}`)),
+    [tags],
+  );
   return (
-    <Box sx={styles.container}>
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        justifyContent={'flex-start'}
-        sx={styles.input}
-      >
-        <Search sx={{ height: '20px' }} />
-        <InputBase
-          sx={{ width: '100%' }}
-          placeholder={'Search'}
-          value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
-        />
-      </Stack>
+    <Box
+      sx={{
+        '& .MuiInputBase-input': {
+          padding: '0',
+          margin: '0 5px',
+          fontSize: '14px',
+          fontWeight: 400,
+        },
+      }}
+    >
+      <Autocomplete
+        onInputChange={(_, value) => {
+          setSearchDocumentsQuery(value);
+        }}
+        inputValue={searchDocumentsQuery ?? ''}
+        freeSolo
+        renderInput={({ InputProps, InputLabelProps: _, ...rest }) => {
+          return (
+            <InputBase
+              {...InputProps}
+              {...rest}
+              startAdornment={
+                <Search sx={{ fontSize: '20px', color: '#737373' }} />
+              }
+              placeholder="Search"
+              sx={{
+                backgroundColor: 'white',
+                height: '34px',
+                borderRadius: 0.75,
+                paddingLeft: '4px',
+                width: '375px',
+                maxWidth: '100%',
+                border: '1px solid #E5E5E5',
+              }}
+            />
+          );
+        }}
+        options={uniqueTags}
+      />
     </Box>
   );
 };

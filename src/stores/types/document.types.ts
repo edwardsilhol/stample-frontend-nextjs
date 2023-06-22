@@ -1,12 +1,20 @@
-export type CreateDocumentDTO = {
-  title: string;
-  content: string;
-  summary: string;
-  url: string;
-  type: 'webpage' | 'note' | 'file';
-  tags: string[];
-};
+import { UserForOtherClient } from './user.types';
+import { Comment } from './comment.types';
+import { Tag } from './tag.types';
+export const documentTypes = ['webpage', 'note', 'file'] as const;
+export type DocumentType = (typeof documentTypes)[number];
 
+export type CreateDocumentDTO = Pick<
+  Document,
+  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags'
+>;
+const documentMediaTypes = ['image', 'video'] as const;
+type DocumentMediaType = (typeof documentMediaTypes)[number];
+interface DocumentMedia {
+  html: string;
+  mediaType: DocumentMediaType;
+  src?: string;
+}
 export interface Document {
   _id: string;
   title: string;
@@ -14,12 +22,51 @@ export interface Document {
   summary: string;
   keyInsight: string;
   url: string;
+  authorUrl?: string;
   team: string;
-  type: 'webpage' | 'note' | 'file';
+  type: DocumentType;
   readers: string[];
   likes: string[];
   comments: string[];
   tags: string[];
-  creator: string;
+  author?: string;
+  guests?: string[];
+  creator: UserForOtherClient;
+  urlWebsiteName?: string;
+  mainMedia?: DocumentMedia;
   createdAt: Date;
 }
+
+export interface PopulatedDocument
+  extends Omit<
+    Document,
+    'creator' | 'readers' | 'likes' | 'comments' | 'guests' | 'tags'
+  > {
+  creator: UserForOtherClient;
+  readers: UserForOtherClient[];
+  likes: UserForOtherClient[];
+  guests: UserForOtherClient[];
+  comments: Comment[];
+  tags: Tag[];
+}
+
+export type UpdateDocumentAsGuestDTO = {
+  isLiked?: boolean;
+  isReader?: boolean;
+};
+
+export type MinimalDocument = Omit<Document, 'content' | 'comments'>;
+export type SearchDocumentsDTO = {
+  text?: string;
+  tags?: string[];
+  team?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export type SearchDocumentsReturnType = {
+  documents: MinimalDocument[];
+  total: number;
+  page: number;
+  nextPage?: number;
+};
