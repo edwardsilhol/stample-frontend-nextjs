@@ -88,7 +88,7 @@ const parseDocument = (
     content: article.content,
     title: article.title,
     summary: article.excerpt,
-    url: parsedTags.url || url,
+    url: url || parsedTags.url,
     author: parsedTags.author,
     authorUrl: parsedTags.authorUrl,
     urlWebsiteName: article.siteName || parsedTags.urlWebsiteName,
@@ -98,7 +98,6 @@ const parseDocument = (
 
 export const isDocumentClippable = async (): Promise<boolean> => {
   const document = await getCurrentlyDisplayedDOM();
-  console.log('document', document);
   return isProbablyReaderable(document.document);
 };
 

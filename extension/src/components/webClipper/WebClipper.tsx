@@ -1,10 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, Stack, TextField, Typography } from '@mui/material';
 import {
   getDefaultSelectedTeamId,
   getTeamDisplayedName,
@@ -32,7 +26,8 @@ import { useCreateComment } from '../../stores/hooks/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
 import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
 import { getDocumentUrlOnStampleWebsite } from '@src/helpers/document.helpers';
-
+import { Document } from '@src/stores/types/document.types';
+import { CheckCircle } from '@mui/icons-material';
 export const WebClipper: React.FC = () => {
   const { data: teams } = useAllTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
@@ -41,7 +36,7 @@ export const WebClipper: React.FC = () => {
     EditorState.createEmpty(),
   );
   const [insight, setInsight] = useState<string>('');
-  const [createdDocument, setCreatedDocument] = useState<string | null>(null);
+  const [createdDocument, setCreatedDocument] = useState<Document | null>(null);
   const { data: tags } = useTagsByTeam(selectedTeamId);
 
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
@@ -77,8 +72,10 @@ export const WebClipper: React.FC = () => {
 
     if (
       selectedTeamId &&
-      !alreadyPresentDocuments.some(
-        (document) => document.team === selectedTeamId,
+      !(
+        alreadyPresentDocuments.some(
+          (document) => document.team === selectedTeamId,
+        ) || createdDocument.team === selectedTeamId
       )
     ) {
       return false;
@@ -176,14 +173,14 @@ export const WebClipper: React.FC = () => {
       });
     }
 
-    setCreatedDocument(document._id);
+    setCreatedDocument(document);
   };
 
   if (isCreateDocumentAndCommentLoading || isSearchDocumentsLoading) {
     return <CircularProgress />;
   }
   return (
-    <Box>
+    <Stack>
       {!shouldDisplayIsAlreadyPresent ? (
         <>
           <Typography variant="h6">What do you want to highlight ?</Typography>
@@ -194,11 +191,14 @@ export const WebClipper: React.FC = () => {
         </>
       ) : (
         <>
-          <Typography variant="h6" fontWeight={500}>
-            {isAlreadyPresent
-              ? 'This page is already saved in your knowledge base'
-              : 'Your page has been saved in your knowledge base'}
-          </Typography>
+          <Stack direction="row" alignItems="center">
+            {!!createdDocument ? <CheckCircle /> : null}
+            <Typography variant="h6" fontWeight={500}>
+              {isAlreadyPresent
+                ? 'This page is already saved in your knowledge base'
+                : 'Your page has been saved in your knowledge base'}
+            </Typography>
+          </Stack>
           <Typography
             variant="h6"
             fontWeight={400}
@@ -247,7 +247,7 @@ export const WebClipper: React.FC = () => {
                 isAlreadyPresent
                   ? alreadyPresentDocuments?.[0]?._id
                   : !!createdDocument
-                  ? createdDocument
+                  ? createdDocument._id
                   : '',
               );
               window.open(url, '_blank');
@@ -347,6 +347,6 @@ export const WebClipper: React.FC = () => {
           </Stack>
         </>
       ) : null}
-    </Box>
+    </Stack>
   );
 };
