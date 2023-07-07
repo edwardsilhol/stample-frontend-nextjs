@@ -64,8 +64,8 @@ export const searchDocuments = async (
 
 export const searchDocumentsUrlsByUrls = async (
   urls: string[],
-): Promise<string[]> => {
-  return await apiRequest<string[]>(
+): Promise<UrlAndId[]> => {
+  return await apiRequest<UrlAndId[]>(
     'POST',
     '/document/search/urls',
     undefined,

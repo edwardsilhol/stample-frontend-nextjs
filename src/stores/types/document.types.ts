@@ -70,3 +70,8 @@ export type SearchDocumentsReturnType = {
   page: number;
   nextPage?: number;
 };
+
+export type UrlAndId = {
+  url: string;
+  id: string;
+};

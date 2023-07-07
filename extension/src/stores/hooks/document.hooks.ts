@@ -86,7 +86,7 @@ export const useSearchedDocuments = () => {
 
 export const useSearchDocumentsUrlsByUrls = (urls: string[]) =>
   useQuery(['documentsUrls', { urls }], () =>
-    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : ([] as string[]),
+    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : ([] as UrlAndId[]),
   );
 
 export const useSearchDocumentsByUrl = (url: string) =>
