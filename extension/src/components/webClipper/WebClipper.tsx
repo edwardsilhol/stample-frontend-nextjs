@@ -1,12 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, Stack, TextField, Typography } from '@mui/material';
 import {
   getDefaultSelectedTeamId,
   getTeamDisplayedName,
@@ -28,12 +20,14 @@ import { SelectTags } from './SelectTags';
 import { Button } from '@mui/material';
 import {
   useCreateDocument,
-  useSearchDocumentsUrlsByUrls,
+  useSearchDocumentsByUrl,
 } from '../../stores/hooks/document.hooks';
 import { useCreateComment } from '../../stores/hooks/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
 import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
-
+import { getDocumentUrlOnStampleWebsite } from '@src/helpers/document.helpers';
+import { Document } from '@src/stores/types/document.types';
+import { CheckCircle } from '@mui/icons-material';
 export const WebClipper: React.FC = () => {
   const { data: teams } = useAllTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
@@ -42,7 +36,7 @@ export const WebClipper: React.FC = () => {
     EditorState.createEmpty(),
   );
   const [insight, setInsight] = useState<string>('');
-  const [isDocumentCreated, setIsDocumentCreated] = useState<boolean>(false);
+  const [createdDocument, setCreatedDocument] = useState<Document | null>(null);
   const { data: tags } = useTagsByTeam(selectedTeamId);
 
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
@@ -57,10 +51,8 @@ export const WebClipper: React.FC = () => {
     isSuccess: isCreateCommentSuccess,
   } = useCreateComment();
   const { data: currentPageUrl } = useCurrentPageUrl();
-  const {
-    data: alreadyPresentDocumentUrls,
-    isLoading: isSearchDocumentsLoading,
-  } = useSearchDocumentsUrlsByUrls(currentPageUrl ? [currentPageUrl] : null);
+  const { data: alreadyPresentDocuments, isLoading: isSearchDocumentsLoading } =
+    useSearchDocumentsByUrl(currentPageUrl || '');
   const isCreateDocumentAndCommentLoading = useMemo(
     () => isCreateDocumentLoading || isCreateCommentLoading,
     [isCreateDocumentLoading, isCreateCommentLoading],
@@ -70,9 +62,26 @@ export const WebClipper: React.FC = () => {
     [isCreateDocumentSuccess, isCreateCommentSuccess],
   );
   const isAlreadyPresent = useMemo(
-    () => alreadyPresentDocumentUrls?.length > 0 && !isSuccess,
-    [alreadyPresentDocumentUrls, isSuccess],
+    () => alreadyPresentDocuments?.length > 0 && !isSuccess,
+    [alreadyPresentDocuments, isSuccess],
   );
+  const shouldDisplayIsAlreadyPresent = useMemo(() => {
+    if (!isAlreadyPresent && !createdDocument) {
+      return false;
+    }
+
+    if (
+      selectedTeamId &&
+      !(
+        alreadyPresentDocuments.some(
+          (document) => document.team === selectedTeamId,
+        ) || createdDocument.team === selectedTeamId
+      )
+    ) {
+      return false;
+    }
+    return true;
+  }, [isAlreadyPresent, selectedTeamId, createdDocument]);
   useEffect(() => {
     if (!teams) {
       return;
@@ -164,54 +173,59 @@ export const WebClipper: React.FC = () => {
       });
     }
 
-    setIsDocumentCreated(true);
+    setCreatedDocument(document);
   };
 
   if (isCreateDocumentAndCommentLoading || isSearchDocumentsLoading) {
     return <CircularProgress />;
   }
-  if (isAlreadyPresent) {
-    return (
-      <Typography>This page is already saved in your knowledge base</Typography>
-    );
-  } else if (isDocumentCreated) {
-    return (
-      <Typography>Your page has been saved in your knowledge base</Typography>
-    );
-  }
   return (
-    <Box>
-      <Typography variant="h6">What do you want to highlight ?</Typography>
-      <Typography variant="body2" paddingBottom={2}>
-        Share this article with your team and add comments to illustrate what
-        you share.
+    <Stack>
+      {!shouldDisplayIsAlreadyPresent ? (
+        <>
+          <Typography variant="h6">What do you want to highlight ?</Typography>
+          <Typography variant="body2" paddingBottom={2} color="primary">
+            Share this article with your team and add comments to illustrate
+            what you share.
+          </Typography>
+        </>
+      ) : (
+        <>
+          <Stack direction="row" alignItems="center">
+            {!!createdDocument ? <CheckCircle /> : null}
+            <Typography variant="h6" fontWeight={500}>
+              {isAlreadyPresent
+                ? 'This page is already saved in your knowledge base'
+                : 'Your page has been saved in your knowledge base'}
+            </Typography>
+          </Stack>
+          <Typography
+            variant="h6"
+            fontWeight={400}
+            paddingTop={2}
+            paddingBottom={1}
+          >
+            Select another team to save this page
+          </Typography>
+        </>
+      )}
+      <Typography variant="body2" fontWeight={500}>
+        Select a team
       </Typography>
-      <TextField
-        label="Add a key insight"
-        variant="standard"
-        placeholder="Key insights"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        fullWidth
-        value={insight}
-        onChange={(e) => setInsight(e.target.value)}
-        sx={{
-          paddingBottom: 2,
-        }}
-      />
       <TextField
         select
         value={selectedTeamId}
         onChange={(e) => setSelectedTeamId(e.target.value as string)}
         variant="standard"
         fullWidth
-        label="Select a team"
         InputLabelProps={{
           shrink: true,
         }}
         sx={{
           paddingBottom: 2,
+          '.MuiInputBase-root': {
+            fontSize: '14px',
+          },
         }}
       >
         {teams?.map((team) => (
@@ -220,55 +234,119 @@ export const WebClipper: React.FC = () => {
           </MenuItem>
         ))}
       </TextField>
-      <SelectTags
-        tags={tags.raw}
-        selectedTags={selectedTagsIds}
-        onChange={setSelectedTagsIds}
-      />
-      <Box paddingBottom={2} />
-      <Typography variant="body1">Add a comment</Typography>
-      <Editor
-        editorState={editedComment}
-        onEditorStateChange={(value) => setEditedComment(value)}
-        mention={{
-          separator: ' ',
-          trigger: '@',
-          suggestions: userMentions,
-        }}
-        wrapperStyle={{
-          width: '100%',
-          overflowY: 'visible',
-        }}
-        editorStyle={{
-          overflowY: 'visible',
-          overflow: 'unset',
-          fontSize: '14px',
-          border: '1px solid #e0e0e0',
-          borderRadius: '4px',
-          padding: '8px',
-          fontWeight: 200,
-          minHeight: '100px',
-          cursor: 'text',
-        }}
-        toolbarHidden
-      />
-      <Stack direction="row" justifyContent="end" paddingTop={3}>
-        <Button
-          onClick={onSubmit}
-          variant="contained"
-          color="primary"
-          disabled={!selectedTeamId}
-          sx={{
-            elevation: 0,
-            boxShadow: 'none',
-            ':hover': {
-              boxShadow: 'none',
-            },
-          }}
-        >
-          Submit
-        </Button>
-      </Stack>
-    </Box>
+      {shouldDisplayIsAlreadyPresent ? (
+        <>
+          <Button
+            sx={{
+              alignSelf: 'flex-end',
+              marginTop: 2,
+            }}
+            variant="contained"
+            onClick={() => {
+              const url = getDocumentUrlOnStampleWebsite(
+                isAlreadyPresent
+                  ? alreadyPresentDocuments?.[0]?._id
+                  : !!createdDocument
+                  ? createdDocument._id
+                  : '',
+              );
+              window.open(url, '_blank');
+            }}
+          >
+            See in Stample
+          </Button>
+        </>
+      ) : null}
+      {!shouldDisplayIsAlreadyPresent ? (
+        <>
+          <Typography
+            variant="body2"
+            fontWeight={500}
+            paddingTop={2}
+            paddingBottom={1}
+          >
+            Add a key insight
+          </Typography>
+          <TextField
+            variant="standard"
+            placeholder="Key insights"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            fullWidth
+            value={insight}
+            onChange={(e) => setInsight(e.target.value)}
+            sx={{
+              paddingBottom: 2,
+              '.MuiInputBase-root': {
+                fontSize: '14px',
+              },
+            }}
+          />
+          <Typography
+            variant="body2"
+            fontWeight={500}
+            paddingTop={2}
+            paddingBottom={1}
+          >
+            Add a tag
+          </Typography>
+          <SelectTags
+            tags={tags.raw}
+            selectedTags={selectedTagsIds}
+            onChange={setSelectedTagsIds}
+          />
+          <Typography
+            variant="body2"
+            fontWeight={500}
+            paddingTop={3}
+            paddingBottom={1}
+          >
+            Add comments and mentions
+          </Typography>
+          <Editor
+            editorState={editedComment}
+            onEditorStateChange={(value) => setEditedComment(value)}
+            placeholder="Write a comment..."
+            mention={{
+              separator: ' ',
+              trigger: '@',
+              suggestions: userMentions,
+            }}
+            wrapperStyle={{
+              width: '100%',
+              overflowY: 'visible',
+            }}
+            editorStyle={{
+              overflowY: 'visible',
+              overflow: 'unset',
+              fontSize: '14px',
+              borderBottom: '1px solid #e0e0e0',
+              fontWeight: 200,
+              cursor: 'text',
+            }}
+            toolbarHidden
+          />
+          <Stack direction="row" justifyContent="end" paddingTop={3}>
+            <Button
+              onClick={onSubmit}
+              variant="contained"
+              color="primary"
+              disabled={!selectedTeamId}
+              sx={{
+                elevation: 0,
+                boxShadow: 'none',
+                ':hover': {
+                  boxShadow: 'none',
+                },
+                textTransform: 'none',
+              }}
+            >
+              Submit
+            </Button>
+          </Stack>
+        </>
+      ) : null}
+    </Stack>
   );
 };

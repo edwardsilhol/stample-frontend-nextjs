@@ -1,3 +1,4 @@
+import { STAMPLE_WEBSITE_URL } from '@src/constants/content';
 import { formatDistanceToNow } from 'date-fns';
 import { intersection } from 'lodash';
 import { Document } from '../stores/types/document.types';
@@ -90,3 +91,8 @@ export const searchDocuments = ({
     });
   }
 };
+
+export const getDocumentUrlOnStampleWebsite = (documentId: string) =>
+  `${
+    import.meta.env.VITE_PUBLIC_APP_STAMPLE_WEBSITE_URL
+  }/document/${documentId}`;

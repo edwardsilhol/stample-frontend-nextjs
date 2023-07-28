@@ -45,7 +45,12 @@ const TagTextField: React.FC<TagTextFieldProps> = ({ onChange }) => {
         onInputChange={handleInputChange}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} label={'Tags'} variant="outlined" fullWidth />
+          <TextField
+            {...params}
+            placeholder="Select tags"
+            variant="outlined"
+            fullWidth
+          />
         )}
       />
     </>

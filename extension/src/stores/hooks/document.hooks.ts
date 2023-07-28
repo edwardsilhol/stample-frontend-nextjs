@@ -1,6 +1,7 @@
 import {
   createDocument,
   searchDocuments,
+  searchDocumentsByUrl,
   searchDocumentsUrlsByUrls,
 } from '../api/document.api';
 import {
@@ -13,6 +14,7 @@ import {
   CreateDocumentDTO,
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
+  UrlAndId,
 } from '../types/document.types';
 import { useMemo } from 'react';
 import { useSearchDocumentsQuery } from '../data/document.data';
@@ -84,5 +86,11 @@ export const useSearchedDocuments = () => {
 
 export const useSearchDocumentsUrlsByUrls = (urls: string[]) =>
   useQuery(['documentsUrls', { urls }], () =>
-    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : [],
+    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : ([] as UrlAndId[]),
   );
+
+export const useSearchDocumentsByUrl = (url: string) =>
+  useQuery(['documentsByUrl', { url }], () => searchDocumentsByUrl(url), {
+    initialData: [],
+    enabled: !!url,
+  });

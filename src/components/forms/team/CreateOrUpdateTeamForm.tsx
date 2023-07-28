@@ -6,7 +6,7 @@ import { FieldArrayWithId, useForm } from 'react-hook-form';
 import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
 import Box from '../../muiOverrides/Box';
 import { TextFieldForm } from '../fields/TextFieldForm';
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Typography } from '@mui/material';
 import Stack from '../../muiOverrides/Stack';
 import { useSelectedOrganisationId } from 'stores/data/organisation.data';
 import {
@@ -14,7 +14,7 @@ import {
   useUpdateOrganisation,
 } from 'stores/hooks/organisation.hooks';
 import { useSelectedTeamId } from 'stores/data/team.data';
-import { Add, Delete, Mail } from '@mui/icons-material';
+import { Close, Mail } from '@mui/icons-material';
 import {
   IconButton,
   InputBase,
@@ -23,7 +23,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
 } from '@mui/material';
@@ -33,15 +32,6 @@ import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
 import { SelectFieldForm } from '../fields/SelectFieldForm';
-const useStyles = () => ({
-  container: {
-    margin: '16px',
-  },
-  editorContainer: {
-    height: '300px',
-  },
-});
-
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
 interface UpdateTeamMembersProps {
@@ -79,157 +69,184 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
     name: 'invitations',
   });
   const [invitationEmail, setInvitationEmail] = React.useState('');
+  const onClickAddInvitation = () => {
+    appendInvitation({
+      email: invitationEmail,
+      role: LocalRole.MEMBER,
+    });
+    setInvitationEmail('');
+  };
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={3}>Members</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {[
-            ...users,
-            ...(!team
-              ? ([
-                  {
-                    user: authenticatedUser?._id,
-                    role: LocalRole.ADMIN,
-                    id: authenticatedUser?._id,
-                  },
-                ] as FieldArrayWithId<FormValues, 'users', 'id'>[])
-              : []),
-          ].map((member, index) => {
-            const isAuthenticatedUser = member.user === authenticatedUser?._id;
-            const user: UserForOtherClient | undefined = usersById[member.user];
-            return (
-              <TableRow key={index}>
-                <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar />
-                </TableCell>
-                <TableCell>
-                  {isAuthenticatedUser
-                    ? 'You'
-                    : `${user?.firstName} ${user?.lastName}`}
-                </TableCell>
-                <TableCell sx={{ minWidth: '100px' }}>
-                  {isAuthenticatedUser ? (
-                    member.role === LocalRole.ADMIN ? (
-                      'Admin'
-                    ) : member.role === LocalRole.MEMBER ? (
-                      'Member'
-                    ) : (
-                      'Owner'
-                    )
-                  ) : (
-                    <SelectFieldForm
-                      control={control}
-                      name={`users.${index}.role`}
-                      fullWidth
-                      variant="standard"
-                      disabled={member.role === LocalRole.OWNER}
-                    >
-                      <MenuItem value={LocalRole.ADMIN}>Admin</MenuItem>
-                      <MenuItem value={LocalRole.MEMBER}>Member</MenuItem>
-                      <MenuItem value={LocalRole.OWNER}>Owner</MenuItem>
-                    </SelectFieldForm>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <IconButton
-                    disabled={member.role === LocalRole.OWNER}
-                    onClick={() => {
-                      removeUser(index);
+    <>
+      <TableContainer sx={{ maxHeight: '400px' }}>
+        <Table
+          sx={{
+            '& .MuiTableCell-root': {
+              border: 'none',
+            },
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell
+                colSpan={3}
+                sx={{
+                  fontWeight: 700,
+                  paddingLeft: '0px',
+                }}
+              >
+                Members
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[
+              ...users,
+              ...(!team
+                ? ([
+                    {
+                      user: authenticatedUser?._id,
+                      role: LocalRole.ADMIN,
+                      id: authenticatedUser?._id,
+                    },
+                  ] as FieldArrayWithId<FormValues, 'users', 'id'>[])
+                : []),
+            ].map((member, index) => {
+              const isAuthenticatedUser =
+                member.user === authenticatedUser?._id;
+              const user: UserForOtherClient | undefined =
+                usersById[member.user];
+              return (
+                <TableRow key={index}>
+                  <TableCell
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      paddingLeft: 0,
                     }}
                   >
-                    <Delete />
+                    <Avatar />
+                  </TableCell>
+                  <TableCell>
+                    {isAuthenticatedUser
+                      ? 'You'
+                      : `${user?.firstName} ${user?.lastName}`}
+                  </TableCell>
+                  <TableCell sx={{ minWidth: '100px' }}>
+                    {isAuthenticatedUser ? (
+                      member.role === LocalRole.ADMIN ? (
+                        'Admin'
+                      ) : member.role === LocalRole.MEMBER ? (
+                        'Member'
+                      ) : (
+                        'Owner'
+                      )
+                    ) : (
+                      <SelectFieldForm
+                        control={control}
+                        name={`users.${index}.role`}
+                        fullWidth
+                        variant="standard"
+                        disabled={member.role === LocalRole.OWNER}
+                      >
+                        <MenuItem value={LocalRole.ADMIN}>Admin</MenuItem>
+                        <MenuItem value={LocalRole.MEMBER}>Member</MenuItem>
+                        <MenuItem value={LocalRole.OWNER}>Owner</MenuItem>
+                      </SelectFieldForm>
+                    )}
+                  </TableCell>
+                  <TableCell sx={{ paddingRight: 0 }}>
+                    <IconButton
+                      disabled={
+                        member.role === LocalRole.OWNER || isAuthenticatedUser
+                      }
+                      onClick={() => {
+                        removeUser(index);
+                      }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            {invitations.map((invitation, index) => (
+              <TableRow key={index}>
+                <TableCell
+                  sx={{
+                    paddingLeft: 0,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <Mail />
+                  </Box>
+                </TableCell>
+                <TableCell>{invitation.email}</TableCell>
+                <TableCell sx={{ minWidth: '100px' }}>
+                  <SelectFieldForm
+                    control={control}
+                    name={`invitations.${index}.role`}
+                    fullWidth
+                    variant="standard"
+                  >
+                    <MenuItem value={LocalRole.ADMIN}>Admin</MenuItem>
+                    <MenuItem value={LocalRole.MEMBER}>Member</MenuItem>
+                  </SelectFieldForm>
+                </TableCell>
+                <TableCell sx={{ paddingRight: 0 }}>
+                  <IconButton
+                    onClick={() => {
+                      removeInvitation(index);
+                    }}
+                  >
+                    <Close />
                   </IconButton>
                 </TableCell>
               </TableRow>
-            );
-          })}
-          {invitations.map((invitation, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <Mail />
-                </Box>
-              </TableCell>
-              <TableCell>{invitation.email}</TableCell>
-              <TableCell sx={{ minWidth: '100px' }}>
-                <SelectFieldForm
-                  control={control}
-                  name={`invitations.${index}.role`}
-                  fullWidth
-                  variant="standard"
-                >
-                  <MenuItem value={LocalRole.ADMIN}>Admin</MenuItem>
-                  <MenuItem value={LocalRole.MEMBER}>Member</MenuItem>
-                </SelectFieldForm>
-              </TableCell>
-              <TableCell>
-                <IconButton
-                  onClick={() => {
-                    removeInvitation(index);
-                  }}
-                >
-                  <Delete />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                }}
-              >
-                <Mail />
-              </Box>
-            </TableCell>
-            <TableCell colSpan={2}>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Invite user by email"
-                value={invitationEmail}
-                onChange={(e) => {
-                  setInvitationEmail(e.target.value);
-                }}
-              />
-            </TableCell>
-            <TableCell>
-              <IconButton
-                disabled={!invitationEmail}
-                type="button"
-                sx={{ p: '10px' }}
-                onClick={() => {
-                  appendInvitation({
-                    email: invitationEmail,
-                    role: LocalRole.MEMBER,
-                  });
-                  setInvitationEmail('');
-                }}
-              >
-                <Add />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box paddingTop={3}>
+        <Typography variant="body2" sx={{ fontWeight: 700 }} width="100%">
+          Add a team member with an email invitation
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <InputBase
+            sx={{ flex: 1 }}
+            placeholder="john.doe@gmail.com"
+            value={invitationEmail}
+            onChange={(e) => {
+              setInvitationEmail(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                onClickAddInvitation();
+              }
+            }}
+          />
+          <Button
+            disabled={!invitationEmail}
+            variant="contained"
+            sx={{
+              textTransform: 'none',
+              backgroundColor: 'additionalColors.primaryLighter',
+              color: 'primary.main',
+            }}
+            onClick={onClickAddInvitation}
+          >
+            Send
+          </Button>
+        </Stack>
+      </Box>
+    </>
   );
 };
 interface Props {
@@ -238,7 +255,6 @@ interface Props {
 }
 
 export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
-  const styles = useStyles();
   const createTeam = useCreateTeam();
   const updateTeam = useUpdateTeam();
 
@@ -255,14 +271,22 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
         role: Yup.string().required('Role is required'),
       }),
     ),
-    invitations: Yup.array().of(
-      Yup.object().shape({
-        email: Yup.string()
-          .email('Invalid email')
-          .required('Email is required'),
-        role: Yup.string().required('Role is required'),
-      }),
-    ),
+    invitations: Yup.array()
+      .of(
+        Yup.object().shape({
+          email: Yup.string()
+            .email('Invalid email')
+            .required('Email is required'),
+          role: Yup.string().required('Role is required'),
+        }),
+      )
+      .test(
+        'unique-emails',
+        'Emails must be unique',
+        (invitations) =>
+          invitations?.length ===
+          new Set(invitations?.map((invitation) => invitation.email)).size,
+      ),
   });
 
   const { control, handleSubmit } = useForm<FormValues>({
@@ -327,16 +351,37 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction="column" spacing={2} sx={styles.container}>
-        <TextFieldForm
-          control={control}
-          name="name"
-          label="Name"
-          fullWidth
-          required
-        />
-        <UpdateTeamMembers control={control} team={team} />
-        <Button type="submit">Submit</Button>
+      <Stack
+        direction="column"
+        spacing={2}
+        justifyContent="space-between"
+        sx={{ minHeight: { md: '500px' }, minWidth: { md: '400px' } }}
+      >
+        <Box>
+          <Box paddingBottom={3}>
+            <Typography variant="body2" fontWeight={700}>
+              Name your team
+            </Typography>
+            <TextFieldForm
+              control={control}
+              name="name"
+              placeholder="Name"
+              variant="standard"
+              required
+            />
+          </Box>
+          <UpdateTeamMembers control={control} team={team} />
+        </Box>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            alignSelf: 'end',
+            marginTop: 4,
+          }}
+        >
+          Submit
+        </Button>
       </Stack>
     </Box>
   );

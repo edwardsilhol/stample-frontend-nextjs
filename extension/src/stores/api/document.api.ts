@@ -6,6 +6,7 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   MinimalDocument,
+  UrlAndId,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
 import { SEARCH_DOCUMENT_PAGE_SIZE } from '@src/constants/document.constant';
@@ -63,13 +64,26 @@ export const searchDocuments = async (
 
 export const searchDocumentsUrlsByUrls = async (
   urls: string[],
-): Promise<string[]> => {
-  return await apiRequest<string[]>(
+): Promise<UrlAndId[]> => {
+  return await apiRequest<UrlAndId[]>(
     'POST',
     '/document/search/urls',
     undefined,
     {
       urls,
+    },
+  );
+};
+
+export const searchDocumentsByUrl = async (
+  url: string,
+): Promise<MinimalDocument[]> => {
+  return await apiRequest<MinimalDocument[]>(
+    'POST',
+    '/document/search/url',
+    undefined,
+    {
+      url,
     },
   );
 };

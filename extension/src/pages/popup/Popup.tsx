@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo } from 'react';
 import { useSession } from '@src/stores/hooks/user.hooks';
 import SignInForm from '@src/components/forms/auth/signInForm/SignInForm';
 import { WebClipper } from '@src/components/webClipper/WebClipper';
@@ -11,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useIsDocumentClippable } from '@src/stores/hooks/clipper.hooks';
 const ContentNotClippable = () => (
   <Box padding={1}>
-    <Typography>
+    <Typography variant="h5" fontWeight={500}>
       This page is not clippable. Please try another page.
     </Typography>
   </Box>
@@ -36,7 +35,7 @@ const Popup = () => {
   };
 
   return (
-    <Box padding={1} minWidth="400px">
+    <Stack padding={1} minWidth="400px">
       <Stack
         direction="row"
         spacing={1}
@@ -49,7 +48,7 @@ const Popup = () => {
         </IconButton>
       </Stack>
       <PopupContent />
-    </Box>
+    </Stack>
   );
 };
 

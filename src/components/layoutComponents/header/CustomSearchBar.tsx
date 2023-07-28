@@ -20,13 +20,11 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
   return (
     <Box
       sx={{
-        color: 'black',
-        opacity: 0.6,
         '& .MuiInputBase-input': {
           padding: '0',
           margin: '0 5px',
-          fontSize: '13px',
-          fontWeight: 600,
+          fontSize: '14px',
+          fontWeight: 400,
         },
       }}
     >
@@ -41,15 +39,18 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
             <InputBase
               {...InputProps}
               {...rest}
-              startAdornment={<Search sx={{ fontSize: '20px' }} />}
-              placeholder={'Search'}
+              startAdornment={
+                <Search sx={{ fontSize: '20px', color: '#737373' }} />
+              }
+              placeholder="Search"
               sx={{
-                backgroundColor: 'additionalColors.sidebarBackground',
+                backgroundColor: 'white',
                 height: '34px',
-                borderRadius: 0.5,
+                borderRadius: 0.75,
                 paddingLeft: '4px',
-                width: '300px',
+                width: '375px',
                 maxWidth: '100%',
+                border: '1px solid #E5E5E5',
               }}
             />
           );

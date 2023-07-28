@@ -45,11 +45,15 @@ export const SelectTags: React.FC<TagTextFieldProps> = ({
         <TextField
           {...params}
           variant="standard"
-          label="Select tags"
           placeholder="Select tags..."
           fullWidth
           InputLabelProps={{
             shrink: true,
+          }}
+          sx={{
+            '.MuiInputBase-root': {
+              fontSize: '14px',
+            },
           }}
         />
       )}

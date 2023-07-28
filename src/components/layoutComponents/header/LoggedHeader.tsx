@@ -39,15 +39,13 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
       <Slide appear={false} direction="down" in={!trigger}>
         <AppBar
           sx={{
-            borderBottom: '1px solid #d3d4d5',
-            backgroundColor: 'white',
-            left: isMobile ? undefined : '199px',
-            paddingRight: isMobile ? 0 : '199px',
+            backgroundColor: 'additionalColors.background',
+            width: isMobile ? undefined : 'calc(100% - 270px)',
           }}
           elevation={0}
         >
           <Toolbar disableGutters>
-            <Grid container spacing={1} paddingY={1} paddingX={1}>
+            <Grid container spacing={1} paddingY={1} paddingX={2}>
               {addButtonToggled ? (
                 <>
                   <Grid item xs={2}>
@@ -76,9 +74,10 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = ({
                       variant="contained"
                       color="primary"
                       size="small"
+                      sx={{ textTransform: 'none' }}
                       onClick={() => setToggledAddButton(true)}
                     >
-                      Add
+                      Add a note
                     </Button>
                   </Grid>
                 </>

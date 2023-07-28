@@ -45,7 +45,7 @@ export const DocumentHeader: React.FC<
           ? [
               <Box
                 component="a"
-                color="primary.light"
+                color="primary.dark"
                 href={url}
                 target="_blank"
                 rel="noreferrer"
@@ -59,7 +59,7 @@ export const DocumentHeader: React.FC<
           ? [
               <Box
                 component="a"
-                color="primary.light"
+                color="primary.dark"
                 href={authorUrl}
                 target="_blank"
                 rel="noreferrer"
@@ -72,7 +72,7 @@ export const DocumentHeader: React.FC<
         ...Object.values(documentHeaderStrings)
           .filter((headerString): headerString is string => !!headerString)
           .map((headerString, index) => (
-            <Box component="span" color="primary.light" key={index + 2}>
+            <Box component="span" color="primary.dark" key={index + 2}>
               {headerString}
             </Box>
           )),

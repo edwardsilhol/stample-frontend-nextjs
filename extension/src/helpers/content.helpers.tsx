@@ -2,8 +2,14 @@ import { AlreadyPresentStampleIcon } from '@src/components/content/AlreadyPresen
 import { StampleTabTitle } from '@src/components/content/StampleTabTitle';
 import { createRoot } from 'react-dom/client';
 import {
-  GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
+  GOOGLE_CONTENT_ID,
+  GOOGLE_RESULT_STATS_ID,
+  GOOGLE_TAB_BAR_CONTAINER_JS_CONTROLLER_ATTRIBUTE,
   GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME,
+  GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES,
+  GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES,
+  GOOGLE_TAB_BAR_ITEM_SUGGESTION_TEXT_CSS_CLASSNAME_TO_REMOVE,
+  STAMPLE_TAB_CONTENT_ID,
   STAMPLE_TAB_TITLE_ID,
 } from '../constants/content';
 import { DocumentsView } from '@src/components/content/document/DocumentsView';
@@ -62,9 +68,12 @@ export const injectAlreadyPresentStamples = (
   if (!searchElements) {
     return;
   }
+  console.log('searchElements', searchElements.length);
   searchElements.forEach((element) => {
     const href = element.url;
+    console.log('href', href, stamplesUrls);
     if (stamplesUrls.includes(href)) {
+      console.log('already present', href);
       const container = getInjectableContainer(element);
       container.setAttribute(
         'style',
@@ -72,6 +81,8 @@ export const injectAlreadyPresentStamples = (
       );
       const alreadyPresentStampleIcon = document.createElement('div');
       container.append(alreadyPresentStampleIcon);
+
+      console.log('alreadyPresentStampleIcon', alreadyPresentStampleIcon);
       createRoot(alreadyPresentStampleIcon).render(
         <AlreadyPresentStampleIcon />,
       );
@@ -89,57 +100,130 @@ export const findTabBarItems = (document: Document) => {
   return tabBarItems;
 };
 
-const findSelectedTabBarItem = (document: Document) => {
+const findSuggestionSelectedTabBarItem = (document: Document) => {
   const tabBarItems = document.getElementsByClassName(
-    `${GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME} ${GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME}`,
+    `${GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES.join(
+      ' ',
+    )} ${GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME}`,
   );
   if (!tabBarItems) {
     return;
   }
   return tabBarItems[0];
 };
-const findStampleTabBarItem = (document: Document) => {
+
+const findStandardSelectedTabBarItem = (document: Document) => {
+  const tabBarItems = document.getElementsByClassName(
+    `${GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES.join(
+      ' ',
+    )} ${GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME}`,
+  );
+  if (!tabBarItems) {
+    return;
+  }
+  return tabBarItems[0];
+};
+
+export const findStampleTabBarItem = (document: Document) => {
   const stampleTabBarItem = document.getElementById(STAMPLE_TAB_TITLE_ID);
   return stampleTabBarItem;
 };
 
+const treatSuggestionTabBarItemBeforeInjection = (
+  selectedTabBarItem: Element,
+) => {
+  selectedTabBarItem.classList.remove(
+    ...GOOGLE_TAB_BAR_ITEM_SUGGESTION_TEXT_CSS_CLASSNAME_TO_REMOVE,
+  );
+};
+
+const findSelectedTabBarItem = (
+  document: Document,
+): {
+  element: Element;
+  isSuggestion: boolean;
+} | null => {
+  const suggestionSelectedTabBarItem =
+    findSuggestionSelectedTabBarItem(document);
+  const standardSelectedTabBarItem = findStandardSelectedTabBarItem(document);
+  if (!!suggestionSelectedTabBarItem) {
+    return {
+      element: suggestionSelectedTabBarItem,
+      isSuggestion: true,
+    };
+  } else if (!!standardSelectedTabBarItem) {
+    return {
+      element: standardSelectedTabBarItem,
+      isSuggestion: false,
+    };
+  } else {
+    return null;
+  }
+};
+
+const treatTabBarItemBeforeInjection = (
+  selectedTabBarItem: Element,
+  isSuggestion: boolean,
+) => {
+  if (isSuggestion) {
+    treatSuggestionTabBarItemBeforeInjection(selectedTabBarItem);
+  }
+};
+
 export const injectStampleTabTitle = (document: Document) => {
-  const tabBarItems = findTabBarItems(document);
-  const container = tabBarItems[0].parentElement;
-  const stampleTabTitle = document.createElement('div');
-  container.insertBefore(stampleTabTitle, tabBarItems[1]);
-  stampleTabTitle.id = STAMPLE_TAB_TITLE_ID;
-  stampleTabTitle.className = GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME;
-  createRoot(stampleTabTitle).render(<StampleTabTitle />);
+  // const container = document.querySelectorAll(
+  //   `[jscontroller="${GOOGLE_TAB_BAR_CONTAINER_JS_CONTROLLER_ATTRIBUTE}"]`,
+  // )[0];
+  // const stampleTabTitle = document.createElement('a');
+  // const selectedTabBarItem = findSelectedTabBarItem(document);
+  // // if (selectedTabBarItem) {
+  // //   treatTabBarItemBeforeInjection(
+  // //     selectedTabBarItem.element,
+  // //     selectedTabBarItem.isSuggestion,
+  // //   );
+  // // }
+  // let firstNonSelectedTabBarItem =
+  //   !!selectedTabBarItem && container.childNodes.length > 2
+  //     ? container.childNodes[2]
+  //     : container.childNodes[0];
+  // container.insertBefore(stampleTabTitle, firstNonSelectedTabBarItem);
+  // stampleTabTitle.id = STAMPLE_TAB_TITLE_ID;
+  // stampleTabTitle.className = GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME;
+  // createRoot(stampleTabTitle).render(<StampleTabTitle />);
 };
 const hideOrShowResultsStats = (document: Document, show: boolean) => {
-  const resultsStats = document.getElementById('slim_appbar');
+  const resultsStats = document.getElementById(GOOGLE_RESULT_STATS_ID);
 
   if (!show) {
     resultsStats?.setAttribute('style', 'display: none;');
   } else {
-    resultsStats?.setAttribute('style', 'display: unset;');
+    resultsStats?.setAttribute('style', 'display: inherit;');
   }
 };
 export const selectStampleTab = (document: Document) => {
   const selectedTabBarItem = findSelectedTabBarItem(document);
   if (selectedTabBarItem) {
-    const replacedItem = selectedTabBarItem.firstChild.cloneNode(true);
-    const replacedItemChildren = replacedItem.childNodes;
-    const textContent = replacedItem.textContent;
-    const unselectedTabBarItem = document.createElement('a');
-    unselectedTabBarItem.append(...replacedItemChildren);
-    unselectedTabBarItem.setAttribute('textContent', textContent);
-    unselectedTabBarItem.setAttribute('href', new URL(document.URL).href);
-    const underline = unselectedTabBarItem.lastElementChild;
-    underline?.remove();
-    selectedTabBarItem.classList.remove(
-      GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME,
-    );
-    selectedTabBarItem.firstChild.replaceWith(unselectedTabBarItem);
+    if (selectedTabBarItem.isSuggestion) {
+      selectedTabBarItem.element.classList.remove(
+        ...GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES,
+      );
+    } else {
+      selectedTabBarItem.element.classList.remove(
+        ...GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES,
+      );
+    }
   }
   const stampleTabBarItem = findStampleTabBarItem(document);
-  stampleTabBarItem.classList.add(GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME);
+  if (selectedTabBarItem?.isSuggestion || !selectedTabBarItem) {
+    stampleTabBarItem?.classList.add(
+      ...GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES,
+    );
+  } else {
+    stampleTabBarItem?.classList.add(
+      ...GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES,
+    );
+  }
+  injectStampleTabContent(document);
   hideOrShowResultsStats(document, false);
 };
 
@@ -148,24 +232,35 @@ export const unselectStampleTab = (document: Document) => {
   if (!stampleTabBarItem) {
     return;
   }
-  stampleTabBarItem.classList.remove(GOOGLE_TAB_BAR_ITEM_ACTIVE_CSS_CLASSNAME);
+  stampleTabBarItem.classList.remove(
+    ...GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES,
+    ...GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES,
+  );
+  disableStampleTabContent(document);
   hideOrShowResultsStats(document, true);
 };
 
-export const injectStampleTabContent = (document: Document) => {
-  const container = document.getElementById('rcnt');
+const injectStampleTabContent = (document: Document) => {
+  const container = document.getElementById(GOOGLE_CONTENT_ID);
 
-  container.replaceChildren();
+  container.setAttribute('style', 'display: none;');
 
   const stampleTabContent = document.createElement('div');
-  container.replaceWith(stampleTabContent);
-  stampleTabContent.id = 'stample-tab-content';
+  container.parentNode.insertBefore(stampleTabContent, container.nextSibling);
+  stampleTabContent.id = STAMPLE_TAB_CONTENT_ID;
   stampleTabContent.setAttribute('style', ' margin-top: 16px');
   createRoot(stampleTabContent).render(
     <AppProvider>
       <DocumentsView />
     </AppProvider>,
   );
+};
+
+const disableStampleTabContent = (document: Document) => {
+  const stampleTabContent = document.getElementById(STAMPLE_TAB_CONTENT_ID);
+  stampleTabContent.remove();
+  const container = document.getElementById(GOOGLE_CONTENT_ID);
+  container.setAttribute('style', 'display: unset;');
 };
 
 export const getGoogleSearchQuery = (document: Document): string => {
