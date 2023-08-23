@@ -26,6 +26,7 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
           fontSize: '14px',
           fontWeight: 400,
         },
+        maxWidth: '100%',
       }}
     >
       <Autocomplete

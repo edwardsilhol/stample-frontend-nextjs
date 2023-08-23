@@ -161,7 +161,7 @@ function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/signIn">
+              <Link href="/">
                 <Typography variant="body2" sx={styles.link}>
                   Already have an account? Sign in
                 </Typography>

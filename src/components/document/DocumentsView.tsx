@@ -198,14 +198,7 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
   );
 
   return (
-    <Box
-      paddingTop={{
-        xs: '58px',
-        sm: '65px',
-      }}
-      paddingX={{ xs: 1, sm: 2 }}
-      paddingY={{ xs: 1 }}
-    >
+    <Box paddingX={{ xs: 1, sm: 2 }} paddingY={{ xs: 1 }}>
       <Box
         sx={{
           width: '100%',
