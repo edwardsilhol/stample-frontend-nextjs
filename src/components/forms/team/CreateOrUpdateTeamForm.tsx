@@ -127,7 +127,7 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
                   >
                     <Avatar />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>
                     {isAuthenticatedUser
                       ? 'You'
                       : `${user?.firstName} ${user?.lastName}`}
