@@ -125,12 +125,25 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
               autoFocus
             />
             <Typography variant="body2" fontWeight={500}>
+              Summary
+            </Typography>
+            <TextFieldForm
+              control={control}
+              name="summary"
+              required
+              fullWidth
+              id="summary"
+              placeholder="Give a summary to your note"
+              multiline
+            />
+            <Typography variant="body2" fontWeight={500}>
               Content
             </Typography>
             <Editor
               editorState={editorState}
               onEditorStateChange={handleEditorStateChange}
               editorStyle={{
+                height: '136px',
                 backgroundColor: 'white',
                 border: '1px solid',
                 borderColor: 'rgba(0, 0, 0, 0.23)',
@@ -155,18 +168,6 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
                   options: ['unordered', 'ordered'],
                 },
               }}
-            />
-            <Typography variant="body2" fontWeight={500}>
-              Summary
-            </Typography>
-            <TextFieldForm
-              control={control}
-              name="summary"
-              required
-              fullWidth
-              id="summary"
-              placeholder="Give a summary to your note"
-              multiline
             />
             <Typography variant="body2" fontWeight={500}>
               Url

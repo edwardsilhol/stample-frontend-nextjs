@@ -110,7 +110,7 @@ export const TagsView: FC<TagsViewProps> = ({
     console.log(pathname);
     const pathParts = pathname?.split('/');
     if (pathParts?.[1] === 'documents') {
-      router.push('/my');
+      router.push('/');
     }
   };
   const handleClose = () => {
@@ -173,7 +173,10 @@ export const TagsView: FC<TagsViewProps> = ({
           >
             <Stack direction="row" alignItems="center">
               {isOriginalParent && (
-                <LocalOfferOutlined sx={{ fontSize: '20px', marginRight: 1 }} />
+                <LocalOfferOutlined
+                  sx={{ fontSize: '20px', marginRight: 1 }}
+                  color="primary"
+                />
               )}
               <Typography
                 variant="body2"
@@ -193,8 +196,8 @@ export const TagsView: FC<TagsViewProps> = ({
               sx={{
                 display: hoveredTagId === _id ? 'inline-flex' : 'none',
                 borderRadius: '4px',
-                width: '20px',
-                height: '18px',
+                width: '14px',
+                height: '14px',
                 padding: 0,
               }}
               onClick={(event) => {
@@ -230,7 +233,8 @@ export const TagsView: FC<TagsViewProps> = ({
       </Typography>
       <TreeView
         sx={{
-          overflowY: 'auto',
+          overflowY: 'scroll',
+          maxHeight: 'calc(100vh - 300px)',
           marginBottom: 2,
         }}
         defaultCollapseIcon={
@@ -268,7 +272,10 @@ export const TagsView: FC<TagsViewProps> = ({
                 paddingY={0.4}
                 width="100%"
               >
-                <HomeOutlined sx={{ fontSize: '20px', marginRight: 1 }} />
+                <HomeOutlined
+                  sx={{ fontSize: '20px', marginRight: 1 }}
+                  color="primary"
+                />
                 <Typography variant="body2" fontWeight={500}>
                   All
                 </Typography>

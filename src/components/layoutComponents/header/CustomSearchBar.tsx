@@ -35,6 +35,11 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
         }}
         inputValue={searchDocumentsQuery ?? ''}
         freeSolo
+        ListboxProps={{
+          style: {
+            fontSize: '14px',
+          },
+        }}
         renderInput={({ InputProps, InputLabelProps: _, ...rest }) => {
           return (
             <InputBase

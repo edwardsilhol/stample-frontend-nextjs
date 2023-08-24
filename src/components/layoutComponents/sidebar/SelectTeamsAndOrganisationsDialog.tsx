@@ -41,6 +41,7 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] =
     React.useState(false);
   const [isSelectOpen, setIsSelectOpen] = React.useState(false);
+  const [isTeamHovered, setIsTeamHovered] = React.useState(false);
 
   // const [isCreateOrganisationOpen, setIsCreateOrganisationOpen] =
   //   React.useState(false);
@@ -104,6 +105,8 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
             ? ''
             : selectedTeamId
         }
+        onMouseEnter={() => setIsTeamHovered(true)}
+        onMouseLeave={() => setIsTeamHovered(false)}
         SelectProps={{
           open: isSelectOpen,
           onOpen: () => setIsSelectOpen(true),
@@ -111,15 +114,35 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
           renderValue: (value) => {
             const selectedTeam = teamsByIds[value as string];
             return selectedTeam ? (
-              <Stack direction="row" alignItems="center" spacing={1.5}>
-                <GroupsOutlined fontSize="small" />
-                <Typography
-                  variant="body2"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                >
-                  {getTeamDisplayedName(selectedTeam)}
-                </Typography>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1.5}
+                width="100%"
+              >
+                <Stack direction="row" alignItems="center" spacing={1.5}>
+                  <GroupsOutlined fontSize="small" />
+                  <Typography
+                    variant="body2"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    fontWeight="bold"
+                  >
+                    {getTeamDisplayedName(selectedTeam)}
+                  </Typography>
+                </Stack>
+                {isTeamHovered ? (
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsUpdateTeamDialogOpen(true);
+                    }}
+                    sx={{ width: '20px', height: '20px' }}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                ) : null}
               </Stack>
             ) : (
               ''
@@ -167,18 +190,13 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
                 : {}),
             }}
           >
-            {getTeamDisplayedName(team)}
-            {team._id === selectedTeamId ? (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsUpdateTeamDialogOpen(true);
-                }}
-                size="small"
-              >
-                <Edit />
-              </IconButton>
-            ) : null}
+            <Typography
+              variant="body2"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {getTeamDisplayedName(team)}
+            </Typography>
           </MenuItem>
         ))}
         <Button

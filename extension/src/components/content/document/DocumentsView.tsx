@@ -22,6 +22,7 @@ import {
 import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import { SelectTeam } from '../SelectTeam';
 import { useSelectedTeamId } from '@src/stores/data/team.data';
+import { decode } from 'he';
 
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
@@ -44,6 +45,7 @@ const DocumentGridItem: React.FC<{
           image={document.mainMedia?.src}
         />
       ) : null}
+
       <CardContent
         sx={{
           overflow: 'hidden',
@@ -61,46 +63,59 @@ const DocumentGridItem: React.FC<{
             overflow: 'hidden',
           }}
         >
-          <Typography
-            variant="body2"
-            fontWeight={550}
-            sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              fontFamily: 'Google Sans,arial,sans-serif;',
-            }}
-          >
-            <a style={{ color: 'grey', fontSize: '12px' }} href={document.url}>
-              {document.urlWebsiteName ? (
-                <>{document.urlWebsiteName}&nbsp;&nbsp;</>
+          {document.urlWebsiteName || document.url || document.title ? (
+            <Typography
+              variant="body2"
+              fontWeight={550}
+              sx={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                fontFamily: 'Google Sans,arial,sans-serif;',
+              }}
+            >
+              {document.url ? (
+                <a
+                  style={{ color: 'grey', fontSize: '12px' }}
+                  href={document.url}
+                >
+                  {document.urlWebsiteName ? (
+                    <>{document.urlWebsiteName}&nbsp;&nbsp;</>
+                  ) : (
+                    document.url
+                  )}
+                </a>
               ) : null}
-            </a>
-            {document.title}
-          </Typography>
-          <Typography
-            variant="caption"
-            color="primary.dark"
-            sx={{
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              textOverflow: 'ellipsis',
-              fontFamily: 'Google Sans,arial,sans-serif;',
-            }}
-          >
-            {document.summary}
-          </Typography>
-          <Box paddingY={1}>
-            <DocumentTags
-              tags={flatTags}
-              documentTagsIds={document.tags}
-              maxLines={1}
-            />
-          </Box>
+              {decode(document.title)}
+            </Typography>
+          ) : null}
+          {document.summary ? (
+            <Typography
+              variant="caption"
+              color="primary.dark"
+              sx={{
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                textOverflow: 'ellipsis',
+                fontFamily: 'Google Sans,arial,sans-serif;',
+              }}
+            >
+              {decode(document.summary)}
+            </Typography>
+          ) : null}
+          {document.tags && document.tags.length > 0 ? (
+            <Box paddingY={1}>
+              <DocumentTags
+                tags={flatTags}
+                documentTagsIds={document.tags}
+                maxLines={1}
+              />
+            </Box>
+          ) : null}
           <DocumentHeader
             {...document}
             likesCount={document.likes?.length ?? 0}
