@@ -34,6 +34,7 @@ import { useTeam } from 'stores/hooks/team.hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useTagsByTeam } from 'stores/hooks/tag.hooks';
+import { decode } from 'he';
 
 interface DocumentViewProps {
   documentId: string;
@@ -65,7 +66,7 @@ const DocumentViewHeaderContent: React.FC = () => {
         variant="text"
         startIcon={<KeyboardArrowLeft />}
         onClick={() => {
-          router.push('/my');
+          router.push('/');
         }}
         sx={{ padding: 0, borderRadius: '4px' }}
       >
@@ -210,6 +211,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
       },
     });
   };
+  console.log({ test: viewedDocument?.tags });
   return (
     <Stack
       direction="column"
@@ -248,7 +250,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
             <Button
               variant="text"
               startIcon={<KeyboardArrowLeft />}
-              onClick={() => router.push('/my')}
+              onClick={() => router.push('/')}
               sx={{ color: 'black', textTransform: 'none' }}
             >
               Back
@@ -258,7 +260,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
             <Stack maxWidth="md" width="100%" paddingBottom={2}>
               <Stack alignItems="center" width="100%">
                 <Typography variant="h1" paddingBottom={3} textAlign="center">
-                  {viewedDocument.title}
+                  {decode(viewedDocument.title)}
                 </Typography>
                 {viewedDocument?.mainMedia?.src ? (
                   <Box
@@ -297,9 +299,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
               >
                 <DocumentTags
                   tags={tags.raw}
-                  documentTagsIds={viewedDocument.tags.map((tag) =>
-                    tag._id.toString(),
-                  )}
+                  documentTagsIds={viewedDocument.tags.map(toString)}
                 />
                 <IconButton
                   onClick={() => onClickLike(isDocumentLiked ? false : true)}

@@ -34,6 +34,7 @@ specifiers:
   '@tanstack/react-virtual': 3.0.0-beta.54
   '@types/draft-js': ^0.11.10
   '@types/draftjs-to-html': ^0.8.1
+  '@types/he': ^1.2.0
   '@types/node': 18.13.0
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
@@ -54,6 +55,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-react: ^7.32.2
   eslint-plugin-storybook: ^0.6.10
+  he: ^1.2.0
   husky: ^8.0.3
   i18next: ^22.4.10
   jotai: ^2.0.3
@@ -103,6 +105,7 @@ dependencies:
   draftjs-to-html: 0.9.1
   eslint: 8.34.0
   eslint-plugin-react: 7.32.2_eslint@8.34.0
+  he: 1.2.0
   i18next: 22.4.10
   jotai: 2.0.3_react@18.2.0
   lodash: 4.17.21
@@ -135,6 +138,7 @@ devDependencies:
   '@storybook/testing-library': 0.0.13_biqbaboplfbrettd7655fr4n2y
   '@types/draft-js': 0.11.10
   '@types/draftjs-to-html': 0.8.1
+  '@types/he': 1.2.0
   '@types/react-draft-wysiwyg': 1.13.4
   '@typescript-eslint/eslint-plugin': 5.52.0_6cfvjsbua5ptj65675bqcn6oza
   '@typescript-eslint/parser': 5.52.0_7kw3g6rralp5ps6mg3uyzz6azm
@@ -4175,6 +4179,10 @@ packages:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: true
+
+  /@types/he/1.2.0:
+    resolution: {integrity: sha512-uH2smqTN4uGReAiKedIVzoLUAXIYLBTbSofhx3hbNqj74Ua6KqFsLYszduTrLCMEAEAozF73DbGi/SC1bzQq4g==}
     dev: true
 
   /@types/html-minifier-terser/5.1.2:
@@ -8590,7 +8598,6 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-    dev: true
 
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}

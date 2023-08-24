@@ -30,7 +30,7 @@ export const Invitation: React.FC<Props> = ({ teamId }) => {
       },
     });
 
-    router.push('/my');
+    router.push('/');
   };
   if (!team) return <>No team</>;
   return (

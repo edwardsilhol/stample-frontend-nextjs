@@ -63,7 +63,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         <Avatar sx={{ width: 44, height: 44 }} src={user?.profilePictureUrl} />
         <Stack direction="column">
           <Typography variant="caption" fontWeight={600}>
-            Your Stample
+            Stample
           </Typography>
           <Typography
             variant="body2"

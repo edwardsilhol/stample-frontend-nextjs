@@ -111,15 +111,24 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
           renderValue: (value) => {
             const selectedTeam = teamsByIds[value as string];
             return selectedTeam ? (
-              <Stack direction="row" alignItems="center" spacing={1.5}>
-                <GroupsOutlined fontSize="small" />
-                <Typography
-                  variant="body2"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                >
-                  {getTeamDisplayedName(selectedTeam)}
-                </Typography>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1.5}
+                width="100%"
+              >
+                <Stack direction="row" alignItems="center" spacing={1.5}>
+                  <GroupsOutlined fontSize="small" />
+                  <Typography
+                    variant="body2"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    fontWeight="bold"
+                  >
+                    {getTeamDisplayedName(selectedTeam)}
+                  </Typography>
+                </Stack>
               </Stack>
             ) : (
               ''
@@ -167,16 +176,22 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
                 : {}),
             }}
           >
-            {getTeamDisplayedName(team)}
+            <Typography
+              variant="body2"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {getTeamDisplayedName(team)}
+            </Typography>
             {team._id === selectedTeamId ? (
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsUpdateTeamDialogOpen(true);
                 }}
-                size="small"
+                sx={{ width: '20px', height: '20px' }}
               >
-                <Edit />
+                <Edit fontSize="small" />
               </IconButton>
             ) : null}
           </MenuItem>

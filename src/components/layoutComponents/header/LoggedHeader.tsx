@@ -8,7 +8,7 @@ import {
   Slide,
   useScrollTrigger,
 } from '@mui/material';
-import { ArrowLeft, Menu } from '@mui/icons-material';
+import { Add, ArrowLeft, Menu } from '@mui/icons-material';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamTags } from 'stores/hooks/tag.hooks';
@@ -72,10 +72,15 @@ const LoggedHeaderContent: React.FC<{
             variant="contained"
             color="primary"
             size="small"
-            sx={{ textTransform: 'none' }}
+            sx={{
+              textTransform: 'none',
+              borderRadius: '40px',
+              minWidth: '0px',
+              padding: '5px',
+            }}
             onClick={() => setToggledAddButton(true)}
           >
-            Add a note
+            <Add />
           </Button>
         </Grid>
       </>
@@ -101,7 +106,6 @@ export const LoggedHeader: React.FC<LoggedHeaderProps> = (props) => {
           top={0}
           zIndex={2}
           sx={{ backgroundColor: 'additionalColors.background' }}
-          flex={1}
         >
           <LoggedHeaderContent
             {...props}

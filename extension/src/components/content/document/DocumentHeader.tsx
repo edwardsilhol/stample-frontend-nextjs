@@ -5,17 +5,12 @@ import { Document } from '@src/stores/types/document.types';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
 export const DocumentHeader: React.FC<
-  Pick<
-    Document,
-    'urlWebsiteName' | 'createdAt' | 'author' | 'url' | 'authorUrl'
-  > & {
+  Pick<Document, 'createdAt' | 'author' | 'url' | 'authorUrl'> & {
     likesCount: number;
     readersCount: number;
     typographyProps?: TypographyProps;
   }
 > = ({
-  urlWebsiteName,
-  url,
   authorUrl,
   createdAt,
   author,
@@ -42,20 +37,6 @@ export const DocumentHeader: React.FC<
       {...typographyProps}
     >
       {[
-        // ...(urlWebsiteName
-        //   ? [
-        //       <Box
-        //         component="a"
-        //         color="primary.light"
-        //         href={url}
-        //         target="_blank"
-        //         rel="noreferrer"
-        //         key={0}
-        //       >
-        //         {urlWebsiteName}
-        //       </Box>,
-        //     ]
-        //   : []),
         ...(author
           ? [
               <Box
