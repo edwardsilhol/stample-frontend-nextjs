@@ -41,7 +41,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] =
     React.useState(false);
   const [isSelectOpen, setIsSelectOpen] = React.useState(false);
-  const [isTeamHovered, setIsTeamHovered] = React.useState(false);
 
   // const [isCreateOrganisationOpen, setIsCreateOrganisationOpen] =
   //   React.useState(false);
@@ -105,8 +104,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
             ? ''
             : selectedTeamId
         }
-        onMouseEnter={() => setIsTeamHovered(true)}
-        onMouseLeave={() => setIsTeamHovered(false)}
         SelectProps={{
           open: isSelectOpen,
           onOpen: () => setIsSelectOpen(true),
@@ -132,17 +129,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
                     {getTeamDisplayedName(selectedTeam)}
                   </Typography>
                 </Stack>
-                {isTeamHovered ? (
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsUpdateTeamDialogOpen(true);
-                    }}
-                    sx={{ width: '20px', height: '20px' }}
-                  >
-                    <Edit fontSize="small" />
-                  </IconButton>
-                ) : null}
               </Stack>
             ) : (
               ''
@@ -197,6 +183,17 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
             >
               {getTeamDisplayedName(team)}
             </Typography>
+            {team._id === selectedTeamId ? (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsUpdateTeamDialogOpen(true);
+                }}
+                sx={{ width: '20px', height: '20px' }}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+            ) : null}
           </MenuItem>
         ))}
         <Button
