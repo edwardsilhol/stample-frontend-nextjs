@@ -110,7 +110,7 @@ export const TagsView: FC<TagsViewProps> = ({
     console.log(pathname);
     const pathParts = pathname?.split('/');
     if (pathParts?.[1] === 'documents') {
-      router.push('/');
+      router.push('/me');
     }
   };
   const handleClose = () => {
