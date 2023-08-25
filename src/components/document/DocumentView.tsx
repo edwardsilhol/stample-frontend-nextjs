@@ -66,7 +66,7 @@ const DocumentViewHeaderContent: React.FC = () => {
         variant="text"
         startIcon={<KeyboardArrowLeft />}
         onClick={() => {
-          router.push('/');
+          router.push('/me');
         }}
         sx={{ padding: 0, borderRadius: '4px' }}
       >
@@ -250,7 +250,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
             <Button
               variant="text"
               startIcon={<KeyboardArrowLeft />}
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/me')}
               sx={{ color: 'black', textTransform: 'none' }}
             >
               Back
