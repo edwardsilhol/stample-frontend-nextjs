@@ -32,6 +32,7 @@ import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
 import { SelectFieldForm } from '../fields/SelectFieldForm';
+import { capitalize } from 'lodash';
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
 interface UpdateTeamMembersProps {
@@ -130,7 +131,9 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
                   <TableCell sx={{ fontWeight: 'bold' }}>
                     {isAuthenticatedUser
                       ? 'You'
-                      : `${user?.firstName} ${user?.lastName}`}
+                      : `${capitalize(user?.firstName)} ${capitalize(
+                          user?.lastName,
+                        )}`}
                   </TableCell>
                   <TableCell sx={{ minWidth: '100px' }}>
                     {isAuthenticatedUser ? (

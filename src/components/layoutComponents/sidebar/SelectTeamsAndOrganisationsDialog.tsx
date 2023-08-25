@@ -104,6 +104,12 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
             ? ''
             : selectedTeamId
         }
+        sx={{
+          '.MuiInputBase-input:focus': {
+            backgroundColor: 'inherit',
+          },
+          width: '100%',
+        }}
         SelectProps={{
           open: isSelectOpen,
           onOpen: () => setIsSelectOpen(true),
@@ -119,7 +125,7 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
                 width="100%"
               >
                 <Stack direction="row" alignItems="center" spacing={1.5}>
-                  <GroupsOutlined fontSize="small" />
+                  <GroupsOutlined fontSize="small" color="primary" />
                   <Typography
                     variant="body2"
                     overflow="hidden"
@@ -148,9 +154,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
           onClose();
         }}
         select
-        sx={{
-          width: '100%',
-        }}
         InputProps={{
           sx: {
             height: '30px',

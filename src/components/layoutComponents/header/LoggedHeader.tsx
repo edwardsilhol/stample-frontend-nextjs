@@ -75,8 +75,9 @@ const LoggedHeaderContent: React.FC<{
             sx={{
               textTransform: 'none',
               borderRadius: '40px',
-              minWidth: '0px',
-              padding: '5px',
+              width: '40px',
+              height: '40px',
+              minWidth: 0,
             }}
             onClick={() => setToggledAddButton(true)}
           >

@@ -39,6 +39,7 @@ const DocumentGridItem: React.FC<{
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
+        filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.15));',
       }}
       variant="elevation"
       onClick={() => router.push(`/document/${document._id}`)}
