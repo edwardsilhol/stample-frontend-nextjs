@@ -9,7 +9,7 @@ interface CustomSearchBarProps {
   tags: Tag[];
 }
 
-export const CustomSearchBar: React.FC<CustomSearchBarProps> = ({ tags }) => {
+export const CustomSearchBar: React.FC<CustomSearchBarProps> = () => {
   const [searchDocumentsQuery, setSearchDocumentsQuery] =
     useSearchDocumentsQuery();
   return (
