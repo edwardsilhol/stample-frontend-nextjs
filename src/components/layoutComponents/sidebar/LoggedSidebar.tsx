@@ -44,7 +44,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   };
 
   const displaySelectTeams = () => (
-    <Box paddingX={1.5} paddingY={1}>
+    <Box paddingY={1}>
       <SelectTeamsAndOrganisationsDialog
         open={isSelectTeamsAndOrganisationsOpen}
         onClose={() => {
@@ -62,12 +62,21 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       <Stack direction="row" alignItems="center" spacing={1}>
         <Avatar sx={{ width: 44, height: 44 }} src={user?.profilePictureUrl} />
         <Stack direction="column">
-          <Typography variant="caption" fontWeight={600}>
+          <Typography
+            variant="caption"
+            fontWeight={600}
+            sx={{
+              cursor: 'default',
+            }}
+          >
             Stample
           </Typography>
           <Typography
             variant="body2"
             fontWeight={600}
+            sx={{
+              cursor: 'default',
+            }}
           >{`${user?.firstName} ${user?.lastName}`}</Typography>
         </Stack>
       </Stack>
@@ -116,7 +125,6 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           textAlign: 'start',
           justifyContent: 'start',
           fontWeight: 500,
-          marginLeft: 1,
         }}
         color="error"
         fullWidth
@@ -140,8 +148,8 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
               background: 'none',
               border: 'none',
               minWidth: '200px',
-              width: '280px',
-              maxWidth: '25%',
+              width: '75%',
+              maxWidth: '100%',
             },
           }}
         >
@@ -151,7 +159,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         <Box
           sx={{
             minWidth: '200px',
-            width: '280px',
+            width: '330px',
             maxWidth: '25%',
             backgroundColor: 'transparent',
           }}

@@ -311,9 +311,19 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
               <div
                 dangerouslySetInnerHTML={{ __html: viewedDocument.content }}
               />
-              <Typography variant="h2" marginBottom={2} marginTop={3}>
+              <Typography variant="h2" marginTop={3}>
                 Comments
               </Typography>
+              <Stack spacing={2} paddingY={2}>
+                {viewedDocument.comments?.map((comment, index) => (
+                  <DocumentComment
+                    key={index}
+                    index={index}
+                    commentAuthorsById={commentAuthorsById}
+                    comment={comment}
+                  />
+                ))}
+              </Stack>
               <Editor
                 editorState={editedCommentText}
                 onEditorStateChange={(value) => setEditedCommentText(value)}
@@ -343,19 +353,6 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
               >
                 Send
               </Button>
-              <Typography variant="h2" marginTop={3}>
-                Other comments
-              </Typography>
-              <Stack spacing={2} paddingTop={2}>
-                {viewedDocument.comments?.map((comment, index) => (
-                  <DocumentComment
-                    key={index}
-                    index={index}
-                    commentAuthorsById={commentAuthorsById}
-                    comment={comment}
-                  />
-                ))}
-              </Stack>
             </Stack>
           </Grid>
           <Grid item xs={1} sm={1.5} />

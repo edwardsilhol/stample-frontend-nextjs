@@ -12,12 +12,12 @@ import {
 import { TagRich } from '../../../stores/types/tag.types';
 import Stack from '../../muiOverrides/Stack';
 import Typography from '../../muiOverrides/Typography';
-import { Button, IconButton, Popover, TextField } from '@mui/material';
+import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tag.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { useRouter, usePathname } from 'next/navigation';
-
+const TAG_NAME_MAX_LENGTH = 20;
 const TreeItem: React.FC<
   TreeItemProps & {
     isOriginalParent?: boolean;
@@ -60,7 +60,6 @@ const TreeItem: React.FC<
       '.MuiTreeItem-label.MuiTypography-root': {
         fontWeight: 500,
       },
-      marginRight: 2.25,
       ...sx,
     }}
     {...props}
@@ -152,11 +151,22 @@ export const TagsView: FC<TagsViewProps> = ({
   }: TagRich & { isOriginalParent: boolean }) => {
     return (
       <TreeItem
-        sx={{ marginY: '5px' }}
+        sx={{
+          marginY: '5px',
+          '.MuiTreeItem-label': { paddingLeft: 0 },
+          '.MuiTreeItem-iconContainer': {
+            marginRight: 0,
+          },
+        }}
         key={_id}
         nodeId={_id}
         collapseIcon={<KeyboardArrowUp style={{ fontSize: '16px' }} />}
         expandIcon={<KeyboardArrowDown style={{ fontSize: '16px' }} />}
+        ContentProps={{
+          style: {
+            marginLeft: 0,
+          },
+        }}
         label={
           <Stack
             direction="row"
@@ -171,25 +181,27 @@ export const TagsView: FC<TagsViewProps> = ({
             }}
             paddingY={0.4}
           >
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" maxWidth="100%">
               {isOriginalParent && (
                 <LocalOfferOutlined
                   sx={{ fontSize: '20px', marginRight: 1 }}
                   color="primary"
                 />
               )}
-              <Typography
-                variant="body2"
-                fontWeight={isOriginalParent ? 500 : 400}
-                paddingRight={1}
-              >
-                {name}
-              </Typography>
-              {hoveredTagId === _id ? null : (
-                <Typography variant="body2" sx={{ opacity: 0.5 }}>
-                  {documentsCountPerTags[_id] || ''}
+              <Tooltip title={name.length > TAG_NAME_MAX_LENGTH ? name : ''}>
+                <Typography
+                  variant="body2"
+                  fontWeight={isOriginalParent ? 500 : 400}
+                  paddingRight={1}
+                >
+                  {name.length > TAG_NAME_MAX_LENGTH
+                    ? `${name.slice(0, TAG_NAME_MAX_LENGTH)}...`
+                    : name}
                 </Typography>
-              )}
+              </Tooltip>
+              <Typography variant="body2" sx={{ opacity: 0.5 }}>
+                {documentsCountPerTags[_id] || ''}
+              </Typography>
             </Stack>
             <IconButton
               aria-describedby={_id}
@@ -223,12 +235,7 @@ export const TagsView: FC<TagsViewProps> = ({
 
   return (
     <>
-      <Typography
-        fontSize="10px"
-        fontWeight={500}
-        paddingBottom={1}
-        paddingLeft={1.5}
-      >
+      <Typography fontSize="10px" fontWeight={500} paddingBottom={1}>
         TAGS
       </Typography>
       <TreeView
@@ -264,6 +271,19 @@ export const TagsView: FC<TagsViewProps> = ({
                 <Add sx={{ height: '12px' }} />
               </IconButton>
             }
+            ContentProps={{
+              style: {
+                marginLeft: 0,
+              },
+            }}
+            sx={{
+              '.MuiTreeItem-content .MuiTreeItem-label': {
+                paddingLeft: 0,
+              },
+              '.MuiTreeItem-content .MuiTreeItem-iconContainer': {
+                marginRight: 0,
+              },
+            }}
             label={
               <Stack
                 direction="row"
