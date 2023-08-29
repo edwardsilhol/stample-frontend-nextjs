@@ -21,6 +21,7 @@ import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface SidebarProps {
   user: User | null | undefined;
@@ -28,6 +29,8 @@ interface SidebarProps {
 }
 export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const pathname = usePathname();
   const { data: documentsCountPerTags } = useDocumentsCountPerTag();
   const [selectedTeamId] = useSelectedTeamId();
   const {
@@ -51,6 +54,9 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           setIsSelectTeamsAndOrganisationsOpen(false);
           if (isMobile) {
             setIsSidebarOpen(false);
+          }
+          if (pathname !== '/me') {
+            router.push('/me');
           }
         }}
       />
@@ -113,6 +119,9 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
         onSelectTag={() => {
           if (isMobile) {
             setIsSidebarOpen(false);
+          }
+          if (pathname !== '/me') {
+            router.push('/me');
           }
         }}
       />
