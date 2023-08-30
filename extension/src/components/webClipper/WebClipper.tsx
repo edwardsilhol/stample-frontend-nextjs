@@ -69,13 +69,13 @@ export const WebClipper: React.FC = () => {
     if (!isAlreadyPresent && !createdDocument) {
       return false;
     }
-
     if (
       selectedTeamId &&
       !(
-        alreadyPresentDocuments.some(
-          (document) => document.team === selectedTeamId,
-        ) || createdDocument.team === selectedTeamId
+        alreadyPresentDocuments.some((document) => {
+          return document.team === selectedTeamId;
+        }) ||
+        (createdDocument && createdDocument.team === selectedTeamId)
       )
     ) {
       return false;
