@@ -188,13 +188,17 @@ export const TagsView: FC<TagsViewProps> = ({
                   color="primary"
                 />
               )}
-              <Tooltip title={name.length > TAG_NAME_MAX_LENGTH ? name : ''}>
+              <Tooltip
+                title={
+                  name?.length && name.length > TAG_NAME_MAX_LENGTH ? name : ''
+                }
+              >
                 <Typography
                   variant="body2"
                   fontWeight={isOriginalParent ? 500 : 400}
                   paddingRight={1}
                 >
-                  {name.length > TAG_NAME_MAX_LENGTH
+                  {name?.length && name.length > TAG_NAME_MAX_LENGTH
                     ? `${name.slice(0, TAG_NAME_MAX_LENGTH)}...`
                     : name}
                 </Typography>
