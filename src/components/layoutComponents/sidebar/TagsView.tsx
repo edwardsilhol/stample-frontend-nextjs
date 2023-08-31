@@ -106,7 +106,6 @@ export const TagsView: FC<TagsViewProps> = ({
     event.stopPropagation();
     setSelectedTagId(id);
     onSelectTag();
-    console.log(pathname);
     const pathParts = pathname?.split('/');
     if (pathParts?.[1] === 'documents') {
       router.push('/me');
@@ -190,7 +189,9 @@ export const TagsView: FC<TagsViewProps> = ({
               )}
               <Tooltip
                 title={
-                  name?.length && name.length > TAG_NAME_MAX_LENGTH ? name : ''
+                  name?.length && name.length > TAG_NAME_MAX_LENGTH
+                    ? name.toLowerCase()
+                    : ''
                 }
               >
                 <Typography
@@ -199,8 +200,8 @@ export const TagsView: FC<TagsViewProps> = ({
                   paddingRight={1}
                 >
                   {name?.length && name.length > TAG_NAME_MAX_LENGTH
-                    ? `${name.slice(0, TAG_NAME_MAX_LENGTH)}...`
-                    : name}
+                    ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
+                    : name.toLowerCase()}
                 </Typography>
               </Tooltip>
               <Typography variant="body2" sx={{ opacity: 0.5 }}>
@@ -245,6 +246,7 @@ export const TagsView: FC<TagsViewProps> = ({
       <TreeView
         sx={{
           overflowY: 'scroll',
+          overflowX: 'hidden',
           maxHeight: 'calc(100vh - 300px)',
           marginBottom: 2,
         }}

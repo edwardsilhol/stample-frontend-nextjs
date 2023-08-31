@@ -98,116 +98,121 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
       <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
         TEAM
       </Typography>
-      <TextField
-        value={
-          selectedTeamId === null || selectedTeamId === undefined
-            ? ''
-            : selectedTeamId
-        }
-        sx={{
-          '.MuiInputBase-input:focus': {
-            backgroundColor: 'inherit',
-          },
-          width: '100%',
-        }}
-        SelectProps={{
-          open: isSelectOpen,
-          onOpen: () => setIsSelectOpen(true),
-          onClose: () => setIsSelectOpen(false),
-          renderValue: (value) => {
-            const selectedTeam = teamsByIds[value as string];
-            return selectedTeam ? (
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                spacing={1.5}
-                width="100%"
-              >
-                <Stack direction="row" alignItems="center" spacing={1.5}>
-                  <GroupsOutlined fontSize="small" color="primary" />
-                  <Typography
-                    variant="body2"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    fontWeight="bold"
-                  >
-                    {getTeamDisplayedName(selectedTeam)}
-                  </Typography>
-                </Stack>
-              </Stack>
-            ) : (
-              ''
-            );
-          },
-          IconComponent: KeyboardArrowDown,
-          disableUnderline: true,
-          sx: {
-            '.MuiSelect-icon': {
-              fontSize: '16px',
-              color: 'black',
+      <Stack direction="row" alignItems="center" spacing={1.5}>
+        <TextField
+          value={
+            selectedTeamId === null || selectedTeamId === undefined
+              ? ''
+              : selectedTeamId
+          }
+          sx={{
+            '.MuiInputBase-input:focus': {
+              backgroundColor: 'inherit',
             },
-          },
-        }}
-        onChange={(event) => {
-          setSelectedTeamId(event.target.value as string);
-          onClose();
-        }}
-        select
-        InputProps={{
-          sx: {
-            height: '30px',
-          },
-        }}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        fullWidth
-        variant="standard"
-      >
-        {teams?.map((team) => (
-          <MenuItem
-            key={team._id}
-            value={team._id}
-            sx={{
-              ...(team._id === selectedTeamId
-                ? {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }
-                : {}),
-            }}
-          >
-            <Typography
-              variant="body2"
-              overflow="hidden"
-              textOverflow="ellipsis"
-            >
-              {getTeamDisplayedName(team)}
-            </Typography>
-            {team._id === selectedTeamId ? (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsUpdateTeamDialogOpen(true);
-                }}
-                sx={{ width: '20px', height: '20px' }}
-              >
-                <Edit fontSize="small" />
-              </IconButton>
-            ) : null}
-          </MenuItem>
-        ))}
-        <Button
-          onClick={() => setIsCreateTeamDialogOpen(true)}
-          endIcon={<Add />}
-          key="create-team"
+            width: '100%',
+          }}
+          SelectProps={{
+            open: isSelectOpen,
+            onOpen: () => setIsSelectOpen(true),
+            onClose: () => setIsSelectOpen(false),
+            renderValue: (value) => {
+              const selectedTeam = teamsByIds[value as string];
+              return selectedTeam ? (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  spacing={1.5}
+                  width="100%"
+                  overflow="hidden"
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1.5}
+                    overflow="hidden"
+                  >
+                    <GroupsOutlined fontSize="small" color="primary" />
+                    <Typography
+                      variant="body2"
+                      textOverflow="ellipsis"
+                      fontWeight="bold"
+                    >
+                      {getTeamDisplayedName(selectedTeam)}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              ) : (
+                ''
+              );
+            },
+            IconComponent: KeyboardArrowDown,
+            disableUnderline: true,
+            sx: {
+              '.MuiSelect-icon': {
+                fontSize: '16px',
+                color: 'black',
+              },
+            },
+          }}
+          onChange={(event) => {
+            setSelectedTeamId(event.target.value as string);
+            onClose();
+          }}
+          select
+          InputProps={{
+            sx: {
+              height: '30px',
+            },
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
           fullWidth
+          variant="standard"
         >
-          Create Team
-        </Button>
-      </TextField>
+          {teams?.map((team) => (
+            <MenuItem
+              key={team._id}
+              value={team._id}
+              sx={{
+                ...(team._id === selectedTeamId
+                  ? {
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }
+                  : {}),
+              }}
+            >
+              <Typography
+                variant="body2"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
+                {getTeamDisplayedName(team)}
+              </Typography>
+            </MenuItem>
+          ))}
+          <Button
+            onClick={() => setIsCreateTeamDialogOpen(true)}
+            endIcon={<Add />}
+            key="create-team"
+            fullWidth
+          >
+            Create Team
+          </Button>
+        </TextField>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsUpdateTeamDialogOpen(true);
+          }}
+          sx={{ width: '20px', height: '20px' }}
+        >
+          <Edit fontSize="small" />
+        </IconButton>
+      </Stack>
       <CreateTeamDialog
         open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
         team={isUpdateTeamDialogOpen ? team ?? undefined : undefined}
