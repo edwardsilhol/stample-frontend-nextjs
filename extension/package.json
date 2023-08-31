@@ -52,6 +52,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.1.5",
+    "use-resize-observer": "^9.1.0",
     "webextension-polyfill": "^0.10.0",
     "yup": "^1.1.1"
   },

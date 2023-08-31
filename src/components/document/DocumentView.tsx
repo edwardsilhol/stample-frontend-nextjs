@@ -34,7 +34,7 @@ import { useTeam } from 'stores/hooks/team.hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useTagsByTeam } from 'stores/hooks/tag.hooks';
-import { decode } from 'he';
+import { decodeHTML } from 'entities';
 
 interface DocumentViewProps {
   documentId: string;
@@ -260,7 +260,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
             <Stack maxWidth="md" width="100%" paddingBottom={2}>
               <Stack alignItems="center" width="100%">
                 <Typography variant="h1" paddingBottom={3} textAlign="center">
-                  {decode(viewedDocument.title)}
+                  {decodeHTML(viewedDocument.title ?? '')}
                 </Typography>
                 {viewedDocument?.mainMedia?.src ? (
                   <Box
@@ -299,7 +299,9 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
               >
                 <DocumentTags
                   tags={tags.raw}
-                  documentTagsIds={viewedDocument.tags.map(toString)}
+                  documentTagsIds={viewedDocument.tags.map((tag) =>
+                    tag._id.toString(),
+                  )}
                 />
                 <IconButton
                   onClick={() => onClickLike(isDocumentLiked ? false : true)}

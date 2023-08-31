@@ -15,14 +15,12 @@ import {
   useScroller,
 } from 'masonic';
 import { useSearchDocumentsQuery } from '@src/stores/data/document.data';
-import {
-  useSearchDocuments,
-  useSearchedDocuments,
-} from '@src/stores/hooks/document.hooks';
+import { useSearchedDocuments } from '@src/stores/hooks/document.hooks';
 import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import { SelectTeam } from '../SelectTeam';
 import { useSelectedTeamId } from '@src/stores/data/team.data';
-import { decode } from 'he';
+import { decodeHTML } from 'entities';
+import useScreenResizeObserver from 'use-resize-observer';
 
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
@@ -88,7 +86,7 @@ const DocumentGridItem: React.FC<{
                   )}
                 </a>
               ) : null}
-              {decode(document.title)}
+              {decodeHTML(document.title ?? '')}
             </Typography>
           ) : null}
           {document.summary ? (
@@ -104,7 +102,7 @@ const DocumentGridItem: React.FC<{
                 fontFamily: 'Google Sans,arial,sans-serif;',
               }}
             >
-              {decode(document.summary)}
+              {decodeHTML(document.summary ?? '')}
             </Typography>
           ) : null}
           {document.tags && document.tags.length > 0 ? (
@@ -146,10 +144,18 @@ const DocumentsMasonry: React.FC<{
   total: number;
   flatTags?: Tag[];
   searchId: string;
+  containerWidth?: number;
   fetchNextPage: () => void;
-}> = ({ documents, total, flatTags, searchId, fetchNextPage }) => {
+}> = ({
+  documents,
+  total,
+  flatTags,
+  searchId,
+  containerWidth,
+  fetchNextPage,
+}) => {
   const containerRef = React.useRef(null);
-  const { width } = useContainerPosition(containerRef);
+  const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
     {
       width,
@@ -214,6 +220,10 @@ export const DocumentsView: React.FC = () => {
     () => `${searchDocumentsQuery}-${selectedTeamId}-${allDocuments.length}`,
     [searchDocumentsQuery, selectedTeamId, allDocuments.length],
   );
+  const ref = React.useRef(null);
+  const { width } = useScreenResizeObserver({
+    ref,
+  });
   return (
     <Box
       paddingX={{ xs: 1, sm: 2 }}
@@ -223,7 +233,7 @@ export const DocumentsView: React.FC = () => {
       }}
     >
       <SelectTeam />
-      <Box paddingTop={2}>
+      <Box paddingTop={2} ref={ref}>
         <MemoizedDocumentsMasonry
           documents={allDocuments}
           flatTags={flatTags}

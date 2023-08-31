@@ -20,8 +20,10 @@ import {
 import { useSearchDocumentsQuery } from 'stores/data/document.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { useWindowHeight } from '@react-hook/window-size';
+import useScreenResizeObserver from 'use-resize-observer';
 import { useScroller } from 'utils/hooks/useScroller';
 import { useRouter } from 'next/navigation';
+import { decodeHTML } from 'entities';
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
 
@@ -30,6 +32,7 @@ const DocumentGridItem: React.FC<{
   flatTags?: Tag[];
 }> = ({ document }) => {
   const router = useRouter();
+
   if (!document) {
     return null;
   }
@@ -79,15 +82,8 @@ const DocumentGridItem: React.FC<{
               overflow: 'hidden',
             }}
           >
-            {document.title}
+            {decodeHTML(document.title ?? '')}
           </Typography>
-          {/* <Box paddingY={1}>
-            <DocumentTags
-              tags={flatTags}
-              documentTagsIds={document.tags}
-              maxLines={1}
-            />
-          </Box> */}
           <DocumentHeader
             {...document}
             likesCount={document.likes?.length ?? 0}
@@ -112,7 +108,7 @@ const DocumentGridItem: React.FC<{
               textOverflow: 'ellipsis',
             }}
           >
-            {document.summary}
+            {decodeHTML(document.summary ?? '')}
           </Typography>
         </Box>
       </CardContent>
@@ -124,10 +120,18 @@ const DocumentsMasonry: React.FC<{
   total: number;
   flatTags?: Tag[];
   searchId: string;
+  containerWidth?: number;
   fetchNextPage: () => void;
-}> = ({ documents, total, flatTags, searchId, fetchNextPage }) => {
+}> = ({
+  documents,
+  total,
+  flatTags,
+  searchId,
+  containerWidth,
+  fetchNextPage,
+}) => {
   const containerRef = React.useRef(null);
-  const { width } = useContainerPosition(containerRef, []);
+  const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
     {
       width,
@@ -143,7 +147,7 @@ const DocumentsMasonry: React.FC<{
   const resizeObserver = useResizeObserver(positioner);
   const infiniteLoader = useInfiniteLoader(fetchNextPage, {
     totalItems: total,
-    minimumBatchSize: 20,
+    minimumBatchSize: 70,
   });
   const renderItem = useCallback(
     (props: { index: number; data: MinimalDocument }) => {
@@ -173,7 +177,8 @@ const MemoizedDocumentsMasonry = React.memo(DocumentsMasonry, (prev, next) => {
   return (
     prev.documents === next.documents &&
     prev.flatTags === next.flatTags &&
-    prev.searchId === next.searchId
+    prev.searchId === next.searchId &&
+    prev.containerWidth === next.containerWidth
   );
 });
 interface DocumentViewProps {
@@ -197,7 +202,10 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
     () => `${selectedTeamId}-${selectedTagId}-${searchDocumentsQuery}`,
     [selectedTagId, searchDocumentsQuery, selectedTeamId],
   );
-
+  const ref = React.useRef<HTMLElement | null>(null);
+  const { width } = useScreenResizeObserver({
+    ref,
+  });
   return (
     <Box paddingX={{ xs: 1, sm: 2 }} paddingY={{ xs: 1 }}>
       <Box
@@ -208,11 +216,13 @@ export const DocumentsView: React.FC<DocumentViewProps> = ({
           height: 'auto',
           minHeight: '100%',
         }}
+        ref={ref}
       >
         <MemoizedDocumentsMasonry
           documents={documents}
           flatTags={flatTags}
           searchId={searchId}
+          containerWidth={width}
           fetchNextPage={fetchNextPage}
           total={totalDocumentsCount}
         />
