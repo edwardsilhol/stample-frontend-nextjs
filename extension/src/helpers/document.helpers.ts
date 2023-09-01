@@ -75,7 +75,7 @@ export const searchDocuments = ({
   } else {
     return selectedDocumentsByTags.filter((document) => {
       const tags = allTags.filter((tag) =>
-        tag.name.toLowerCase().startsWith(searchQuery.toLowerCase().slice(1)),
+        tag.name?.toLowerCase().startsWith(searchQuery.toLowerCase().slice(1)),
       );
 
       return (
