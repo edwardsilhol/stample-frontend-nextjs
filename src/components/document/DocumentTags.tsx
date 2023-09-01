@@ -36,9 +36,11 @@ export const DocumentTags: React.FC<Props> = ({
         <Chip
           key={tag._id}
           label={`#${
-            tag.name?.length && tag.name.length > TAG_NAME_MAX_LENGTH
-              ? tag.name.toLowerCase().slice(TAG_NAME_MAX_LENGTH) + '...'
-              : tag.name.toLowerCase()
+            tag.name && tag.name?.length
+              ? tag.name.length > TAG_NAME_MAX_LENGTH
+                ? tag.name.toLowerCase().slice(TAG_NAME_MAX_LENGTH) + '...'
+                : tag.name.toLowerCase()
+              : ''
           }`}
           sx={{
             height: '26px',

@@ -189,7 +189,7 @@ export const TagsView: FC<TagsViewProps> = ({
               )}
               <Tooltip
                 title={
-                  name?.length && name.length > TAG_NAME_MAX_LENGTH
+                  name && name.length && name.length > TAG_NAME_MAX_LENGTH
                     ? name.toLowerCase()
                     : ''
                 }
@@ -199,9 +199,11 @@ export const TagsView: FC<TagsViewProps> = ({
                   fontWeight={isOriginalParent ? 500 : 400}
                   paddingRight={1}
                 >
-                  {name?.length && name.length > TAG_NAME_MAX_LENGTH
-                    ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
-                    : name.toLowerCase()}
+                  {name && name.length
+                    ? name.length > TAG_NAME_MAX_LENGTH
+                      ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
+                      : name.toLowerCase()
+                    : ''}
                 </Typography>
               </Tooltip>
               <Typography variant="body2" sx={{ opacity: 0.5 }}>
