@@ -1,7 +1,7 @@
 import { Chip, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import { Tag } from 'stores/types/tag.types';
-const TAG_NAME_MAX_LENGTH = 10;
+const TAG_NAME_MAX_LENGTH = 20;
 interface Props {
   tags: Tag[] | undefined;
   documentTagsIds: string[];
@@ -26,19 +26,22 @@ export const DocumentTags: React.FC<Props> = ({
   return (
     <Stack
       direction="row"
+      justifyContent="center"
       spacing={1}
       overflow="hidden"
       width="100%"
       flexWrap="wrap"
+      paddingTop={2}
+      paddingBottom={1}
       maxHeight={maxLines ? `${maxLines * 26}px` : undefined}
     >
       {displayedTags.map((tag) => (
         <Chip
           key={tag._id}
-          label={`#${
+          label={`# ${
             tag.name && tag.name?.length
               ? tag.name.length > TAG_NAME_MAX_LENGTH
-                ? tag.name.toLowerCase().slice(TAG_NAME_MAX_LENGTH) + '...'
+                ? tag.name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH) + '...'
                 : tag.name.toLowerCase()
               : ''
           }`}

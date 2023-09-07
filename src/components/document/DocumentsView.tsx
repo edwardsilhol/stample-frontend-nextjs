@@ -42,7 +42,7 @@ const DocumentGridItem: React.FC<{
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.15));',
+        filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));',
       }}
       variant="elevation"
       onClick={() => router.push(`/document/${document._id}`)}
@@ -50,7 +50,7 @@ const DocumentGridItem: React.FC<{
       {document.mainMedia?.src ? (
         <CardMedia
           sx={{
-            height: '100px',
+            height: '150px',
           }}
           image={document.mainMedia?.src}
         />
@@ -72,14 +72,15 @@ const DocumentGridItem: React.FC<{
           }}
         >
           <Typography
-            variant="body2"
+            variant="h5"
             fontWeight={550}
             sx={{
               display: '-webkit-box',
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
+              marginBottom: '5px',
             }}
           >
             {decodeHTML(document.title ?? '')}
@@ -135,8 +136,8 @@ const DocumentsMasonry: React.FC<{
   const positioner = usePositioner(
     {
       width,
-      columnWidth: 200,
-      columnGutter: 16,
+      columnWidth: 300,
+      columnGutter: 20,
     },
     [searchId, width],
   );

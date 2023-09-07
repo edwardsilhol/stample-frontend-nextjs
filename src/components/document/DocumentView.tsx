@@ -41,18 +41,30 @@ interface DocumentViewProps {
 }
 const DocumentCreator: React.FC<{
   creator: UserForOtherClient;
-}> = ({ creator }) => (
-  <Stack direction="row" alignItems="center">
-    <Avatar src={creator.profilePictureUrl}>
-      {creator.profilePictureUrl
-        ? null
-        : `${creator.firstName[0]}${creator.lastName[0]}`}
-    </Avatar>
-    <Typography variant="body2" fontWeight={700} marginLeft={1}>
-      {creator.firstName} {creator.lastName}
-    </Typography>
-  </Stack>
-);
+}> = ({ creator }) => {
+  return (
+    <Stack direction="column" alignItems="center">
+      <Avatar
+        sizes="large"
+        src={creator.profilePictureUrl}
+        sx={{
+          width: '80px',
+          height: '80px',
+          marginTop: '10px',
+          marginBottom: '10px',
+          border: `5px solid #1976d2`, // TODO figure out how to use theme color here
+        }}
+      >
+        {creator.profilePictureUrl
+          ? null
+          : `${creator.firstName[0]}${creator.lastName[0]}`}
+      </Avatar>
+      <Typography variant="h5" fontWeight={700} marginLeft={0}>
+        {creator.firstName} {creator.lastName}
+      </Typography>
+    </Stack>
+  );
+};
 const DocumentViewHeaderContent: React.FC = () => {
   const router = useRouter();
   return (
@@ -211,7 +223,6 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
       },
     });
   };
-  console.log({ test: viewedDocument?.tags });
   return (
     <Stack
       direction="column"
@@ -267,6 +278,11 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                     component="img"
                     src={viewedDocument.mainMedia.src}
                     width="100%"
+                    sx={{
+                      borderBottomRightRadius: '20px',
+                      borderTopLeftRadius: '20px',
+                      filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));',
+                    }}
                   />
                 ) : viewedDocument?.mainMedia?.html ? (
                   <Box
@@ -277,34 +293,39 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   />
                 ) : null}
                 <Grid container width="100%" marginTop={2}>
-                  <Grid item xs={4}>
+                  <Grid item xs={12}>
                     <DocumentCreator creator={viewedDocument.creator} />
                   </Grid>
-                  <Grid item xs={8}>
+                </Grid>
+                <Grid container width="100%" marginTop={1}>
+                  <Grid item xs={12}>
                     <DocumentHeader
                       {...viewedDocument}
                       likesCount={viewedDocument.likes?.length ?? 0}
                       readersCount={viewedDocument.readers?.length ?? 0}
-                      typographyProps={{ variant: 'body2', textAlign: 'end' }}
+                      typographyProps={{
+                        variant: 'body2',
+                        textAlign: 'center',
+                      }}
                     />
                   </Grid>
                 </Grid>
               </Stack>
+              <DocumentTags
+                tags={tags.raw}
+                documentTagsIds={viewedDocument.tags.map((tag) =>
+                  tag._id.toString(),
+                )}
+              />
               <Stack
-                alignItems="end"
+                justifyContent="center"
                 direction="row"
                 width="100%"
                 paddingTop={2}
                 paddingBottom={3}
               >
-                <DocumentTags
-                  tags={tags.raw}
-                  documentTagsIds={viewedDocument.tags.map((tag) =>
-                    tag._id.toString(),
-                  )}
-                />
                 <IconButton
-                  onClick={() => onClickLike(isDocumentLiked ? false : true)}
+                  onClick={() => onClickLike(!isDocumentLiked)}
                   sx={{ padding: 0 }}
                 >
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
