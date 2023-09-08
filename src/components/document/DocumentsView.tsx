@@ -17,12 +17,14 @@ import {
   usePositioner,
   useResizeObserver,
 } from 'masonic';
-import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import {
+  useCurrentlyViewedDocumentId,
+  useSearchDocumentsQuery,
+} from 'stores/data/document.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { useWindowHeight } from '@react-hook/window-size';
 import useScreenResizeObserver from 'use-resize-observer';
 import { useScroller } from 'utils/hooks/useScroller';
-import { useRouter } from 'next/navigation';
 import { decodeHTML } from 'entities';
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
@@ -31,7 +33,8 @@ const DocumentGridItem: React.FC<{
   document: MinimalDocument;
   flatTags?: Tag[];
 }> = ({ document }) => {
-  const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
 
   if (!document) {
     return null;
@@ -45,7 +48,7 @@ const DocumentGridItem: React.FC<{
         filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));',
       }}
       variant="elevation"
-      onClick={() => router.push(`/document/${document._id}`)}
+      onClick={() => setCurrentlyViewedDocumentId(document._id)}
     >
       {document.mainMedia?.src ? (
         <CardMedia

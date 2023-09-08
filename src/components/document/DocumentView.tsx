@@ -31,10 +31,11 @@ import { convertToRaw } from 'draft-js';
 import { DocumentComment } from './DocumentComment';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './DocumentsView';
 import { useTeam } from 'stores/hooks/team.hooks';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { decodeHTML } from 'entities';
+import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
 
 interface DocumentViewProps {
   documentId: string;
@@ -65,8 +66,9 @@ const DocumentCreator: React.FC<{
     </Stack>
   );
 };
-const DocumentViewHeaderContent: React.FC = () => {
-  const router = useRouter();
+const DocumentViewHeaderContent: React.FC<{
+  onClickBack: () => void;
+}> = ({ onClickBack }) => {
   return (
     <Stack
       direction="row"
@@ -77,9 +79,7 @@ const DocumentViewHeaderContent: React.FC = () => {
       <Button
         variant="text"
         startIcon={<KeyboardArrowLeft />}
-        onClick={() => {
-          router.push('/me');
-        }}
+        onClick={onClickBack}
         sx={{ padding: 0, borderRadius: '4px' }}
       >
         Back
@@ -88,7 +88,9 @@ const DocumentViewHeaderContent: React.FC = () => {
   );
 };
 
-const DocumentViewHeader: React.FC = () => {
+const DocumentViewHeader: React.FC<{ onClickBack: () => void }> = ({
+  onClickBack,
+}) => {
   const trigger = useScrollTrigger({
     target:
       document.getElementById(DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID) ??
@@ -105,7 +107,7 @@ const DocumentViewHeader: React.FC = () => {
         elevation={0}
       >
         <Toolbar>
-          <DocumentViewHeaderContent />
+          <DocumentViewHeaderContent onClickBack={onClickBack} />
         </Toolbar>
       </AppBar>
     </Slide>
@@ -115,6 +117,9 @@ const DocumentViewHeader: React.FC = () => {
 export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
   const isMobile = useIsMobile();
   const router = useRouter();
+  const pathname = usePathname();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
   const [loggedInUser] = useLoggedInUser();
   const { data: viewedDocument, isLoading } = useDocument(null, documentId);
   const { data: team } = useTeam(viewedDocument?.team ?? null);
@@ -211,6 +216,13 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
       setEditedCommentText(undefined);
     }
   };
+  const onClickBack = () => {
+    if (pathname === '/me') {
+      setCurrentlyViewedDocumentId(null);
+    } else {
+      router.push('/me');
+    }
+  };
   const onClickLike = (like: boolean) => {
     if (!viewedDocument?.team) {
       return;
@@ -237,7 +249,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
     >
       {isMobile ? (
         <>
-          <DocumentViewHeader />
+          <DocumentViewHeader onClickBack={onClickBack} />
           <Toolbar />
         </>
       ) : null}
@@ -257,17 +269,19 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
           paddingX={{ xs: 1, md: 3, lg: 5 }}
           alignItems="start"
         >
-          <Grid item xs={1} sm={1.5}>
-            <Button
-              variant="text"
-              startIcon={<KeyboardArrowLeft />}
-              onClick={() => router.push('/me')}
-              sx={{ color: 'black', textTransform: 'none' }}
-            >
-              Back
-            </Button>
-          </Grid>
-          <Grid item xs={10} sm={9}>
+          {!isMobile && (
+            <Grid item xs={1} sm={1.5}>
+              <Button
+                variant="text"
+                startIcon={<KeyboardArrowLeft />}
+                onClick={onClickBack}
+                sx={{ color: 'black', textTransform: 'none' }}
+              >
+                Back
+              </Button>
+            </Grid>
+          )}
+          <Grid item xs={12} sm={9}>
             <Stack maxWidth="md" width="100%" paddingBottom={2}>
               <Stack alignItems="center" width="100%">
                 <Typography variant="h1" paddingBottom={3} textAlign="center">
@@ -378,7 +392,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
               </Button>
             </Stack>
           </Grid>
-          <Grid item xs={1} sm={1.5} />
+          {!isMobile && <Grid item xs={1} sm={1.5} />}
         </Grid>
       )}
     </Stack>

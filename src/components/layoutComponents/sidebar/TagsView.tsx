@@ -17,6 +17,7 @@ import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tag.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { useRouter, usePathname } from 'next/navigation';
+import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
 const TAG_NAME_MAX_LENGTH = 20;
 const TreeItem: React.FC<
   TreeItemProps & {
@@ -83,6 +84,8 @@ export const TagsView: FC<TagsViewProps> = ({
   const [newTagName, setNewTagName] = React.useState<string>('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSelectedTagId] = useSelectedTagId();
+  const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
+    useCurrentlyViewedDocumentId();
   const [tagParentId, setTagParentId] = React.useState<string | null>(null);
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
@@ -106,9 +109,10 @@ export const TagsView: FC<TagsViewProps> = ({
     event.stopPropagation();
     setSelectedTagId(id);
     onSelectTag();
-    const pathParts = pathname?.split('/');
-    if (pathParts?.[1] === 'documents') {
+    if (pathname !== '/me') {
       router.push('/me');
+    } else if (!!currentlyViewedDocumentId) {
+      setCurrentlyViewedDocumentId(null);
     }
   };
   const handleClose = () => {
