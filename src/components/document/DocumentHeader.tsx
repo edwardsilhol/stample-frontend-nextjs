@@ -31,7 +31,13 @@ export const DocumentHeader: React.FC<
       }),
     [createdAt, likesCount, readersCount],
   );
-
+  const getHostname = (url: string) => {
+    try {
+      return new URL(url).hostname;
+    } catch (error) {
+      return url;
+    }
+  };
   return (
     <Typography
       variant="caption"
@@ -41,7 +47,7 @@ export const DocumentHeader: React.FC<
       {...typographyProps}
     >
       {[
-        ...(urlWebsiteName
+        ...(urlWebsiteName || url
           ? [
               <Box
                 component="a"
@@ -51,7 +57,7 @@ export const DocumentHeader: React.FC<
                 rel="noreferrer"
                 key={0}
               >
-                {urlWebsiteName}
+                {urlWebsiteName ?? getHostname(url)}
               </Box>,
             ]
           : []),
