@@ -22,6 +22,7 @@ import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
 import { useRouter, usePathname } from 'next/navigation';
+import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
 
 interface SidebarProps {
   user: User | null | undefined;
@@ -33,6 +34,8 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const pathname = usePathname();
   const { data: documentsCountPerTags } = useDocumentsCountPerTag();
   const [selectedTeamId] = useSelectedTeamId();
+  const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
+    useCurrentlyViewedDocumentId();
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
@@ -46,6 +49,14 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const onGoBackHome = () => {
+    if (pathname !== '/me') {
+      router.push('/me');
+    } else if (!!currentlyViewedDocumentId) {
+      setCurrentlyViewedDocumentId(null);
+    }
+  };
+
   const displaySelectTeams = () => (
     <Box paddingY={1}>
       <SelectTeamsAndOrganisationsDialog
@@ -55,9 +66,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           if (isMobile) {
             setIsSidebarOpen(false);
           }
-          if (pathname !== '/me') {
-            router.push('/me');
-          }
+          onGoBackHome();
         }}
       />
     </Box>
@@ -120,9 +129,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           if (isMobile) {
             setIsSidebarOpen(false);
           }
-          if (pathname !== '/me') {
-            router.push('/me');
-          }
+          onGoBackHome();
         }}
       />
       <Divider sx={{ marginBottom: 2 }} />

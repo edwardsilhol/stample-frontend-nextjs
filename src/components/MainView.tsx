@@ -7,8 +7,10 @@ import { AllDocuments } from './view/AllDocuments';
 import { CreateDocumentForm } from './forms/document/CreateDocumentForm';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './document/DocumentsView';
 
-type MainViewProps = Record<string, never>;
-export const MainView: React.FC<MainViewProps> = () => {
+type MainViewProps = {
+  isDisplayed?: boolean;
+};
+export const MainView: React.FC<MainViewProps> = ({ isDisplayed = true }) => {
   const [toggledAddButton, setToggledAddButton] =
     React.useState<boolean>(false);
   return (
@@ -22,6 +24,7 @@ export const MainView: React.FC<MainViewProps> = () => {
         backgroundColor: toggledAddButton
           ? 'white'
           : 'additionalColors.background',
+        display: isDisplayed ? undefined : 'none',
       }}
       id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
     >
