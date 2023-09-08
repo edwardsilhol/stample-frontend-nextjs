@@ -53,7 +53,8 @@ const DocumentCreator: React.FC<{
           height: '80px',
           marginTop: '10px',
           marginBottom: '10px',
-          border: `5px solid #1976d2`, // TODO figure out how to use theme color here
+          border: '5px solid',
+          borderColor: 'primary.main',
         }}
       >
         {creator.profilePictureUrl
