@@ -346,6 +346,9 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
+              <Typography variant="h3">
+                {decodeHTML(viewedDocument.aiSummary ?? '')}
+              </Typography>
               <div
                 dangerouslySetInnerHTML={{ __html: viewedDocument.content }}
               />

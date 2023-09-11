@@ -35,6 +35,7 @@ export interface Document {
   urlWebsiteName?: string;
   mainMedia?: DocumentMedia;
   createdAt: Date;
+  aiSummary?: string;
 }
 
 export interface PopulatedDocument
