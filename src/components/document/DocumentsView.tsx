@@ -114,6 +114,18 @@ const DocumentGridItem: React.FC<{
           >
             {decodeHTML(document.summary ?? '')}
           </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {decodeHTML(document.aiSummary ?? '')}
+          </Typography>
         </Box>
       </CardContent>
     </Card>
