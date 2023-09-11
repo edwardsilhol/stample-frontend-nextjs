@@ -122,9 +122,10 @@ const DocumentGridItem: React.FC<{
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
               textOverflow: 'ellipsis',
+              whiteSpace: 'pre-line',
             }}
           >
-            {decodeHTML(document.aiSummary ?? '')}
+            {document.aiSummary ?? ''}
           </Typography>
         </Box>
       </CardContent>
