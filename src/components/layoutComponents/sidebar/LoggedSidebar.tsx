@@ -23,6 +23,8 @@ import { useSelectedTeamId } from 'stores/data/team.data';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import { useSummarizeTeamDocuments } from 'stores/hooks/team.hooks';
+import { useSelectedTagId } from 'stores/data/tag.data';
 
 interface SidebarProps {
   user: User | null | undefined;
@@ -34,11 +36,13 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const pathname = usePathname();
   const { data: documentsCountPerTags } = useDocumentsCountPerTag();
   const [selectedTeamId] = useSelectedTeamId();
+  const [selectedTagId] = useSelectedTagId();
   const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
     useCurrentlyViewedDocumentId();
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
+  const { mutate } = useSummarizeTeamDocuments();
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
   const [
@@ -122,6 +126,24 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       {getAccountMenu()}
       <Divider sx={{ marginTop: 2 }} />
       {displaySelectTeams()}
+      {/* TODO Remove this when summarization is automatic */}
+      {user?.isAdmin ? (
+        <Button
+          onClick={() => {
+            if (selectedTeamId) {
+              mutate({
+                teamId: selectedTeamId,
+                ...(selectedTagId ? { tagId: selectedTagId } : {}),
+              });
+            }
+          }}
+          fullWidth
+          variant="outlined"
+          sx={{ fontSize: '12px', marginY: 2 }}
+        >
+          {'Summarize selected tag documents'}
+        </Button>
+      ) : null}
       <TagsView
         tags={richTags}
         documentsCountPerTags={documentsCountPerTags}

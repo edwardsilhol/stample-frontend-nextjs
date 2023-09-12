@@ -4,6 +4,7 @@ import {
   fetchTeam,
   fetchTeamByInvitation,
   fetchTeams,
+  summarizeTeamDocuments,
   updateTeam,
 } from '../api/team.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -71,5 +72,25 @@ export const useAnswerInvitation = () => {
       teamId: string;
       answerInvitationDto: AnswerInvitationDTO;
     }) => answerInvitation(teamId, answerInvitationDto),
+  );
+};
+export const useSummarizeTeamDocuments = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ teamId, tagId }: { teamId: string; tagId?: string }) =>
+      summarizeTeamDocuments(teamId, tagId),
+    {
+      onSuccess: (_, { teamId, tagId }) => {
+        queryClient.invalidateQueries([
+          'documents',
+          {
+            searchDocumentsDTO: {
+              team: teamId,
+              ...(tagId ? { tags: [tagId] } : {}),
+            },
+          },
+        ]);
+      },
+    },
   );
 };

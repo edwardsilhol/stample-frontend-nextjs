@@ -79,3 +79,8 @@ export const searchDocuments = async (
     },
   );
 };
+export const summarizeDocument = async (
+  documentId: string,
+): Promise<string> => {
+  return await apiRequest<string>('POST', `/document/${documentId}/summary`);
+};

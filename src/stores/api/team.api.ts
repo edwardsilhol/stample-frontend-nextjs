@@ -59,3 +59,14 @@ export const answerInvitation = async (
     answerInvitationDto,
   );
 };
+
+export const summarizeTeamDocuments = async (
+  teamId: string,
+  tagId?: string,
+) => {
+  return await apiRequest(
+    'POST',
+    `/team/${teamId}/summary`,
+    tagId ? { tagId } : undefined,
+  );
+};

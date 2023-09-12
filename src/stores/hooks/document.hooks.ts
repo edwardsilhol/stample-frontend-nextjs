@@ -5,6 +5,7 @@ import {
   fetchDocumentsByTeam,
   searchDocuments,
   fetchDocumentByTeam,
+  summarizeDocument,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
@@ -132,4 +133,15 @@ export const useSearchedDocuments = () => {
     allDocuments,
     total,
   };
+};
+export const useSummarizeDocument = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ documentId }: { documentId: string }) => summarizeDocument(documentId),
+    {
+      onSuccess: (_, { documentId }) => {
+        queryClient.invalidateQueries(['document', { documentId }]);
+      },
+    },
+  );
 };

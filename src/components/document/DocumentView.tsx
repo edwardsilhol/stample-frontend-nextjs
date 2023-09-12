@@ -17,6 +17,7 @@ import { KeyboardArrowLeft, ThumbUp, ThumbUpOffAlt } from '@mui/icons-material';
 import Typography from '../muiOverrides/Typography';
 import {
   useDocument,
+  useSummarizeDocument,
   useUpdateDocumentAsGuest,
 } from '../../stores/hooks/document.hooks';
 import { UserForOtherClient } from 'stores/types/user.types';
@@ -127,6 +128,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
   const { data: tags } = useTagsByTeam(viewedDocument?.team ?? null);
   const { mutate: createComment } = useCreateComment(documentId);
   const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
+  const { mutate: summarizeDocument } = useSummarizeDocument();
   const [editedCommentText, setEditedCommentText] = useState<EditorState>();
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -346,6 +348,19 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
+              {loggedInUser?.isAdmin ? (
+                <Button
+                  sx={{ marginBottom: 2 }}
+                  onClick={() => {
+                    summarizeDocument({
+                      documentId: viewedDocument._id,
+                    });
+                  }}
+                  variant="outlined"
+                >
+                  {'Summarize this document'}
+                </Button>
+              ) : null}
               <Typography variant="body2" whiteSpace="pre-line">
                 {viewedDocument.aiSummary ?? ''}
               </Typography>
