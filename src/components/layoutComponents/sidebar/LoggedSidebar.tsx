@@ -141,7 +141,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
           variant="outlined"
           sx={{ fontSize: '12px', marginY: 2 }}
         >
-          {'Summarize selected tag documents'}
+          {'Summarize displayed articles'}
         </Button>
       ) : null}
       <TagsView
@@ -185,7 +185,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
             '& .MuiDrawer-paper': {
               background: 'none',
               border: 'none',
-              minWidth: '200px',
+              minWidth: '300px',
               width: '75%',
               maxWidth: '100%',
             },
@@ -196,7 +196,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       ) : (
         <Box
           sx={{
-            minWidth: '200px',
+            minWidth: '300px',
             width: '330px',
             maxWidth: '25%',
             backgroundColor: 'transparent',

@@ -56,7 +56,7 @@ const TreeItem: React.FC<
         };
       }, {}),
       '.MuiTreeItem-group': {
-        marginLeft: 1,
+        marginLeft: '25px',
       },
       '.MuiTreeItem-label.MuiTypography-root': {
         fontWeight: 500,
@@ -157,6 +157,15 @@ export const TagsView: FC<TagsViewProps> = ({
         sx={{
           marginY: '5px',
           '.MuiTreeItem-label': { paddingLeft: 0 },
+          '.MuiTreeItem-content.Mui-selected': {
+            backgroundColor: 'transparent',
+          },
+          '.MuiTreeItem-content.Mui-focused': {
+            backgroundColor: 'transparent',
+          },
+          '.MuiTreeItem-content.Mui-selected .MuiTypography-root': {
+            fontWeight: 'bold',
+          },
           '.MuiTreeItem-iconContainer': {
             marginRight: 0,
           },
@@ -185,12 +194,11 @@ export const TagsView: FC<TagsViewProps> = ({
             paddingY={0.4}
           >
             <Stack direction="row" alignItems="center" maxWidth="100%">
-              {isOriginalParent && (
-                <LocalOfferOutlined
-                  sx={{ fontSize: '20px', marginRight: 1 }}
-                  color="primary"
-                />
-              )}
+              <LocalOfferOutlined
+                sx={{ fontSize: '18px', marginRight: 1 }}
+                color="primary"
+              />
+
               <Tooltip
                 title={
                   name && name.length && name.length > TAG_NAME_MAX_LENGTH
@@ -253,14 +261,14 @@ export const TagsView: FC<TagsViewProps> = ({
         sx={{
           overflowY: 'scroll',
           overflowX: 'hidden',
-          maxHeight: 'calc(100vh - 300px)',
-          marginBottom: 2,
+          maxHeight: 'calc(100vh - 338px)',
+          marginBottom: 0,
         }}
         defaultCollapseIcon={
-          <ArrowDropDown sx={{ height: '16px', color: '#4d4d4d' }} />
+          <ArrowDropDown sx={{ height: '16px', color: 'red' }} />
         }
         defaultExpandIcon={
-          <ArrowRight sx={{ height: '16px', color: '#4d4d4d' }} />
+          <ArrowRight sx={{ height: '16px', color: 'primary.main' }} />
         }
       >
         {[
@@ -270,9 +278,9 @@ export const TagsView: FC<TagsViewProps> = ({
             endIcon={
               <IconButton
                 sx={{
-                  borderRadius: '4px',
-                  width: '20px',
-                  height: '18px',
+                  borderRadius: '10px',
+                  width: '18px',
+                  height: '16px',
                   padding: 0,
                 }}
                 onClick={(event) => {
@@ -351,13 +359,13 @@ export const TagsView: FC<TagsViewProps> = ({
         }}
       >
         <Typography variant="body2" fontWeight={500} paddingBottom={0.5}>
-          Title
+          Tag
         </Typography>
         <Stack direction="row" alignItems="center" spacing="5px">
           <TextField
             autoFocus
             variant="outlined"
-            placeholder="Give a title to your tag"
+            placeholder="Enter your tag"
             value={newTagName}
             inputProps={{ sx: { paddingY: 0.75 } }}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

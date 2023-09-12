@@ -114,14 +114,22 @@ const DocumentGridItem: React.FC<{
           >
             {decodeHTML(document.summary ?? '')}
           </Typography>
+          {document.aiSummary && (
+            <Typography
+              variant="caption"
+              sx={{ color: 'primary.main', marginTop: '5px' }}
+            >
+              {'Summary'}
+            </Typography>
+          )}
           <Typography
             variant="caption"
             sx={{
               overflow: 'hidden',
               display: '-webkit-box',
-              WebkitLineClamp: 3,
+              // WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
-              textOverflow: 'ellipsis',
+              // textOverflow: 'ellipsis',
               whiteSpace: 'pre-line',
             }}
           >

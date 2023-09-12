@@ -17,8 +17,8 @@ const cardTheme: Components['MuiCard'] = {
       props: { variant: 'elevation' },
       style: {
         borderRadius: 0,
-        borderBottomRightRadius: '20px',
-        borderTopLeftRadius: '20px',
+        borderBottomLeftRadius: '20px',
+        borderTopRightRadius: '20px',
         boxShadow: 'none',
       },
     },

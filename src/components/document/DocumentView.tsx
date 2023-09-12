@@ -298,7 +298,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                     sx={{
                       borderBottomRightRadius: '20px',
                       borderTopLeftRadius: '20px',
-                      filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));',
+                      boxShadow: '2px 2px 3px rgba(0, 0, 0, 0.05)',
                     }}
                   />
                 ) : viewedDocument?.mainMedia?.html ? (
@@ -348,7 +348,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
-              {loggedInUser?.isAdmin ? (
+              {loggedInUser?.isAdmin && !viewedDocument.aiSummary ? (
                 <Button
                   sx={{ marginBottom: 2 }}
                   onClick={() => {
@@ -361,9 +361,32 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {'Summarize this document'}
                 </Button>
               ) : null}
-              <Typography variant="body2" whiteSpace="pre-line">
-                {viewedDocument.aiSummary ?? ''}
-              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: 'rgba(237,237,237,0.4)',
+                  padding: '20px 30px',
+                  borderBottomLeftRadius: '20px',
+                  borderTopRightRadius: '20px',
+                  boxSizing: 'border-box',
+                  marginBottom: '30px',
+                  boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{ color: 'primary.main', marginBottom: '10px' }}
+                >
+                  {'Summary'}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  whiteSpace="pre-line"
+                  sx={{ fontStyle: 'italic' }}
+                >
+                  {viewedDocument.aiSummary ?? ''}
+                </Typography>
+              </Box>
+
               <div
                 dangerouslySetInnerHTML={{ __html: viewedDocument.content }}
               />
