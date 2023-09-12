@@ -16,6 +16,7 @@ function LoggedLayout({ children }: Props) {
     <Stack
       direction="row"
       bgcolor={!!documentId ? undefined : 'additionalColors.sidebarBackground'}
+      sx={{ height: '100%' }}
     >
       <LoggedSidebar user={user} isLoading={isLoading} />
       {children}

@@ -24,9 +24,9 @@ async function getTenantConfig(): Promise<TenantConfig> {
 async function RootLayout({ children }: Props) {
   const { tenantThemeConfig } = await getTenantConfig();
   return (
-    <html>
+    <html style={{ height: '100%' }}>
       <head />
-      <body>
+      <body style={{ height: '100%' }}>
         <FontProvider>
           <ThemeProvider tenantThemeConfig={tenantThemeConfig}>
             <JotaiProvider>

@@ -20,7 +20,7 @@ export const MainView: React.FC<MainViewProps> = ({ isDisplayed = true }) => {
       sx={{
         overflowX: 'hidden',
         overflowY: 'scroll',
-        height: '100vh',
+        height: '100%',
         backgroundColor: toggledAddButton
           ? 'white'
           : 'additionalColors.background',

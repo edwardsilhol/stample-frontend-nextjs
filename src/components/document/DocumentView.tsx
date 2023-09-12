@@ -243,11 +243,11 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
       direction="column"
       flex={1}
       sx={{
-        overflowX: 'scroll',
+        overflowX: 'hidden',
         overflowY: 'scroll',
+        height: '100%',
       }}
       paddingX={2}
-      height="100%"
       paddingTop={isMobile ? 0 : 7}
     >
       {isMobile ? (
@@ -361,31 +361,33 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {'Summarize this document'}
                 </Button>
               ) : null}
-              <Box
-                sx={{
-                  backgroundColor: 'rgba(237,237,237,0.4)',
-                  padding: '20px 30px',
-                  borderBottomLeftRadius: '20px',
-                  borderTopRightRadius: '20px',
-                  boxSizing: 'border-box',
-                  marginBottom: '30px',
-                  boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{ color: 'primary.main', marginBottom: '10px' }}
+              {viewedDocument.aiSummary && (
+                <Box
+                  sx={{
+                    backgroundColor: 'rgba(237,237,237,0.4)',
+                    padding: '20px 30px',
+                    borderBottomLeftRadius: '20px',
+                    borderTopRightRadius: '20px',
+                    boxSizing: 'border-box',
+                    marginBottom: '30px',
+                    boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+                  }}
                 >
-                  {'Summary'}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  whiteSpace="pre-line"
-                  sx={{ fontStyle: 'italic' }}
-                >
-                  {viewedDocument.aiSummary ?? ''}
-                </Typography>
-              </Box>
+                  <Typography
+                    variant="h5"
+                    sx={{ color: 'primary.main', marginBottom: '10px' }}
+                  >
+                    {'Summary'}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    whiteSpace="pre-line"
+                    sx={{ fontStyle: 'italic' }}
+                  >
+                    {viewedDocument.aiSummary ?? ''}
+                  </Typography>
+                </Box>
+              )}
 
               <div
                 dangerouslySetInnerHTML={{ __html: viewedDocument.content }}

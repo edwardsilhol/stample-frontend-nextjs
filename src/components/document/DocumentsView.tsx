@@ -115,26 +115,27 @@ const DocumentGridItem: React.FC<{
             {decodeHTML(document.summary ?? '')}
           </Typography>
           {document.aiSummary && (
-            <Typography
-              variant="caption"
-              sx={{ color: 'primary.main', marginTop: '5px' }}
-            >
-              {'Summary'}
-            </Typography>
+            <Box sx={{ borderTop: '1px solid #EFEFEF', marginTop: '5px' }}>
+              <Typography
+                variant="caption"
+                sx={{ color: 'primary.main', marginTop: '5px' }}
+              >
+                {'Summary'}
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  whiteSpace: 'pre-line',
+                  fontStyle: 'italic',
+                }}
+              >
+                {document.aiSummary}
+              </Typography>
+            </Box>
           )}
-          <Typography
-            variant="caption"
-            sx={{
-              overflow: 'hidden',
-              display: '-webkit-box',
-              // WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              // textOverflow: 'ellipsis',
-              whiteSpace: 'pre-line',
-            }}
-          >
-            {document.aiSummary ?? ''}
-          </Typography>
         </Box>
       </CardContent>
     </Card>

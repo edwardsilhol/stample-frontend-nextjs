@@ -11,7 +11,11 @@ interface Props {
 }
 
 function FontProvider({ children }: Props) {
-  return <main className={font.className}>{children}</main>;
+  return (
+    <main className={font.className} style={{ height: '100%' }}>
+      {children}
+    </main>
+  );
 }
 
 export default FontProvider;

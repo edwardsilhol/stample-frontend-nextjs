@@ -125,7 +125,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
               autoFocus
             />
             <Typography variant="body2" fontWeight={500}>
-              Summary
+              Key insight
             </Typography>
             <TextFieldForm
               control={control}
@@ -133,7 +133,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
               required
               fullWidth
               id="summary"
-              placeholder="Give a summary to your note"
+              placeholder="Add your insights"
               multiline
             />
             <Typography variant="body2" fontWeight={500}>

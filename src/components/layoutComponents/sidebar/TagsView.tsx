@@ -146,12 +146,15 @@ export const TagsView: FC<TagsViewProps> = ({
     e.key === 'Enter' && handleCreateTag();
   };
 
-  const renderTags = ({
+  const renderTag = ({
     _id,
     name,
     children,
     isOriginalParent,
   }: TagRich & { isOriginalParent: boolean }) => {
+    if (_id === undefined) {
+      return null; // TODO: why do we have to do this ?
+    }
     return (
       <TreeItem
         sx={{
@@ -246,7 +249,7 @@ export const TagsView: FC<TagsViewProps> = ({
         {children &&
           children.length > 0 &&
           children.map((child: TagRich) =>
-            renderTags({ ...child, isOriginalParent: false }),
+            renderTag({ ...child, isOriginalParent: false }),
           )}
       </TreeItem>
     );
@@ -327,7 +330,7 @@ export const TagsView: FC<TagsViewProps> = ({
           />,
           ...(tags
             ? tags.map((tag) =>
-                renderTags({
+                renderTag({
                   ...tag,
                   isOriginalParent: true,
                 }),
