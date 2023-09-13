@@ -18,7 +18,7 @@ import { useSelectedTagId } from 'stores/data/tag.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
-const TAG_NAME_MAX_LENGTH = 20;
+const TAG_NAME_MAX_LENGTH = 30;
 const TreeItem: React.FC<
   TreeItemProps & {
     isOriginalParent?: boolean;

@@ -43,7 +43,8 @@ interface DocumentViewProps {
 }
 const DocumentCreator: React.FC<{
   creator: UserForOtherClient;
-}> = ({ creator }) => {
+  insight: string;
+}> = ({ creator, insight }) => {
   return (
     <Stack direction="column" alignItems="center">
       <Avatar
@@ -65,6 +66,42 @@ const DocumentCreator: React.FC<{
       <Typography variant="h5" fontWeight={700} marginLeft={0}>
         {creator.firstName} {creator.lastName}
       </Typography>
+      {insight && (
+        <Box
+          sx={{
+            position: 'relative',
+            background: '#f1f4fc',
+            textAlign: 'center',
+            width: '450px',
+            height: 'auto',
+            marginTop: '20px',
+            marginBottom: '10px',
+            borderRadius: '10px',
+            padding: '20px',
+            boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+            '&:after': {
+              content: '""',
+              position: 'absolute',
+              display: 'block',
+              width: 0,
+              zIndex: 1,
+              borderStyle: 'solid',
+              borderColor: '#f1f4fc transparent',
+              borderWidth: '0 15px 15px',
+              top: '-15px',
+              left: '50%',
+              marginLeft: '-15px',
+            },
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{ color: 'primary.main', fontStyle: 'italic' }}
+          >
+            {insight}
+          </Typography>
+        </Box>
+      )}
     </Stack>
   );
 };
@@ -311,7 +348,10 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                 ) : null}
                 <Grid container width="100%" marginTop={2}>
                   <Grid item xs={12}>
-                    <DocumentCreator creator={viewedDocument.creator} />
+                    <DocumentCreator
+                      creator={viewedDocument.creator}
+                      insight={viewedDocument.summary}
+                    />
                   </Grid>
                 </Grid>
                 <Grid container width="100%" marginTop={1}>
