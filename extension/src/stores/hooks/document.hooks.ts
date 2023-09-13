@@ -109,6 +109,7 @@ export const useGetSummarizedText = (url: string, enabled: boolean) =>
     },
     {
       enabled: !!url && enabled,
+      retry: false,
       refetchInterval: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
