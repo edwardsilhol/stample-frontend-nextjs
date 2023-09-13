@@ -44,7 +44,7 @@ export const WebClipper: React.FC = () => {
   );
   const [insight, setInsight] = useState<string>('');
   const [createdDocument, setCreatedDocument] = useState<Document | null>(null);
-  const [isSummaryDisplayed, setIsSummaryDisplayed] = useState<boolean>(true);
+  const [isSummaryDisplayed, setIsSummaryDisplayed] = useState<boolean>(false);
   const { data: tags } = useTagsByTeam(selectedTeamId);
 
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
@@ -93,7 +93,6 @@ export const WebClipper: React.FC = () => {
   const {
     data: summarizedPageContent,
     isLoading: isSummarizedPageContentLoading,
-    error: isSummarizedPageContentError,
   } = useGetSummarizedText(
     currentPageUrl,
     true,
@@ -202,9 +201,7 @@ export const WebClipper: React.FC = () => {
   if (
     isCreateDocumentAndCommentLoading ||
     isSearchDocumentsLoading ||
-    (isSummarizedPageContentLoading &&
-      isSummaryDisplayed &&
-      !isSummarizedPageContentError)
+    (isSummarizedPageContentLoading && isSummaryDisplayed)
   ) {
     return <CircularProgress />;
   }
@@ -319,7 +316,7 @@ export const WebClipper: React.FC = () => {
       </TextField>
       {shouldDisplayIsAlreadyPresent ? (
         <>
-          {isSummaryDisplayed ? (
+          {!isSummaryDisplayed ? (
             <Button
               onClick={() => setIsSummaryDisplayed(true)}
               variant="contained"
@@ -430,10 +427,10 @@ export const WebClipper: React.FC = () => {
           />
           <Stack
             direction="row"
-            justifyContent={isSummaryDisplayed ? 'space-between' : 'flex-end'}
+            justifyContent={!isSummaryDisplayed ? 'space-between' : 'flex-end'}
             paddingTop={3}
           >
-            {isSummaryDisplayed ? (
+            {!isSummaryDisplayed ? (
               <Button
                 onClick={() => setIsSummaryDisplayed(true)}
                 variant="contained"
@@ -447,8 +444,11 @@ export const WebClipper: React.FC = () => {
                   textTransform: 'none',
                   alignSelf: 'flex-end',
                 }}
+                disabled={!summarizedPageContent}
               >
-                See summary
+                {isSummarizedPageContentLoading
+                  ? 'Loading summary...'
+                  : 'See summary'}
               </Button>
             ) : null}
             <Button

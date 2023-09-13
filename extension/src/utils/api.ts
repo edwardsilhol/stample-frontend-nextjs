@@ -47,6 +47,7 @@ export async function apiRequest<T>(
   body?: FormData | Record<string, unknown>,
   nextConfig?: RequestInit,
   isFile?: boolean,
+  timeout = 10000,
 ) {
   const accessToken = await getChromeStorageVariable(
     LOCAL_STORAGE_ACCESS_TOKEN_KEY,
@@ -85,7 +86,7 @@ export async function apiRequest<T>(
     fetchConfig.body = body;
   }
 
-  let response = await fetchTimeout(query, fetchConfig);
+  let response = await fetchTimeout(query, fetchConfig, timeout);
   let bodyResult;
   if (response.status !== 204) {
     bodyResult = await response.json();
@@ -111,7 +112,7 @@ export async function apiRequest<T>(
 
       if (tokens?.accessToken) {
         fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
-        response = await fetchTimeout(query, fetchConfig);
+        response = await fetchTimeout(query, fetchConfig, timeout);
         if (response.status !== 204) {
           bodyResult = await response.json();
         }
@@ -133,14 +134,19 @@ const handleRefreshToken = async (
   const release = await refreshTokenMutex.acquire();
 
   try {
-    const response = await fetchTimeout(API_URL + '/auth/refresh', {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    const response = await fetchTimeout(
+      API_URL + '/auth/refresh',
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refreshToken }),
       },
-      body: JSON.stringify({ refreshToken }),
-    });
+      //TODO hardcoded for now
+      10000,
+    );
     const bodyResult = await response.json();
 
     if (response.ok) {

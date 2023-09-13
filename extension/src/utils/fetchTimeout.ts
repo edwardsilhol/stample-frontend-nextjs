@@ -1,7 +1,7 @@
 export function fetchTimeout(
   resource: any,
   init = {},
-  timeout = 10000,
+  timeout: number,
 ): Promise<Response> {
   return new Promise((resolve, reject) => {
     const controller = new window.AbortController();
