@@ -3,6 +3,7 @@ import {
   searchDocuments,
   searchDocumentsByUrl,
   searchDocumentsUrlsByUrls,
+  summarizeText,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
@@ -19,6 +20,10 @@ import {
 import { useMemo } from 'react';
 import { useSearchDocumentsQuery } from '../data/document.data';
 import { useSelectedTeamId } from '../data/team.data';
+import {
+  getClippedPage,
+  getOnlyClippedContent,
+} from '@src/helpers/clipper.helpers';
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
@@ -94,3 +99,20 @@ export const useSearchDocumentsByUrl = (url: string) =>
     initialData: [],
     enabled: !!url,
   });
+
+export const useGetSummarizedText = (url: string, enabled: boolean) =>
+  useQuery(
+    ['summarizedText', { url }],
+    async () => {
+      const clippedPageContent = await getOnlyClippedContent();
+      return (await summarizeText(clippedPageContent)).summary;
+    },
+    {
+      enabled: !!url && enabled,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchIntervalInBackground: false,
+    },
+  );

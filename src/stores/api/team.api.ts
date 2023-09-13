@@ -64,7 +64,7 @@ export const summarizeTeamDocuments = async (
   teamId: string,
   tagId?: string,
 ) => {
-  return await apiRequest(
+  return await apiRequest<Document[]>(
     'POST',
     `/team/${teamId}/summary`,
     tagId ? { tagId } : undefined,

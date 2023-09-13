@@ -153,3 +153,13 @@ export const getClippedPage = async (): Promise<Pick<
   const deserializedDocument = await getCurrentlyDisplayedDOM();
   return parseDocument(deserializedDocument.document, deserializedDocument.url);
 };
+
+export const getOnlyClippedContent = async (): Promise<string | null> => {
+  const deserializedDocument = await getCurrentlyDisplayedDOM();
+  const reader = new Readability(deserializedDocument.document, {});
+  const article = reader.parse();
+  if (!article) {
+    return null;
+  }
+  return article.content;
+};

@@ -16,6 +16,7 @@ export type CreateDocumentDTO = Pick<
   | 'authorUrl'
   | 'urlWebsiteName'
   | 'mainMedia'
+  | 'aiSummary'
 >;
 const documentMediaTypes = ['image', 'video'] as const;
 type DocumentMediaType = (typeof documentMediaTypes)[number];
@@ -29,6 +30,7 @@ export interface Document {
   title: string;
   content: string;
   summary: string;
+  aiSummary?: string[];
   keyInsight: string;
   url: string;
   authorUrl?: string;

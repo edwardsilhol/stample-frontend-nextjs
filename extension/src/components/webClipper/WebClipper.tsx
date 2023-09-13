@@ -1,4 +1,10 @@
-import { CircularProgress, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import {
   getDefaultSelectedTeamId,
   getTeamDisplayedName,
@@ -20,6 +26,7 @@ import { SelectTags } from './SelectTags';
 import { Button } from '@mui/material';
 import {
   useCreateDocument,
+  useGetSummarizedText,
   useSearchDocumentsByUrl,
 } from '../../stores/hooks/document.hooks';
 import { useCreateComment } from '../../stores/hooks/comment.hooks';
@@ -37,6 +44,7 @@ export const WebClipper: React.FC = () => {
   );
   const [insight, setInsight] = useState<string>('');
   const [createdDocument, setCreatedDocument] = useState<Document | null>(null);
+  const [isSummaryDisplayed, setIsSummaryDisplayed] = useState<boolean>(true);
   const { data: tags } = useTagsByTeam(selectedTeamId);
 
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
@@ -82,6 +90,18 @@ export const WebClipper: React.FC = () => {
     }
     return true;
   }, [isAlreadyPresent, selectedTeamId, createdDocument]);
+  const {
+    data: summarizedPageContent,
+    isLoading: isSummarizedPageContentLoading,
+    error: isSummarizedPageContentError,
+  } = useGetSummarizedText(
+    currentPageUrl,
+    true,
+    // TODO voir si la condition çi-dessous est plus pratique si on ne veut pas lancer la requête du résumé alors qu'on l'a déjà
+    // !shouldDisplayIsAlreadyPresent &&
+    //   !createdDocument &&
+    //   !(isCreateDocumentAndCommentLoading || isSearchDocumentsLoading),
+  );
   useEffect(() => {
     if (!teams) {
       return;
@@ -160,6 +180,9 @@ export const WebClipper: React.FC = () => {
         tags: selectedTagsIds,
         keyInsight: insight,
         type: 'webpage',
+        ...(summarizedPageContent && summarizedPageContent.length > 0
+          ? { aiSummary: summarizedPageContent }
+          : {}),
         ...clippedPage,
       },
     });
@@ -176,8 +199,66 @@ export const WebClipper: React.FC = () => {
     setCreatedDocument(document);
   };
 
-  if (isCreateDocumentAndCommentLoading || isSearchDocumentsLoading) {
+  if (
+    isCreateDocumentAndCommentLoading ||
+    isSearchDocumentsLoading ||
+    (isSummarizedPageContentLoading &&
+      isSummaryDisplayed &&
+      !isSummarizedPageContentError)
+  ) {
     return <CircularProgress />;
+  }
+  if (
+    isSummaryDisplayed &&
+    (!!summarizedPageContent ||
+      (alreadyPresentDocuments?.length > 0 &&
+        !!alreadyPresentDocuments[0]?.aiSummary))
+  ) {
+    return (
+      <Stack>
+        <Box
+          sx={{
+            backgroundColor: 'rgba(237,237,237,0.4)',
+            padding: '20px 30px',
+            borderBottomLeftRadius: '20px',
+            borderTopRightRadius: '20px',
+            boxSizing: 'border-box',
+            marginBottom: '30px',
+            boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ color: 'primary.main', marginBottom: '10px' }}
+          >
+            {'Summary'}
+          </Typography>
+          <Typography
+            variant="body1"
+            whiteSpace="pre-line"
+            sx={{ fontStyle: 'italic' }}
+          >
+            {summarizedPageContent?.toString()}
+          </Typography>
+        </Box>
+        <Button
+          onClick={() => setIsSummaryDisplayed(false)}
+          variant="contained"
+          color="primary"
+          sx={{
+            elevation: 0,
+            boxShadow: 'none',
+            ':hover': {
+              boxShadow: 'none',
+            },
+            textTransform: 'none',
+            alignSelf: 'flex-end',
+          }}
+        >
+          {'Save in Stample'}
+        </Button>
+      </Stack>
+    );
   }
   return (
     <Stack>
@@ -236,6 +317,24 @@ export const WebClipper: React.FC = () => {
       </TextField>
       {shouldDisplayIsAlreadyPresent ? (
         <>
+          {isSummaryDisplayed ? (
+            <Button
+              onClick={() => setIsSummaryDisplayed(true)}
+              variant="contained"
+              color="primary"
+              sx={{
+                elevation: 0,
+                boxShadow: 'none',
+                ':hover': {
+                  boxShadow: 'none',
+                },
+                textTransform: 'none',
+                alignSelf: 'flex-start',
+              }}
+            >
+              See summary
+            </Button>
+          ) : null}
           <Button
             sx={{
               alignSelf: 'flex-end',
@@ -327,7 +426,29 @@ export const WebClipper: React.FC = () => {
             }}
             toolbarHidden
           />
-          <Stack direction="row" justifyContent="end" paddingTop={3}>
+          <Stack
+            direction="row"
+            justifyContent={isSummaryDisplayed ? 'space-between' : 'flex-end'}
+            paddingTop={3}
+          >
+            {isSummaryDisplayed ? (
+              <Button
+                onClick={() => setIsSummaryDisplayed(true)}
+                variant="contained"
+                color="primary"
+                sx={{
+                  elevation: 0,
+                  boxShadow: 'none',
+                  ':hover': {
+                    boxShadow: 'none',
+                  },
+                  textTransform: 'none',
+                  alignSelf: 'flex-end',
+                }}
+              >
+                See summary
+              </Button>
+            ) : null}
             <Button
               onClick={onSubmit}
               variant="contained"

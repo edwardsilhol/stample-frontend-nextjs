@@ -87,3 +87,15 @@ export const searchDocumentsByUrl = async (
     },
   );
 };
+export const summarizeText = async (
+  text: string,
+): Promise<{ summary: string[] }> => {
+  return await apiRequest<{ summary: string[] }>(
+    'POST',
+    '/document/summary/text',
+    undefined,
+    {
+      text,
+    },
+  );
+};
