@@ -114,26 +114,49 @@ const DocumentGridItem: React.FC<{
           >
             {decodeHTML(document.summary ?? '')}
           </Typography>
-          {document.aiSummary && (
-            <Box sx={{ borderTop: '1px solid #EFEFEF', marginTop: '5px' }}>
-              <Typography
-                variant="caption"
-                sx={{ color: 'primary.main', marginTop: '5px' }}
-              >
-                {'Summary'}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  overflow: 'hidden',
-                  display: '-webkit-box',
-                  WebkitBoxOrient: 'vertical',
-                  whiteSpace: 'pre-line',
-                  fontStyle: 'italic',
+          {document.aiSummary && document.aiSummary.length > 0 && (
+            <Box
+              sx={{
+                borderTop: '1px solid #EFEFEF',
+                marginTop: '5px',
+                textAlign: 'center',
+              }}
+            >
+              <Box sx={{ marginTop: '10px', marginBottom: '10px' }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: 'primary.main',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {'Summary'}
+                </Typography>
+              </Box>
+              <ol
+                style={{
+                  paddingLeft: '14px',
+                  marginBlockStart: 0,
+                  marginBlockEnd: 0,
+                  textAlign: 'left',
                 }}
               >
-                {document.aiSummary}
-              </Typography>
+                {document.aiSummary?.map((sentence, i) => (
+                  <Typography
+                    key={i}
+                    variant="caption"
+                    whiteSpace="pre-line"
+                    sx={{
+                      fontStyle: 'italic',
+                      lineHeight: '18px',
+                    }}
+                  >
+                    <li key={i} style={{ marginBottom: '5px' }}>
+                      {sentence}
+                    </li>
+                  </Typography>
+                ))}
+              </ol>
             </Box>
           )}
         </Box>

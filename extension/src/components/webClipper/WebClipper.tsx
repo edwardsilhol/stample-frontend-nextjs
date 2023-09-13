@@ -198,6 +198,26 @@ export const WebClipper: React.FC = () => {
     setCreatedDocument(document);
   };
 
+  const formattedSummary = () => {
+    const summary =
+      alreadyPresentDocuments?.[0]?.aiSummary || summarizedPageContent;
+    return (
+      <ul style={{ paddingInlineStart: '10px' }}>
+        {summary.map((sentence) => (
+          <li style={{ marginBottom: '10px' }}>
+            <Typography
+              variant="body2"
+              whiteSpace="pre-line"
+              sx={{ fontStyle: 'italic' }}
+            >
+              {sentence}
+            </Typography>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   if (
     isCreateDocumentAndCommentLoading ||
     isSearchDocumentsLoading ||
@@ -213,32 +233,14 @@ export const WebClipper: React.FC = () => {
   ) {
     return (
       <Stack>
-        <Box
-          sx={{
-            backgroundColor: 'rgba(237,237,237,0.4)',
-            padding: '20px 30px',
-            borderBottomLeftRadius: '20px',
-            borderTopRightRadius: '20px',
-            boxSizing: 'border-box',
-            marginBottom: '30px',
-            boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
-          }}
-        >
+        <Box>
           <Typography
             variant="h5"
             sx={{ color: 'primary.main', marginBottom: '10px' }}
           >
             {'Summary'}
           </Typography>
-          <Typography
-            variant="body1"
-            whiteSpace="pre-line"
-            sx={{ fontStyle: 'italic' }}
-          >
-            {(
-              alreadyPresentDocuments?.[0]?.aiSummary || summarizedPageContent
-            )?.toString()}
-          </Typography>
+          {formattedSummary()}
         </Box>
         <Button
           onClick={() => setIsSummaryDisplayed(false)}
@@ -254,7 +256,7 @@ export const WebClipper: React.FC = () => {
             alignSelf: 'flex-end',
           }}
         >
-          {'Save in Stample'}
+          Back
         </Button>
       </Stack>
     );
@@ -263,10 +265,9 @@ export const WebClipper: React.FC = () => {
     <Stack>
       {!shouldDisplayIsAlreadyPresent ? (
         <>
-          <Typography variant="h6">What do you want to highlight ?</Typography>
+          <Typography variant="h6">Save this article to Stample</Typography>
           <Typography variant="body2" paddingBottom={2} color="primary">
-            Share this article with your team and add comments to illustrate
-            what you share.
+            You can review our summary and add your insights before saving.
           </Typography>
         </>
       ) : (
@@ -320,7 +321,7 @@ export const WebClipper: React.FC = () => {
             <Button
               onClick={() => setIsSummaryDisplayed(true)}
               variant="contained"
-              color="primary"
+              color="secondary"
               sx={{
                 elevation: 0,
                 boxShadow: 'none',

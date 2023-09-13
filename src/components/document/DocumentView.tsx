@@ -348,44 +348,57 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
-              <Button
-                sx={{ marginBottom: 2 }}
-                onClick={() => {
-                  summarizeDocument({
-                    documentId: viewedDocument._id,
-                  });
-                }}
-                variant="outlined"
-              >
-                {'Summarize this document'}
-              </Button>
-              {viewedDocument.aiSummary && (
-                <Box
-                  sx={{
-                    backgroundColor: 'rgba(237,237,237,0.4)',
-                    padding: '20px 30px',
-                    borderBottomLeftRadius: '20px',
-                    borderTopRightRadius: '20px',
-                    boxSizing: 'border-box',
-                    marginBottom: '30px',
-                    boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+              {(!viewedDocument.aiSummary ||
+                (Array.isArray(viewedDocument.aiSummary) &&
+                  viewedDocument.aiSummary.length === 0)) && (
+                <Button
+                  sx={{ marginBottom: 2 }}
+                  onClick={() => {
+                    summarizeDocument({
+                      documentId: viewedDocument._id,
+                    });
                   }}
+                  variant="outlined"
                 >
-                  <Typography
-                    variant="h5"
-                    sx={{ color: 'primary.main', marginBottom: '10px' }}
-                  >
-                    {'Summary'}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    whiteSpace="pre-line"
-                    sx={{ fontStyle: 'italic' }}
-                  >
-                    {viewedDocument.aiSummary ?? ''}
-                  </Typography>
-                </Box>
+                  {'Summarize this document'}
+                </Button>
               )}
+              {viewedDocument.aiSummary &&
+                viewedDocument.aiSummary.length > 0 && (
+                  <Box
+                    sx={{
+                      backgroundColor: 'rgba(237,237,237,0.4)',
+                      padding: '20px 30px',
+                      borderBottomLeftRadius: '20px',
+                      borderTopRightRadius: '20px',
+                      boxSizing: 'border-box',
+                      marginBottom: '30px',
+                      boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+                    }}
+                  >
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Typography
+                        variant="h5"
+                        sx={{ color: 'primary.main', marginBottom: '10px' }}
+                      >
+                        {'Summary'}
+                      </Typography>
+                    </Box>
+                    <ol style={{ paddingLeft: '20px' }}>
+                      {viewedDocument.aiSummary?.map((sentence, i) => (
+                        <li key={i} style={{ marginBottom: '10px' }}>
+                          <Typography
+                            variant="body1"
+                            whiteSpace="pre-line"
+                            sx={{ fontStyle: 'italic' }}
+                          >
+                            {sentence}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ol>
+                  </Box>
+                )}
 
               <div
                 dangerouslySetInnerHTML={{ __html: viewedDocument.content }}
