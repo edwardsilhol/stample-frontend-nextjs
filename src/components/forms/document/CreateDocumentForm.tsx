@@ -185,7 +185,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
             </Typography>
             <SelectOrCreateTags onChange={setSelectedTags} />
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
-              Submit
+              Save
             </Button>
           </Stack>
         </Box>

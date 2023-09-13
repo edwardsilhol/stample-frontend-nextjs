@@ -348,19 +348,17 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
-              {loggedInUser?.isAdmin && !viewedDocument.aiSummary ? (
-                <Button
-                  sx={{ marginBottom: 2 }}
-                  onClick={() => {
-                    summarizeDocument({
-                      documentId: viewedDocument._id,
-                    });
-                  }}
-                  variant="outlined"
-                >
-                  {'Summarize this document'}
-                </Button>
-              ) : null}
+              <Button
+                sx={{ marginBottom: 2 }}
+                onClick={() => {
+                  summarizeDocument({
+                    documentId: viewedDocument._id,
+                  });
+                }}
+                variant="outlined"
+              >
+                {'Summarize this document'}
+              </Button>
               {viewedDocument.aiSummary && (
                 <Box
                   sx={{

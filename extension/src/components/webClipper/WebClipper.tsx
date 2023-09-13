@@ -465,7 +465,7 @@ export const WebClipper: React.FC = () => {
                 textTransform: 'none',
               }}
             >
-              Submit
+              Save this article
             </Button>
           </Stack>
         </>

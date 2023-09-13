@@ -63,7 +63,7 @@ export const CreateOrganisationForm: React.FC<Props> = ({ onClose }) => {
           fullWidth
           required
         />
-        <Button type={'submit'}>Submit</Button>
+        <Button type={'submit'}>Save</Button>
       </Stack>
     </Box>
   );

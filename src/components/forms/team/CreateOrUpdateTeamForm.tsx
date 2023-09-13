@@ -383,7 +383,7 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
             marginTop: 4,
           }}
         >
-          Submit
+          Save
         </Button>
       </Stack>
     </Box>
