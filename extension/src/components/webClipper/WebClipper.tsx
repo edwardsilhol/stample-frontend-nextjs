@@ -238,7 +238,9 @@ export const WebClipper: React.FC = () => {
             whiteSpace="pre-line"
             sx={{ fontStyle: 'italic' }}
           >
-            {summarizedPageContent?.toString()}
+            {(
+              alreadyPresentDocuments?.[0]?.aiSummary || summarizedPageContent
+            )?.toString()}
           </Typography>
         </Box>
         <Button
