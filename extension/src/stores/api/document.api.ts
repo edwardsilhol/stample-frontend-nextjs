@@ -99,6 +99,6 @@ export const summarizeText = async (
     },
     undefined,
     undefined,
-    60000,
+    100000,
   );
 };
