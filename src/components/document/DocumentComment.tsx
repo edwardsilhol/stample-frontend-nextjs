@@ -6,8 +6,7 @@ import {
   Typography,
 } from '@mui/material';
 import { formatDistance } from 'date-fns';
-import React from 'react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Comment, CommentMentionType } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
 

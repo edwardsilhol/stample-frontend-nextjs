@@ -21,10 +21,10 @@ import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamId } from 'stores/data/team.data';
 import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
-import { useSummarizeTeamDocuments } from 'stores/hooks/team.hooks';
-import { useSelectedTagId } from 'stores/data/tag.data';
+// import { useSummarizeTeamDocuments } from 'stores/hooks/team.hooks';
+// import { useSelectedTagId } from 'stores/data/tag.data';
 
 interface SidebarProps {
   user: User | null | undefined;
@@ -36,13 +36,13 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const pathname = usePathname();
   const { data: documentsCountPerTags } = useDocumentsCountPerTag();
   const [selectedTeamId] = useSelectedTeamId();
-  const [selectedTagId] = useSelectedTagId();
+  // const [selectedTagId] = useSelectedTagId();
   const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
     useCurrentlyViewedDocumentId();
   const {
     data: { rich: richTags },
   } = useTagsByTeam(selectedTeamId);
-  const { mutate } = useSummarizeTeamDocuments();
+  // const { mutate } = useSummarizeTeamDocuments();
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
   const [

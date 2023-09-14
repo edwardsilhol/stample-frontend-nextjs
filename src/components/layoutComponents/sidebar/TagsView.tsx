@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { TreeItem as MuiTreeItem, TreeView, TreeItemProps } from '@mui/lab';
+import { TreeItem as MuiTreeItem, TreeItemProps, TreeView } from '@mui/lab';
 import {
   Add,
   ArrowDropDown,
@@ -16,8 +16,9 @@ import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useSelectedTagId } from 'stores/data/tag.data';
 import { useSelectedTeamId } from 'stores/data/team.data';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+
 const TAG_NAME_MAX_LENGTH = 30;
 const TreeItem: React.FC<
   TreeItemProps & {

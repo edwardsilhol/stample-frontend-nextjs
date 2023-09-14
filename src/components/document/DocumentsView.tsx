@@ -1,7 +1,4 @@
 import { Beenhere } from '@mui/icons-material';
-
-('use-client');
-
 import React, { useCallback, useMemo } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
 import Typography from '../muiOverrides/Typography';
@@ -28,6 +25,9 @@ import { useWindowHeight } from '@react-hook/window-size';
 import useScreenResizeObserver from 'use-resize-observer';
 import { useScroller } from 'utils/hooks/useScroller';
 import { decodeHTML } from 'entities';
+
+('use-client');
+
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
 

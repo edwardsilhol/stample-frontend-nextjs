@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   CircularProgress,
+  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -12,18 +14,16 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { useAllTeams, useTeam } from '../../stores/hooks/team.hooks';
-import { CommentMention } from '../../stores/types/comment.types';
-import { UserForOtherClient } from '../../stores/types/user.types';
 import {
+  CommentMention,
   CommentMentionType,
   CreateCommentDTO,
 } from '../../stores/types/comment.types';
+import { UserForOtherClient } from '../../stores/types/user.types';
 import { uniqBy } from 'lodash';
-import { EditorState, convertToRaw } from 'draft-js';
-import { MenuItem } from '@mui/material';
+import { convertToRaw, EditorState } from 'draft-js';
 import { useTagsByTeam } from '../../stores/hooks/tag.hooks';
 import { SelectTags } from './SelectTags';
-import { Button } from '@mui/material';
 import {
   useCreateDocument,
   useGetSummarizedText,
@@ -32,9 +32,9 @@ import {
 import { useCreateComment } from '../../stores/hooks/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
 import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
-import { getDocumentUrlOnStampleWebsite } from '@src/helpers/document.helpers';
 import { Document } from '@src/stores/types/document.types';
 import { CheckCircle } from '@mui/icons-material';
+
 export const WebClipper: React.FC = () => {
   const { data: teams } = useAllTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
