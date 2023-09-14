@@ -1,4 +1,6 @@
-'use-client';
+import { Beenhere } from '@mui/icons-material';
+
+('use-client');
 
 import React, { useCallback, useMemo } from 'react';
 import { Card, CardContent, CardMedia } from '@mui/material';
@@ -54,6 +56,7 @@ const DocumentGridItem: React.FC<{
         <CardMedia
           sx={{
             height: '150px',
+            objectPosition: '50% 10%', // TODO : figure out why this is ignored
           }}
           image={document.mainMedia?.src}
         />
@@ -122,18 +125,16 @@ const DocumentGridItem: React.FC<{
                 textAlign: 'center',
               }}
             >
-              <Box sx={{ marginTop: '10px', marginBottom: '10px' }}>
-                <Typography
-                  variant="caption"
+              <Box sx={{ marginTop: '10px' }}>
+                <Beenhere
                   sx={{
+                    width: '22px',
+                    height: '22px',
                     color: 'primary.main',
-                    fontWeight: 'bold',
                   }}
-                >
-                  {'Summary'}
-                </Typography>
+                />
               </Box>
-              <ol
+              <ul
                 style={{
                   paddingLeft: '14px',
                   marginBlockStart: 0,
@@ -156,7 +157,7 @@ const DocumentGridItem: React.FC<{
                     </li>
                   </Typography>
                 ))}
-              </ol>
+              </ul>
             </Box>
           )}
         </Box>

@@ -13,7 +13,12 @@ import {
   Toolbar,
   useScrollTrigger,
 } from '@mui/material';
-import { KeyboardArrowLeft, ThumbUp, ThumbUpOffAlt } from '@mui/icons-material';
+import {
+  Beenhere,
+  KeyboardArrowLeft,
+  ThumbUp,
+  ThumbUpOffAlt,
+} from '@mui/icons-material';
 import Typography from '../muiOverrides/Typography';
 import {
   useDocument,
@@ -407,24 +412,28 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                 viewedDocument.aiSummary.length > 0 && (
                   <Box
                     sx={{
-                      backgroundColor: 'rgba(237,237,237,0.4)',
+                      backgroundColor: 'rgb(255,251,191)',
                       padding: '20px 30px',
-                      borderBottomLeftRadius: '20px',
-                      borderTopRightRadius: '20px',
                       boxSizing: 'border-box',
                       marginBottom: '30px',
                       boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
                     }}
                   >
                     <Box sx={{ textAlign: 'center' }}>
-                      <Typography
-                        variant="h5"
-                        sx={{ color: 'primary.main', marginBottom: '10px' }}
-                      >
-                        {'Summary'}
-                      </Typography>
+                      <Beenhere
+                        sx={{
+                          width: '50px',
+                          height: '50px',
+                        }}
+                      />
+                      {/*<Typography*/}
+                      {/*  variant="h5"*/}
+                      {/*  sx={{ color: 'primary.main', marginBottom: '10px' }}*/}
+                      {/*>*/}
+                      {/*  {'Summary'}*/}
+                      {/*</Typography>*/}
                     </Box>
-                    <ol style={{ paddingLeft: '20px' }}>
+                    <ul style={{ paddingLeft: '20px' }}>
                       {viewedDocument.aiSummary?.map((sentence, i) => (
                         <li key={i} style={{ marginBottom: '10px' }}>
                           <Typography
@@ -436,7 +445,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                           </Typography>
                         </li>
                       ))}
-                    </ol>
+                    </ul>
                   </Box>
                 )}
 
@@ -464,7 +473,7 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
                   trigger: '@',
                   suggestions: userMentions,
                 }}
-                placeholder="Enter your comment here"
+                placeholder="Say something..."
                 wrapperStyle={{
                   width: '100%',
                   overflowY: 'visible',

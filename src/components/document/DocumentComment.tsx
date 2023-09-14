@@ -25,7 +25,7 @@ export const DocumentComment: React.FC<Props> = ({
   const author = commentAuthorsById[comment.creatorId];
   const content: React.ReactNode[] = useMemo(
     () =>
-      comment.mentions
+      Array.isArray(comment.mentions) && comment.mentions.length > 0
         ? comment.mentions
             .reduce(
               (
@@ -108,6 +108,7 @@ export const DocumentComment: React.FC<Props> = ({
         : [<>{comment.content}</>],
     [comment, commentAuthorsById],
   );
+
   return (
     <Card
       key={comment._id}
@@ -131,10 +132,14 @@ export const DocumentComment: React.FC<Props> = ({
         title={`${author?.firstName} ${author?.lastName}`}
         titleTypographyProps={{
           variant: 'body1',
-          fontWeight: 500,
+          fontWeight: 700,
         }}
         action={
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ paddingRight: '10px' }}
+          >
             {formatDistance(new Date(comment.createdAt), new Date())} ago
           </Typography>
         }

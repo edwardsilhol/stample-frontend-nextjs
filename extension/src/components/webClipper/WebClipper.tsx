@@ -202,7 +202,7 @@ export const WebClipper: React.FC = () => {
     const summary =
       alreadyPresentDocuments?.[0]?.aiSummary || summarizedPageContent;
     return (
-      <ol style={{ paddingInlineStart: '15px' }}>
+      <ul style={{ paddingInlineStart: '15px' }}>
         {summary.map((sentence) => (
           <li style={{ marginBottom: '10px' }}>
             <Typography
@@ -214,7 +214,7 @@ export const WebClipper: React.FC = () => {
             </Typography>
           </li>
         ))}
-      </ol>
+      </ul>
     );
   };
 
