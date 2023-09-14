@@ -315,47 +315,29 @@ export const WebClipper: React.FC = () => {
           </MenuItem>
         ))}
       </TextField>
-      {shouldDisplayIsAlreadyPresent ? (
-        <>
-          {!isSummaryDisplayed ? (
-            <Button
-              onClick={() => setIsSummaryDisplayed(true)}
-              variant="contained"
-              color="secondary"
-              sx={{
-                elevation: 0,
-                boxShadow: 'none',
-                ':hover': {
-                  boxShadow: 'none',
-                },
-                textTransform: 'none',
-                alignSelf: 'flex-start',
-              }}
-            >
-              See summary
-            </Button>
-          ) : null}
-          <Button
-            sx={{
-              alignSelf: 'flex-end',
-              marginTop: 2,
-            }}
-            variant="contained"
-            onClick={() => {
-              const url = getDocumentUrlOnStampleWebsite(
-                isAlreadyPresent
-                  ? alreadyPresentDocuments?.[0]?._id
-                  : !!createdDocument
-                  ? createdDocument._id
-                  : '',
-              );
-              window.open(url, '_blank');
-            }}
-          >
-            See in Stample
-          </Button>
-        </>
-      ) : null}
+      {/*{shouldDisplayIsAlreadyPresent ? (*/}
+      {/*  <>*/}
+      {/*    <Button*/}
+      {/*      sx={{*/}
+      {/*        alignSelf: 'flex-end',*/}
+      {/*        marginTop: 2,*/}
+      {/*      }}*/}
+      {/*      variant="contained"*/}
+      {/*      onClick={() => {*/}
+      {/*        const url = getDocumentUrlOnStampleWebsite(*/}
+      {/*          isAlreadyPresent*/}
+      {/*            ? alreadyPresentDocuments?.[0]?._id*/}
+      {/*            : !!createdDocument*/}
+      {/*            ? createdDocument._id*/}
+      {/*            : '',*/}
+      {/*        );*/}
+      {/*        window.open(url, '_blank');*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      See in Stample*/}
+      {/*    </Button>*/}
+      {/*  </>*/}
+      {/*) : null}*/}
       {!shouldDisplayIsAlreadyPresent ? (
         <>
           <Typography

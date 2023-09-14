@@ -103,7 +103,7 @@ const DocumentCreator: React.FC<{
             variant="body1"
             sx={{ color: 'primary.main', fontStyle: 'italic' }}
           >
-            {insight}
+            {decodeHTML(insight)}
           </Typography>
         </Box>
       )}

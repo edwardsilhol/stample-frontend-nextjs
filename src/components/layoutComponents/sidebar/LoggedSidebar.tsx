@@ -127,23 +127,23 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       <Divider sx={{ marginTop: 2 }} />
       {displaySelectTeams()}
       {/* TODO Remove this when summarization is automatic */}
-      {user?.isAdmin ? (
-        <Button
-          onClick={() => {
-            if (selectedTeamId) {
-              mutate({
-                teamId: selectedTeamId,
-                ...(selectedTagId ? { tagId: selectedTagId } : {}),
-              });
-            }
-          }}
-          fullWidth
-          variant="outlined"
-          sx={{ fontSize: '12px', marginY: 2 }}
-        >
-          {'Summarize displayed articles'}
-        </Button>
-      ) : null}
+      {/*{user?.isAdmin ? (*/}
+      {/*  <Button*/}
+      {/*    onClick={() => {*/}
+      {/*      if (selectedTeamId) {*/}
+      {/*        mutate({*/}
+      {/*          teamId: selectedTeamId,*/}
+      {/*          ...(selectedTagId ? { tagId: selectedTagId } : {}),*/}
+      {/*        });*/}
+      {/*      }*/}
+      {/*    }}*/}
+      {/*    fullWidth*/}
+      {/*    variant="outlined"*/}
+      {/*    sx={{ fontSize: '12px', marginY: 2 }}*/}
+      {/*  >*/}
+      {/*    {'Summarize displayed articles'}*/}
+      {/*  </Button>*/}
+      {/*) : null}*/}
       <TagsView
         tags={richTags}
         documentsCountPerTags={documentsCountPerTags}

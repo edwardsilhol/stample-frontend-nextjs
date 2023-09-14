@@ -166,6 +166,12 @@ export const TagsView: FC<TagsViewProps> = ({
           '.MuiTreeItem-content.Mui-focused': {
             backgroundColor: 'transparent',
           },
+          '.MuiTreeItem-content:hover': {
+            backgroundColor: 'transparent',
+            '& .MuiTypography-root:hover': {
+              color: 'primary.main',
+            },
+          },
           '.MuiTreeItem-content.Mui-selected .MuiTypography-root': {
             fontWeight: 'bold',
           },
@@ -264,7 +270,7 @@ export const TagsView: FC<TagsViewProps> = ({
         sx={{
           overflowY: 'scroll',
           overflowX: 'hidden',
-          maxHeight: 'calc(100vh - 338px)',
+          maxHeight: 'calc(100vh - 268px)',
           marginBottom: 0,
         }}
         defaultCollapseIcon={
@@ -305,6 +311,12 @@ export const TagsView: FC<TagsViewProps> = ({
               },
               '.MuiTreeItem-content .MuiTreeItem-iconContainer': {
                 marginRight: 0,
+              },
+              '.MuiTreeItem-content:hover': {
+                backgroundColor: 'transparent',
+                '& .MuiTypography-root:hover': {
+                  color: 'primary.main',
+                },
               },
             }}
             label={
