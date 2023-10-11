@@ -1,28 +1,26 @@
-import {
-  Avatar,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-} from '@mui/material';
+import { ReactNode, useMemo } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
 import { formatDistance } from 'date-fns';
-import React, { useMemo } from 'react';
 import { Comment, CommentMentionType } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
 
-interface Props {
+interface DocumentCommentProps {
   comment: Comment;
   commentAuthorsById: Record<string, UserForOtherClient>;
   index: number;
 }
 
-export const DocumentComment: React.FC<Props> = ({
+function DocumentComment({
   comment,
   commentAuthorsById,
   index,
-}) => {
+}: DocumentCommentProps) {
   const author = commentAuthorsById[comment.creatorId];
-  const content: React.ReactNode[] = useMemo(
+  const content: ReactNode[] = useMemo(
     () =>
       Array.isArray(comment.mentions) && comment.mentions.length > 0
         ? comment.mentions
@@ -148,4 +146,6 @@ export const DocumentComment: React.FC<Props> = ({
       </CardContent>
     </Card>
   );
-};
+}
+
+export default DocumentComment;

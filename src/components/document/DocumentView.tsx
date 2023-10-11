@@ -1,164 +1,47 @@
 'use client';
-import React, { useMemo, useState } from 'react';
-import Stack from '../muiOverrides/Stack';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  IconButton,
-  Slide,
-  Toolbar,
-  useScrollTrigger,
-} from '@mui/material';
-import {
-  Beenhere,
-  KeyboardArrowLeft,
-  ThumbUp,
-  ThumbUpOffAlt,
-} from '@mui/icons-material';
-import Typography from '../muiOverrides/Typography';
+
+import { useMemo, useState } from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import ThumbUp from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAlt from '@mui/icons-material/ThumbUpOffAlt';
 import {
   useDocument,
   useSummarizeDocument,
   useUpdateDocumentAsGuest,
 } from '../../stores/hooks/document.hooks';
 import { UserForOtherClient } from 'stores/types/user.types';
-import { DocumentHeader } from './DocumentHeader';
-import { DocumentTags } from './DocumentTags';
+import DocumentHeader from './DocumentHeader';
+import DocumentTags from './DocumentTags';
 import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useLoggedInUser } from 'stores/data/user.data';
 import { uniqBy } from 'lodash';
 import { CommentMention, CommentMentionType } from 'stores/types/comment.types';
 import { Editor, EditorState } from 'react-draft-wysiwyg';
 import { convertToRaw } from 'draft-js';
-import { DocumentComment } from './DocumentComment';
-import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './DocumentsView';
+import DocumentComment from './DocumentComment';
 import { useTeam } from 'stores/hooks/team.hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { decodeHTML } from 'entities';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import DocumentViewHeader from './DocumentViewHeader';
+import DocumentCreator from './DocumentCreator';
+import Beenhere from '@mui/icons-material/Beenhere';
 
 interface DocumentViewProps {
   documentId: string;
 }
-const DocumentCreator: React.FC<{
-  creator: UserForOtherClient;
-  insight: string;
-}> = ({ creator, insight }) => {
-  return (
-    <Stack direction="column" alignItems="center">
-      <Avatar
-        sizes="large"
-        src={creator.profilePictureUrl}
-        sx={{
-          width: '80px',
-          height: '80px',
-          marginTop: '10px',
-          marginBottom: '10px',
-          border: '5px solid',
-          borderColor: 'primary.main',
-        }}
-      >
-        {creator.profilePictureUrl
-          ? null
-          : `${creator.firstName[0]}${creator.lastName[0]}`}
-      </Avatar>
-      <Typography variant="h5" fontWeight={700} marginLeft={0}>
-        {creator.firstName} {creator.lastName}
-      </Typography>
-      {insight && (
-        <Box
-          sx={{
-            position: 'relative',
-            background: '#f1f4fc',
-            textAlign: 'center',
-            width: '450px',
-            height: 'auto',
-            marginTop: '20px',
-            marginBottom: '10px',
-            borderRadius: '10px',
-            padding: '20px',
-            boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
-            '&:after': {
-              content: '""',
-              position: 'absolute',
-              display: 'block',
-              width: 0,
-              zIndex: 1,
-              borderStyle: 'solid',
-              borderColor: '#f1f4fc transparent',
-              borderWidth: '0 15px 15px',
-              top: '-15px',
-              left: '50%',
-              marginLeft: '-15px',
-            },
-          }}
-        >
-          <Typography
-            variant="body1"
-            sx={{ color: 'primary.main', fontStyle: 'italic' }}
-          >
-            {decodeHTML(insight)}
-          </Typography>
-        </Box>
-      )}
-    </Stack>
-  );
-};
-const DocumentViewHeaderContent: React.FC<{
-  onClickBack: () => void;
-}> = ({ onClickBack }) => {
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      paddingY={1}
-    >
-      <Button
-        variant="text"
-        startIcon={<KeyboardArrowLeft />}
-        onClick={onClickBack}
-        sx={{ padding: 0, borderRadius: '4px' }}
-      >
-        Back
-      </Button>
-    </Stack>
-  );
-};
 
-const DocumentViewHeader: React.FC<{ onClickBack: () => void }> = ({
-  onClickBack,
-}) => {
-  const trigger = useScrollTrigger({
-    target:
-      document.getElementById(DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID) ??
-      undefined,
-  });
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar
-        sx={{
-          backgroundColor: 'background.paper',
-          marginTop: 7,
-          paddingX: 2,
-        }}
-        elevation={0}
-      >
-        <Toolbar>
-          <DocumentViewHeaderContent onClickBack={onClickBack} />
-        </Toolbar>
-      </AppBar>
-    </Slide>
-  );
-};
-
-export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
+function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const pathname = usePathname();
@@ -501,4 +384,6 @@ export const DocumentView: React.FC<DocumentViewProps> = ({ documentId }) => {
       )}
     </Stack>
   );
-};
+}
+
+export default DocumentView;

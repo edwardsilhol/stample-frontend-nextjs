@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -13,7 +12,7 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { TextFieldForm } from '../../fields/TextFieldForm';
+import TextFieldForm from '../../fields/textFieldForm/TextFieldForm';
 
 const useStyles = () => ({
   signUpContainer: {
@@ -60,7 +59,7 @@ function SignUp() {
       password: '',
       confirmPassword: '',
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
   const onSubmit = async (values: SignUpFormType) => {
     try {

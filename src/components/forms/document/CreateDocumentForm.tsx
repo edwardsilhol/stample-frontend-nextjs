@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { CreateDocumentDTO } from '../../../stores/types/document.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCreateDocument } from '../../../stores/hooks/document.hooks';
-import Box from '../../muiOverrides/Box';
-import { TextFieldForm } from '../fields/TextFieldForm';
+import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
 import SelectOrCreateTags from './SelectOrCreateTags';
 import { Tag } from '../../../stores/types/tag.types';
 import { Button, Grid, Typography } from '@mui/material';
@@ -14,21 +15,20 @@ import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Stack from '../../muiOverrides/Stack';
 import { useSelectedTeamId } from '../../../stores/data/team.data';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
-interface Props {
+interface CreateDocumentFormProps {
   onClose: () => void;
 }
 
-export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
+function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty(),
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [selectedTeamId] = useSelectedTeamId();
   const createDocument = useCreateDocument();
 
@@ -53,7 +53,7 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
       tags: [],
       type: 'note',
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
@@ -193,4 +193,6 @@ export const CreateDocumentForm: React.FC<Props> = ({ onClose }) => {
       <Grid item xs={2} />
     </Grid>
   );
-};
+}
+
+export default CreateDocumentForm;

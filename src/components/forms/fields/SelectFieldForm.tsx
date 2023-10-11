@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
   MenuItem,
   MenuItemProps,
@@ -13,7 +13,7 @@ import {
   UseControllerProps,
 } from 'react-hook-form';
 
-interface Props<
+interface SelectFieldFormProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
 > extends UseControllerProps<TFieldValues, TName> {
@@ -22,7 +22,7 @@ interface Props<
   noSelectionText?: string;
 }
 
-export const SelectFieldForm = <
+function SelectFieldForm<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
 >({
@@ -36,7 +36,7 @@ export const SelectFieldForm = <
   options,
   children,
   ...props
-}: Props<TFieldValues, TName> & TextFieldProps) => {
+}: SelectFieldFormProps<TFieldValues, TName> & TextFieldProps) {
   const {
     field,
     fieldState: { error },
@@ -77,4 +77,6 @@ export const SelectFieldForm = <
       </TextField>
     </Tooltip>
   );
-};
+}
+
+export default SelectFieldForm;

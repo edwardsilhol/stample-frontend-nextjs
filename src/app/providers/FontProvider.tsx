@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Roboto } from '@next/font/google';
+import { Roboto } from 'next/font/google';
 
 const font = Roboto({
   weight: ['400', '700'],

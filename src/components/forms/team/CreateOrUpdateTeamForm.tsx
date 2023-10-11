@@ -1,13 +1,9 @@
-import React from 'react';
 import * as Yup from 'yup';
 import { Team } from '../../../stores/types/team.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldArrayWithId, useForm } from 'react-hook-form';
 import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
-import Box from '../../muiOverrides/Box';
-import { TextFieldForm } from '../fields/TextFieldForm';
-import { Avatar, Button, Typography } from '@mui/material';
-import Stack from '../../muiOverrides/Stack';
+import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
 import { useSelectedOrganisationId } from 'stores/data/organisation.data';
 import {
   useOrganisation,
@@ -26,13 +22,19 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
-import { SelectFieldForm } from '../fields/SelectFieldForm';
+import SelectFieldForm from '../fields/SelectFieldForm';
 import { capitalize } from 'lodash';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
 interface UpdateTeamMembersProps {
@@ -40,10 +42,7 @@ interface UpdateTeamMembersProps {
   control: Control<FormValues>;
 }
 
-export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
-  team,
-  control,
-}) => {
+function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
   const { data: authenticatedUser } = useSession();
   const usersById: Record<string, UserForOtherClient> = useMemo(() => {
     if (!team) return {};
@@ -69,7 +68,7 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
     control,
     name: 'invitations',
   });
-  const [invitationEmail, setInvitationEmail] = React.useState('');
+  const [invitationEmail, setInvitationEmail] = useState('');
   const onClickAddInvitation = () => {
     appendInvitation({
       email: invitationEmail,
@@ -251,7 +250,7 @@ export const UpdateTeamMembers: React.FC<UpdateTeamMembersProps> = ({
       </Box>
     </>
   );
-};
+}
 interface Props {
   team?: PopulatedTeam;
   onClose: () => void;
@@ -306,7 +305,7 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
         : {}),
       invitations: team?.invitations || [],
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const onSubmit = async (values: FormValues) => {
@@ -389,3 +388,5 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
     </Box>
   );
 };
+
+export default CreateOrUpdateTeamForm;

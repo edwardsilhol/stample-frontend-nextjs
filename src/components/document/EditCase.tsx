@@ -1,14 +1,11 @@
-import { Folder } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Folder from '@mui/icons-material/Folder';
 import { Tag } from '../../stores/types/tag.types';
 import { Document } from '../../stores/types/document.types';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -18,11 +15,7 @@ interface EditCaseProps {
   tags?: Tag[];
   showDocument: boolean;
 }
-export const EditCase: React.FC<EditCaseProps> = ({
-  document,
-  showDocument,
-  tags,
-}) => {
+function EditCase({ document, showDocument, tags }: EditCaseProps) {
   const gridWidth = showDocument
     ? { xs: 12, sm: 12, md: 12, lg: 12 }
     : { xs: 12, sm: 6, md: 4, lg: 3 };
@@ -172,6 +165,6 @@ export const EditCase: React.FC<EditCaseProps> = ({
       </Stack>
     </Stack>
   );
-};
+}
 
 export default EditCase;

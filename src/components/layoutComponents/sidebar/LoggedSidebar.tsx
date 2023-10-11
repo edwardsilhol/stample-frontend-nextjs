@@ -1,36 +1,32 @@
-import React from 'react';
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  IconButton,
-} from '@mui/material';
-import Stack from '../../muiOverrides/Stack';
 import { Logout, MenuOpen } from '@mui/icons-material';
-import Typography from '../../muiOverrides/Typography';
 import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import {
   useDocumentsCountPerTag,
   useTagsByTeam,
 } from '../../../stores/hooks/tag.hooks';
-import { TagsView } from './TagsView';
+import TagsView from './TagsView';
 import { useIsSidebarOpen } from 'stores/data/layout.data';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useSelectedTeamId } from 'stores/data/team.data';
-import { SelectTeamsAndOrganisationsDialog } from './SelectTeamsAndOrganisationsDialog';
+import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
-// import { useSummarizeTeamDocuments } from 'stores/hooks/team.hooks';
-// import { useSelectedTagId } from 'stores/data/tag.data';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import { useState } from 'react';
 
-interface SidebarProps {
+interface LoggedSidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
 }
-export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
+function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const pathname = usePathname();
@@ -48,7 +44,7 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
   const [
     isSelectTeamsAndOrganisationsOpen,
     setIsSelectTeamsAndOrganisationsOpen,
-  ] = React.useState(false);
+  ] = useState(false);
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -212,4 +208,6 @@ export const LoggedSidebar: React.FC<SidebarProps> = ({ user, isLoading }) => {
       /> */}
     </>
   );
-};
+}
+
+export default LoggedSidebar;

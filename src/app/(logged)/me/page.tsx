@@ -1,11 +1,10 @@
 'use client';
 
-import { DocumentView } from 'components/document/DocumentView';
-import React from 'react';
-import { MainView } from '../../../components/MainView';
+import DocumentView from 'components/document/DocumentView';
+import MainView from '../../../components/MainView';
 import { useCurrentlyViewedDocumentId } from '../../../stores/data/document.data';
 
-const DefaultPage: React.FC = () => {
+function DefaultPage() {
   const [documentId] = useCurrentlyViewedDocumentId();
   return (
     <>
@@ -13,6 +12,6 @@ const DefaultPage: React.FC = () => {
       <MainView isDisplayed={!documentId} />
     </>
   );
-};
+}
 
 export default DefaultPage;

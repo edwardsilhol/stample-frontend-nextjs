@@ -1,11 +1,9 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Stack,
-  Typography,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { getTeamDisplayedName } from 'helpers/team.helper';
 import { useRouter } from 'next/navigation';
 import {
@@ -13,10 +11,10 @@ import {
   useTeamByInvitation,
 } from 'stores/hooks/team.hooks';
 
-interface Props {
+interface InvitationProps {
   teamId: string;
 }
-export const Invitation: React.FC<Props> = ({ teamId }) => {
+function Invitation({ teamId }: InvitationProps) {
   const { data: team } = useTeamByInvitation(teamId);
   const router = useRouter();
   const { mutateAsync: answerInvitation } = useAnswerInvitation();
@@ -63,4 +61,5 @@ export const Invitation: React.FC<Props> = ({ teamId }) => {
       </Card>
     </Stack>
   );
-};
+}
+export default Invitation;

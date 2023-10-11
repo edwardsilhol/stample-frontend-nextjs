@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 interface Props {
   children: ReactNode;
 }
-export default function JotaiProvider({ children }: Props) {
+function JotaiProvider({ children }: Props) {
   return <Provider>{children}</Provider>;
 }
+export default JotaiProvider;

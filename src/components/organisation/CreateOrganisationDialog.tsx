@@ -1,15 +1,17 @@
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
-import { CreateOrganisationForm } from 'components/forms/organisation/CreateOrganisationForm';
+import CreateOrganisationForm from 'components/forms/organisation/CreateOrganisationForm';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
-interface Props {
+interface CreateOrganisationDialogProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const CreateOrganisationDialog: React.FC<Props> = ({
+function CreateOrganisationDialog({
   open,
   onClose,
-}) => {
+}: CreateOrganisationDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Create a new organisation</DialogTitle>
@@ -18,4 +20,5 @@ export const CreateOrganisationDialog: React.FC<Props> = ({
       </DialogContent>
     </Dialog>
   );
-};
+}
+export default CreateOrganisationDialog;

@@ -1,3 +1,5 @@
+'use client';
+
 import { atom, useAtom } from 'jotai';
 
 const searchDocumentsQueryAtom = atom<string | null>(null);

@@ -1,11 +1,10 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import { LoggedSidebar } from '../../../components/layoutComponents/sidebar/LoggedSidebar';
+import { ReactNode } from 'react';
+import LoggedSidebar from '../../../components/layoutComponents/sidebar/LoggedSidebar';
 import { useSession } from '../../../stores/hooks/user.hooks';
-import Stack from '../../../components/muiOverrides/Stack';
 import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
-
+import Stack from '@mui/material/Stack';
 interface Props {
   children: ReactNode;
 }

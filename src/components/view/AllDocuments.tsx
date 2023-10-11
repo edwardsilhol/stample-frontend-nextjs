@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
 import { useSearchedDocuments } from '../../stores/hooks/document.hooks';
-import { DocumentsView } from '../document/DocumentsView';
-import Stack from '../muiOverrides/Stack';
-import { CircularProgress } from '@mui/material';
+import DocumentsView from '../document/DocumentsView';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
-export const AllDocuments: React.FC = () => {
+function AllDocuments() {
   const { allDocuments, isLoading, total, fetchNextPage } =
     useSearchedDocuments();
 
@@ -21,4 +20,6 @@ export const AllDocuments: React.FC = () => {
       totalDocumentsCount={total}
     />
   );
-};
+}
+
+export default AllDocuments;

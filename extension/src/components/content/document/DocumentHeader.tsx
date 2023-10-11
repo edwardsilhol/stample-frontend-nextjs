@@ -1,24 +1,28 @@
 import { Box, Typography, TypographyProps } from '@mui/material';
 import { getDocumentHeaderStrings } from '@src/helpers/document.helpers';
-import React from 'react';
 import { Document } from '@src/stores/types/document.types';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
-export const DocumentHeader: React.FC<
-  Pick<Document, 'createdAt' | 'author' | 'url' | 'authorUrl'> & {
-    likesCount: number;
-    readersCount: number;
-    typographyProps?: TypographyProps;
-  }
-> = ({
+import { Fragment, ReactNode, useMemo } from 'react';
+
+type DocumentHeaderProps = Pick<
+  Document,
+  'createdAt' | 'author' | 'url' | 'authorUrl'
+> & {
+  likesCount: number;
+  readersCount: number;
+  typographyProps?: TypographyProps;
+};
+
+function DocumentHeader({
   authorUrl,
   createdAt,
   author,
   likesCount,
   readersCount,
   typographyProps,
-}) => {
-  const documentHeaderStrings = React.useMemo(
+}: DocumentHeaderProps) {
+  const documentHeaderStrings = useMemo(
     () =>
       getDocumentHeaderStrings({
         createdAt,
@@ -90,10 +94,11 @@ export const DocumentHeader: React.FC<
                 </Box>,
               ]
             : []),
-          <React.Fragment key={index}>{component}</React.Fragment>,
+          <Fragment key={index}>{component}</Fragment>,
         ],
-        [] as React.ReactNode[],
+        [] as ReactNode[],
       )}
     </Typography>
   );
-};
+}
+export default DocumentHeader;

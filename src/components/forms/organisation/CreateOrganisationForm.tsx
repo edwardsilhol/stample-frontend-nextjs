@@ -1,19 +1,19 @@
-import React from 'react';
 import * as Yup from 'yup';
 import { CreateOrganisationDTO } from '../../../stores/types/organisation.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCreateOrganisation } from 'stores/hooks/organisation.hooks';
-import Box from '../../muiOverrides/Box';
-import { TextFieldForm } from '../fields/TextFieldForm';
+import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
 import { Button } from '@mui/material';
-import Stack from '../../muiOverrides/Stack';
 import { useSelectedOrganisationId } from 'stores/data/organisation.data';
-interface Props {
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+
+interface CreateOrganisationProps {
   onClose: () => void;
 }
 
-export const CreateOrganisationForm: React.FC<Props> = ({ onClose }) => {
+function CreateOrganisationForm({ onClose }: CreateOrganisationProps) {
   const createOrganisation = useCreateOrganisation();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,7 +26,7 @@ export const CreateOrganisationForm: React.FC<Props> = ({ onClose }) => {
     defaultValues: {
       name: '',
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const onSubmit = async (values: CreateOrganisationDTO) => {
@@ -67,4 +67,5 @@ export const CreateOrganisationForm: React.FC<Props> = ({ onClose }) => {
       </Stack>
     </Box>
   );
-};
+}
+export default CreateOrganisationForm;

@@ -1,18 +1,19 @@
-import { Box, Typography, TypographyProps } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { getDocumentHeaderStrings } from 'helpers/document.helpers';
-import React from 'react';
 import { Document } from 'stores/types/document.types';
+import { Fragment, ReactNode, useMemo } from 'react';
 
-export const DocumentHeader: React.FC<
-  Pick<
-    Document,
-    'urlWebsiteName' | 'createdAt' | 'author' | 'url' | 'authorUrl'
-  > & {
-    likesCount: number;
-    readersCount: number;
-    typographyProps?: TypographyProps;
-  }
-> = ({
+type DocumentHeaderProps = Pick<
+  Document,
+  'urlWebsiteName' | 'createdAt' | 'author' | 'url' | 'authorUrl'
+> & {
+  likesCount: number;
+  readersCount: number;
+  typographyProps?: TypographyProps;
+};
+
+function DocumentHeader({
   urlWebsiteName,
   url,
   authorUrl,
@@ -21,8 +22,8 @@ export const DocumentHeader: React.FC<
   likesCount,
   readersCount,
   typographyProps,
-}) => {
-  const documentHeaderStrings = React.useMemo(
+}: DocumentHeaderProps) {
+  const documentHeaderStrings = useMemo(
     () =>
       getDocumentHeaderStrings({
         createdAt,
@@ -92,10 +93,11 @@ export const DocumentHeader: React.FC<
                 </Box>,
               ]
             : []),
-          <React.Fragment key={index}>{component}</React.Fragment>,
+          <Fragment key={index}>{component}</Fragment>,
         ],
-        [] as React.ReactNode[],
+        [] as ReactNode[],
       )}
     </Typography>
   );
-};
+}
+export default DocumentHeader;

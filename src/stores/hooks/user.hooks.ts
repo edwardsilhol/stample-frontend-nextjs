@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchSession, signIn, signUp } from '../api/user.api';
 
 import { SignInDTO, SignUpDTO } from '../types/user.types';

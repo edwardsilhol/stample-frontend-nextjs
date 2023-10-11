@@ -1,8 +1,8 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useSession } from '../../../../stores/hooks/user.hooks';
 import { useRouter } from 'next/navigation';
+import { useSession } from '../../stores/hooks/user.hooks';
 
 interface Props {
   children: ReactNode;

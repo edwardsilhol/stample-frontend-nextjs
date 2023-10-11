@@ -8,7 +8,6 @@ import textField from './textField';
 import button from './button';
 import { shadows, shadowsExtended, ShadowsExtended } from './shadows';
 import { ExtendedPalette, palette } from './palette';
-import { TenantThemeConfig } from '../../stores/types/tenantConfig.types';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -29,10 +28,10 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = (tenantThemeConfig: TenantThemeConfig, mode?: 'light' | 'dark') =>
+const theme = (mode?: 'light' | 'dark') =>
   responsiveFontSizes(
     createTheme({
-      palette: palette(tenantThemeConfig, mode || 'light'),
+      palette: palette(mode || 'light'),
       breakpoints,
       components: {
         MuiCard: card,

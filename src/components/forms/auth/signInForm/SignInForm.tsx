@@ -8,11 +8,12 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { useSignIn } from '../../../../stores/hooks/user.hooks';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
+
 import { SignInDTO } from '../../../../stores/types/user.types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextFieldForm } from '../../fields/TextFieldForm';
+import TextFieldForm from '../../fields/textFieldForm/TextFieldForm';
 import Link from 'next/link';
 import Container from '@mui/material/Container';
 
@@ -38,9 +39,9 @@ function SignInForm() {
   const [error, setError] = useState(undefined);
 
   // TODO: add better validation for your needs
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required(),
-    password: Yup.string().required(),
+  const validationSchema = object({
+    email: string().email().required(),
+    password: string().required(),
   } as Record<keyof SignInDTO, any>);
 
   const { control, handleSubmit } = useForm<SignInDTO>({
@@ -48,7 +49,7 @@ function SignInForm() {
       email: '',
       password: '',
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const onSubmit = async (values: SignInDTO) => {

@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import { MinimalDocument } from '../../../stores/types/document.types';
+import { MinimalDocument } from '@src/stores/types/document.types';
 import { Tag } from '@src/stores/types/tag.types';
-import { DocumentHeader } from './DocumentHeader';
 import { DocumentTags } from './DocumentTags';
 import { useAllTags } from '@src/stores/hooks/tag.hooks';
 import { useWindowHeight } from '@react-hook/window-size';
@@ -20,7 +19,7 @@ import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import { SelectTeam } from '../SelectTeam';
 import { useSelectedTeamId } from '@src/stores/data/team.data';
 import { decodeHTML } from 'entities';
-import useScreenResizeObserver from 'use-resize-observer';
+import { DocumentHeader } from '@src/components/content/document/DocumentHeader';
 
 const DocumentGridItem: React.FC<{
   document: MinimalDocument;
@@ -135,18 +134,16 @@ const DocumentGridItem: React.FC<{
   );
 };
 
-export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
-  'documents-view-scrollable';
-
-const DOCUMENT_SELECTED_CONTAINER_ID = 'documents-selected';
-const DocumentsMasonry: React.FC<{
+interface DocumentMasonryProps {
   documents: MinimalDocument[];
   total: number;
   flatTags?: Tag[];
   searchId: string;
   containerWidth?: number;
   fetchNextPage: () => void;
-}> = ({
+}
+
+const DocumentsMasonry: React.FC<DocumentMasonryProps> = ({
   documents,
   total,
   flatTags,
@@ -154,7 +151,7 @@ const DocumentsMasonry: React.FC<{
   containerWidth,
   fetchNextPage,
 }) => {
-  const containerRef = React.useRef(null);
+  const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
     {
@@ -213,17 +210,14 @@ export const DocumentsView: React.FC = () => {
   const [searchDocumentsQuery, setSearchDocumentsQuery] =
     useSearchDocumentsQuery();
   useEffect(() => {
-    // @ts-ignore
-    setSearchDocumentsQuery(getGoogleSearchQuery(document));
+    (setSearchDocumentsQuery as any)(getGoogleSearchQuery(document));
   }, [document]);
   const searchId = useMemo(
     () => `${searchDocumentsQuery}-${selectedTeamId}-${allDocuments.length}`,
     [searchDocumentsQuery, selectedTeamId, allDocuments.length],
   );
-  const ref = React.useRef(null);
-  const { width } = useScreenResizeObserver({
-    ref,
-  });
+  const ref = useRef(null);
+
   return (
     <Box
       paddingX={{ xs: 1, sm: 2 }}

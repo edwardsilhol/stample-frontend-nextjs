@@ -1,15 +1,9 @@
-import React from 'react';
-import { InputBase } from '@mui/material';
-import { Search } from '@mui/icons-material';
-import Box from '../../muiOverrides/Box';
-import { Tag } from 'stores/types/tag.types';
 import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import Box from '@mui/material/Box';
+import InputBase from '@mui/material/InputBase';
+import Search from '@mui/icons-material/Search';
 
-interface CustomSearchBarProps {
-  tags: Tag[];
-}
-
-export const CustomSearchBar: React.FC<CustomSearchBarProps> = () => {
+function CustomSearchBar() {
   const [searchDocumentsQuery, setSearchDocumentsQuery] =
     useSearchDocumentsQuery();
   return (
@@ -43,4 +37,6 @@ export const CustomSearchBar: React.FC<CustomSearchBarProps> = () => {
       />
     </Box>
   );
-};
+}
+
+export default CustomSearchBar;
