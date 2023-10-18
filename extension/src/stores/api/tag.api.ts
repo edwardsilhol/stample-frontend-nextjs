@@ -1,5 +1,5 @@
 import { ViewTags } from '../types/tag.types';
-import { apiRequest } from '../../utils/api';
+import { apiRequest } from '@src/utils/api';
 
 export const fetchTags = async (): Promise<ViewTags> => {
   try {

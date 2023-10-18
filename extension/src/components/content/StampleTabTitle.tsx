@@ -1,5 +1,4 @@
 import {
-  GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME,
   GOOGLE_TAB_BAR_ITEM_TEXT_CSS_CLASSNAME,
   STAMPLE_TAB_TITLE_ID,
 } from '@src/constants/content';
@@ -10,17 +9,19 @@ import {
 } from '@src/helpers/content.helpers';
 import { findTabBarItems } from '@src/helpers/content.helpers';
 import { useEffect, useState } from 'react';
-const CloseIcon: React.FC = () => (
-  <svg
-    className="mUKzod"
-    aria-hidden="true"
-    focusable="false"
-    viewBox="0 0 24 24"
-  >
-    <path d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6Z"></path>
-  </svg>
-);
-export const StampleTabTitle: React.FC = () => {
+function CloseIcon() {
+  return (
+    <svg
+      className="mUKzod"
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 24 24"
+    >
+      <path d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6Z"></path>
+    </svg>
+  );
+}
+function StampleTabTitle() {
   const [active, setActive] = useState(false);
   useEffect(() => {
     const tabBarItems = findTabBarItems(document);
@@ -69,4 +70,6 @@ export const StampleTabTitle: React.FC = () => {
       <div className={GOOGLE_TAB_BAR_ITEM_TEXT_CSS_CLASSNAME}>Stample</div>
     </>
   );
-};
+}
+
+export default StampleTabTitle;

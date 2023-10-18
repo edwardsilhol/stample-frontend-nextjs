@@ -1,5 +1,5 @@
 import { Comment, CreateCommentDTO } from '../types/comment.types';
-import { apiRequest } from '../../utils/api';
+import { apiRequest } from '@src/utils/api';
 
 export const createComment = async (
   documentId: string,

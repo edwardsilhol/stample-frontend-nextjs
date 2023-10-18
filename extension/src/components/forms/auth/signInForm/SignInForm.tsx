@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextFieldForm } from '../../fields/TextFieldForm';
+import TextFieldForm from '../../fields/TextFieldForm';
 import Container from '@mui/material/Container';
 import { Link } from '@mui/material';
 import { SignInDTO } from '@src/stores/types/user.types';

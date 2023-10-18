@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { MinimalDocument } from '@src/stores/types/document.types';
 import { Tag } from '@src/stores/types/tag.types';
-import { DocumentTags } from './DocumentTags';
+import DocumentTags from './DocumentTags';
 import { useAllTags } from '@src/stores/hooks/tag.hooks';
 import { useWindowHeight } from '@react-hook/window-size';
 import {
@@ -16,15 +16,17 @@ import {
 import { useSearchDocumentsQuery } from '@src/stores/data/document.data';
 import { useSearchedDocuments } from '@src/stores/hooks/document.hooks';
 import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
-import { SelectTeam } from '../SelectTeam';
+import SelectTeam from '../SelectTeam';
 import { useSelectedTeamId } from '@src/stores/data/team.data';
 import { decodeHTML } from 'entities';
-import { DocumentHeader } from '@src/components/content/document/DocumentHeader';
+import DocumentHeader from '@src/components/content/document/DocumentHeader';
 
-const DocumentGridItem: React.FC<{
+interface DocumentGridItemProps {
   document: MinimalDocument;
   flatTags?: Tag[];
-}> = ({ document, flatTags }) => {
+}
+
+function DocumentGridItem({ document, flatTags }: DocumentGridItemProps) {
   return (
     <Card
       sx={{
@@ -132,7 +134,7 @@ const DocumentGridItem: React.FC<{
       </CardContent>
     </Card>
   );
-};
+}
 
 interface DocumentMasonryProps {
   documents: MinimalDocument[];
@@ -143,14 +145,14 @@ interface DocumentMasonryProps {
   fetchNextPage: () => void;
 }
 
-const DocumentsMasonry: React.FC<DocumentMasonryProps> = ({
+function DocumentsMasonry({
   documents,
   total,
   flatTags,
   searchId,
   containerWidth,
   fetchNextPage,
-}) => {
+}: DocumentMasonryProps) {
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
@@ -191,8 +193,8 @@ const DocumentsMasonry: React.FC<DocumentMasonryProps> = ({
     render: renderItem,
     onRender: infiniteLoader,
   });
-};
-const MemoizedDocumentsMasonry = React.memo(DocumentsMasonry, (prev, next) => {
+}
+const MemoizedDocumentsMasonry = memo(DocumentsMasonry, (prev, next) => {
   return (
     prev.documents === next.documents &&
     prev.flatTags === next.flatTags &&
@@ -200,7 +202,7 @@ const MemoizedDocumentsMasonry = React.memo(DocumentsMasonry, (prev, next) => {
   );
 });
 
-export const DocumentsView: React.FC = () => {
+function DocumentsView() {
   const {
     data: { raw: flatTags },
   } = useAllTags();
@@ -238,4 +240,5 @@ export const DocumentsView: React.FC = () => {
       </Box>
     </Box>
   );
-};
+}
+export default DocumentsView;

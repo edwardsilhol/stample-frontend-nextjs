@@ -7,7 +7,7 @@ import { useSelectedTeamId } from '@src/stores/data/team.data';
 import { useAllTeams } from '@src/stores/hooks/team.hooks';
 import { useEffect } from 'react';
 
-export const SelectTeam: React.FC = () => {
+function SelectTeam() {
   const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
   const { data: teams } = useAllTeams();
   useEffect(() => {
@@ -42,4 +42,5 @@ export const SelectTeam: React.FC = () => {
       ))}
     </TextField>
   );
-};
+}
+export default SelectTeam;

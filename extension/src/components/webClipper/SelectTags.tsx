@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
-import { Tag } from '../../stores/types/tag.types';
+import { Tag } from '@src/stores/types/tag.types';
 import { groupBy } from 'lodash';
 
 type TagTextFieldProps = {
@@ -9,11 +9,7 @@ type TagTextFieldProps = {
   onChange: (value: string[]) => void;
 };
 
-export const SelectTags: React.FC<TagTextFieldProps> = ({
-  selectedTags,
-  tags,
-  onChange,
-}) => {
+function SelectTags({ selectedTags, tags, onChange }: TagTextFieldProps) {
   const [inputValue, setInputValue] = React.useState('');
 
   const tagsByIds = useMemo(() => groupBy(tags, '_id'), [tags]);
@@ -59,4 +55,6 @@ export const SelectTags: React.FC<TagTextFieldProps> = ({
       )}
     />
   );
-};
+}
+
+export default SelectTags;

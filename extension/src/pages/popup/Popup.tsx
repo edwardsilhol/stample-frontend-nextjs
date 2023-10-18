@@ -1,6 +1,6 @@
 import { useSession } from '@src/stores/hooks/user.hooks';
 import SignInForm from '@src/components/forms/auth/signInForm/SignInForm';
-import { WebClipper } from '@src/components/webClipper/WebClipper';
+import WebClipper from '@src/components/webClipper/WebClipper';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
 import { getImageUrl } from '@src/helpers/content.helpers';

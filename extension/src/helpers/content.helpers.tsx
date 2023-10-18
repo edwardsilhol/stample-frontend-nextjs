@@ -10,7 +10,7 @@ import {
   STAMPLE_TAB_CONTENT_ID,
   STAMPLE_TAB_TITLE_ID,
 } from '../constants/content';
-import { DocumentsView } from '@src/components/content/document/DocumentsView';
+import DocumentsView from '@src/components/content/document/DocumentsView';
 import { AppProvider } from '@src/pages/providers/AppProvider';
 
 type SearchElement = {

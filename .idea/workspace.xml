@@ -5,81 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/document/DocumentCreator.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/document/DocumentGridItem.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/document/DocumentViewHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/document/DocumentViewHeaderContent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/domains.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/tenants.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extension/src/components/content/AlreadyPresentStampleIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/AlreadyPresentStampleIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extension/src/components/content/document/DocumentHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/document/DocumentHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/extension/.eslintrc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/extension/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/components/content/SelectTeam.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/SelectTeam.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/components/content/StampleTabTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/StampleTabTitle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/components/content/document/DocumentTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/document/DocumentTags.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/extension/src/components/content/document/DocumentsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/content/document/DocumentsView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/extension/src/components/forms/auth/signInForm/SignInForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/forms/auth/signInForm/SignInForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extension/src/components/forms/fields/TextFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/forms/fields/TextFieldForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/components/webClipper/SelectTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/webClipper/SelectTags.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/components/webClipper/WebClipper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/components/webClipper/WebClipper.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/extension/src/helpers/content.helpers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/helpers/content.helpers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/(auth)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/(auth)/signIn/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/providers/guestAuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/guestAuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/signUp/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/(auth)/signUp/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(guest)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/document/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/document/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/invitation/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/invitation/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/me/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/me/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/providers/LoggedAuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/LoggedAuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/FontProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/FontProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/JotaiProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/JotaiProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/ThemeProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/ThemeProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MainView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentTags.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/EditCase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/EditCase.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signInForm/SignInForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signInForm/SignInForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/SignUpForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/SignUpForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/CreateDocumentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/CreateDocumentForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/SelectFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/SelectFieldForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/TextFieldForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/TextFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/organisation/CreateOrganisationForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/organisation/CreateOrganisationForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/Tabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/Tabs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/CustomSearchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/header/CustomSearchBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/muiOverrides/Box.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/muiOverrides/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/muiOverrides/Stack.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/muiOverrides/Typography.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organisation/CreateOrganisationDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organisation/CreateOrganisationDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/team/CreateTeamDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/team/CreateTeamDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/team/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/team/Invitation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/data/document.data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/data/document.data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/user.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/user.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/tenantConfig.types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/theme/palette.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/theme/palette.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/theme/theme.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/theme/theme.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/hooks/useIsMobile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/hooks/useIsMobile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/hooks/useScroller.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/hooks/useScroller.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/pages/popup/Popup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/pages/popup/Popup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/comment.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/comment.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/document.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/document.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/organisation.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/organisation.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/tag.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/tag.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/team.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/team.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/api/user.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/api/user.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/hooks/team.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,9 +44,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2Wandt29kYQlFPrVtCtRMBPHosM" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -113,7 +58,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "youssef/FixFiles",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -141,7 +88,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1696979648596</updated>
-      <workItem from="1696979649620" duration="7613000" />
+      <workItem from="1696979649620" duration="7745000" />
+      <workItem from="1697654980739" duration="1395000" />
+      <workItem from="1697656966804" duration="366000" />
     </task>
     <servers />
   </component>
@@ -158,5 +107,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
