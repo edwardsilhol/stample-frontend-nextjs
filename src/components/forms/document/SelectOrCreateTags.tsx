@@ -2,7 +2,7 @@
 
 import { TextField, Autocomplete } from '@mui/material';
 import { Tag } from '../../../stores/types/tag.types';
-import { useSelectedTeamTags } from '../../../stores/hooks/tag.hooks';
+import { useSelectedTeamTags } from '../../../stores/hooks/tanstackQuery/tag.hooks';
 import { SyntheticEvent, useState } from 'react';
 
 type TagTextFieldProps = {

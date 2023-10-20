@@ -1,10 +1,13 @@
 import { TagRich } from '../../../stores/types/tag.types';
 import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
-import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
-import { useSelectedTagId } from 'stores/data/tag.data';
-import { useSelectedTeamId } from 'stores/data/team.data';
+import {
+  useCreateTag,
+  useUpdateTag,
+} from '../../../stores/hooks/tanstackQuery/tag.hooks';
+import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
+import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
 import { TreeItemProps } from '@mui/lab';
 import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
@@ -83,7 +86,6 @@ function TagsView({ tags, documentsCountPerTags, onSelectTag }: TagsViewProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = useState<string>('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSelectedTagId] = useSelectedTagId();
   const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
     useCurrentlyViewedDocumentId();

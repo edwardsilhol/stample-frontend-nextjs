@@ -1,17 +1,17 @@
 import { Logout, MenuOpen } from '@mui/icons-material';
-import { useLogout } from '../../../stores/hooks/user.hooks';
+import { useLogout } from '../../../stores/hooks/tanstackQuery/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import {
   useDocumentsCountPerTag,
   useTagsByTeam,
-} from '../../../stores/hooks/tag.hooks';
+} from '../../../stores/hooks/tanstackQuery/tag.hooks';
 import TagsView from './TagsView';
-import { useIsSidebarOpen } from 'stores/data/layout.data';
+import { useIsSidebarOpen } from 'stores/hooks/jotai/layout.hooks';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useSelectedTeamId } from 'stores/data/team.data';
+import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';

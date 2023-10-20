@@ -13,8 +13,11 @@ import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/team/CreateTeamDialog';
 import { getDefaultSelectedTeamId } from 'helpers/team.helper';
 import { useEffect, useMemo, useState } from 'react';
-import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
-import { useAllTeams } from 'stores/hooks/team.hooks';
+import {
+  useSelectedTeam,
+  useSelectedTeamId,
+} from 'stores/hooks/jotai/team.hooks';
+import { useAllTeams } from 'stores/hooks/tanstackQuery/team.hooks';
 import { getTeamDisplayedName } from '../../../helpers/team.helper';
 import { Team } from 'stores/types/team.types';
 

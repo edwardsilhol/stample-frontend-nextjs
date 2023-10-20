@@ -4,13 +4,13 @@ import { createComment } from 'stores/api/comment.api';
 
 export const useCreateComment = (documentId: string) => {
   const queryClient = useQueryClient();
-  return useMutation(
-    (createCommentDTO: CreateCommentDTO) =>
+  return useMutation({
+    mutationFn: (createCommentDTO: CreateCommentDTO) =>
       createComment(documentId, createCommentDTO),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['document', { documentId }]);
-      },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['document', { documentId }],
+      });
     },
-  );
+  });
 };

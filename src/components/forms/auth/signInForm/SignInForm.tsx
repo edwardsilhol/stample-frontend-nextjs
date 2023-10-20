@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { useSignIn } from '../../../../stores/hooks/user.hooks';
+import { useSignIn } from '../../../../stores/hooks/tanstackQuery/user.hooks';
 import { object, string } from 'yup';
 
 import { SignInDTO } from '../../../../stores/types/user.types';
@@ -35,8 +35,7 @@ function SignInForm() {
   const signIn = useSignIn();
   const styles = useStyles();
   // TODO: handle errors in form
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState(undefined);
+  const [_, setError] = useState(undefined);
 
   // TODO: add better validation for your needs
   const validationSchema = object({

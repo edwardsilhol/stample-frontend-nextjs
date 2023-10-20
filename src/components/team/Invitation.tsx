@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import {
   useAnswerInvitation,
   useTeamByInvitation,
-} from 'stores/hooks/team.hooks';
+} from 'stores/hooks/tanstackQuery/team.hooks';
 
 interface InvitationProps {
   teamId: string;

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { CreateDocumentDTO } from '../../../stores/types/document.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useCreateDocument } from '../../../stores/hooks/document.hooks';
+import { useCreateDocument } from '../../../stores/hooks/tanstackQuery/document.hooks';
 import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
 import SelectOrCreateTags from './SelectOrCreateTags';
 import { Tag } from '../../../stores/types/tag.types';
@@ -15,7 +15,7 @@ import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useSelectedTeamId } from '../../../stores/data/team.data';
+import { useSelectedTeamId } from '../../../stores/hooks/jotai/team.hooks';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -25,7 +25,6 @@ interface CreateDocumentFormProps {
 }
 
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());

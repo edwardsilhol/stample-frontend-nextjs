@@ -2,14 +2,17 @@ import * as Yup from 'yup';
 import { Team } from '../../../stores/types/team.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldArrayWithId, useForm } from 'react-hook-form';
-import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
+import {
+  useCreateTeam,
+  useUpdateTeam,
+} from '../../../stores/hooks/tanstackQuery/team.hooks';
 import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
-import { useSelectedOrganisationId } from 'stores/data/organisation.data';
+import { useSelectedOrganisationId } from 'stores/hooks/jotai/organisation.hooks';
 import {
   useOrganisation,
   useUpdateOrganisation,
-} from 'stores/hooks/organisation.hooks';
-import { useSelectedTeamId } from 'stores/data/team.data';
+} from 'stores/hooks/tanstackQuery/organisation.hooks';
+import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import { Close, Mail } from '@mui/icons-material';
 import {
   IconButton,
@@ -26,7 +29,7 @@ import { useMemo, useState } from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
-import { useSession } from 'stores/hooks/user.hooks';
+import { useSession } from 'stores/hooks/tanstackQuery/user.hooks';
 import SelectFieldForm from '../fields/SelectFieldForm';
 import { capitalize } from 'lodash';
 import Box from '@mui/material/Box';
@@ -261,7 +264,6 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
   const updateTeam = useUpdateTeam();
 
   const [selectedOrganisationId] = useSelectedOrganisationId();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSelectedTeamId] = useSelectedTeamId();
   const { data: organisation } = useOrganisation(selectedOrganisationId);
   const { mutateAsync: updateOrganisation } = useUpdateOrganisation();

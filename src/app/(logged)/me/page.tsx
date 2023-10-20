@@ -1,17 +1,10 @@
-'use client';
+import { ReactNode } from 'react';
 
-import DocumentView from 'components/document/DocumentView';
-import MainView from '../../../components/MainView';
-import { useCurrentlyViewedDocumentId } from '../../../stores/data/document.data';
-
-function DefaultPage() {
-  const [documentId] = useCurrentlyViewedDocumentId();
-  return (
-    <>
-      {!!documentId && <DocumentView documentId={documentId} />}
-      <MainView isDisplayed={!documentId} />
-    </>
-  );
+interface Props {
+  children: ReactNode;
+}
+function DefaultPage({ children }: Props) {
+  return <>{children}</>;
 }
 
 export default DefaultPage;

@@ -3,10 +3,10 @@
 import { useMemo, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { MinimalDocument } from '../../stores/types/document.types';
-import { useSelectedTeamTags } from '../../stores/hooks/tag.hooks';
-import { useSelectedTagId } from 'stores/data/tag.data';
-import { useSearchDocumentsQuery } from 'stores/data/document.data';
-import { useSelectedTeamId } from 'stores/data/team.data';
+import { useSelectedTeamTags } from '../../stores/hooks/tanstackQuery/tag.hooks';
+import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
+import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
+import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import useScreenResizeObserver from 'use-resize-observer';
 import DocumentsMasonry from './DocumentsMasonry';
 
@@ -51,6 +51,7 @@ function DocumentsView({
         ref={ref}
       >
         <DocumentsMasonry
+          variant="grid"
           documents={documents}
           flatTags={flatTags}
           searchId={searchId}

@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 export const queryClient = new QueryClient();
 
 const ReactQueryDevtoolsProduction = lazy(() =>
-  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then(
+  import('@tanstack/react-query-devtools/build/modern/production.js').then(
     (d) => ({
       default: d.ReactQueryDevtools,
     }),
@@ -30,12 +30,12 @@ function ReactQueryProvider({ children }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
       {showDevtools && (
         <Suspense fallback={null}>
           <ReactQueryDevtoolsProduction
             initialIsOpen={false}
-            position="bottom-right"
+            buttonPosition="bottom-right"
           />
         </Suspense>
       )}

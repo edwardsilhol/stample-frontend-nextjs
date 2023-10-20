@@ -3,7 +3,7 @@ import { apiRequest } from '../../utils/api';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-} from '../../constants/tokenConfig';
+} from '../../constants/tokenConfig.constant';
 
 const setAccessRefreshTokenAndGetUser = (
   accessToken: string,

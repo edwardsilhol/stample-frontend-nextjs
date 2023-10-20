@@ -1,6 +1,6 @@
 import { MinimalDocument } from '../../stores/types/document.types';
 import { Tag } from '../../stores/types/tag.types';
-import { useCurrentlyViewedDocumentId } from '../../stores/data/document.data';
+import { useCurrentlyViewedDocumentId } from '../../stores/hooks/jotai/document.hooks';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -16,7 +16,6 @@ interface DocumentGridItemProps {
 }
 
 function DocumentGridItem({ document }: DocumentGridItemProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
 
   if (!document) {

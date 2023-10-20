@@ -8,9 +8,9 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Add from '@mui/icons-material/Add';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Menu from '@mui/icons-material/Menu';
-import { useIsSidebarOpen } from 'stores/data/layout.data';
+import { useIsSidebarOpen } from 'stores/hooks/jotai/layout.hooks';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useSelectedTeamTags } from 'stores/hooks/tag.hooks';
+import { useSelectedTeamTags } from 'stores/hooks/tanstackQuery/tag.hooks';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from 'components/document/DocumentsView';
 import { Tag } from 'stores/types/tag.types';
 

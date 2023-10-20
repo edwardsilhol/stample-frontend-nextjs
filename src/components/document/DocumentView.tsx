@@ -16,26 +16,26 @@ import {
   useDocument,
   useSummarizeDocument,
   useUpdateDocumentAsGuest,
-} from '../../stores/hooks/document.hooks';
+} from '../../stores/hooks/tanstackQuery/document.hooks';
 import { UserForOtherClient } from 'stores/types/user.types';
 import DocumentHeader from './DocumentHeader';
 import DocumentTags from './DocumentTags';
-import { useCreateComment } from 'stores/hooks/comment.hooks';
-import { useLoggedInUser } from 'stores/data/user.data';
+import { useCreateComment } from 'stores/hooks/tanstackQuery/comment.hooks';
 import { uniqBy } from 'lodash';
 import { CommentMention, CommentMentionType } from 'stores/types/comment.types';
 import { Editor, EditorState } from 'react-draft-wysiwyg';
 import { convertToRaw } from 'draft-js';
 import DocumentComment from './DocumentComment';
-import { useTeam } from 'stores/hooks/team.hooks';
+import { useTeam } from 'stores/hooks/tanstackQuery/team.hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useTagsByTeam } from 'stores/hooks/tag.hooks';
+import { useTagsByTeam } from 'stores/hooks/tanstackQuery/tag.hooks';
 import { decodeHTML } from 'entities';
-import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
 import DocumentViewHeader from './DocumentViewHeader';
 import DocumentCreator from './DocumentCreator';
 import Beenhere from '@mui/icons-material/Beenhere';
+import { useSession } from '../../stores/hooks/tanstackQuery/user.hooks';
 
 interface DocumentViewProps {
   documentId: string;
@@ -45,9 +45,8 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const pathname = usePathname();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
-  const [loggedInUser] = useLoggedInUser();
+  const { data: loggedInUser } = useSession();
   const { data: viewedDocument, isLoading } = useDocument(null, documentId);
   const { data: team } = useTeam(viewedDocument?.team ?? null);
   const { data: tags } = useTagsByTeam(viewedDocument?.team ?? null);

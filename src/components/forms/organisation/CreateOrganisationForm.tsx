@@ -2,10 +2,10 @@ import * as Yup from 'yup';
 import { CreateOrganisationDTO } from '../../../stores/types/organisation.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useCreateOrganisation } from 'stores/hooks/organisation.hooks';
+import { useCreateOrganisation } from 'stores/hooks/tanstackQuery/organisation.hooks';
 import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
 import { Button } from '@mui/material';
-import { useSelectedOrganisationId } from 'stores/data/organisation.data';
+import { useSelectedOrganisationId } from 'stores/hooks/jotai/organisation.hooks';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
@@ -16,7 +16,6 @@ interface CreateOrganisationProps {
 function CreateOrganisationForm({ onClose }: CreateOrganisationProps) {
   const createOrganisation = useCreateOrganisation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSelectedOrganisationId] = useSelectedOrganisationId();
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),

@@ -20,6 +20,7 @@ interface DocumentsMasonryProps {
   searchId: string;
   containerWidth?: number;
   fetchNextPage: () => void;
+  variant: 'grid' | 'list';
 }
 
 function DocumentsMasonryComponent({
@@ -29,14 +30,19 @@ function DocumentsMasonryComponent({
   searchId,
   containerWidth,
   fetchNextPage,
+  variant,
 }: DocumentsMasonryProps) {
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
     {
       width,
-      columnWidth: 300,
-      columnGutter: 20,
+      ...(variant === 'list'
+        ? { columnWidth: width, maxColumnCount: 1 } // TODO: ask Thibaut
+        : {
+            columnWidth: 300,
+            columnGutter: 20,
+          }),
     },
     [searchId, width],
   );
@@ -67,7 +73,7 @@ function DocumentsMasonryComponent({
     items: documents,
     overscanBy: 2,
     resizeObserver,
-    role: 'grid',
+    role: variant,
     render: renderItem,
     onRender: infiniteLoader,
   });

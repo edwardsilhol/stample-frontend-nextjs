@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-} from '../../constants/tokenConfig';
+} from '@src/constants/tokenConfig';
 import { removeChromeStorageVariable } from '@src/utils/chromeStorage';
 
 // Queries
@@ -42,8 +42,8 @@ export const useLogout = () => {
   const queryClient = useQueryClient();
   const queryCache = queryClient.getQueryCache();
   return useMutation(async () => {
-    removeChromeStorageVariable(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-    removeChromeStorageVariable(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
+    await removeChromeStorageVariable(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+    await removeChromeStorageVariable(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
     await queryClient.invalidateQueries(['session']);
     queryCache.clear();
   });

@@ -1,4 +1,4 @@
-import { useSearchDocumentsQuery } from 'stores/data/document.data';
+import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import Search from '@mui/icons-material/Search';

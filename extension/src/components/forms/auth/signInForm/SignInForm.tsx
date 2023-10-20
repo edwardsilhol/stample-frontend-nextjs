@@ -34,8 +34,7 @@ function SignInForm() {
   const signIn = useSignIn();
   const styles = useStyles();
   // TODO: handle errors in form
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState(undefined);
+  const [_, setError] = useState(undefined);
 
   // TODO: add better validation for your needs
   const validationSchema: Yup.ObjectSchema<SignInDTO> = Yup.object({
