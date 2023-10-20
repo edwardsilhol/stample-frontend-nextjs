@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import TextFieldForm from '../../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../../fields/textFieldForm';
 
 const useStyles = () => ({
   signUpContainer: {
@@ -33,7 +33,7 @@ interface SignUpFormType extends SignUpDTO {
   confirmPassword: string;
 }
 
-function SignUp() {
+function SignUpForm() {
   const signUp = useSignUp();
   const styles = useStyles();
   // TODO: handle errors in form
@@ -172,4 +172,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpForm;

@@ -6,7 +6,7 @@ import {
   useCreateTeam,
   useUpdateTeam,
 } from '../../../stores/hooks/tanstackQuery/team.hooks';
-import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../fields/textFieldForm';
 import { useSelectedOrganisationId } from 'stores/hooks/jotai/organisation.hooks';
 import {
   useOrganisation,

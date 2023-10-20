@@ -6,7 +6,7 @@ import { CreateDocumentDTO } from '../../../stores/types/document.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCreateDocument } from '../../../stores/hooks/tanstackQuery/document.hooks';
-import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../fields/textFieldForm';
 import SelectOrCreateTags from './SelectOrCreateTags';
 import { Tag } from '../../../stores/types/tag.types';
 import { Button, Grid, Typography } from '@mui/material';

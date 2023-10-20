@@ -5,17 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.storybook/main.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/stories.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.storybook/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.storybook/preview.js" beforeDir="false" afterPath="$PROJECT_DIR$/.storybook/preview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/signIn/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/(auth)/signIn/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(guest)/(auth)/signUp/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(guest)/(auth)/signUp/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signInForm/SignInForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signInForm/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signInForm/SignInForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signInForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/SignUpForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/SignUpForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/CreateDocumentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/CreateDocumentForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/TextFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/organisation/CreateOrganisationForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/organisation/CreateOrganisationForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -13,7 +13,7 @@ import { object, string } from 'yup';
 import { SignInDTO } from '../../../../stores/types/user.types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextFieldForm from '../../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../../fields/textFieldForm';
 import Link from 'next/link';
 import Container from '@mui/material/Container';
 

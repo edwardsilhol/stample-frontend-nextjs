@@ -3,7 +3,7 @@ import { CreateOrganisationDTO } from '../../../stores/types/organisation.types'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCreateOrganisation } from 'stores/hooks/tanstackQuery/organisation.hooks';
-import TextFieldForm from '../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../fields/textFieldForm';
 import { Button } from '@mui/material';
 import { useSelectedOrganisationId } from 'stores/hooks/jotai/organisation.hooks';
 import Box from '@mui/material/Box';

@@ -16,7 +16,7 @@ import { CreateDocumentDTO } from '../../../../stores/types/document.types';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useSelectedTeamId } from '../../../../stores/hooks/jotai/team.hooks';
 import { useCreateDocument } from '../../../../stores/hooks/tanstackQuery/document.hooks';
-import TextFieldForm from '../../fields/textFieldForm/TextFieldForm';
+import TextFieldForm from '../../fields/textFieldForm';
 import SelectOrCreateTags from '../SelectOrCreateTags';
 
 interface CreateDocumentFormProps {

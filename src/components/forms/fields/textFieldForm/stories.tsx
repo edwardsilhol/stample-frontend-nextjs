@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import TextFieldForm from './TextFieldForm';
+import TextFieldForm from './index';
 import { useForm } from 'react-hook-form';
 
 function Template(args: any) {

@@ -1,6 +1,7 @@
 'use client';
 
-import SignUpForm from '../../../../components/forms/auth/signUpForm/SignUpForm';
+import SignUpForm from '../../../../components/forms/auth/signUpForm';
+
 function SignUpPage() {
   return <SignUpForm />;
 }
