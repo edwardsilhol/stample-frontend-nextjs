@@ -3,7 +3,7 @@ import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { MinimalDocument } from '@src/stores/types/document.types';
 import { Tag } from '@src/stores/types/tag.types';
 import DocumentTags from './DocumentTags';
-import { useAllTags } from '@src/stores/hooks/tag.hooks';
+import { useAllTags } from '@src/stores/hooks/tanstackQuery/tag.hooks';
 import { useWindowHeight } from '@react-hook/window-size';
 import {
   useContainerPosition,
@@ -13,11 +13,11 @@ import {
   useResizeObserver,
   useScroller,
 } from 'masonic';
-import { useSearchDocumentsQuery } from '@src/stores/data/document.data';
-import { useSearchedDocuments } from '@src/stores/hooks/document.hooks';
+import { useSearchDocumentsQuery } from '@src/stores/hooks/jotai/document.hooks';
+import { useSearchedDocuments } from '@src/stores/hooks/tanstackQuery/document.hooks';
 import { getGoogleSearchQuery } from '@src/helpers/content.helpers';
 import SelectTeam from '../SelectTeam';
-import { useSelectedTeamId } from '@src/stores/data/team.data';
+import { useSelectedTeamId } from '@src/stores/hooks/jotai/team.hooks';
 import { decodeHTML } from 'entities';
 import DocumentHeader from '@src/components/content/document/DocumentHeader';
 

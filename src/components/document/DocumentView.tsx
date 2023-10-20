@@ -52,7 +52,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const { data: tags } = useTagsByTeam(viewedDocument?.team ?? null);
   const { mutate: createComment } = useCreateComment(documentId);
   const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
-  const { mutate: summarizeDocument } = useSummarizeDocument();
+  const summarizeDocument = useSummarizeDocument();
   const [editedCommentText, setEditedCommentText] = useState<EditorState>();
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -281,7 +281,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
                 <Button
                   sx={{ marginBottom: 2 }}
                   onClick={() => {
-                    summarizeDocument({
+                    summarizeDocument.mutate({
                       documentId: viewedDocument._id,
                     });
                   }}

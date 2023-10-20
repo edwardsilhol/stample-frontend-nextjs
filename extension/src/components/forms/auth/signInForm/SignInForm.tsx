@@ -14,7 +14,7 @@ import TextFieldForm from '../../fields/TextFieldForm';
 import Container from '@mui/material/Container';
 import { Link } from '@mui/material';
 import { SignInDTO } from '@src/stores/types/user.types';
-import { useSignIn } from '@src/stores/hooks/user.hooks';
+import { useSignIn } from '@src/stores/hooks/tanstackQuery/user.hooks';
 
 const useStyles = () => ({
   signInContainer: {

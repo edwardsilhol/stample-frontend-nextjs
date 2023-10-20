@@ -4,7 +4,7 @@ import {
   searchDocumentsByUrl,
   searchDocumentsUrlsByUrls,
   summarizeText,
-} from '../api/document.api';
+} from '../../api/document.api';
 import {
   useInfiniteQuery,
   useMutation,
@@ -16,49 +16,45 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UrlAndId,
-} from '../types/document.types';
+} from '../../types/document.types';
 import { useMemo } from 'react';
-import { useSearchDocumentsQuery } from '../data/document.data';
-import { useSelectedTeamId } from '../data/team.data';
-import {
-  getClippedPage,
-  getOnlyClippedContent,
-} from '@src/helpers/clipper.helpers';
+import { useSearchDocumentsQuery } from '@src/stores/hooks/jotai/document.hooks';
+import { useSelectedTeamId } from '@src/stores/hooks/jotai/team.hooks';
+import { getOnlyClippedContent } from '@src/helpers/clipper.helpers';
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    ({
+  return useMutation({
+    mutationFn: ({
       teamId,
       createDocumentDTO,
     }: {
       teamId: string;
       createDocumentDTO: CreateDocumentDTO;
     }) => createDocument(teamId, createDocumentDTO),
-    {
-      onSuccess: ({ team }) => {
-        queryClient.invalidateQueries(['documents', { teamId: team }]);
-      },
+    onSuccess: async ({ team }) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['documents', { teamId: team }],
+      });
     },
-  );
+  });
 };
 
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
-  useInfiniteQuery<SearchDocumentsReturnType>(
-    ['documents', { searchDocumentsDTO }],
-    ({ pageParam = 0 }) =>
+  useInfiniteQuery<SearchDocumentsReturnType>({
+    queryKey: ['documents', { searchDocumentsDTO }],
+    queryFn: ({ pageParam }) =>
       searchDocuments({
         ...searchDocumentsDTO,
-        page: pageParam,
+        page: pageParam as number,
       }),
-    {
-      initialData: {
-        pages: [],
-        pageParams: [],
-      },
-      getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
+    initialData: {
+      pages: [],
+      pageParams: [],
     },
-  );
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
+  });
 
 export const useSearchedDocuments = () => {
   const [searchDocumentsQuery] = useSearchDocumentsQuery();
@@ -90,30 +86,32 @@ export const useSearchedDocuments = () => {
 };
 
 export const useSearchDocumentsUrlsByUrls = (urls: string[]) =>
-  useQuery(['documentsUrls', { urls }], () =>
-    urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : ([] as UrlAndId[]),
-  );
+  useQuery({
+    queryKey: ['documentsUrls', { urls }],
+    queryFn: () =>
+      urls.length > 0 ? searchDocumentsUrlsByUrls(urls) : ([] as UrlAndId[]),
+  });
 
 export const useSearchDocumentsByUrl = (url: string) =>
-  useQuery(['documentsByUrl', { url }], () => searchDocumentsByUrl(url), {
+  useQuery({
+    queryKey: ['documentsByUrl', { url }],
+    queryFn: () => searchDocumentsByUrl(url),
     initialData: [],
     enabled: !!url,
   });
 
 export const useGetSummarizedText = (url: string, enabled: boolean) =>
-  useQuery(
-    ['summarizedText', { url }],
-    async () => {
+  useQuery({
+    queryKey: ['summarizedText', { url }],
+    queryFn: async () => {
       const clippedPageContent = await getOnlyClippedContent();
       return (await summarizeText(clippedPageContent)).summary;
     },
-    {
-      enabled: !!url && enabled,
-      retry: false,
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchIntervalInBackground: false,
-    },
-  );
+    enabled: !!url && enabled,
+    retry: false,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchIntervalInBackground: false,
+  });

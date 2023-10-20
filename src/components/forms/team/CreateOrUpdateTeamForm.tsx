@@ -266,7 +266,7 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
   const [selectedOrganisationId] = useSelectedOrganisationId();
   const [_, setSelectedTeamId] = useSelectedTeamId();
   const { data: organisation } = useOrganisation(selectedOrganisationId);
-  const { mutateAsync: updateOrganisation } = useUpdateOrganisation();
+  const updateOrganisation = useUpdateOrganisation();
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     users: Yup.array().of(
@@ -331,17 +331,19 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
           })
           .then((team) => {
             if (organisation) {
-              updateOrganisation({
-                organisationId: organisation._id,
-                updateOrganisationDto: {
-                  add: {
-                    teams: [team._id],
+              updateOrganisation
+                .mutateAsync({
+                  organisationId: organisation._id,
+                  updateOrganisationDto: {
+                    add: {
+                      teams: [team._id],
+                    },
                   },
-                },
-              }).then(() => {
-                setSelectedTeamId(team._id);
-                onClose();
-              });
+                })
+                .then(() => {
+                  setSelectedTeamId(team._id);
+                  onClose();
+                });
             } else {
               setSelectedTeamId(team._id);
               onClose();

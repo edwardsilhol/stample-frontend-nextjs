@@ -1,4 +1,4 @@
-import { useSession } from '@src/stores/hooks/user.hooks';
+import { useSession } from '@src/stores/hooks/tanstackQuery/user.hooks';
 import SignInForm from '@src/components/forms/auth/signInForm/SignInForm';
 import WebClipper from '@src/components/webClipper/WebClipper';
 import { Box, CircularProgress, Typography } from '@mui/material';
@@ -7,7 +7,7 @@ import { getImageUrl } from '@src/helpers/content.helpers';
 import { Stack } from '@mui/material';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useIsDocumentClippable } from '@src/stores/hooks/clipper.hooks';
+import { useIsDocumentClippable } from '@src/stores/hooks/tanstackQuery/clipper.hooks';
 const ContentNotClippable = () => (
   <Box padding={1}>
     <Typography variant="h5" fontWeight={500}>

@@ -17,6 +17,29 @@ export const useAllTags = () => {
   });
 };
 
+export const useTagsByTeam = (teamId: string | null) => {
+  return useQuery({
+    queryKey: ['Tags', { teamId }],
+    queryFn: () => (teamId ? fetchTagsByTeam(teamId) : { rich: [], raw: [] }),
+    initialData: { rich: [], raw: [] },
+  });
+};
+
+export const useSelectedTeamTags = () => {
+  const [selectedTeamId] = useSelectedTeamId();
+  return useTagsByTeam(selectedTeamId);
+};
+
+export const useDocumentsCountPerTag = () => {
+  const [selectedTeamId] = useSelectedTeamId();
+  return useQuery({
+    queryKey: ['DocumentsCountPerTag', { teamId: selectedTeamId }],
+    queryFn: () =>
+      selectedTeamId ? fetchDocumentsCountPerTag(selectedTeamId) : {},
+    initialData: {},
+  });
+};
+
 export const useCreateTag = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -44,28 +67,5 @@ export const useUpdateTag = () => {
       console.log('successfully updated:', tag);
       await queryClient.invalidateQueries({ queryKey: ['Tags'] });
     },
-  });
-};
-
-export const useTagsByTeam = (teamId: string | null) => {
-  return useQuery({
-    queryKey: ['Tags', { teamId }],
-    queryFn: () => (teamId ? fetchTagsByTeam(teamId) : { rich: [], raw: [] }),
-    initialData: { rich: [], raw: [] },
-  });
-};
-
-export const useSelectedTeamTags = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  return useTagsByTeam(selectedTeamId);
-};
-
-export const useDocumentsCountPerTag = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  return useQuery({
-    queryKey: ['DocumentsCountPerTag', { teamId: selectedTeamId }],
-    queryFn: () =>
-      selectedTeamId ? fetchDocumentsCountPerTag(selectedTeamId) : {},
-    initialData: {},
   });
 };

@@ -13,7 +13,10 @@ import {
 } from '@src/helpers/team.helper';
 import { useEffect, useMemo, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
-import { useAllTeams, useTeam } from '@src/stores/hooks/team.hooks';
+import {
+  useAllTeams,
+  useTeam,
+} from '@src/stores/hooks/tanstackQuery/team.hooks';
 import {
   CommentMention,
   CommentMentionType,
@@ -22,16 +25,16 @@ import {
 import { UserForOtherClient } from '@src/stores/types/user.types';
 import { uniqBy } from 'lodash';
 import { convertToRaw, EditorState } from 'draft-js';
-import { useTagsByTeam } from '@src/stores/hooks/tag.hooks';
+import { useTagsByTeam } from '@src/stores/hooks/tanstackQuery/tag.hooks';
 import SelectTags from './SelectTags';
 import {
   useCreateDocument,
   useGetSummarizedText,
   useSearchDocumentsByUrl,
-} from '@src/stores/hooks/document.hooks';
-import { useCreateComment } from '@src/stores/hooks/comment.hooks';
+} from '@src/stores/hooks/tanstackQuery/document.hooks';
+import { useCreateComment } from '@src/stores/hooks/tanstackQuery/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
-import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
+import { useCurrentPageUrl } from '@src/stores/hooks/tanstackQuery/clipper.hooks';
 import { Document } from '@src/stores/types/document.types';
 import { CheckCircle } from '@mui/icons-material';
 
@@ -50,12 +53,12 @@ function WebClipper() {
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
   const {
     mutateAsync: createDocument,
-    isLoading: isCreateDocumentLoading,
+    isPending: isCreateDocumentLoading,
     isSuccess: isCreateDocumentSuccess,
   } = useCreateDocument();
   const {
     mutateAsync: createComment,
-    isLoading: isCreateCommentLoading,
+    isPending: isCreateCommentLoading,
     isSuccess: isCreateCommentSuccess,
   } = useCreateComment();
   const { data: currentPageUrl } = useCurrentPageUrl();
@@ -77,7 +80,7 @@ function WebClipper() {
     if (!isAlreadyPresent && !createdDocument) {
       return false;
     }
-    if (
+    return !(
       selectedTeamId &&
       !(
         alreadyPresentDocuments.some((document) => {
@@ -85,10 +88,7 @@ function WebClipper() {
         }) ||
         (createdDocument && createdDocument.team === selectedTeamId)
       )
-    ) {
-      return false;
-    }
-    return true;
+    );
   }, [isAlreadyPresent, selectedTeamId, createdDocument]);
   const {
     data: summarizedPageContent,

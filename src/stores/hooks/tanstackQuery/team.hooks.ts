@@ -22,6 +22,13 @@ export const useTeam = (teamId: string | null) => {
   });
 };
 
+export const useTeamByInvitation = (teamId: string) => {
+  return useQuery({
+    queryKey: ['teamByInvitation', { teamId }],
+    queryFn: () => fetchTeamByInvitation(teamId),
+  });
+};
+
 export const useAllTeams = () => {
   return useQuery({
     queryKey: ['allTeams'],
@@ -54,13 +61,6 @@ export const useUpdateTeam = () => {
     onSuccess: async (_, { teamId }) => {
       await queryClient.invalidateQueries({ queryKey: ['team', { teamId }] });
     },
-  });
-};
-
-export const useTeamByInvitation = (teamId: string) => {
-  return useQuery({
-    queryKey: ['teamByInvitation', { teamId }],
-    queryFn: () => fetchTeamByInvitation(teamId),
   });
 };
 

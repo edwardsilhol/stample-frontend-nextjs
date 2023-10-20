@@ -36,6 +36,34 @@ export const useDocument = (teamId: string | null, documentId: string) => {
     },
   });
 };
+export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
+  useInfiniteQuery<SearchDocumentsReturnType>({
+    queryKey: ['documents', { searchDocumentsDTO }],
+    queryFn: ({ pageParam }) =>
+      searchDocuments({
+        ...searchDocumentsDTO,
+        page: pageParam as number,
+      }),
+    initialPageParam: 0,
+    initialData: {
+      pages: [],
+      pageParams: [],
+    },
+    getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
+  });
+
+export const useDocumentsByTeam = (teamId: string | null) => {
+  return useQuery({
+    queryKey: ['documents', { teamId }],
+    queryFn: () => {
+      if (teamId) {
+        return fetchDocumentsByTeam(teamId);
+      }
+      return [];
+    },
+    initialData: [],
+  });
+};
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
@@ -75,35 +103,6 @@ export const useUpdateDocumentAsGuest = () => {
   });
 };
 
-export const useDocumentsByTeam = (teamId: string | null) => {
-  return useQuery({
-    queryKey: ['documents', { teamId }],
-    queryFn: () => {
-      if (teamId) {
-        return fetchDocumentsByTeam(teamId);
-      }
-      return [];
-    },
-    initialData: [],
-  });
-};
-
-export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
-  useInfiniteQuery<SearchDocumentsReturnType>({
-    queryKey: ['documents', { searchDocumentsDTO }],
-    queryFn: ({ pageParam }) =>
-      searchDocuments({
-        ...searchDocumentsDTO,
-        page: pageParam as number,
-      }),
-    initialPageParam: 0,
-    initialData: {
-      pages: [],
-      pageParams: [],
-    },
-    getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
-  });
-
 export const useSearchedDocuments = () => {
   const [selectedTeamId] = useSelectedTeamId();
   const [selectedTagId] = useSelectedTagId();
@@ -125,7 +124,6 @@ export const useSearchedDocuments = () => {
 
   const total = useMemo(
     () => data?.pages[0]?.total || 0,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.pages[0]?.total],
   );
   return {

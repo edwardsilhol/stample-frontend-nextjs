@@ -17,11 +17,11 @@ interface InvitationProps {
 function Invitation({ teamId }: InvitationProps) {
   const { data: team } = useTeamByInvitation(teamId);
   const router = useRouter();
-  const { mutateAsync: answerInvitation } = useAnswerInvitation();
+  const answerInvitation = useAnswerInvitation();
   const teamName = team ? getTeamDisplayedName(team) : '';
 
   const onClickAnswerInvitation = async (accept: boolean) => {
-    await answerInvitation({
+    await answerInvitation.mutateAsync({
       teamId,
       answerInvitationDto: {
         accept,

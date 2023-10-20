@@ -5,7 +5,13 @@ import {
 import { useQuery } from '@tanstack/react-query';
 
 export const useCurrentPageUrl = () =>
-  useQuery(['current-page-url'], getCurrentlyDisplayedDOMUrl);
+  useQuery({
+    queryKey: ['current-page-url'],
+    queryFn: getCurrentlyDisplayedDOMUrl,
+  });
 
 export const useIsDocumentClippable = () =>
-  useQuery(['is-document-clippable'], isDocumentClippable);
+  useQuery({
+    queryKey: ['is-document-clippable'],
+    queryFn: isDocumentClippable,
+  });
