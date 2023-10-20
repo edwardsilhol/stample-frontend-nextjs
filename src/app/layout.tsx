@@ -1,4 +1,3 @@
-import '../styles/globals.css';
 import { ReactNode } from 'react';
 import FontProvider from './providers/FontProvider';
 import ReactQueryProvider from './providers/ReactQueryProvider';

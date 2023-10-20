@@ -21,6 +21,8 @@ export default {
 } as Meta;
 
 export const Default = {
-  label: 'label',
-  name: 'name',
+  args: {
+    label: 'label',
+    name: 'name',
+  },
 };

@@ -1,5 +1,5 @@
 {
-  "name": "goodwave-frontend-template-next-react-query-mui",
+  "name": "stample-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier -c --write **/*",
-    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "prepare": "husky install",
     "clean": "rm -rf node_modules .next"
   },
@@ -70,15 +70,13 @@
     "@fontsource/material-icons": "^5.0.7",
     "@fontsource/roboto": "^5.0.8",
     "@mdx-js/react": "^2.3.0",
-    "@storybook/addon-actions": "^7.4.6",
-    "@storybook/addon-essentials": "^7.4.6",
-    "@storybook/addon-interactions": "^7.4.6",
-    "@storybook/addon-links": "^7.4.6",
-    "@storybook/builder-webpack4": "^6.5.16",
-    "@storybook/builder-webpack5": "^7.4.6",
-    "@storybook/manager-webpack4": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
-    "@storybook/react": "^7.4.6",
+    "@storybook/addon-essentials": "^7.5.1",
+    "@storybook/addon-interactions": "^7.5.1",
+    "@storybook/addon-links": "^7.5.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.1",
+    "@storybook/nextjs": "^7.5.1",
+    "@storybook/react": "^7.5.1",
     "@storybook/testing-library": "^0.2.2",
     "@types/draft-js": "^0.11.13",
     "@types/draftjs-to-html": "^0.8.2",
@@ -93,7 +91,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "resize-observer": "link:@types/@react-hook/resize-observer",
+    "storybook": "^7.5.1",
     "webpack": "^5.88.2"
   }
 }
