@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import FontProvider from './providers/FontProvider';
-import ReactQueryProvider from './providers/ReactQueryProvider';
-import ThemeProvider from './providers/ThemeProvider';
-import JotaiProvider from './providers/JotaiProvider';
+import FontProvider from '../providers/FontProvider';
+import ReactQueryProvider from '../providers/ReactQueryProvider';
+import ThemeProvider from '../providers/ThemeProvider';
+import JotaiProvider from '../providers/JotaiProvider';
 
 interface Props {
   children: ReactNode;
