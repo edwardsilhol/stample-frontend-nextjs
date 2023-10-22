@@ -5,13 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/buttons/mentionsListItemButton/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/buttons/mentionsListItemButton/stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/MentionsPlugin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/utils/lexical.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/utils/mentions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extension/src/stores/types/comment.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/extension/src/stores/types/comment.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/FloatingMenuPlugin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/FloatingMenuPlugin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/richTextPlugin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/richTextPlugin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/autoLinkPlugin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/AutoLinkPlugin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/richTextPlugin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/RichTextPlugin.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/types/comment.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/comment.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +32,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -48,7 +59,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;youssef/FixFiles&quot;,
     &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/utils/hooks&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/components/buttons&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -63,9 +74,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/buttons" />
       <recent name="$PROJECT_DIR$/src/utils/hooks" />
       <recent name="$PROJECT_DIR$/src/components/forms/fields/editor/plugins" />
-      <recent name="$PROJECT_DIR$/src/components/buttons" />
       <recent name="$PROJECT_DIR$/src/components/menus/floatingEditorMenu" />
       <recent name="$PROJECT_DIR$/src/components/icons/floatingEditorMenuIcon" />
     </key>
@@ -91,7 +102,8 @@
       <workItem from="1697890468714" duration="18659000" />
       <workItem from="1697920936614" duration="970000" />
       <workItem from="1697921917323" duration="14007000" />
-      <workItem from="1697977253128" duration="5781000" />
+      <workItem from="1697977253128" duration="7515000" />
+      <workItem from="1697994077796" duration="11812000" />
     </task>
     <servers />
   </component>

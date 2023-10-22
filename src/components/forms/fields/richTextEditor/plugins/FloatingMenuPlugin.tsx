@@ -30,8 +30,6 @@ interface PartialFloatingEditorMenuButtonProps
   checkIfActive?: (selection: RangeSelection) => boolean;
 }
 
-const ANCHOR_ELEMENT = document.body;
-
 const EDITOR_BUTTONS: PartialFloatingEditorMenuButtonProps[] = [
   {
     id: 'bold',
@@ -142,6 +140,6 @@ export function FloatingMenuPlugin() {
 
   return createPortal(
     <FloatingEditorMenu show={show} buttons={editorButtons} />,
-    ANCHOR_ELEMENT,
+    document.body,
   );
 }

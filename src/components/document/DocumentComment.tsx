@@ -1,12 +1,12 @@
-import { ReactNode, useMemo } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { formatDistance } from 'date-fns';
-import { Comment, CommentMentionType } from 'stores/types/comment.types';
+import { Comment } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
+import RichTextEditor from '../forms/fields/richTextEditor';
 
 interface DocumentCommentProps {
   comment: Comment;
@@ -20,91 +20,6 @@ function DocumentComment({
   index,
 }: DocumentCommentProps) {
   const author = commentAuthorsById[comment.creatorId];
-  const content: ReactNode[] = useMemo(
-    () =>
-      Array.isArray(comment.mentions) && comment.mentions.length > 0
-        ? comment.mentions
-            .reduce(
-              (
-                accumulator: {
-                  text: string;
-                  mentionTypeIfMention?: CommentMentionType;
-                }[],
-                mention,
-                index,
-              ) => {
-                if (index === 0) {
-                  accumulator.push({
-                    text: comment.content.slice(0, mention.start),
-                  });
-                } else {
-                  accumulator.push({
-                    text: comment.content.slice(
-                      comment.mentions[index - 1].start,
-                      mention.start,
-                    ),
-                  });
-                }
-                if (
-                  mention.type === CommentMentionType.USER &&
-                  mention.user &&
-                  commentAuthorsById[mention.user]
-                ) {
-                  const user = commentAuthorsById[mention.user];
-                  accumulator.push({
-                    text: `@${user.firstName} ${user.lastName}`,
-                    mentionTypeIfMention: CommentMentionType.USER,
-                  });
-                } else if (mention.type === CommentMentionType.EVERYONE) {
-                  accumulator.push({
-                    text: '',
-                    mentionTypeIfMention: CommentMentionType.EVERYONE,
-                  });
-                }
-                if (index === comment.mentions.length - 1) {
-                  accumulator.push({
-                    text: comment.content.slice(mention.start),
-                  });
-                }
-                return accumulator;
-              },
-              [],
-            )
-            .map((part, index) => {
-              if (part.mentionTypeIfMention === CommentMentionType.USER) {
-                return (
-                  <Typography
-                    key={index}
-                    variant="body1"
-                    component="span"
-                    sx={{ color: 'primary.main' }}
-                  >
-                    {part.text}
-                  </Typography>
-                );
-              } else if (
-                part.mentionTypeIfMention === CommentMentionType.EVERYONE
-              ) {
-                return (
-                  <Typography
-                    key={index}
-                    variant="body1"
-                    component="span"
-                    sx={{ color: 'primary.main' }}
-                  >
-                    @Everyone
-                  </Typography>
-                );
-              }
-              return (
-                <Typography key={index} variant="body1" component="span">
-                  {part.text}
-                </Typography>
-              );
-            })
-        : [<>{comment.content}</>],
-    [comment, commentAuthorsById],
-  );
 
   return (
     <Card
@@ -142,7 +57,11 @@ function DocumentComment({
         }
       />
       <CardContent>
-        <Typography variant="body1">{content}</Typography>
+        <RichTextEditor
+          name={comment._id}
+          editable={false}
+          editorState={comment.content}
+        />
       </CardContent>
     </Card>
   );

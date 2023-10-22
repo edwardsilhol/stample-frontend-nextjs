@@ -2,7 +2,11 @@ import { RichTextPlugin as LexicalRichTextPlugin } from '@lexical/react/LexicalR
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
-function RichTextPlugin() {
+interface RichTextPluginProps {
+  editable?: boolean;
+  placeholder?: string;
+}
+function RichTextPlugin({ editable = true, placeholder }: RichTextPluginProps) {
   function Placeholder() {
     return (
       <div
@@ -19,7 +23,7 @@ function RichTextPlugin() {
           pointerEvents: 'none',
         }}
       >
-        The content of your note
+        {placeholder}
       </div>
     );
   }
@@ -28,7 +32,7 @@ function RichTextPlugin() {
       contentEditable={
         <ContentEditable
           style={{
-            height: '150px',
+            height: editable ? '136px' : 'auto',
             resize: 'none',
             fontSize: '15px',
             caretColor: 'rgb(5, 5, 5)',
@@ -36,6 +40,7 @@ function RichTextPlugin() {
             tabSize: 1,
             outline: '0',
             padding: '0px 10px',
+            backgroundColor: 'transparent',
           }}
         />
       }

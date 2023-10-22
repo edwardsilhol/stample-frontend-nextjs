@@ -1,12 +1,8 @@
+import { CommentMention } from '../../../extension/src/stores/types/comment.types';
+
 export enum CommentMentionType {
   USER = 'user',
   EVERYONE = 'everyone',
-}
-
-export interface CommentMention {
-  user?: string;
-  start: number;
-  type: CommentMentionType;
 }
 
 export interface Comment {

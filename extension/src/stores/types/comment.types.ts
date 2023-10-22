@@ -5,7 +5,6 @@ export enum CommentMentionType {
 
 export interface CommentMention {
   user?: string;
-  start: number;
   type: CommentMentionType;
 }
 

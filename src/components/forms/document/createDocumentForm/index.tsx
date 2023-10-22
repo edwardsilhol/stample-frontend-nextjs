@@ -170,6 +170,8 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             {/*  }}*/}
             {/*/>*/}
             <RichTextEditor
+              name="createDocument"
+              placeholder="The content of your note"
               editorState={editorState}
               onChange={handleEditorStateChange}
             />

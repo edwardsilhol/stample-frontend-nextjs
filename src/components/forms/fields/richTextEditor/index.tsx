@@ -5,8 +5,8 @@ import {
   LexicalComposer,
 } from '@lexical/react/LexicalComposer';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import RichTextPlugin from './plugins/richTextPlugin';
-import AutoLinkPlugin from './plugins/autoLinkPlugin';
+import RichTextPlugin from './plugins/RichTextPlugin';
+import AutoLinkPlugin from './plugins/AutoLinkPlugin';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
@@ -18,18 +18,25 @@ import { FloatingMenuPlugin } from './plugins/FloatingMenuPlugin';
 import { makeStyles } from '@mui/styles';
 import { EditorState, LexicalEditor } from 'lexical';
 import Box from '@mui/material/Box';
+import MentionsPlugin, { Mention } from './plugins/MentionsPlugin';
+import { MentionNode } from './utils/mentions';
+
+export const INITIAL_EDITOR_STATE =
+  '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}';
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: '136px',
     backgroundColor: 'white',
-    border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.23)',
-    borderRadius: '8px',
     paddingLeft: '14px',
     paddingTop: '0.5px',
     paddingBottom: '0.5px',
     overflow: 'auto',
+  },
+  editableRoot: {
+    height: '136px',
+    border: '1px solid',
+    borderColor: 'rgba(0, 0, 0, 0.23)',
+    borderRadius: '8px',
   },
   link: {
     cursor: 'pointer',
@@ -52,23 +59,35 @@ const useStyles = makeStyles(() => ({
 }));
 
 export interface RichTextEditorProps {
+  name: string;
+  placeholder?: string;
   editorState?: InitialEditorStateType;
-  onChange: (
+  onChange?: (
     editorState: EditorState,
     editor: LexicalEditor,
     tags: Set<string>,
   ) => void;
+  mentions?: Mention[];
+  editable?: boolean;
 }
-function RichTextEditor({ editorState, onChange }: RichTextEditorProps) {
+function RichTextEditor({
+  name,
+  editorState,
+  onChange,
+  mentions,
+  editable = true,
+  placeholder,
+}: RichTextEditorProps) {
   const classes = useStyles();
   function onError(error: Error) {
     console.error(error);
   }
   const initialConfig = {
-    namespace: 'DocumentEditor',
-    editorState,
+    namespace: `editor-${name}`,
+    editorState: editorState || INITIAL_EDITOR_STATE,
+    editable,
     theme: {
-      root: classes.root,
+      root: `${classes.root} ${editable && classes.editableRoot}`,
       link: classes.link,
       text: {
         bold: classes.bold,
@@ -88,17 +107,21 @@ function RichTextEditor({ editorState, onChange }: RichTextEditorProps) {
       LinkNode,
       ListNode,
       ListItemNode,
+      MentionNode,
     ],
   };
   return (
-    <LexicalComposer initialConfig={initialConfig}>
+    <LexicalComposer
+      initialConfig={initialConfig}
+      key={editorState?.toString()}
+    >
       <Box
         style={{
-          background: '#fff',
+          backgroundColor: 'transparent',
           position: 'relative',
         }}
       >
-        <RichTextPlugin />
+        <RichTextPlugin editable={editable} placeholder={placeholder} />
         <FloatingMenuPlugin />
         <HistoryPlugin />
         <AutoFocusPlugin />
@@ -106,7 +129,8 @@ function RichTextEditor({ editorState, onChange }: RichTextEditorProps) {
         <LinkPlugin />
         <AutoLinkPlugin />
         <ListMaxIndentLevelPlugin maxDepth={7} />
-        <OnChangePlugin onChange={onChange} />
+        {onChange && <OnChangePlugin onChange={onChange} />}
+        {mentions && <MentionsPlugin mentions={mentions} />}
       </Box>
     </LexicalComposer>
   );
