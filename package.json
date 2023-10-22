@@ -24,6 +24,7 @@
     "@mui/icons-material": "^5.14.14",
     "@mui/lab": "5.0.0-alpha.149",
     "@mui/material": "^5.14.14",
+    "@mui/styles": "^5.14.14",
     "@react-hook/event": "^1.2.6",
     "@react-hook/resize-observer": "^1.2.6",
     "@react-hook/throttle": "^2.2.0",

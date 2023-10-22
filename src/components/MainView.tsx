@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import AllDocuments from './view/AllDocuments';
-import CreateDocumentForm from './forms/document/CreateDocumentForm';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './document/DocumentsView';
 import Stack from '@mui/material/Stack';
 import LoggedHeader from './layoutComponents/header/LoggedHeader';
+import CreateDocumentForm from './forms/document/createDocumentForm';
 
 interface MainViewProps {
   isDisplayed?: boolean;

@@ -1,4 +1,4 @@
-import Invitation from '../../../../components/team/Invitation';
+import Invitation from '../../../../components/cards/Invitation';
 interface Props {
   params: {
     id: string;

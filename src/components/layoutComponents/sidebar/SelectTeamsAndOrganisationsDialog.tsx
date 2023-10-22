@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import CreateTeamDialog from 'components/team/CreateTeamDialog';
+import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { getDefaultSelectedTeamId } from 'helpers/team.helper';
 import { useEffect, useMemo, useState } from 'react';
 import {

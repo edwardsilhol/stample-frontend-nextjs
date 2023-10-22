@@ -5,10 +5,6 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Button, Grid, Typography } from '@mui/material';
-import { convertToRaw, EditorState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import { Editor } from 'react-draft-wysiwyg';
-import 'draft-js/dist/Draft.css';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -18,20 +14,26 @@ import { useSelectedTeamId } from '../../../../stores/hooks/jotai/team.hooks';
 import { useCreateDocument } from '../../../../stores/hooks/tanstackQuery/document.hooks';
 import TextFieldForm from '../../fields/textFieldForm';
 import SelectOrCreateTags from '../SelectOrCreateTags';
+import RichTextEditor from '../../fields/richTextEditor';
+import { EditorState, LexicalEditor } from 'lexical';
 
 interface CreateDocumentFormProps {
   onClose: () => void;
 }
-// TODO : change wysiwig editor to lexical
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState<EditorState | null>(null);
   const [selectedTeamId] = useSelectedTeamId();
   const createDocument = useCreateDocument();
 
-  const handleEditorStateChange = (state: EditorState) => {
-    setEditorState(state);
+  const handleEditorStateChange = (
+    editorState: EditorState,
+    editor: LexicalEditor,
+    tags: Set<string>,
+  ) => {
+    console.log('editor', editorState, editor, tags);
+    setEditorState(editorState);
   };
 
   const validationSchema = Yup.object().shape({
@@ -67,7 +69,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
           teamId: selectedTeamId,
           createDocumentDto: {
             title,
-            content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+            content: JSON.stringify(editorState?.toJSON()),
             summary,
             url,
             tags: selectedTags.map((tag) => tag._id),
@@ -137,35 +139,39 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Content
             </Typography>
-            <Editor
+            {/*<Editor*/}
+            {/*  editorState={editorState}*/}
+            {/*  onEditorStateChange={handleEditorStateChange}*/}
+            {/*  editorStyle={{*/}
+            {/*    height: '136px',*/}
+            {/*    backgroundColor: 'white',*/}
+            {/*    border: '1px solid',*/}
+            {/*    borderColor: 'rgba(0, 0, 0, 0.23)',*/}
+            {/*    borderRadius: '8px',*/}
+            {/*    paddingLeft: '14px',*/}
+            {/*    paddingTop: '0.5px',*/}
+            {/*    paddingBottom: '0.5px',*/}
+            {/*  }}*/}
+            {/*  toolbarStyle={{*/}
+            {/*    backgroundColor: 'transparent',*/}
+            {/*    border: 'none',*/}
+            {/*    padding: 0,*/}
+            {/*    marginLeft: '-4px',*/}
+            {/*  }}*/}
+            {/*  placeholder="The content of your note"*/}
+            {/*  toolbar={{*/}
+            {/*    options: ['inline', 'list'],*/}
+            {/*    inline: {*/}
+            {/*      options: ['bold', 'italic', 'underline'],*/}
+            {/*    },*/}
+            {/*    list: {*/}
+            {/*      options: ['unordered', 'ordered'],*/}
+            {/*    },*/}
+            {/*  }}*/}
+            {/*/>*/}
+            <RichTextEditor
               editorState={editorState}
-              onEditorStateChange={handleEditorStateChange}
-              editorStyle={{
-                height: '136px',
-                backgroundColor: 'white',
-                border: '1px solid',
-                borderColor: 'rgba(0, 0, 0, 0.23)',
-                borderRadius: '8px',
-                paddingLeft: '14px',
-                paddingTop: '0.5px',
-                paddingBottom: '0.5px',
-              }}
-              toolbarStyle={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                padding: 0,
-                marginLeft: '-4px',
-              }}
-              placeholder="The content of your note"
-              toolbar={{
-                options: ['inline', 'list'],
-                inline: {
-                  options: ['bold', 'italic', 'underline'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-              }}
+              onChange={handleEditorStateChange}
             />
             <Typography variant="body2" fontWeight={500}>
               Url
