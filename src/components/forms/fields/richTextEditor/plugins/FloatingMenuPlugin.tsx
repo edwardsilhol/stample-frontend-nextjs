@@ -21,7 +21,14 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
 
 interface PartialFloatingEditorMenuButtonProps
-  extends Omit<FloatingEditorMenuButtonProps, 'onClick' | 'isActive'> {}
+  extends Omit<
+    FloatingEditorMenuButtonProps,
+    'onClick' | 'isActive' | 'subButtons'
+  > {
+  onClick?: (editor?: LexicalEditor) => void;
+  subButtons?: PartialFloatingEditorMenuButtonProps[];
+  checkIfActive?: (selection: RangeSelection) => boolean;
+}
 
 const ANCHOR_ELEMENT = document.body;
 
@@ -60,11 +67,27 @@ function formatButtonProps(
 ): FloatingEditorMenuButtonProps {
   return {
     ...button,
-    onClick: () => {
-      editor.dispatchCommand(FORMAT_TEXT_COMMAND, button.id as TextFormatType);
-    },
+    onClick: button.onClick
+      ? () => button.onClick && button.onClick(editor)
+      : () => {
+          editor.dispatchCommand(
+            FORMAT_TEXT_COMMAND,
+            button.id as TextFormatType,
+          );
+        },
     isActive: false,
+    subButtons: button.subButtons
+      ? button.subButtons.map((subButton) =>
+          formatButtonProps(editor, subButton),
+        )
+      : undefined,
   };
+}
+function checkIfButtonIsActive(selection: RangeSelection, buttonId: string) {
+  const button = EDITOR_BUTTONS.find((button) => button.id === buttonId);
+  if (!button) return false;
+  if (button.checkIfActive) return button.checkIfActive(selection);
+  return selection.hasFormat(button.id as TextFormatType);
 }
 
 export function FloatingMenuPlugin() {
@@ -91,7 +114,13 @@ export function FloatingMenuPlugin() {
         setEditorButtons(
           editorButtons.map((button) => ({
             ...button,
-            isActive: selection.hasFormat(button.id as TextFormatType),
+            isActive: checkIfButtonIsActive(selection, button.id),
+            subButtons: button.subButtons
+              ? button.subButtons.map((subButton) => ({
+                  ...subButton,
+                  isActive: checkIfButtonIsActive(selection, subButton.id),
+                }))
+              : undefined,
           })),
         );
         setShow(true);

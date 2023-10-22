@@ -7,25 +7,19 @@ function RichTextPlugin() {
     return (
       <div
         style={{
-          minHeight: '150px',
-          resize: 'none',
-          fontSize: '15px',
-          caretColor: 'rgb(5, 5, 5)',
-          position: 'absolute',
-          tabSize: 1,
-          outline: '0',
-          padding: '15px 10px',
           color: '#999',
           overflow: 'hidden',
+          position: 'absolute',
           textOverflow: 'ellipsis',
           top: '15px',
           left: '10px',
+          fontSize: '15px',
           userSelect: 'none',
           display: 'inline-block',
           pointerEvents: 'none',
         }}
       >
-        Enter some rich text...
+        The content of your note
       </div>
     );
   }
@@ -34,14 +28,14 @@ function RichTextPlugin() {
       contentEditable={
         <ContentEditable
           style={{
-            minHeight: '150px',
+            height: '150px',
             resize: 'none',
             fontSize: '15px',
             caretColor: 'rgb(5, 5, 5)',
             position: 'relative',
             tabSize: 1,
             outline: '0',
-            padding: '15px 10px',
+            padding: '0px 10px',
           }}
         />
       }

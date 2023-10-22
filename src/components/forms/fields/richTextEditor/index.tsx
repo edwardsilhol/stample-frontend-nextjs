@@ -17,6 +17,7 @@ import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import { FloatingMenuPlugin } from './plugins/FloatingMenuPlugin';
 import { makeStyles } from '@mui/styles';
 import { EditorState, LexicalEditor } from 'lexical';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(() => ({
     paddingLeft: '14px',
     paddingTop: '0.5px',
     paddingBottom: '0.5px',
+    overflow: 'auto',
   },
   link: {
     cursor: 'pointer',
@@ -49,7 +51,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface EditorProps {
+export interface RichTextEditorProps {
   editorState?: InitialEditorStateType;
   onChange: (
     editorState: EditorState,
@@ -57,7 +59,7 @@ interface EditorProps {
     tags: Set<string>,
   ) => void;
 }
-function RichTextEditor({ editorState, onChange }: EditorProps) {
+function RichTextEditor({ editorState, onChange }: RichTextEditorProps) {
   const classes = useStyles();
   function onError(error: Error) {
     console.error(error);
@@ -90,7 +92,7 @@ function RichTextEditor({ editorState, onChange }: EditorProps) {
   };
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div
+      <Box
         style={{
           background: '#fff',
           position: 'relative',
@@ -105,7 +107,7 @@ function RichTextEditor({ editorState, onChange }: EditorProps) {
         <AutoLinkPlugin />
         <ListMaxIndentLevelPlugin maxDepth={7} />
         <OnChangePlugin onChange={onChange} />
-      </div>
+      </Box>
     </LexicalComposer>
   );
 }

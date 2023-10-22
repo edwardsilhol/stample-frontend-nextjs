@@ -3,7 +3,7 @@ import RichTextEditor from './index';
 import { EditorState, LexicalEditor } from 'lexical';
 
 export default {
-  title: 'Components/Forms/Fields/RichTextEditor', // Change story title
+  title: 'Components/Forms/Fields/RichTextEditor',
   component: RichTextEditor,
   args: {
     onChange: (
