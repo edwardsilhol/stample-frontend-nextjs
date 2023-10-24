@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import { formatDistance } from 'date-fns';
 import { Comment } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
-import RichTextEditor from '../forms/fields/richTextEditor';
+import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
+import TextEditor from '../forms/fields/TextEditor';
 
 interface DocumentCommentProps {
   comment: Comment;
@@ -20,6 +21,10 @@ function DocumentComment({
   index,
 }: DocumentCommentProps) {
   const author = commentAuthorsById[comment.creatorId];
+  const editor = useEditor({
+    content: comment.content,
+    editable: false,
+  });
 
   return (
     <Card
@@ -57,11 +62,7 @@ function DocumentComment({
         }
       />
       <CardContent>
-        <RichTextEditor
-          name={comment._id}
-          editable={false}
-          editorState={comment.content}
-        />
+        <TextEditor editor={editor} />
       </CardContent>
     </Card>
   );

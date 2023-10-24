@@ -14,8 +14,8 @@ import { useSelectedTeamId } from '../../../../stores/hooks/jotai/team.hooks';
 import { useCreateDocument } from '../../../../stores/hooks/tanstackQuery/document.hooks';
 import TextFieldForm from '../../fields/textFieldForm';
 import SelectOrCreateTags from '../SelectOrCreateTags';
-import RichTextEditor from '../../fields/richTextEditor';
-import { EditorState, LexicalEditor } from 'lexical';
+import TextEditor from '../../fields/TextEditor';
+import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
 
 interface CreateDocumentFormProps {
   onClose: () => void;
@@ -23,18 +23,19 @@ interface CreateDocumentFormProps {
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const [editorState, setEditorState] = useState<EditorState | null>(null);
   const [selectedTeamId] = useSelectedTeamId();
   const createDocument = useCreateDocument();
-
-  const handleEditorStateChange = (
-    editorState: EditorState,
-    editor: LexicalEditor,
-    tags: Set<string>,
-  ) => {
-    console.log('editor', editorState, editor, tags);
-    setEditorState(editorState);
-  };
+  const editor = useEditor({
+    placeholder: 'The content of your note',
+    editorStyle: {
+      height: '136px',
+      border: '1px solid',
+      borderColor: 'rgba(0, 0, 0, 0.23)',
+      borderRadius: '8px',
+      padding: '0px 10px',
+      overflow: 'auto',
+    },
+  });
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
@@ -57,6 +58,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
+    console.log(editor?.getHTML());
     if (selectedTeamId === null) {
       return;
     }
@@ -69,7 +71,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
           teamId: selectedTeamId,
           createDocumentDto: {
             title,
-            content: JSON.stringify(editorState?.toJSON()),
+            content: editor?.getHTML() || '',
             summary,
             url,
             tags: selectedTags.map((tag) => tag._id),
@@ -169,12 +171,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             {/*    },*/}
             {/*  }}*/}
             {/*/>*/}
-            <RichTextEditor
-              name="createDocument"
-              placeholder="The content of your note"
-              editorState={editorState}
-              onChange={handleEditorStateChange}
-            />
+            <TextEditor editor={editor} />
             <Typography variant="body2" fontWeight={500}>
               Url
             </Typography>

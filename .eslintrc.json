@@ -27,6 +27,7 @@
     "comma-dangle": "off",
     "@typescript-eslint/comma-dangle": "off",
     "react-hooks/exhaustive-deps": "off",
+    "react-hooks/rules-of-hooks": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

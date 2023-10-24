@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -34,11 +34,10 @@ import DocumentViewHeader from './DocumentViewHeader';
 import DocumentCreator from './DocumentCreator';
 import Beenhere from '@mui/icons-material/Beenhere';
 import { useSession } from '../../stores/hooks/tanstackQuery/user.hooks';
-import RichTextEditor from '../forms/fields/richTextEditor';
-import { EditorState } from 'lexical/LexicalEditorState';
-import { $getRoot, LexicalEditor } from 'lexical';
-import { $isMentionNode } from '../forms/fields/richTextEditor/utils/mentions';
-import isEditorEmpty from '../forms/fields/richTextEditor/utils/lexical';
+import TextEditor from 'components/forms/fields/TextEditor';
+import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
+import { getMentionNodes } from '../forms/fields/TextEditor/utils/nodes';
+import { Mention } from '../lists/mentionList';
 
 interface DocumentViewProps {
   documentId: string;
@@ -56,8 +55,10 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const createComment = useCreateComment(documentId);
   const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
-  const [editedCommentText, setEditedCommentText] =
-    useState<EditorState | null>(null);
+  const viewedDocumentEditor = useEditor({
+    editable: false,
+    content: viewedDocument?.content,
+  });
 
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -85,12 +86,11 @@ function DocumentView({ documentId }: DocumentViewProps) {
       ),
     [viewedDocument?.likes, loggedInUser],
   );
-  const userMentions = useMemo(
+  const userMentions = useMemo<Mention[]>(
     () => [
       {
-        text: 'Everyone',
-        value: 'Everyone',
-        url: CommentMentionType.EVERYONE,
+        id: CommentMentionType.EVERYONE,
+        label: 'Everyone',
       },
       ...uniqBy(
         [
@@ -102,52 +102,55 @@ function DocumentView({ documentId }: DocumentViewProps) {
       )
         .filter((user): user is UserForOtherClient => !!user)
         .map((user) => ({
-          text: `${user.firstName} ${user.lastName}`,
-          value: `${user.firstName} ${user.lastName}`,
-          url: user._id,
-          picture: user.profilePictureUrl,
+          id: user._id,
+          label: `${user.firstName} ${user.lastName}`,
+          avatar: user.profilePictureUrl,
         })),
     ],
     [viewedDocument?.guests, viewedDocument?.creator, team?.users],
   );
 
-  const handleEditorChange = (
-    editorState: EditorState,
-    editor: LexicalEditor,
-    tags: Set<string>,
-  ) => {
-    console.log('editorState', editorState, editor, tags);
-    setEditedCommentText(editorState);
-  };
+  const commentEditor = useEditor(
+    {
+      placeholder: 'Say something...',
+      editorStyle: {
+        overflowY: 'visible',
+        overflow: 'unset',
+        border: '1px solid #e5e5e5',
+        borderRadius: '6px',
+        paddingLeft: '10px',
+      },
+      possibleMentions: userMentions,
+    },
+    [viewedDocument, isLoading, userMentions],
+  );
 
   const onSubmitAddComment = () => {
-    if (!editedCommentText) {
+    if (!commentEditor) {
       return;
     }
-    editedCommentText.read(() => {
-      const mentionNodes = $getRoot()
-        .getAllTextNodes()
-        .filter((node) => $isMentionNode(node));
+    const mentionNodes = getMentionNodes(commentEditor?.state.doc);
+    console.log('mentionNodes', mentionNodes);
 
-      const mentions = mentionNodes?.map((node) => {
-        const mention = node.__mention;
-        return {
-          type:
-            mention === CommentMentionType.EVERYONE
-              ? CommentMentionType.EVERYONE
-              : CommentMentionType.USER,
-          user: mention === CommentMentionType.USER ? mention : undefined,
-        };
-      });
-
-      if (!isEditorEmpty(editedCommentText) && mentions) {
-        createComment.mutate({
-          content: JSON.stringify(editedCommentText.toJSON()),
-          mentions,
-        });
-      }
+    const mentions = mentionNodes.map((node) => {
+      const mention = node.attrs.id;
+      console.log('mention', mention);
+      return {
+        type:
+          mention === CommentMentionType.EVERYONE
+            ? CommentMentionType.EVERYONE
+            : CommentMentionType.USER,
+        user: mention === CommentMentionType.USER ? mention : undefined,
+      };
     });
-    setEditedCommentText(null);
+
+    if (!commentEditor.isEmpty && mentions) {
+      createComment.mutate({
+        content: commentEditor?.getHTML(),
+        mentions,
+      });
+    }
+    commentEditor.commands.clearContent();
   };
   const onClickBack = () => {
     if (pathname === '/me') {
@@ -336,11 +339,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
                     </ul>
                   </Box>
                 )}
-              <RichTextEditor
-                name="documentContent"
-                editable={false}
-                editorState={viewedDocument.content}
-              />
+              <TextEditor editor={viewedDocumentEditor} />
               <Typography variant="h2" marginTop={3}>
                 Comments
               </Typography>
@@ -354,13 +353,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
                   />
                 ))}
               </Stack>
-              <RichTextEditor
-                name="createComment"
-                placeholder="Say something..."
-                editorState={editedCommentText}
-                onChange={handleEditorChange}
-                mentions={userMentions}
-              />
+              <TextEditor editor={commentEditor} />
               {/*<Editor*/}
               {/*  editorState={editedCommentText}*/}
               {/*  onEditorStateChange={(value) => setEditedCommentText(value)}*/}
