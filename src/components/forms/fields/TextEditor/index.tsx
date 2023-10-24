@@ -2,7 +2,7 @@
 
 import { Editor, EditorContent } from '@tiptap/react';
 import React from 'react';
-import EditorBubbleMenu from '../../../menus/editorBubbleMenu';
+import EditorMenu from '../../../menus/editorMenu';
 import Box from '@mui/material/Box';
 
 interface TextEditorProps {
@@ -11,7 +11,7 @@ interface TextEditorProps {
 function TextEditor({ editor }: TextEditorProps) {
   return (
     <Box key={editor?.toString()}>
-      {editor && <EditorBubbleMenu editor={editor} />}
+      {editor?.isEditable && <EditorMenu editor={editor} />}
       <EditorContent editor={editor} />
     </Box>
   );

@@ -119,9 +119,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
       editorStyle: {
         overflowY: 'visible',
         overflow: 'unset',
-        border: '1px solid #e5e5e5',
-        borderRadius: '6px',
-        paddingLeft: '10px',
       },
       possibleMentions: userMentions,
     },
