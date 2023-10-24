@@ -29,6 +29,7 @@ function DocumentsView({
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   const {
     data: { raw: flatTags },
+    isLoading,
   } = useTagsByTeam(teamId as string);
   const searchId = useMemo(
     () => `${teamId}-${tagId}-${searchQuery}`,
@@ -38,7 +39,9 @@ function DocumentsView({
   const { width } = useScreenResizeObserver({
     ref,
   });
-  return (
+  return isLoading ? (
+    <CircularLoading />
+  ) : (
     <Box paddingX={{ xs: 1, sm: 2 }} paddingY={{ xs: 1 }}>
       <Box
         sx={{
