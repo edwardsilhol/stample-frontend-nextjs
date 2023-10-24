@@ -10,7 +10,7 @@ import {
 import TagsView from './TagsView';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -29,7 +29,6 @@ interface LoggedSidebarProps {
 function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
   const { teamId } = useParams();
   const isMobile = useIsMobile();
-  const router = useRouter();
   const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(
     teamId as string,
   );
@@ -41,10 +40,6 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const onGoBackHome = () => {
-    router.back();
   };
 
   const displaySelectTeams = () => (
@@ -129,7 +124,6 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
           if (isMobile) {
             setIsSidebarOpen(false);
           }
-          onGoBackHome();
         }}
       />
       <Divider sx={{ marginBottom: 2 }} />

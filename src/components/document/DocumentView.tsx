@@ -127,11 +127,8 @@ function DocumentView({ documentId }: DocumentViewProps) {
       return;
     }
     const mentionNodes = getMentionNodes(commentEditor?.state.doc);
-    console.log('mentionNodes', mentionNodes);
-
     const mentions = mentionNodes.map((node) => {
       const mention = node.attrs.id;
-      console.log('mention', mention);
       return {
         type:
           mention === CommentMentionType.EVERYONE

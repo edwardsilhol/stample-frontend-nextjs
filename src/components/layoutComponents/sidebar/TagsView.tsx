@@ -103,9 +103,8 @@ function TagsView({
     tagId: string,
   ) => {
     event.stopPropagation();
-    // onSelectTag();
+    onSelectTag();
     router.push(`${TEAM_ROUTE}/${teamId}${TAG_ROUTE}/${tagId}`);
-    // router.back();
   };
   const handleClose = () => {
     setAnchorEl(null);

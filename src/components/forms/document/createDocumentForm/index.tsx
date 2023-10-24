@@ -54,7 +54,6 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
-    console.log(editor?.getHTML());
     if (teamId === null) {
       return;
     }
