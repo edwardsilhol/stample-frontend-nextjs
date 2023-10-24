@@ -1,4 +1,4 @@
-import { BubbleMenu, Editor } from '@tiptap/react';
+import { Editor } from '@tiptap/react';
 import Button from '@mui/material/Button';
 import { ReactNode } from 'react';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
@@ -7,7 +7,7 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
 import { ButtonGroup } from '@mui/material';
 
-const EDITOR_BUTTONS: Omit<BubbleMenuButtonProps, 'editor'>[] = [
+const EDITOR_BUTTONS: Omit<EditorMenuButtonProps, 'editor'>[] = [
   {
     id: 'bold',
     icon: <FormatBoldIcon />,
@@ -38,11 +38,11 @@ const EDITOR_BUTTONS: Omit<BubbleMenuButtonProps, 'editor'>[] = [
   },
 ];
 
-interface FloatingEditorMenuProps {
+interface EditorMenuProps {
   editor: Editor;
 }
 
-interface BubbleMenuButtonProps {
+interface EditorMenuButtonProps {
   id: string;
   editor: Editor;
   onClick: (editor: Editor) => void;
@@ -51,21 +51,24 @@ interface BubbleMenuButtonProps {
   icon?: ReactNode;
 }
 
-function EditorBubbleMenu({ editor }: FloatingEditorMenuProps) {
-  function renderBubbleMenuButton({
+function EditorMenu({ editor }: EditorMenuProps) {
+  function renderEditorMenuButton({
     id,
     editor,
     onClick,
     checkIfActive,
     label,
     icon,
-  }: BubbleMenuButtonProps) {
+  }: EditorMenuButtonProps) {
     return (
       <Button
         key={id}
         onClick={() => onClick(editor)}
         style={{
-          color: checkIfActive(editor) ? 'black' : 'blue',
+          border: '1px solid',
+          borderColor: 'rgba(0, 0, 0, 0.23)',
+          color: checkIfActive(editor) ? 'black' : 'rgba(0, 0, 0, 0.23)',
+          fontSize: 20,
         }}
       >
         {icon || label}
@@ -73,17 +76,15 @@ function EditorBubbleMenu({ editor }: FloatingEditorMenuProps) {
     );
   }
   return (
-    <BubbleMenu tippyOptions={{ duration: 100 }} editor={editor}>
-      <ButtonGroup
-        style={{
-          backgroundColor: 'white',
-        }}
-      >
-        {EDITOR_BUTTONS.map((button) =>
-          renderBubbleMenuButton({ ...button, editor }),
-        )}
-      </ButtonGroup>
-    </BubbleMenu>
+    <ButtonGroup
+      style={{
+        backgroundColor: 'white',
+      }}
+    >
+      {EDITOR_BUTTONS.map((button) =>
+        renderEditorMenuButton({ ...button, editor }),
+      )}
+    </ButtonGroup>
   );
 }
-export default EditorBubbleMenu;
+export default EditorMenu;

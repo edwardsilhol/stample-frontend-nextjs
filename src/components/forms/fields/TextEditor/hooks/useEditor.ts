@@ -28,7 +28,13 @@ interface UseEditorProps extends Partial<EditorOptions> {
 }
 
 function useEditor(
-  { placeholder, editorStyle, possibleMentions, ...options }: UseEditorProps,
+  {
+    placeholder,
+    editorStyle,
+    possibleMentions,
+    editable = true,
+    ...options
+  }: UseEditorProps,
   deps?: DependencyList,
 ) {
   const classes = useStyle();
@@ -37,6 +43,12 @@ function useEditor(
       editorProps: {
         attributes: {
           style: styleObjectToString({
+            ...(editable && {
+              border: '1px solid',
+              borderColor: 'rgba(0, 0, 0, 0.23)',
+              borderRadius: '8px',
+              padding: '0 10px',
+            }),
             ...editorStyle,
           }),
         },
@@ -63,6 +75,7 @@ function useEditor(
           suggestion: getMentionSuggestionsConfig(possibleMentions || []),
         }),
       ],
+      editable,
       ...options,
     },
     deps,

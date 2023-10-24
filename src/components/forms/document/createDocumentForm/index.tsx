@@ -29,10 +29,6 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
     placeholder: 'The content of your note',
     editorStyle: {
       height: '136px',
-      border: '1px solid',
-      borderColor: 'rgba(0, 0, 0, 0.23)',
-      borderRadius: '8px',
-      padding: '0px 10px',
       overflow: 'auto',
     },
   });
