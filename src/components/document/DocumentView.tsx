@@ -55,10 +55,13 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const createComment = useCreateComment(documentId);
   const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
-  const viewedDocumentEditor = useEditor({
-    editable: false,
-    content: viewedDocument?.content,
-  });
+  const viewedDocumentEditor = useEditor(
+    {
+      editable: false,
+      content: viewedDocument?.content,
+    },
+    [viewedDocument?.content],
+  );
 
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
