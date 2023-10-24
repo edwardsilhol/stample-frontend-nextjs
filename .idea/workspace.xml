@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/providers/JotaiProvider.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +92,7 @@
       <workItem from="1697994077796" duration="19382000" />
       <workItem from="1698066578201" duration="9403000" />
       <workItem from="1698161196067" duration="1904000" />
-      <workItem from="1698164853054" duration="13553000" />
+      <workItem from="1698164853054" duration="13997000" />
     </task>
     <servers />
   </component>
