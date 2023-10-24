@@ -8,15 +8,14 @@ import DocumentHeader from './DocumentHeader';
 import Beenhere from '@mui/icons-material/Beenhere';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Link from 'next/link';
-import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
 
 interface DocumentGridItemProps {
   document: MinimalDocument;
   flatTags?: Tag[];
+  onClick?: () => void;
 }
 
-function DocumentGridItem({ document }: DocumentGridItemProps) {
+function DocumentGridItem({ document, onClick }: DocumentGridItemProps) {
   if (!document) {
     return null;
   }
@@ -55,97 +54,92 @@ function DocumentGridItem({ document }: DocumentGridItemProps) {
             overflow: 'hidden',
           }}
         >
-          <Link
-            style={{ textDecoration: 'none', color: 'inherit' }}
-            href={`${TEAM_ROUTE}/${document.team}${DOCUMENT_ROUTE}/${document._id}`}
-          >
-            <Box sx={{ padding: 2, cursor: 'pointer' }}>
-              <Typography
-                variant="h5"
-                fontWeight={700}
-                sx={{
+          <Box sx={{ padding: 2, cursor: 'pointer' }} onClick={onClick}>
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              sx={{
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                marginBottom: '5px',
+              }}
+            >
+              {decodeHTML(document.title ?? '')}
+            </Typography>
+            <DocumentHeader
+              {...document}
+              likesCount={document.likes?.length ?? 0}
+              readersCount={document.readers?.length ?? 0}
+              typographyProps={{
+                sx: {
                   display: '-webkit-box',
-                  WebkitLineClamp: 3,
+                  WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical',
                   textOverflow: 'ellipsis',
                   overflow: 'hidden',
-                  marginBottom: '5px',
-                }}
-              >
-                {decodeHTML(document.title ?? '')}
-              </Typography>
-              <DocumentHeader
-                {...document}
-                likesCount={document.likes?.length ?? 0}
-                readersCount={document.readers?.length ?? 0}
-                typographyProps={{
-                  sx: {
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
+                },
+              }}
+            />
+            {/*<Avatar*/}
+            {/*  sizes="large"*/}
+            {/*  src={creator.profilePictureUrl}*/}
+            {/*  sx={{*/}
+            {/*    width: '50px',*/}
+            {/*    height: '50px',*/}
+            {/*    marginTop: '10px',*/}
+            {/*    marginBottom: '10px',*/}
+            {/*    border: '5px solid',*/}
+            {/*    borderColor: 'primary.main',*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  {creator.profilePictureUrl*/}
+            {/*    ? null*/}
+            {/*    : `${creator.firstName[0]}${creator.lastName[0]}`}*/}
+            {/*</Avatar>*/}
+            {/*<Typography variant="h5" fontWeight={700} marginLeft={0}>*/}
+            {/*  {creator.firstName} {creator.lastName}*/}
+            {/*</Typography>*/}
+            {document.summary && (
+              <Box
+                sx={{
+                  position: 'relative',
+                  background: '#f1f4fc',
+                  textAlign: 'center',
+                  width: '80%',
+                  height: 'auto',
+                  marginTop: '20px',
+                  marginBottom: '10px',
+                  marginLeft: '10%',
+                  borderRadius: '10px',
+                  padding: '10px',
+                  boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
+                  '&:after': {
+                    content: '""',
+                    position: 'absolute',
+                    display: 'block',
+                    width: 0,
+                    zIndex: 1,
+                    borderStyle: 'solid',
+                    borderColor: '#f1f4fc transparent',
+                    borderWidth: '0 15px 15px',
+                    top: '-15px',
+                    left: '50%',
+                    marginLeft: '-15px',
                   },
                 }}
-              />
-              {/*<Avatar*/}
-              {/*  sizes="large"*/}
-              {/*  src={creator.profilePictureUrl}*/}
-              {/*  sx={{*/}
-              {/*    width: '50px',*/}
-              {/*    height: '50px',*/}
-              {/*    marginTop: '10px',*/}
-              {/*    marginBottom: '10px',*/}
-              {/*    border: '5px solid',*/}
-              {/*    borderColor: 'primary.main',*/}
-              {/*  }}*/}
-              {/*>*/}
-              {/*  {creator.profilePictureUrl*/}
-              {/*    ? null*/}
-              {/*    : `${creator.firstName[0]}${creator.lastName[0]}`}*/}
-              {/*</Avatar>*/}
-              {/*<Typography variant="h5" fontWeight={700} marginLeft={0}>*/}
-              {/*  {creator.firstName} {creator.lastName}*/}
-              {/*</Typography>*/}
-              {document.summary && (
-                <Box
-                  sx={{
-                    position: 'relative',
-                    background: '#f1f4fc',
-                    textAlign: 'center',
-                    width: '80%',
-                    height: 'auto',
-                    marginTop: '20px',
-                    marginBottom: '10px',
-                    marginLeft: '10%',
-                    borderRadius: '10px',
-                    padding: '10px',
-                    boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.15)',
-                    '&:after': {
-                      content: '""',
-                      position: 'absolute',
-                      display: 'block',
-                      width: 0,
-                      zIndex: 1,
-                      borderStyle: 'solid',
-                      borderColor: '#f1f4fc transparent',
-                      borderWidth: '0 15px 15px',
-                      top: '-15px',
-                      left: '50%',
-                      marginLeft: '-15px',
-                    },
-                  }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{ color: 'primary.main', fontStyle: 'italic' }}
                 >
-                  <Typography
-                    variant="caption"
-                    sx={{ color: 'primary.main', fontStyle: 'italic' }}
-                  >
-                    {decodeHTML(document.summary)}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Link>
+                  {decodeHTML(document.summary)}
+                </Typography>
+              </Box>
+            )}
+          </Box>
           {document.aiSummary && document.aiSummary.length > 0 && (
             <Box sx={{ padding: 2, backgroundColor: '#f9f9f9' }}>
               <Box

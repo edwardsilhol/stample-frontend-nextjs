@@ -19,7 +19,6 @@ import {
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
 } from '../types/document.types';
-import { useMemo } from 'react';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
   return useQuery({
@@ -98,37 +97,6 @@ export const useUpdateDocumentAsGuest = () => {
       });
     },
   });
-};
-
-export const useSearchedDocuments = (
-  teamId?: string,
-  tagId?: string,
-  searchQuery?: string,
-) => {
-  const { data, ...other } = useSearchDocuments({
-    ...(searchQuery
-      ? {
-          text: searchQuery,
-        }
-      : {}),
-    tags: tagId ? [tagId] : undefined,
-    team: teamId ? teamId : undefined,
-  });
-
-  const allDocuments = useMemo(
-    () => data?.pages.flatMap((page) => page.documents) || [],
-    [data?.pages],
-  );
-
-  const total = useMemo(
-    () => data?.pages[0]?.total || 0,
-    [data?.pages[0]?.total],
-  );
-  return {
-    ...other,
-    allDocuments,
-    total,
-  };
 };
 
 export const useSummarizeDocument = () => {

@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -37,6 +36,7 @@ import TextEditor from 'components/forms/fields/TextEditor';
 import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
 import { getMentionNodes } from '../forms/fields/TextEditor/utils/nodes';
 import { Mention } from '../lists/mentionList';
+import CircularLoading from '../base/circularLoading';
 
 interface DocumentViewProps {
   documentId: string;
@@ -45,19 +45,24 @@ interface DocumentViewProps {
 function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { data: loggedInUser } = useSession();
-  const { data: viewedDocument, isLoading } = useDocument(null, documentId);
-  const { data: team } = useTeam(viewedDocument?.team ?? null);
-  const { data: tags } = useTagsByTeam(viewedDocument?.team ?? null);
+  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
+  const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
+    useDocument(null, documentId);
+  const { data: team, isLoading: isTeamLoading } = useTeam(
+    viewedDocument?.team ?? null,
+  );
+  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
+    viewedDocument?.team ?? null,
+  );
   const createComment = useCreateComment(documentId);
-  const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
+  const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(
     {
       editable: false,
       content: viewedDocument?.content,
     },
-    [viewedDocument?.content],
+    [viewedDocument?.content, isViewedDocumentLoading],
   );
 
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
@@ -119,7 +124,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
       },
       possibleMentions: userMentions,
     },
-    [viewedDocument, isLoading, userMentions],
+    [viewedDocument, isViewedDocumentLoading, userMentions],
   );
 
   const onSubmitAddComment = () => {
@@ -153,7 +158,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
     if (!viewedDocument?.team) {
       return;
     }
-    updateDocumentAsGuest({
+    updateDocumentAsGuest.mutate({
       documentId: documentId,
       teamId: viewedDocument?.team,
       updateDocumentAsGuestDTO: {
@@ -179,10 +184,11 @@ function DocumentView({ documentId }: DocumentViewProps) {
           <Toolbar />
         </>
       ) : null}
-      {isLoading ? (
-        <Stack justifyContent="center" alignItems="center" height="100%">
-          <CircularProgress />
-        </Stack>
+      {isloggedInUserLoading ||
+      isViewedDocumentLoading ||
+      isTeamLoading ||
+      isTagsLoading ? (
+        <CircularLoading />
       ) : !viewedDocument ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
           <h1>Document not found</h1>

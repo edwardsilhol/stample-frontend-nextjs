@@ -1,3 +1,5 @@
+'use client';
+
 import { MinimalDocument } from '../../stores/types/document.types';
 import { Tag } from '../../stores/types/tag.types';
 import {
@@ -12,6 +14,8 @@ import { memo, useCallback, useRef } from 'react';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './DocumentsView';
 import DocumentGridItem from './DocumentGridItem';
 import { useWindowHeight } from '@react-hook/window-size';
+import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
+import { useRouter } from 'next/navigation';
 
 interface DocumentsMasonryProps {
   documents: MinimalDocument[];
@@ -32,6 +36,7 @@ function DocumentsMasonryComponent({
   fetchNextPage,
   variant,
 }: DocumentsMasonryProps) {
+  const router = useRouter();
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
   const positioner = usePositioner(
@@ -57,7 +62,18 @@ function DocumentsMasonryComponent({
   });
   const renderItem = useCallback(
     (props: { index: number; data: MinimalDocument }) => {
-      return <DocumentGridItem document={props.data} flatTags={flatTags} />;
+      const document = props.data;
+      return (
+        <DocumentGridItem
+          document={document}
+          flatTags={flatTags}
+          onClick={() =>
+            router.push(
+              `${TEAM_ROUTE}/${document.team}${DOCUMENT_ROUTE}/${document._id}`,
+            )
+          }
+        />
+      );
     },
     [],
   );

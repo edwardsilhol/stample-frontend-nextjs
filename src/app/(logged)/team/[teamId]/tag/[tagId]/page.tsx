@@ -1,7 +1,7 @@
 import MainView from '../../../../../../components/MainView';
 
-function MainPage() {
+function TagPage() {
   return <MainView />;
 }
 
-export default MainPage;
+export default TagPage;

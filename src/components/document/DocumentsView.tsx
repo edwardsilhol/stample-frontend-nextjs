@@ -8,6 +8,7 @@ import useScreenResizeObserver from 'use-resize-observer';
 import DocumentsMasonry from './DocumentsMasonry';
 import { useParams, useSearchParams } from 'next/navigation';
 import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
+import CircularLoading from '../base/circularLoading';
 
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
