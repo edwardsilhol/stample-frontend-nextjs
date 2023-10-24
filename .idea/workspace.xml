@@ -5,30 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/hooks/useEditor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/stories.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/utils/mentions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/utils/nodes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/lists/mentionList/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/lists/mentionList/stories.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/menus/editorBubbleMenu/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/style.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButton/stories.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButtonsGroup/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/floatingEditorMenuButtonsGroup/stories.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/richTextEditor/plugins/FloatingMenuPlugin.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menus/floatingEditorMenu/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menus/floatingEditorMenu/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menus/editorBubbleMenu/stories.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +88,7 @@
       <workItem from="1697921917323" duration="14007000" />
       <workItem from="1697977253128" duration="7515000" />
       <workItem from="1697994077796" duration="19382000" />
-      <workItem from="1698066578201" duration="9250000" />
+      <workItem from="1698066578201" duration="9403000" />
     </task>
     <servers />
   </component>
