@@ -1,14 +1,11 @@
-'use client';
-
-import React from 'react';
-import { Invitation } from '../../../../components/team/Invitation';
+import Invitation from '../../../../components/cards/Invitation';
 interface Props {
   params: {
     id: string;
   };
 }
-const InvitationPage: React.FC<Props> = ({ params: { id } }) => {
+function InvitationPage({ params: { id } }: Props) {
   return <Invitation teamId={id} />;
-};
+}
 
 export default InvitationPage;

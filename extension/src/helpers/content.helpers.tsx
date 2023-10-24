@@ -1,10 +1,8 @@
-import { AlreadyPresentStampleIcon } from '@src/components/content/AlreadyPresentStampleIcon';
-import { StampleTabTitle } from '@src/components/content/StampleTabTitle';
+import AlreadyPresentStampleIcon from '@src/components/content/AlreadyPresentStampleIcon';
 import { createRoot } from 'react-dom/client';
 import {
   GOOGLE_CONTENT_ID,
   GOOGLE_RESULT_STATS_ID,
-  GOOGLE_TAB_BAR_CONTAINER_JS_CONTROLLER_ATTRIBUTE,
   GOOGLE_TAB_BAR_ITEM_CSS_CLASSNAME,
   GOOGLE_TAB_BAR_ITEM_STANDARD_ACTIVE_CSS_CLASSNAMES,
   GOOGLE_TAB_BAR_ITEM_SUGGESTION_ACTIVE_CSS_CLASSNAMES,
@@ -12,7 +10,7 @@ import {
   STAMPLE_TAB_CONTENT_ID,
   STAMPLE_TAB_TITLE_ID,
 } from '../constants/content';
-import { DocumentsView } from '@src/components/content/document/DocumentsView';
+import DocumentsView from '@src/components/content/document/DocumentsView';
 import { AppProvider } from '@src/pages/providers/AppProvider';
 
 type SearchElement = {
@@ -38,8 +36,8 @@ const getGoogleSearchElements = (document: Document): SearchElement[] => {
   if (!search) {
     return;
   }
-  let results: SearchElement[] = [];
-  for (let searchItem of search) {
+  const results: SearchElement[] = [];
+  for (const searchItem of search) {
     const item = searchItem.children[0];
     if (!item) {
       continue;

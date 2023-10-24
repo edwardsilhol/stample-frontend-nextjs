@@ -3,11 +3,11 @@ import {
   getDefaultSelectedTeamId,
   getTeamDisplayedName,
 } from '@src/helpers/team.helper';
-import { useSelectedTeamId } from '@src/stores/data/team.data';
-import { useAllTeams } from '@src/stores/hooks/team.hooks';
+import { useSelectedTeamId } from '@src/stores/hooks/jotai/team.hooks';
+import { useAllTeams } from '@src/stores/hooks/tanstackQuery/team.hooks';
 import { useEffect } from 'react';
 
-export const SelectTeam: React.FC = () => {
+function SelectTeam() {
   const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
   const { data: teams } = useAllTeams();
   useEffect(() => {
@@ -42,4 +42,5 @@ export const SelectTeam: React.FC = () => {
       ))}
     </TextField>
   );
-};
+}
+export default SelectTeam;

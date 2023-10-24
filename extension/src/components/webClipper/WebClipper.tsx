@@ -10,32 +10,35 @@ import {
 import {
   getDefaultSelectedTeamId,
   getTeamDisplayedName,
-} from '../../helpers/team.helper';
+} from '@src/helpers/team.helper';
 import { useEffect, useMemo, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
-import { useAllTeams, useTeam } from '../../stores/hooks/team.hooks';
+import {
+  useAllTeams,
+  useTeam,
+} from '@src/stores/hooks/tanstackQuery/team.hooks';
 import {
   CommentMention,
   CommentMentionType,
   CreateCommentDTO,
-} from '../../stores/types/comment.types';
-import { UserForOtherClient } from '../../stores/types/user.types';
+} from '@src/stores/types/comment.types';
+import { UserForOtherClient } from '@src/stores/types/user.types';
 import { uniqBy } from 'lodash';
 import { convertToRaw, EditorState } from 'draft-js';
-import { useTagsByTeam } from '../../stores/hooks/tag.hooks';
-import { SelectTags } from './SelectTags';
+import { useTagsByTeam } from '@src/stores/hooks/tanstackQuery/tag.hooks';
+import SelectTags from './SelectTags';
 import {
   useCreateDocument,
   useGetSummarizedText,
   useSearchDocumentsByUrl,
-} from '../../stores/hooks/document.hooks';
-import { useCreateComment } from '../../stores/hooks/comment.hooks';
+} from '@src/stores/hooks/tanstackQuery/document.hooks';
+import { useCreateComment } from '@src/stores/hooks/tanstackQuery/comment.hooks';
 import { getClippedPage } from '@src/helpers/clipper.helpers';
-import { useCurrentPageUrl } from '@src/stores/hooks/clipper.hooks';
+import { useCurrentPageUrl } from '@src/stores/hooks/tanstackQuery/clipper.hooks';
 import { Document } from '@src/stores/types/document.types';
 import { CheckCircle } from '@mui/icons-material';
 
-export const WebClipper: React.FC = () => {
+function WebClipper() {
   const { data: teams } = useAllTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const { data: selectedTeam } = useTeam(selectedTeamId);
@@ -50,12 +53,12 @@ export const WebClipper: React.FC = () => {
   const [selectedTagsIds, setSelectedTagsIds] = useState<string[]>([]);
   const {
     mutateAsync: createDocument,
-    isLoading: isCreateDocumentLoading,
+    isPending: isCreateDocumentLoading,
     isSuccess: isCreateDocumentSuccess,
   } = useCreateDocument();
   const {
     mutateAsync: createComment,
-    isLoading: isCreateCommentLoading,
+    isPending: isCreateCommentLoading,
     isSuccess: isCreateCommentSuccess,
   } = useCreateComment();
   const { data: currentPageUrl } = useCurrentPageUrl();
@@ -77,7 +80,7 @@ export const WebClipper: React.FC = () => {
     if (!isAlreadyPresent && !createdDocument) {
       return false;
     }
-    if (
+    return !(
       selectedTeamId &&
       !(
         alreadyPresentDocuments.some((document) => {
@@ -85,10 +88,7 @@ export const WebClipper: React.FC = () => {
         }) ||
         (createdDocument && createdDocument.team === selectedTeamId)
       )
-    ) {
-      return false;
-    }
-    return true;
+    );
   }, [isAlreadyPresent, selectedTeamId, createdDocument]);
   const {
     data: summarizedPageContent,
@@ -203,8 +203,8 @@ export const WebClipper: React.FC = () => {
       alreadyPresentDocuments?.[0]?.aiSummary || summarizedPageContent;
     return (
       <ul style={{ paddingInlineStart: '15px' }}>
-        {summary.map((sentence) => (
-          <li style={{ marginBottom: '10px' }}>
+        {summary.map((sentence, index) => (
+          <li key={index} style={{ marginBottom: '10px' }}>
             <Typography
               variant="body2"
               whiteSpace="pre-line"
@@ -455,4 +455,6 @@ export const WebClipper: React.FC = () => {
       ) : null}
     </Stack>
   );
-};
+}
+
+export default WebClipper;

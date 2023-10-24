@@ -1,5 +1,5 @@
 import { CreateTeamDTO, Team, PopulatedTeam } from '../types/team.types';
-import { apiRequest } from '../../utils/api';
+import { apiRequest } from '@src/utils/api';
 
 export const fetchTeam = async (
   teamId: string,

@@ -1,52 +1,45 @@
-import {
-  Add,
-  Edit,
-  GroupsOutlined,
-  KeyboardArrowDown,
-} from '@mui/icons-material';
-import {
-  Button,
-  IconButton,
-  // Dialog,
-  // DialogContent,
-  MenuItem,
-  Stack,
-  // Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-// import { CreateOrganisationDialog } from 'components/organisation/CreateOrganisationDialog';
-import { CreateTeamDialog } from 'components/team/CreateTeamDialog';
+'use client';
+
+import Add from '@mui/icons-material/Add';
+import Edit from '@mui/icons-material/Edit';
+import GroupsOutlined from '@mui/icons-material/GroupsOutlined';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { getDefaultSelectedTeamId } from 'helpers/team.helper';
-import React, { useEffect } from 'react';
-// import { useSelectedOrganisationId } from 'stores/data/organisation.data';
-import { useSelectedTeam, useSelectedTeamId } from 'stores/data/team.data';
-// import { useAllOrganisations } from 'stores/hooks/organisation.hooks';
-import { useAllTeams } from 'stores/hooks/team.hooks';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  useSelectedTeam,
+  useSelectedTeamId,
+} from 'stores/hooks/jotai/team.hooks';
+import { useAllTeams } from 'stores/hooks/tanstackQuery/team.hooks';
 import { getTeamDisplayedName } from '../../../helpers/team.helper';
 import { Team } from 'stores/types/team.types';
 
-interface Props {
+interface SelectTeamsAndOrganisationsDialogProps {
   open: boolean;
   onClose: () => void;
 }
-export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
+function SelectTeamsAndOrganisationsDialog({
   onClose,
-}) => {
+}: SelectTeamsAndOrganisationsDialogProps) {
   // const [selectedOrganisationId, setSelectedOrganisationId] =
   //   useSelectedOrganisationId();
   const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
-  const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] =
-    React.useState(false);
-  const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] =
-    React.useState(false);
-  const [isSelectOpen, setIsSelectOpen] = React.useState(false);
+  const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
+  const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   // const [isCreateOrganisationOpen, setIsCreateOrganisationOpen] =
-  //   React.useState(false);
+  //   useState(false);
   const { data: teams } = useAllTeams();
   const { data: team } = useSelectedTeam();
-  const teamsByIds: Record<string, Team> = React.useMemo(() => {
+  const teamsByIds: Record<string, Team> = useMemo(() => {
     if (!teams) return {};
     return teams.reduce((accumulator, team) => {
       return {
@@ -91,7 +84,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
     if (defaultSelectedTeamId && !selectedTeamId) {
       setSelectedTeamId(defaultSelectedTeamId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams]);
   return (
     <>
@@ -312,4 +304,6 @@ export const SelectTeamsAndOrganisationsDialog: React.FC<Props> = ({
   //     />
   //   </DialogContent>
   // </Dialog>
-};
+}
+
+export default SelectTeamsAndOrganisationsDialog;

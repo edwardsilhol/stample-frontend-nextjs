@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,14 +7,14 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { useSignIn } from '../../../../stores/hooks/user.hooks';
 import * as Yup from 'yup';
-import { SignInDTO } from '../../../../stores/types/user.types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextFieldForm } from '../../fields/TextFieldForm';
+import TextFieldForm from '../../fields/TextFieldForm';
 import Container from '@mui/material/Container';
 import { Link } from '@mui/material';
+import { SignInDTO } from '@src/stores/types/user.types';
+import { useSignIn } from '@src/stores/hooks/tanstackQuery/user.hooks';
 
 const useStyles = () => ({
   signInContainer: {
@@ -34,8 +34,7 @@ function SignInForm() {
   const signIn = useSignIn();
   const styles = useStyles();
   // TODO: handle errors in form
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState(undefined);
+  const [_, setError] = useState(undefined);
 
   // TODO: add better validation for your needs
   const validationSchema: Yup.ObjectSchema<SignInDTO> = Yup.object({
@@ -48,7 +47,7 @@ function SignInForm() {
       email: '',
       password: '',
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as any,
   });
 
   const onSubmit = async (values: SignInDTO) => {

@@ -1,7 +1,5 @@
-'use client';
-
 import React, { ReactNode } from 'react';
-import GuestAuthProvider from './providers/guestAuthProvider';
+import GuestAuthProvider from '../../../providers/guestAuthProvider';
 interface Props {
   children: ReactNode;
 }

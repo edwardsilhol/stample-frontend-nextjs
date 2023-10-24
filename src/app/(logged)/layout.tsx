@@ -1,7 +1,7 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import LoggedAuthProvider from './providers/LoggedAuthProvider';
+import { ReactNode } from 'react';
+import LoggedAuthProvider from '../../providers/LoggedAuthProvider';
 
 interface Props {
   children: ReactNode;

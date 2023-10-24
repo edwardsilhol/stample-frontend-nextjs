@@ -4,7 +4,7 @@ import {
   PopulatedOrganisation,
   UpdateOrganisationDTO,
 } from '../types/organisation.types';
-import { apiRequest } from '../../utils/api';
+import { apiRequest } from '@src/utils/api';
 
 export const fetchOrganisation = async (
   organisationId: string,

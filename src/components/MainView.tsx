@@ -1,18 +1,17 @@
 'use client';
 
-import React from 'react';
-import Stack from './muiOverrides/Stack';
-import { LoggedHeader } from './layoutComponents/header/LoggedHeader';
-import { AllDocuments } from './view/AllDocuments';
-import { CreateDocumentForm } from './forms/document/CreateDocumentForm';
+import { useState } from 'react';
+import AllDocuments from './view/AllDocuments';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './document/DocumentsView';
+import Stack from '@mui/material/Stack';
+import LoggedHeader from './layoutComponents/header/LoggedHeader';
+import CreateDocumentForm from './forms/document/createDocumentForm';
 
-type MainViewProps = {
+interface MainViewProps {
   isDisplayed?: boolean;
-};
-export const MainView: React.FC<MainViewProps> = ({ isDisplayed = true }) => {
-  const [toggledAddButton, setToggledAddButton] =
-    React.useState<boolean>(false);
+}
+function MainView({ isDisplayed = true }: MainViewProps) {
+  const [toggledAddButton, setToggledAddButton] = useState<boolean>(false);
   return (
     <Stack
       direction="column"
@@ -41,4 +40,6 @@ export const MainView: React.FC<MainViewProps> = ({ isDisplayed = true }) => {
       )}
     </Stack>
   );
-};
+}
+
+export default MainView;

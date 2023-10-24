@@ -2,17 +2,13 @@ import { Chip, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Tag } from '@src/stores/types/tag.types';
 
-interface Props {
+interface DocumentTagsProps {
   tags: Tag[] | undefined;
   documentTagsIds: string[];
   maxLines?: number;
 }
 
-export const DocumentTags: React.FC<Props> = ({
-  tags,
-  documentTagsIds,
-  maxLines,
-}) => {
+function DocumentTags({ tags, documentTagsIds, maxLines }: DocumentTagsProps) {
   const displayedTags = useMemo(
     () =>
       documentTagsIds
@@ -52,4 +48,6 @@ export const DocumentTags: React.FC<Props> = ({
       ))}
     </Stack>
   );
-};
+}
+
+export default DocumentTags;

@@ -1,6 +1,5 @@
 import { yellow } from '@mui/material/colors';
 import { PaletteOptions } from '@mui/material/styles/createPalette';
-import { TenantThemeConfig } from '../../stores/types/tenantConfig.types';
 
 export interface ExtendedPalette {
   additionalColors: {
@@ -36,14 +35,13 @@ const darkPaletteExtended: ExtendedPalette = {
 };
 
 export function palette(
-  tenantThemeConfig: TenantThemeConfig,
   mode: 'light' | 'dark',
 ): PaletteOptions & ExtendedPalette {
   if (mode === 'light') {
     return {
       mode: 'light',
       primary: {
-        main: tenantThemeConfig.primaryColor || '#1976d2',
+        main: '#1976d2',
         light: '#4791dc',
         dark: '#115294',
         contrastText: '#fffffe',
@@ -97,7 +95,7 @@ export function palette(
     return {
       mode: 'light',
       primary: {
-        main: tenantThemeConfig.primaryColor || '#1976d2',
+        main: '#1976d2',
         light: '#4791dc',
         dark: '#115294',
         contrastText: '#fffffe',

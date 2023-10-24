@@ -1,4 +1,3 @@
-import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
@@ -6,14 +5,16 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Card } from '@mui/material';
 import { Document } from '../../stores/types/document.types';
+import { Dispatch, ReactNode, SyntheticEvent, useState } from 'react';
+import { SetStateAction } from 'jotai';
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   dir?: string;
   index: number;
   value: number;
   selectedDocument: Document | null;
-  setShowDocument: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDocument: Dispatch<SetStateAction<boolean>>;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -48,12 +49,12 @@ export default function FullWidthTabs({
   setShowDocument,
 }: {
   selectedDocument: Document | null;
-  setShowDocument: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDocument: Dispatch<SetStateAction<boolean>>;
 }) {
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

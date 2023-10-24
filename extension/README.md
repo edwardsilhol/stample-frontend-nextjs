@@ -7,7 +7,7 @@ This is the browser extension for Stample.
 ## Requirements
 
 - Node.js
-- yarn
+- pnpm
 - Chrome, Opera, Edge or Firefox
 
 ## Compatibility
@@ -56,18 +56,18 @@ Development](#development) section or [Production](#production) section, later i
 
 ### Development
 
-We first run the extension using yarn dev, which will output an extension, that can then be imported inside your browser as an unpacked extension.
+We first run the extension using pnpm dev, which will output an extension, that can then be imported inside your browser as an unpacked extension.
 
-1. Run `yarn install`
+1. Run `pnpm install`
 
 - #### Chrome, Opera, Edge
 
-  1. Run `yarn watch`
+  1. Run `pnpm watch`
   2. The extension will be generated in the `dist/v3` folder
   3. Follow the instructions in the [Install an extension locally in your browser](#install-an-extension-locally-in-your-browser) section
 
 - #### Firefox
-  1. Run `yarn watch:v2`
+  1. Run `pnpm watch:v2`
   2. The extension will be generated in the `dist/v2` folder
   3. Follow the instructions in the [Install an extension locally in your browser](#install-an-extension-locally-in-your-browser) section
 
@@ -78,13 +78,13 @@ You can now make changes to the extension and they will be automatically reloade
 
 ### Production
 
-1. Run `yarn install`
+1. Run `pnpm install`
 
 - #### Chrome, Opera, Edge
-  1.  Run `yarn build`
+  1.  Run `pnpm build`
   2.  The extension will be generated in the `dist/v3` folder
 - #### Firefox
-  1. Run `yarn build:v2`
+  1. Run `pnpm build:v2`
   2. The extension will be generated in the `dist/v2` folder
 
 2. Follow the instructions in the [Install an extension locally in your browser](#install-an-extension-locally-in-your-browser) section

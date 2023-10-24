@@ -8,7 +8,7 @@ import {
   MinimalDocument,
   UrlAndId,
 } from '../types/document.types';
-import { apiRequest } from '../../utils/api';
+import { apiRequest } from '@src/utils/api';
 import { SEARCH_DOCUMENT_PAGE_SIZE } from '@src/constants/document.constant';
 
 export const fetchDocument = async (

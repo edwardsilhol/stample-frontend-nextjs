@@ -1,101 +1,100 @@
-import React, { FC } from 'react';
-import { TreeItem as MuiTreeItem, TreeItemProps, TreeView } from '@mui/lab';
-import {
-  Add,
-  ArrowDropDown,
-  ArrowRight,
-  HomeOutlined,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-  LocalOfferOutlined,
-} from '@mui/icons-material';
 import { TagRich } from '../../../stores/types/tag.types';
-import Stack from '../../muiOverrides/Stack';
-import Typography from '../../muiOverrides/Typography';
 import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
-import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
-import { useSelectedTagId } from 'stores/data/tag.data';
-import { useSelectedTeamId } from 'stores/data/team.data';
+import {
+  useCreateTag,
+  useUpdateTag,
+} from '../../../stores/hooks/tanstackQuery/tag.hooks';
+import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
+import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCurrentlyViewedDocumentId } from 'stores/data/document.data';
+import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
+import { TreeItemProps } from '@mui/lab';
+import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import LocalOfferOutlined from '@mui/icons-material/LocalOfferOutlined';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { TreeView } from '@mui/x-tree-view';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import ArrowRight from '@mui/icons-material/ArrowRight';
+import Add from '@mui/icons-material/Add';
+import HomeOutlined from '@mui/icons-material/HomeOutlined';
+import { useState, MouseEvent } from 'react';
 
 const TAG_NAME_MAX_LENGTH = 30;
-const TreeItem: React.FC<
-  TreeItemProps & {
-    isOriginalParent?: boolean;
-  }
-> = ({ sx, ...props }) => (
-  <MuiTreeItem
-    sx={{
-      '.MuiTreeItem-content': {
-        paddingY: 0.3,
-        flexDirection: 'row-reverse',
-        marginX: 1,
-        paddingX: 0,
-        ':hover': {
-          backgroundColor: 'additionalColors.sidebarBackground',
-          borderRadius: '7px',
-        },
-      },
-      ...[
-        '.Mui-selected',
-        '.Mui-focused',
-        '.Mui-selected.Mui-focused',
-        '.MuiTreeItem-content.Mui-selected',
-        '.MuiTreeItem-content.Mui-focused',
-        '.MuiTreeItem-content.Mui-selected.Mui-focused',
-        '.Mui-selected.Mui-focused',
-        '.MuiTreeItem-group',
-        '.MuiTreeItem-label.MuiTypography-root',
-      ].reduce((accumulator, selector) => {
-        return {
-          ...accumulator,
-          [selector]: {
+function TreeItem({
+  sx,
+  ...props
+}: TreeItemProps & {
+  isOriginalParent?: boolean;
+}) {
+  return (
+    <MuiTreeItem
+      sx={{
+        '.MuiTreeItem-content': {
+          paddingY: 0.3,
+          flexDirection: 'row-reverse',
+          marginX: 1,
+          paddingX: 0,
+          ':hover': {
             backgroundColor: 'additionalColors.sidebarBackground',
             borderRadius: '7px',
           },
-        };
-      }, {}),
-      '.MuiTreeItem-group': {
-        marginLeft: '25px',
-      },
-      '.MuiTreeItem-label.MuiTypography-root': {
-        fontWeight: 500,
-      },
-      ...sx,
-    }}
-    {...props}
-  />
-);
+        },
+        ...[
+          '.Mui-selected',
+          '.Mui-focused',
+          '.Mui-selected.Mui-focused',
+          '.MuiTreeItem-content.Mui-selected',
+          '.MuiTreeItem-content.Mui-focused',
+          '.MuiTreeItem-content.Mui-selected.Mui-focused',
+          '.Mui-selected.Mui-focused',
+          '.MuiTreeItem-group',
+          '.MuiTreeItem-label.MuiTypography-root',
+        ].reduce((accumulator, selector) => {
+          return {
+            ...accumulator,
+            [selector]: {
+              backgroundColor: 'additionalColors.sidebarBackground',
+              borderRadius: '7px',
+            },
+          };
+        }, {}),
+        '.MuiTreeItem-group': {
+          marginLeft: '25px',
+        },
+        '.MuiTreeItem-label.MuiTypography-root': {
+          fontWeight: 500,
+        },
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+}
+
 interface TagsViewProps {
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
   onSelectTag: () => void;
 }
-export const TagsView: FC<TagsViewProps> = ({
-  tags,
-  documentsCountPerTags,
-  onSelectTag,
-}) => {
+function TagsView({ tags, documentsCountPerTags, onSelectTag }: TagsViewProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [selectedTeamId] = useSelectedTeamId();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
-  const [newTagName, setNewTagName] = React.useState<string>('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [newTagName, setNewTagName] = useState<string>('');
   const [_, setSelectedTagId] = useSelectedTagId();
   const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
     useCurrentlyViewedDocumentId();
-  const [tagParentId, setTagParentId] = React.useState<string | null>(null);
+  const [tagParentId, setTagParentId] = useState<string | null>(null);
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
-  const [hoveredTagId, setHoveredTagId] = React.useState<string | null>(null);
+  const [hoveredTagId, setHoveredTagId] = useState<string | null>(null);
 
-  const handleClickAddTag = (
-    event: React.MouseEvent<HTMLElement>,
-    id: string,
-  ) => {
+  const handleClickAddTag = (event: MouseEvent<HTMLElement>, id: string) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget.parentElement);
     if (id && id !== 'root') {
@@ -403,4 +402,5 @@ export const TagsView: FC<TagsViewProps> = ({
       </Popover>
     </>
   );
-};
+}
+export default TagsView;
