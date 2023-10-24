@@ -3,12 +3,11 @@
 import { useMemo, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { MinimalDocument } from '../../stores/types/document.types';
-import { useSelectedTeamTags } from '../../stores/hooks/tanstackQuery/tag.hooks';
-import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
-import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
+import { useTagsByTeam } from '../../stores/hooks/tag.hooks';
 import useScreenResizeObserver from 'use-resize-observer';
 import DocumentsMasonry from './DocumentsMasonry';
+import { useParams, useSearchParams } from 'next/navigation';
+import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
 
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
@@ -24,15 +23,15 @@ function DocumentsView({
   totalDocumentsCount,
   fetchNextPage,
 }: DocumentViewProps) {
+  const { teamId, tagId } = useParams();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   const {
     data: { raw: flatTags },
-  } = useSelectedTeamTags();
-  const [selectedTagId] = useSelectedTagId();
-  const [searchDocumentsQuery] = useSearchDocumentsQuery();
-  const [selectedTeamId] = useSelectedTeamId();
+  } = useTagsByTeam(teamId as string);
   const searchId = useMemo(
-    () => `${selectedTeamId}-${selectedTagId}-${searchDocumentsQuery}`,
-    [selectedTagId, searchDocumentsQuery, selectedTeamId],
+    () => `${teamId}-${tagId}-${searchQuery}`,
+    [tagId, searchQuery, teamId],
   );
   const ref = useRef<HTMLElement | null>(null);
   const { width } = useScreenResizeObserver({

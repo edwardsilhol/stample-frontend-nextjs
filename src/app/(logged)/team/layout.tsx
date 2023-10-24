@@ -2,17 +2,15 @@
 
 import { ReactNode } from 'react';
 import LoggedSidebar from '../../../components/layoutComponents/sidebar/LoggedSidebar';
-import { useSession } from '../../../stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from '../../../stores/hooks/user.hooks';
 import Stack from '@mui/material/Stack';
-import { useCurrentlyViewedDocumentId } from '../../../stores/hooks/jotai/document.hooks';
+import { useParams } from 'next/navigation';
 interface Props {
   children: ReactNode;
-  main: ReactNode;
-  document: ReactNode;
 }
-function LoggedLayout({ children, main, document }: Props) {
+function LoggedLayout({ children }: Props) {
+  const { documentId } = useParams();
   const { data: user, isLoading } = useSession();
-  const [documentId] = useCurrentlyViewedDocumentId();
   return (
     <Stack
       direction="row"
@@ -21,7 +19,6 @@ function LoggedLayout({ children, main, document }: Props) {
     >
       <LoggedSidebar user={user} isLoading={isLoading} />
       {children}
-      {documentId ? document : main}
     </Stack>
   );
 }

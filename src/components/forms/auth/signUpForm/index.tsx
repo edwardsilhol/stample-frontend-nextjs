@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { SignUpDTO } from '../../../../stores/types/user.types';
-import { useSignUp } from '../../../../stores/hooks/tanstackQuery/user.hooks';
+import { useSignUp } from '../../../../stores/hooks/user.hooks';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

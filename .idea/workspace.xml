@@ -5,13 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/(logged)/team/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/queryParams.constant.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/routes.constant.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/document/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/document/[documentId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/@document/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/@main/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag/[tagId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/me/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dialogs/CreateOrganisationDialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentGridItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentGridItem.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/hooks/useEditor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/hooks/useEditor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menus/editorBubbleMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menus/editorMenu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menus/editorBubbleMenu/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menus/editorMenu/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/organisation/CreateOrganisationForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/CustomSearchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/header/CustomSearchBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/providers/guestAuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/providers/guestAuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/jotai/document.hooks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/jotai/layout.hooks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/jotai/tag.hooks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/jotai/team.hooks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/document.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/document.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/organisation.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/organisation.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/tag.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tanstackQuery/tag.hooks.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,40 +69,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/components/lists/mentionList&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/app/(logged)/team/[teamId]/tag",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "settings.editor.selected.configurable": "terminal",
+    "ts.external.directory.path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team" />
       <recent name="$PROJECT_DIR$/src/components/lists/mentionList" />
       <recent name="$PROJECT_DIR$/src/components/forms/fields" />
       <recent name="$PROJECT_DIR$/src/components/buttons" />
-      <recent name="$PROJECT_DIR$/src/utils/hooks" />
-      <recent name="$PROJECT_DIR$/src/components/forms/fields/editor/plugins" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/forms/fields/TextEditor/utils" />
-      <recent name="$PROJECT_DIR$/src/components/forms/fields/TextEditor/mentions" />
-      <recent name="$PROJECT_DIR$/src/components/lists/mentionList" />
-      <recent name="$PROJECT_DIR$/src/components/lists/index" />
-      <recent name="$PROJECT_DIR$/src/components/forms/fields/TextEditor/extensions" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag/[tagId]" />
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[id]" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -96,7 +123,7 @@
       <workItem from="1697994077796" duration="19382000" />
       <workItem from="1698066578201" duration="9403000" />
       <workItem from="1698161196067" duration="1904000" />
-      <workItem from="1698164853054" duration="3934000" />
+      <workItem from="1698164853054" duration="13116000" />
     </task>
     <servers />
   </component>

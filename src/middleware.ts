@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { TEAM_ROUTE } from './constants/routes.constant';
 
 export const config = {
   matcher: [
@@ -20,7 +21,7 @@ export default async function middleware(request: NextRequest) {
   const path = url.pathname;
 
   if (path === '/') {
-    return NextResponse.redirect(new URL('/me', request.url));
+    return NextResponse.redirect(new URL(TEAM_ROUTE, request.url));
   }
 
   return NextResponse.next();

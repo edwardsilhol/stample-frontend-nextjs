@@ -1,11 +1,16 @@
-import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
+'use client';
+
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import Search from '@mui/icons-material/Search';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { SEARCH_QUERY_PARAM } from '../../../constants/queryParams.constant';
 
 function CustomSearchBar() {
-  const [searchDocumentsQuery, setSearchDocumentsQuery] =
-    useSearchDocumentsQuery();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   return (
     <Box
       sx={{
@@ -20,9 +25,9 @@ function CustomSearchBar() {
     >
       <InputBase
         onChange={(e) => {
-          setSearchDocumentsQuery(e.target.value);
+          router.push(`${pathname}?${SEARCH_QUERY_PARAM}=${e.target.value}`);
         }}
-        value={searchDocumentsQuery ?? ''}
+        value={searchQuery ?? ''}
         startAdornment={<Search sx={{ fontSize: '20px', color: '#737373' }} />}
         placeholder="Search"
         sx={{

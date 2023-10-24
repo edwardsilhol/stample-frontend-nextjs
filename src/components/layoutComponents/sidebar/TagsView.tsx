@@ -1,13 +1,7 @@
 import { TagRich } from '../../../stores/types/tag.types';
 import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
-import {
-  useCreateTag,
-  useUpdateTag,
-} from '../../../stores/hooks/tanstackQuery/tag.hooks';
-import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
-import { usePathname, useRouter } from 'next/navigation';
-import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
+import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
+import { useRouter } from 'next/navigation';
 import { TreeItemProps } from '@mui/lab';
 import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
@@ -21,6 +15,7 @@ import ArrowRight from '@mui/icons-material/ArrowRight';
 import Add from '@mui/icons-material/Add';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import { useState, MouseEvent } from 'react';
+import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
 
 const TAG_NAME_MAX_LENGTH = 30;
 function TreeItem({
@@ -75,20 +70,21 @@ function TreeItem({
 }
 
 interface TagsViewProps {
+  teamId: string;
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
   onSelectTag: () => void;
 }
-function TagsView({ tags, documentsCountPerTags, onSelectTag }: TagsViewProps) {
-  const pathname = usePathname();
+function TagsView({
+  teamId,
+  tags,
+  documentsCountPerTags,
+  onSelectTag,
+}: TagsViewProps) {
   const router = useRouter();
-  const [selectedTeamId] = useSelectedTeamId();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = useState<string>('');
-  const [_, setSelectedTagId] = useSelectedTagId();
-  const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
-    useCurrentlyViewedDocumentId();
   const [tagParentId, setTagParentId] = useState<string | null>(null);
   const createTag = useCreateTag();
   const updateTag = useUpdateTag();
@@ -103,30 +99,26 @@ function TagsView({ tags, documentsCountPerTags, onSelectTag }: TagsViewProps) {
   };
 
   const handleClickSelectTag = (
-    event: React.MouseEvent<HTMLElement>,
-    id: string,
+    event: MouseEvent<HTMLElement>,
+    tagId: string,
   ) => {
     event.stopPropagation();
-    setSelectedTagId(id);
-    onSelectTag();
-    if (pathname !== '/me') {
-      router.push('/me');
-    } else if (!!currentlyViewedDocumentId) {
-      setCurrentlyViewedDocumentId(null);
-    }
+    // onSelectTag();
+    router.push(`${TEAM_ROUTE}/${teamId}${TAG_ROUTE}/${tagId}`);
+    // router.back();
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleCreateTag = () => {
-    if (selectedTeamId === null) {
+    if (teamId === null) {
       return;
     }
     createTag
       .mutateAsync({
         tagCreationDTO: { name: newTagName },
-        teamId: selectedTeamId,
+        teamId: teamId,
       })
       .then((tag) => {
         if (tagParentId && tag?._id) {

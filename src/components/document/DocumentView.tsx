@@ -16,24 +16,23 @@ import {
   useDocument,
   useSummarizeDocument,
   useUpdateDocumentAsGuest,
-} from '../../stores/hooks/tanstackQuery/document.hooks';
+} from '../../stores/hooks/document.hooks';
 import { UserForOtherClient } from 'stores/types/user.types';
 import DocumentHeader from './DocumentHeader';
 import DocumentTags from './DocumentTags';
-import { useCreateComment } from 'stores/hooks/tanstackQuery/comment.hooks';
+import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { uniqBy } from 'lodash';
 import { CommentMentionType } from 'stores/types/comment.types';
 import DocumentComment from './DocumentComment';
-import { useTeam } from 'stores/hooks/tanstackQuery/team.hooks';
-import { usePathname, useRouter } from 'next/navigation';
+import { useTeam } from 'stores/hooks/team.hooks';
+import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useTagsByTeam } from 'stores/hooks/tanstackQuery/tag.hooks';
+import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { decodeHTML } from 'entities';
-import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
 import DocumentViewHeader from './DocumentViewHeader';
 import DocumentCreator from './DocumentCreator';
 import Beenhere from '@mui/icons-material/Beenhere';
-import { useSession } from '../../stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from '../../stores/hooks/user.hooks';
 import TextEditor from 'components/forms/fields/TextEditor';
 import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
 import { getMentionNodes } from '../forms/fields/TextEditor/utils/nodes';
@@ -46,8 +45,6 @@ interface DocumentViewProps {
 function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const pathname = usePathname();
-  const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
   const { data: loggedInUser } = useSession();
   const { data: viewedDocument, isLoading } = useDocument(null, documentId);
   const { data: team } = useTeam(viewedDocument?.team ?? null);
@@ -153,11 +150,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
     commentEditor.commands.clearContent();
   };
   const onClickBack = () => {
-    if (pathname === '/me') {
-      setCurrentlyViewedDocumentId(null);
-    } else {
-      router.push('/me');
-    }
+    router.back();
   };
   const onClickLike = (like: boolean) => {
     if (!viewedDocument?.team) {

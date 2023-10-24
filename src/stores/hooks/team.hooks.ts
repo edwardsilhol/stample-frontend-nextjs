@@ -7,13 +7,13 @@ import {
   fetchTeams,
   summarizeTeamDocuments,
   updateTeam,
-} from '../../api/team.api';
-import { getSortedTeams } from '../../../helpers/team.helper';
+} from '../api/team.api';
+import { getSortedTeams } from '../../helpers/team.helper';
 import {
   AnswerInvitationDTO,
   CreateTeamDTO,
   UpdateTeamDTO,
-} from '../../types/team.types';
+} from '../types/team.types';
 
 export const useTeam = (teamId: string | null) => {
   return useQuery({

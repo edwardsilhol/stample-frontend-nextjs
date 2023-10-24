@@ -6,7 +6,7 @@ import {
   searchDocuments,
   fetchDocumentByTeam,
   summarizeDocument,
-} from '../../api/document.api';
+} from '../api/document.api';
 import {
   useInfiniteQuery,
   useMutation,
@@ -18,10 +18,7 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
-} from '../../types/document.types';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
-import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
-import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
+} from '../types/document.types';
 import { useMemo } from 'react';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
@@ -38,7 +35,7 @@ export const useDocument = (teamId: string | null, documentId: string) => {
 };
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
   useInfiniteQuery<SearchDocumentsReturnType>({
-    queryKey: ['documents', { searchDocumentsDTO }],
+    queryKey: ['documents', { ...searchDocumentsDTO }],
     queryFn: ({ pageParam }) =>
       searchDocuments({
         ...searchDocumentsDTO,
@@ -103,18 +100,19 @@ export const useUpdateDocumentAsGuest = () => {
   });
 };
 
-export const useSearchedDocuments = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  const [selectedTagId] = useSelectedTagId();
-  const [searchDocumentsQuery] = useSearchDocumentsQuery();
+export const useSearchedDocuments = (
+  teamId?: string,
+  tagId?: string,
+  searchQuery?: string,
+) => {
   const { data, ...other } = useSearchDocuments({
-    ...(searchDocumentsQuery
+    ...(searchQuery
       ? {
-          text: searchDocumentsQuery,
+          text: searchQuery,
         }
       : {}),
-    tags: selectedTagId ? [selectedTagId] : undefined,
-    team: selectedTeamId ? selectedTeamId : undefined,
+    tags: tagId ? [tagId] : undefined,
+    team: teamId ? teamId : undefined,
   });
 
   const allDocuments = useMemo(

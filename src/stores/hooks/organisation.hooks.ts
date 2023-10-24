@@ -3,14 +3,14 @@ import {
   fetchOrganisation,
   fetchOrganisations,
   updateOrganisation,
-} from '../../api/organisation.api';
+} from '../api/organisation.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CreateOrganisationDTO,
   UpdateOrganisationDTO,
-} from '../../types/organisation.types';
+} from '../types/organisation.types';
 
-export const useOrganisation = (organisationId: string | null) => {
+export const useOrganisation = (organisationId?: string) => {
   return useQuery({
     queryKey: ['organisation', { organisationId }],
     queryFn: () => (organisationId ? fetchOrganisation(organisationId) : null),

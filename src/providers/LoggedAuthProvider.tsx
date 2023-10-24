@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from '../stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from '../stores/hooks/user.hooks';
 
 interface Props {
   children: ReactNode;

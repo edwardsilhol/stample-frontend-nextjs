@@ -11,80 +11,28 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
-import { getDefaultSelectedTeamId } from 'helpers/team.helper';
-import { useEffect, useMemo, useState } from 'react';
-import {
-  useSelectedTeam,
-  useSelectedTeamId,
-} from 'stores/hooks/jotai/team.hooks';
-import { useAllTeams } from 'stores/hooks/tanstackQuery/team.hooks';
+import { useState } from 'react';
+import { useAllTeams, useTeam } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../helpers/team.helper';
 import { Team } from 'stores/types/team.types';
+import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
+import { useRouter } from 'next/navigation';
 
 interface SelectTeamsAndOrganisationsDialogProps {
+  teamId: string;
   open: boolean;
-  onClose: () => void;
 }
 function SelectTeamsAndOrganisationsDialog({
-  onClose,
+  teamId,
 }: SelectTeamsAndOrganisationsDialogProps) {
-  // const [selectedOrganisationId, setSelectedOrganisationId] =
-  //   useSelectedOrganisationId();
-  const [selectedTeamId, setSelectedTeamId] = useSelectedTeamId();
+  const router = useRouter();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-  // const [isCreateOrganisationOpen, setIsCreateOrganisationOpen] =
-  //   useState(false);
   const { data: teams } = useAllTeams();
-  const { data: team } = useSelectedTeam();
-  const teamsByIds: Record<string, Team> = useMemo(() => {
-    if (!teams) return {};
-    return teams.reduce((accumulator, team) => {
-      return {
-        ...accumulator,
-        [team._id]: team,
-      };
-    }, {});
-  }, [teams]);
+  const { data: team } = useTeam(teamId);
 
-  // const { data: organisations } = useAllOrganisations();
-
-  // useEffect(() => {
-  //   const defaultSelectedOrganisationId = organisations?.[0]?._id;
-  //   if (selectedOrganisationId === null && defaultSelectedOrganisationId) {
-  //     setSelectedOrganisationId(defaultSelectedOrganisationId);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [organisations]);
-  // const handleClickCreateOrganisation = () => {
-  //   setIsCreateOrganisationOpen(true);
-  // };
-
-  // const organisationTeams = useMemo(() => {
-  //   const selectedOrganisation = organisations?.find(
-  //     (organisation) => organisation._id === selectedOrganisationId,
-  //   );
-  //   if (selectedOrganisation) {
-  //     return teams?.filter((team) =>
-  //       selectedOrganisation.teams.includes(team._id),
-  //     );
-  //   }
-  //   const allOrganisationsTeamsIds = organisations?.reduce(
-  //     (accumulator, organisation) => [...accumulator, ...organisation.teams],
-  //     [] as string[],
-  //   );
-  //   return teams?.filter(
-  //     (team) => !allOrganisationsTeamsIds?.includes(team._id),
-  //   );
-  // }, [organisations, teams, selectedOrganisationId]);
-  useEffect(() => {
-    const defaultSelectedTeamId = getDefaultSelectedTeamId(teams);
-    if (defaultSelectedTeamId && !selectedTeamId) {
-      setSelectedTeamId(defaultSelectedTeamId);
-    }
-  }, [teams]);
   return (
     <>
       <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
@@ -92,11 +40,7 @@ function SelectTeamsAndOrganisationsDialog({
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1.5}>
         <TextField
-          value={
-            selectedTeamId === null || selectedTeamId === undefined
-              ? ''
-              : selectedTeamId
-          }
+          value={teamId === null || teamId === undefined ? '' : teamId}
           sx={{
             '.MuiInputBase-input:focus': {
               backgroundColor: 'inherit',
@@ -108,7 +52,9 @@ function SelectTeamsAndOrganisationsDialog({
             onOpen: () => setIsSelectOpen(true),
             onClose: () => setIsSelectOpen(false),
             renderValue: (value) => {
-              const selectedTeam = teamsByIds[value as string];
+              const selectedTeam = teams?.find(
+                (team) => team._id === value,
+              ) as Team;
               return selectedTeam ? (
                 <Stack
                   direction="row"
@@ -148,8 +94,7 @@ function SelectTeamsAndOrganisationsDialog({
             },
           }}
           onChange={(event) => {
-            setSelectedTeamId(event.target.value as string);
-            onClose();
+            router.push(`${TEAM_ROUTE}/${event.target.value}${TAG_ROUTE}`);
           }}
           select
           InputProps={{
@@ -168,7 +113,7 @@ function SelectTeamsAndOrganisationsDialog({
               key={team._id}
               value={team._id}
               sx={{
-                ...(team._id === selectedTeamId
+                ...(team._id === teamId
                   ? {
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -214,96 +159,8 @@ function SelectTeamsAndOrganisationsDialog({
           setIsSelectOpen(false);
         }}
       />
-      {/* <CreateOrganisationDialog
-        open={isCreateOrganisationOpen}
-        onClose={() => setIsCreateOrganisationOpen(false)}
-      /> */}
     </>
   );
-  // <Dialog open={open} onClose={onClose}>
-  //   <DialogContent>
-  //     <Stack spacing={2}>
-  //       <TextField
-  //         value={
-  //           selectedOrganisationId === null ? '' : selectedOrganisationId
-  //         }
-  //         onChange={(event) => {
-  //           if (!event.target.value) {
-  //             setSelectedOrganisationId(null);
-  //           } else {
-  //             setSelectedOrganisationId(event.target.value as string);
-  //           }
-  //         }}
-  //         label="Select Organisation"
-  //         select
-  //         sx={{
-  //           width: '100%',
-  //         }}
-  //         InputProps={{
-  //           sx: {
-  //             height: '30px',
-  //           },
-  //         }}
-  //         InputLabelProps={{
-  //           shrink: true,
-  //         }}
-  //         fullWidth
-  //         SelectProps={{
-  //           displayEmpty: true,
-  //         }}
-  //       >
-  //         <MenuItem value="" key="no-organisation">
-  //           No Organisation
-  //         </MenuItem>
-  //         {organisations?.map((organisation) => (
-  //           <MenuItem key={organisation._id} value={organisation._id}>
-  //             {organisation.name}
-  //           </MenuItem>
-  //         ))}
-  //       </TextField>
-  //       <TextField
-  //         value={selectedTeamId}
-  //         onChange={(event) =>
-  //           setSelectedTeamId(event.target.value as string)
-  //         }
-  //         label="Select Team"
-  //         select
-  //         sx={{
-  //           width: '100%',
-  //         }}
-  //         InputProps={{
-  //           sx: {
-  //             height: '30px',
-  //           },
-  //         }}
-  //         InputLabelProps={{
-  //           shrink: true,
-  //         }}
-  //         fullWidth
-  //       >
-  //         {organisationTeams?.map((team) => (
-  //           <MenuItem key={team._id} value={team._id}>
-  //             {team.name}
-  //           </MenuItem>
-  //         ))}
-  //       </TextField>
-  //     </Stack>
-  //     <Stack spacing={2} direction="row">
-  //       <Button onClick={handleClickCreateTeam}>Create Team</Button>
-  //       <Button onClick={handleClickCreateOrganisation}>
-  //         Create Organisation
-  //       </Button>
-  //     </Stack>
-  //     <CreateTeamDialog
-  //       open={isCreateTeamOpen}
-  //       onClose={() => setIsCreateTeamOpen(false)}
-  //     />
-  //     <CreateOrganisationDialog
-  //       open={isCreateOrganisationOpen}
-  //       onClose={() => setIsCreateOrganisationOpen(false)}
-  //     />
-  //   </DialogContent>
-  // </Dialog>
 }
 
 export default SelectTeamsAndOrganisationsDialog;
