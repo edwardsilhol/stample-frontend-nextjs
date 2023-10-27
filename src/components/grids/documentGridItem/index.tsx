@@ -16,12 +16,17 @@ import { useState, MouseEvent } from 'react';
 import { useDeleteDocument } from '../../../stores/hooks/document.hooks';
 
 interface DocumentGridItemProps {
+  currentUserId: string;
   document: MinimalDocument;
   flatTags?: Tag[];
   onClick?: () => void;
 }
 
-function DocumentGridItem({ document, onClick }: DocumentGridItemProps) {
+function DocumentGridItem({
+  document,
+  onClick,
+  currentUserId,
+}: DocumentGridItemProps) {
   const deleteDocument = useDeleteDocument(document.team);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
@@ -56,7 +61,11 @@ function DocumentGridItem({ document, onClick }: DocumentGridItemProps) {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        {currentUserId === document.creator && (
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        )}
+        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
+        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
       </Menu>
     </>
   );

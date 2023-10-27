@@ -16,6 +16,7 @@ import DocumentGridItem from '../grids/documentGridItem';
 import { useWindowHeight } from '@react-hook/window-size';
 import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
+import { useSession } from '../../stores/hooks/user.hooks';
 
 interface DocumentsMasonryProps {
   documents: MinimalDocument[];
@@ -36,6 +37,7 @@ function DocumentsMasonryComponent({
   fetchNextPage,
   variant,
 }: DocumentsMasonryProps) {
+  const { data: user, isLoading } = useSession();
   const router = useRouter();
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
@@ -63,8 +65,9 @@ function DocumentsMasonryComponent({
   const renderItem = useCallback(
     (props: { index: number; data: MinimalDocument }) => {
       const document = props.data;
-      return (
+      return !isLoading && user ? (
         <DocumentGridItem
+          currentUserId={user?._id}
           document={document}
           flatTags={flatTags}
           onClick={() =>
@@ -73,9 +76,11 @@ function DocumentsMasonryComponent({
             )
           }
         />
+      ) : (
+        <></>
       );
     },
-    [],
+    [isLoading, user],
   );
 
   return useMasonry({

@@ -13,12 +13,7 @@ const fakeDocument: MinimalDocument = {
   readers: ['user1', 'user2', 'user3'],
   likes: ['user4', 'user5'],
   tags: ['development', 'typescript', 'sample'],
-  creator: {
-    _id: '12345abcde',
-    firstName: 'John',
-    lastName: 'Doe',
-    profilePictureUrl: 'https://picsum.photos/200',
-  },
+  creator: 'user1',
   createdAt: new Date(),
   type: 'note',
 };
@@ -34,6 +29,7 @@ export default {
     </Box>
   ),
   args: {
+    user: 'user',
     document: fakeDocument,
     flatTags: ['development', 'typescript', 'sample'],
     onClick: () => console.log('Document clicked.'),
@@ -55,5 +51,11 @@ export const WithMainMedia = {
         src: 'https://picsum.photos/200',
       },
     },
+  },
+};
+
+export const isCreator = {
+  args: {
+    currentUserId: 'user1',
   },
 };
