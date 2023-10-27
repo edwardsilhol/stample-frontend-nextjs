@@ -1,18 +1,15 @@
+'use client';
+
 import * as Yup from 'yup';
 import { Team } from '../../../stores/types/team.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldArrayWithId, useForm } from 'react-hook-form';
-import {
-  useCreateTeam,
-  useUpdateTeam,
-} from '../../../stores/hooks/tanstackQuery/team.hooks';
+import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
 import TextFieldForm from '../fields/textFieldForm';
-import { useSelectedOrganisationId } from 'stores/hooks/jotai/organisation.hooks';
 import {
   useOrganisation,
   useUpdateOrganisation,
-} from 'stores/hooks/tanstackQuery/organisation.hooks';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
+} from 'stores/hooks/organisation.hooks';
 import { Close, Mail } from '@mui/icons-material';
 import {
   IconButton,
@@ -29,7 +26,7 @@ import { useMemo, useState } from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
-import { useSession } from 'stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from 'stores/hooks/user.hooks';
 import SelectFieldForm from '../fields/SelectFieldForm';
 import { capitalize } from 'lodash';
 import Box from '@mui/material/Box';
@@ -37,6 +34,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
+import { useRouter } from 'next/navigation';
+import { TEAM_ROUTE } from '../../../constants/routes.constant';
 
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
@@ -254,18 +253,20 @@ function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
     </>
   );
 }
-interface Props {
+interface CreateOrUpdateTeamFormProps {
   team?: PopulatedTeam;
   onClose: () => void;
 }
 
-export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
+export function CreateOrUpdateTeamForm({
+  team,
+  onClose,
+}: CreateOrUpdateTeamFormProps) {
+  const router = useRouter();
   const createTeam = useCreateTeam();
   const updateTeam = useUpdateTeam();
 
-  const [selectedOrganisationId] = useSelectedOrganisationId();
-  const [_, setSelectedTeamId] = useSelectedTeamId();
-  const { data: organisation } = useOrganisation(selectedOrganisationId);
+  const { data: organisation } = useOrganisation();
   const updateOrganisation = useUpdateOrganisation();
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -341,11 +342,11 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
                   },
                 })
                 .then(() => {
-                  setSelectedTeamId(team._id);
+                  router.push(`${TEAM_ROUTE}/${team._id}`);
                   onClose();
                 });
             } else {
-              setSelectedTeamId(team._id);
+              router.push(`${TEAM_ROUTE}/${team._id}`);
               onClose();
             }
           });
@@ -391,6 +392,6 @@ export const CreateOrUpdateTeamForm: React.FC<Props> = ({ team, onClose }) => {
       </Stack>
     </Box>
   );
-};
+}
 
 export default CreateOrUpdateTeamForm;

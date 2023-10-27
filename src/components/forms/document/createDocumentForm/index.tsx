@@ -10,20 +10,20 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CreateDocumentDTO } from '../../../../stores/types/document.types';
 import { Tag } from '../../../../stores/types/tag.types';
-import { useSelectedTeamId } from '../../../../stores/hooks/jotai/team.hooks';
-import { useCreateDocument } from '../../../../stores/hooks/tanstackQuery/document.hooks';
+import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
 import TextFieldForm from '../../fields/textFieldForm';
 import SelectOrCreateTags from '../SelectOrCreateTags';
 import TextEditor from '../../fields/TextEditor';
 import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
+import { useParams } from 'next/navigation';
 
 interface CreateDocumentFormProps {
   onClose: () => void;
 }
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
+  const { teamId } = useParams();
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const [selectedTeamId] = useSelectedTeamId();
   const createDocument = useCreateDocument();
   const editor = useEditor({
     placeholder: 'The content of your note',
@@ -54,8 +54,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
-    console.log(editor?.getHTML());
-    if (selectedTeamId === null) {
+    if (teamId === null) {
       return;
     }
     try {
@@ -64,7 +63,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
 
       await createDocument
         .mutateAsync({
-          teamId: selectedTeamId,
+          teamId: teamId as string,
           createDocumentDto: {
             title,
             content: editor?.getHTML() || '',
@@ -182,7 +181,10 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Tags
             </Typography>
-            <SelectOrCreateTags onChange={setSelectedTags} />
+            <SelectOrCreateTags
+              teamId={teamId as string}
+              onChange={setSelectedTags}
+            />
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
               Save
             </Button>

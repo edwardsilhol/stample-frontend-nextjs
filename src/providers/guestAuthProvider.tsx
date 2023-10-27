@@ -2,7 +2,8 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from '../stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from '../stores/hooks/user.hooks';
+import { TEAM_ROUTE } from '../constants/routes.constant';
 
 interface Props {
   children: ReactNode;
@@ -14,7 +15,7 @@ function GuestAuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push('/me');
+      router.push(TEAM_ROUTE);
     }
   });
 

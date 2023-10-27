@@ -2,40 +2,23 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createTag,
   fetchDocumentsCountPerTag,
-  fetchTags,
   fetchTagsByTeam,
   updateTag,
-} from '../../api/tag.api';
-import { CreateTagDTO, HooksUpdateTagDTO } from '../../types/tag.types';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
-
-export const useAllTags = () => {
-  return useQuery({
-    queryKey: ['Tags'],
-    queryFn: fetchTags,
-    initialData: { rich: [], raw: [] },
-  });
-};
+} from '../api/tag.api';
+import { CreateTagDTO, HooksUpdateTagDTO } from '../types/tag.types';
 
 export const useTagsByTeam = (teamId: string | null) => {
   return useQuery({
-    queryKey: ['Tags', { teamId }],
+    queryKey: ['tags', { teamId }],
     queryFn: () => (teamId ? fetchTagsByTeam(teamId) : { rich: [], raw: [] }),
     initialData: { rich: [], raw: [] },
   });
 };
 
-export const useSelectedTeamTags = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  return useTagsByTeam(selectedTeamId);
-};
-
-export const useDocumentsCountPerTag = () => {
-  const [selectedTeamId] = useSelectedTeamId();
+export const useDocumentsCountPerTagByTeam = (teamId: string | null) => {
   return useQuery({
-    queryKey: ['DocumentsCountPerTag', { teamId: selectedTeamId }],
-    queryFn: () =>
-      selectedTeamId ? fetchDocumentsCountPerTag(selectedTeamId) : {},
+    queryKey: ['documentsCountPerTag', { teamId: teamId }],
+    queryFn: () => (teamId ? fetchDocumentsCountPerTag(teamId) : {}),
     initialData: {},
   });
 };
@@ -65,7 +48,7 @@ export const useUpdateTag = () => {
       updateTag(tagId, payload),
     onSuccess: async (tag) => {
       console.log('successfully updated:', tag);
-      await queryClient.invalidateQueries({ queryKey: ['Tags'] });
+      await queryClient.invalidateQueries({ queryKey: ['tags'] });
     },
   });
 };

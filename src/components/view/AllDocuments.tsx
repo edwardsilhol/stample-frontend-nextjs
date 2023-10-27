@@ -1,18 +1,37 @@
 'use client';
 
-import { useSearchedDocuments } from '../../stores/hooks/tanstackQuery/document.hooks';
+import { useSearchDocuments } from '../../stores/hooks/document.hooks';
 import DocumentsView from '../document/DocumentsView';
-import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useParams, useSearchParams } from 'next/navigation';
+import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
+import { useMemo } from 'react';
+import CircularLoading from '../base/circularLoading';
 
 function AllDocuments() {
-  const { allDocuments, isLoading, total, fetchNextPage } =
-    useSearchedDocuments();
+  const { teamId, tagId } = useParams();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
+  const { data, isLoading, isFetching, fetchNextPage } = useSearchDocuments({
+    ...(searchQuery
+      ? {
+          text: searchQuery,
+        }
+      : {}),
+    tags: (tagId ? [tagId] : undefined) as string[] | undefined,
+    team: (teamId ? teamId : undefined) as string | undefined,
+  });
+  const allDocuments = useMemo(
+    () => data?.pages.flatMap((page) => page.documents) || [],
+    [data?.pages],
+  );
 
-  return isLoading ? (
-    <Stack justifyContent="center" alignItems="center" flexGrow={1}>
-      <CircularProgress />
-    </Stack>
+  const total = useMemo(
+    () => data?.pages[0]?.total || 0,
+    [data?.pages[0]?.total],
+  );
+
+  return isLoading || isFetching ? (
+    <CircularLoading />
   ) : (
     <DocumentsView
       documents={allDocuments}

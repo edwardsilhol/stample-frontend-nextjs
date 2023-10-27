@@ -1,6 +1,5 @@
 import { MinimalDocument } from '../../stores/types/document.types';
 import { Tag } from '../../stores/types/tag.types';
-import { useCurrentlyViewedDocumentId } from '../../stores/hooks/jotai/document.hooks';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -13,11 +12,10 @@ import Box from '@mui/material/Box';
 interface DocumentGridItemProps {
   document: MinimalDocument;
   flatTags?: Tag[];
+  onClick?: () => void;
 }
 
-function DocumentGridItem({ document }: DocumentGridItemProps) {
-  const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
-
+function DocumentGridItem({ document, onClick }: DocumentGridItemProps) {
   if (!document) {
     return null;
   }
@@ -56,10 +54,7 @@ function DocumentGridItem({ document }: DocumentGridItemProps) {
             overflow: 'hidden',
           }}
         >
-          <Box
-            sx={{ padding: 2, cursor: 'pointer' }}
-            onClick={() => setCurrentlyViewedDocumentId(document._id)}
-          >
+          <Box sx={{ padding: 2, cursor: 'pointer' }} onClick={onClick}>
             <Typography
               variant="h5"
               fontWeight={700}

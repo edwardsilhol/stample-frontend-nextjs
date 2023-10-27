@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -16,28 +15,28 @@ import {
   useDocument,
   useSummarizeDocument,
   useUpdateDocumentAsGuest,
-} from '../../stores/hooks/tanstackQuery/document.hooks';
+} from '../../stores/hooks/document.hooks';
 import { UserForOtherClient } from 'stores/types/user.types';
 import DocumentHeader from './DocumentHeader';
 import DocumentTags from './DocumentTags';
-import { useCreateComment } from 'stores/hooks/tanstackQuery/comment.hooks';
+import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { uniqBy } from 'lodash';
 import { CommentMentionType } from 'stores/types/comment.types';
 import DocumentComment from './DocumentComment';
-import { useTeam } from 'stores/hooks/tanstackQuery/team.hooks';
-import { usePathname, useRouter } from 'next/navigation';
+import { useTeam } from 'stores/hooks/team.hooks';
+import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useTagsByTeam } from 'stores/hooks/tanstackQuery/tag.hooks';
+import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { decodeHTML } from 'entities';
-import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
 import DocumentViewHeader from './DocumentViewHeader';
 import DocumentCreator from './DocumentCreator';
 import Beenhere from '@mui/icons-material/Beenhere';
-import { useSession } from '../../stores/hooks/tanstackQuery/user.hooks';
+import { useSession } from '../../stores/hooks/user.hooks';
 import TextEditor from 'components/forms/fields/TextEditor';
 import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
 import { getMentionNodes } from '../forms/fields/TextEditor/utils/nodes';
 import { Mention } from '../lists/mentionList';
+import CircularLoading from '../base/circularLoading';
 
 interface DocumentViewProps {
   documentId: string;
@@ -46,21 +45,24 @@ interface DocumentViewProps {
 function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const pathname = usePathname();
-  const [_, setCurrentlyViewedDocumentId] = useCurrentlyViewedDocumentId();
-  const { data: loggedInUser } = useSession();
-  const { data: viewedDocument, isLoading } = useDocument(null, documentId);
-  const { data: team } = useTeam(viewedDocument?.team ?? null);
-  const { data: tags } = useTagsByTeam(viewedDocument?.team ?? null);
+  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
+  const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
+    useDocument(null, documentId);
+  const { data: team, isLoading: isTeamLoading } = useTeam(
+    viewedDocument?.team ?? null,
+  );
+  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
+    viewedDocument?.team ?? null,
+  );
   const createComment = useCreateComment(documentId);
-  const { mutate: updateDocumentAsGuest } = useUpdateDocumentAsGuest();
+  const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(
     {
       editable: false,
       content: viewedDocument?.content,
     },
-    [viewedDocument?.content],
+    [viewedDocument?.content, isViewedDocumentLoading],
   );
 
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
@@ -122,7 +124,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
       },
       possibleMentions: userMentions,
     },
-    [viewedDocument, isLoading, userMentions],
+    [viewedDocument, isViewedDocumentLoading, userMentions],
   );
 
   const onSubmitAddComment = () => {
@@ -130,11 +132,8 @@ function DocumentView({ documentId }: DocumentViewProps) {
       return;
     }
     const mentionNodes = getMentionNodes(commentEditor?.state.doc);
-    console.log('mentionNodes', mentionNodes);
-
     const mentions = mentionNodes.map((node) => {
       const mention = node.attrs.id;
-      console.log('mention', mention);
       return {
         type:
           mention === CommentMentionType.EVERYONE
@@ -153,17 +152,13 @@ function DocumentView({ documentId }: DocumentViewProps) {
     commentEditor.commands.clearContent();
   };
   const onClickBack = () => {
-    if (pathname === '/me') {
-      setCurrentlyViewedDocumentId(null);
-    } else {
-      router.push('/me');
-    }
+    router.back();
   };
   const onClickLike = (like: boolean) => {
     if (!viewedDocument?.team) {
       return;
     }
-    updateDocumentAsGuest({
+    updateDocumentAsGuest.mutate({
       documentId: documentId,
       teamId: viewedDocument?.team,
       updateDocumentAsGuestDTO: {
@@ -189,10 +184,11 @@ function DocumentView({ documentId }: DocumentViewProps) {
           <Toolbar />
         </>
       ) : null}
-      {isLoading ? (
-        <Stack justifyContent="center" alignItems="center" height="100%">
-          <CircularProgress />
-        </Stack>
+      {isloggedInUserLoading ||
+      isViewedDocumentLoading ||
+      isTeamLoading ||
+      isTagsLoading ? (
+        <CircularLoading />
       ) : !viewedDocument ? (
         <Stack justifyContent="center" alignItems="center" height="100%">
           <h1>Document not found</h1>

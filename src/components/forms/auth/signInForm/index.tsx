@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { useSignIn } from '../../../../stores/hooks/tanstackQuery/user.hooks';
+import { useSignIn } from '../../../../stores/hooks/user.hooks';
 import { object, string } from 'yup';
 
 import { SignInDTO } from '../../../../stores/types/user.types';

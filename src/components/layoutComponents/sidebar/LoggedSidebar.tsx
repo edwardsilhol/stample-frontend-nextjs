@@ -1,17 +1,16 @@
+'use client';
+
 import { Logout, MenuOpen } from '@mui/icons-material';
-import { useLogout } from '../../../stores/hooks/tanstackQuery/user.hooks';
+import { useLogout } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import {
-  useDocumentsCountPerTag,
+  useDocumentsCountPerTagByTeam,
   useTagsByTeam,
-} from '../../../stores/hooks/tanstackQuery/tag.hooks';
+} from '../../../stores/hooks/tag.hooks';
 import TagsView from './TagsView';
-import { useIsSidebarOpen } from 'stores/hooks/jotai/layout.hooks';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
 import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
-import { usePathname, useRouter } from 'next/navigation';
-import { useCurrentlyViewedDocumentId } from 'stores/hooks/jotai/document.hooks';
+import { useParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -20,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
 
 interface LoggedSidebarProps {
@@ -27,48 +27,24 @@ interface LoggedSidebarProps {
   isLoading: boolean;
 }
 function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
+  const { teamId } = useParams();
   const isMobile = useIsMobile();
-  const router = useRouter();
-  const pathname = usePathname();
-  const { data: documentsCountPerTags } = useDocumentsCountPerTag();
-  const [selectedTeamId] = useSelectedTeamId();
-  // const [selectedTagId] = useSelectedTagId();
-  const [currentlyViewedDocumentId, setCurrentlyViewedDocumentId] =
-    useCurrentlyViewedDocumentId();
+  const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(
+    teamId as string,
+  );
   const {
     data: { rich: richTags },
-  } = useTagsByTeam(selectedTeamId);
-  // const { mutate } = useSummarizeTeamDocuments();
+  } = useTagsByTeam(teamId as string);
   const logout = useLogout();
-  const [isSidebarOpen, setIsSidebarOpen] = useIsSidebarOpen();
-  const [
-    isSelectTeamsAndOrganisationsOpen,
-    setIsSelectTeamsAndOrganisationsOpen,
-  ] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const onGoBackHome = () => {
-    if (pathname !== '/me') {
-      router.push('/me');
-    } else if (!!currentlyViewedDocumentId) {
-      setCurrentlyViewedDocumentId(null);
-    }
-  };
-
   const displaySelectTeams = () => (
     <Box paddingY={1}>
-      <SelectTeamsAndOrganisationsDialog
-        open={isSelectTeamsAndOrganisationsOpen}
-        onClose={() => {
-          setIsSelectTeamsAndOrganisationsOpen(false);
-          if (isMobile) {
-            setIsSidebarOpen(false);
-          }
-          onGoBackHome();
-        }}
-      />
+      <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
     </Box>
   );
 
@@ -141,13 +117,13 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
       {/*  </Button>*/}
       {/*) : null}*/}
       <TagsView
+        teamId={teamId as string}
         tags={richTags}
         documentsCountPerTags={documentsCountPerTags}
         onSelectTag={() => {
           if (isMobile) {
             setIsSidebarOpen(false);
           }
-          onGoBackHome();
         }}
       />
       <Divider sx={{ marginBottom: 2 }} />
@@ -170,25 +146,37 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
   return (
     <>
       {isMobile ? (
-        <Drawer
-          variant="temporary"
-          open={isSidebarOpen}
-          onClose={handleSidebarToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            '& .MuiDrawer-paper': {
-              background: 'none',
-              border: 'none',
-              minWidth: '300px',
-              width: '75%',
-              maxWidth: '100%',
-            },
-          }}
-        >
-          {displayDrawerContent()}
-        </Drawer>
+        <>
+          <IconButton
+            style={{
+              position: 'absolute',
+              top: '8px',
+              zIndex: 1000,
+            }}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <Menu />
+          </IconButton>
+          <Drawer
+            variant="temporary"
+            open={isSidebarOpen}
+            onClose={handleSidebarToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              '& .MuiDrawer-paper': {
+                background: 'none',
+                border: 'none',
+                minWidth: '300px',
+                width: '75%',
+                maxWidth: '100%',
+              },
+            }}
+          >
+            {displayDrawerContent()}
+          </Drawer>
+        </>
       ) : (
         <Box
           sx={{

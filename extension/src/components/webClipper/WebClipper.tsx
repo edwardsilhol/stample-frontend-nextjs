@@ -430,7 +430,7 @@ function WebClipper() {
                 disabled={!summarizedPageContent}
               >
                 {isSummarizedPageContentLoading
-                  ? 'Loading summary...'
+                  ? 'Index summary...'
                   : 'See summary'}
               </Button>
             ) : null}

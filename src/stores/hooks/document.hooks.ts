@@ -2,11 +2,10 @@ import {
   createDocument,
   fetchDocument,
   updateDocumentAsGuest,
-  fetchDocumentsByTeam,
   searchDocuments,
   fetchDocumentByTeam,
   summarizeDocument,
-} from '../../api/document.api';
+} from '../api/document.api';
 import {
   useInfiniteQuery,
   useMutation,
@@ -18,11 +17,7 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
-} from '../../types/document.types';
-import { useSelectedTeamId } from 'stores/hooks/jotai/team.hooks';
-import { useSelectedTagId } from 'stores/hooks/jotai/tag.hooks';
-import { useSearchDocumentsQuery } from 'stores/hooks/jotai/document.hooks';
-import { useMemo } from 'react';
+} from '../types/document.types';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
   return useQuery({
@@ -38,7 +33,7 @@ export const useDocument = (teamId: string | null, documentId: string) => {
 };
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
   useInfiniteQuery<SearchDocumentsReturnType>({
-    queryKey: ['documents', { searchDocumentsDTO }],
+    queryKey: ['documents', { query: searchDocumentsDTO }],
     queryFn: ({ pageParam }) =>
       searchDocuments({
         ...searchDocumentsDTO,
@@ -51,19 +46,6 @@ export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
     },
     getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
   });
-
-export const useDocumentsByTeam = (teamId: string | null) => {
-  return useQuery({
-    queryKey: ['documents', { teamId }],
-    queryFn: () => {
-      if (teamId) {
-        return fetchDocumentsByTeam(teamId);
-      }
-      return [];
-    },
-    initialData: [],
-  });
-};
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
@@ -101,36 +83,6 @@ export const useUpdateDocumentAsGuest = () => {
       });
     },
   });
-};
-
-export const useSearchedDocuments = () => {
-  const [selectedTeamId] = useSelectedTeamId();
-  const [selectedTagId] = useSelectedTagId();
-  const [searchDocumentsQuery] = useSearchDocumentsQuery();
-  const { data, ...other } = useSearchDocuments({
-    ...(searchDocumentsQuery
-      ? {
-          text: searchDocumentsQuery,
-        }
-      : {}),
-    tags: selectedTagId ? [selectedTagId] : undefined,
-    team: selectedTeamId ? selectedTeamId : undefined,
-  });
-
-  const allDocuments = useMemo(
-    () => data?.pages.flatMap((page) => page.documents) || [],
-    [data?.pages],
-  );
-
-  const total = useMemo(
-    () => data?.pages[0]?.total || 0,
-    [data?.pages[0]?.total],
-  );
-  return {
-    ...other,
-    allDocuments,
-    total,
-  };
 };
 
 export const useSummarizeDocument = () => {

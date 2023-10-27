@@ -1,14 +1,14 @@
 'use client';
 
-import { fetchSession, signIn, signUp } from '../../api/user.api';
+import { fetchSession, signIn, signUp } from '../api/user.api';
 
-import { SignInDTO, SignUpDTO } from '../../types/user.types';
+import { SignInDTO, SignUpDTO } from '../types/user.types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-} from '../../../constants/tokenConfig.constant';
-import { QUERY_KEY_SESSION } from '../../../constants/reactQuery.constant';
+} from '../../constants/tokenConfig.constant';
+import { QUERY_KEY_SESSION } from '../../constants/reactQuery.constant';
 
 export const useSession = () => {
   return useQuery({
