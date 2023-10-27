@@ -94,7 +94,7 @@ function SelectTeamsAndOrganisationsDialog({
             },
           }}
           onChange={(event) => {
-            router.push(`${TEAM_ROUTE}/${event.target.value}${TAG_ROUTE}`);
+            router.push(`${TEAM_ROUTE}/${event.target.value}`);
           }}
           select
           InputProps={{

@@ -100,11 +100,13 @@ function TagsView({
 
   const handleClickSelectTag = (
     event: MouseEvent<HTMLElement>,
-    tagId: string,
+    tagId?: string,
   ) => {
     event.stopPropagation();
     onSelectTag();
-    router.push(`${TEAM_ROUTE}/${teamId}${TAG_ROUTE}/${tagId}`);
+    router.push(
+      `${TEAM_ROUTE}/${teamId}${tagId ? `/${TAG_ROUTE}/${tagId}` : ''}`,
+    );
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -328,7 +330,7 @@ function TagsView({
               </Stack>
             }
             onClick={(event) => {
-              handleClickSelectTag(event, '');
+              handleClickSelectTag(event);
             }}
           />,
           ...(tags
@@ -345,7 +347,6 @@ function TagsView({
         sx={{
           '& .MuiPopover-paper': {
             boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
-            // boxShadow: 'none',
             border: '1px solid rgba(0,0,0,0.13)',
             borderRadius: '4px',
             margin: '-20px 0 0 -20px',

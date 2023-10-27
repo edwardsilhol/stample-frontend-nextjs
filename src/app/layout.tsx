@@ -6,8 +6,6 @@ import ThemeProvider from '../providers/ThemeProvider';
 export const metadata = {
   title: 'Stample',
   icons: { icon: '/favicon.ico' },
-  viewport:
-    'width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover',
 };
 
 interface Props {
