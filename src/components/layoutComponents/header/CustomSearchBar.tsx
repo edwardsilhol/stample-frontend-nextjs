@@ -5,12 +5,22 @@ import InputBase from '@mui/material/InputBase';
 import Search from '@mui/icons-material/Search';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { SEARCH_QUERY_PARAM } from '../../../constants/queryParams.constant';
+import { debounce } from 'lodash';
+import { useState } from 'react';
 
 function CustomSearchBar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
+  const [searchQueryState, setSearchQueryState] = useState<string | null>(
+    searchQuery,
+  );
+
+  const handleSearch = debounce(() => {
+    router.push(`${pathname}?${SEARCH_QUERY_PARAM}=${searchQueryState}`);
+  }, 200);
+
   return (
     <Box
       sx={{
@@ -25,9 +35,10 @@ function CustomSearchBar() {
     >
       <InputBase
         onChange={(e) => {
-          router.push(`${pathname}?${SEARCH_QUERY_PARAM}=${e.target.value}`);
+          setSearchQueryState(e.target.value);
         }}
-        value={searchQuery ?? ''}
+        onKeyUp={handleSearch}
+        value={searchQueryState ?? ''}
         startAdornment={<Search sx={{ fontSize: '20px', color: '#737373' }} />}
         placeholder="Search"
         sx={{

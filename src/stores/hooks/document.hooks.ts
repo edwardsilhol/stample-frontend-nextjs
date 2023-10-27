@@ -2,7 +2,6 @@ import {
   createDocument,
   fetchDocument,
   updateDocumentAsGuest,
-  fetchDocumentsByTeam,
   searchDocuments,
   fetchDocumentByTeam,
   summarizeDocument,
@@ -34,7 +33,7 @@ export const useDocument = (teamId: string | null, documentId: string) => {
 };
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
   useInfiniteQuery<SearchDocumentsReturnType>({
-    queryKey: ['documents', { ...searchDocumentsDTO }],
+    queryKey: ['documents', { query: searchDocumentsDTO }],
     queryFn: ({ pageParam }) =>
       searchDocuments({
         ...searchDocumentsDTO,
@@ -47,19 +46,6 @@ export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
     },
     getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
   });
-
-export const useDocumentsByTeam = (teamId: string | null) => {
-  return useQuery({
-    queryKey: ['documents', { teamId }],
-    queryFn: () => {
-      if (teamId) {
-        return fetchDocumentsByTeam(teamId);
-      }
-      return [];
-    },
-    initialData: [],
-  });
-};
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
