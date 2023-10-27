@@ -43,7 +43,6 @@ function DocumentGridItem({
   const renderSettingsButton = () => (
     <>
       <IconButton
-        aria-label="settings"
         sx={{
           position: 'absolute',
           top: '8px',
@@ -61,9 +60,7 @@ function DocumentGridItem({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        {currentUserId === document.creator && (
-          <MenuItem onClick={handleDelete}>Delete</MenuItem>
-        )}
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
         <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
         <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
       </Menu>
@@ -79,7 +76,7 @@ function DocumentGridItem({
       }}
       variant="elevation"
     >
-      {renderSettingsButton()}
+      {currentUserId === document.creator && renderSettingsButton()}
       {document.mainMedia?.src ? (
         <CardMedia
           sx={{

@@ -15,28 +15,23 @@ import {
   useDocument,
   useSummarizeDocument,
   useUpdateDocumentAsGuest,
-} from '../../stores/hooks/document.hooks';
-import { UserForOtherClient } from 'stores/types/user.types';
-import DocumentHeader from './DocumentHeader';
-import DocumentTags from './DocumentTags';
+} from '../../../stores/hooks/document.hooks';
+import DocumentHeader from '../../document/DocumentHeader';
+import DocumentTags from '../../document/DocumentTags';
 import { useCreateComment } from 'stores/hooks/comment.hooks';
-import { uniqBy } from 'lodash';
-import { CommentMentionType } from 'stores/types/comment.types';
-import DocumentComment from './DocumentComment';
 import { useTeam } from 'stores/hooks/team.hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { decodeHTML } from 'entities';
-import DocumentViewHeader from './DocumentViewHeader';
-import DocumentCreator from './DocumentCreator';
+import DocumentViewHeader from '../../document/DocumentViewHeader';
+import DocumentCreator from '../../document/DocumentCreator';
 import Beenhere from '@mui/icons-material/Beenhere';
-import { useSession } from '../../stores/hooks/user.hooks';
+import { useSession } from '../../../stores/hooks/user.hooks';
 import TextEditor from 'components/forms/fields/TextEditor';
-import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
-import { getMentionNodes } from '../forms/fields/TextEditor/utils/nodes';
-import { Mention } from '../lists/mentionList';
-import CircularLoading from '../base/circularLoading';
+import { useEditor } from '../../forms/fields/TextEditor/hooks/useEditor';
+import CircularLoading from '../../base/circularLoading';
+import DocumentComments from '../../forms/document/documentComments';
 
 interface DocumentViewProps {
   documentId: string;
@@ -54,7 +49,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
     viewedDocument?.team ?? null,
   );
-  const createComment = useCreateComment(documentId);
+  useCreateComment(documentId);
   const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(
@@ -65,25 +60,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
     [viewedDocument?.content, isViewedDocumentLoading],
   );
 
-  const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
-    () =>
-      [
-        ...(viewedDocument?.guests || []),
-        ...([viewedDocument?.creator] || []),
-        ...(team?.users.map((user) => user.user) || []),
-      ].reduce(
-        (accumulator, user) => ({
-          ...accumulator,
-          ...(user
-            ? {
-                [user._id]: user,
-              }
-            : {}),
-        }),
-        {} as Record<string, UserForOtherClient>,
-      ),
-    [viewedDocument?.guests, viewedDocument?.creator, team?.users],
-  );
   const isDocumentLiked = useMemo(
     () =>
       viewedDocument?.likes.some(
@@ -91,66 +67,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
       ),
     [viewedDocument?.likes, loggedInUser],
   );
-  const userMentions = useMemo<Mention[]>(
-    () => [
-      {
-        id: CommentMentionType.EVERYONE,
-        label: 'Everyone',
-      },
-      ...uniqBy(
-        [
-          ...(viewedDocument?.guests || []),
-          viewedDocument?.creator,
-          ...(team?.users.map((user) => user.user) || []),
-        ],
-        (user) => user?._id,
-      )
-        .filter((user): user is UserForOtherClient => !!user)
-        .map((user) => ({
-          id: user._id,
-          label: `${user.firstName} ${user.lastName}`,
-          avatar: user.profilePictureUrl,
-        })),
-    ],
-    [viewedDocument?.guests, viewedDocument?.creator, team?.users],
-  );
-
-  const commentEditor = useEditor(
-    {
-      placeholder: 'Say something...',
-      editorStyle: {
-        overflowY: 'visible',
-        overflow: 'unset',
-      },
-      possibleMentions: userMentions,
-    },
-    [viewedDocument, isViewedDocumentLoading, userMentions],
-  );
-
-  const onSubmitAddComment = () => {
-    if (!commentEditor) {
-      return;
-    }
-    const mentionNodes = getMentionNodes(commentEditor?.state.doc);
-    const mentions = mentionNodes.map((node) => {
-      const mention = node.attrs.id;
-      return {
-        type:
-          mention === CommentMentionType.EVERYONE
-            ? CommentMentionType.EVERYONE
-            : CommentMentionType.USER,
-        user: mention === CommentMentionType.USER ? mention : undefined,
-      };
-    });
-
-    if (!commentEditor.isEmpty && mentions) {
-      createComment.mutate({
-        content: commentEditor?.getHTML(),
-        mentions,
-      });
-    }
-    commentEditor.commands.clearContent();
-  };
   const onClickBack = () => {
     router.back();
   };
@@ -339,46 +255,12 @@ function DocumentView({ documentId }: DocumentViewProps) {
               <Typography variant="h2" marginTop={3}>
                 Comments
               </Typography>
-              <Stack spacing={2} paddingY={2}>
-                {viewedDocument.comments?.map((comment, index) => (
-                  <DocumentComment
-                    key={index}
-                    index={index}
-                    commentAuthorsById={commentAuthorsById}
-                    comment={comment}
-                  />
-                ))}
-              </Stack>
-              <TextEditor editor={commentEditor} />
-              {/*<Editor*/}
-              {/*  editorState={editedCommentText}*/}
-              {/*  onEditorStateChange={(value) => setEditedCommentText(value)}*/}
-              {/*  mention={{*/}
-              {/*    separator: ' ',*/}
-              {/*    trigger: '@',*/}
-              {/*    suggestions: userMentions,*/}
-              {/*  }}*/}
-              {/*  placeholder="Say something..."*/}
-              {/*  wrapperStyle={{*/}
-              {/*    width: '100%',*/}
-              {/*    overflowY: 'visible',*/}
-              {/*  }}*/}
-              {/*  editorStyle={{*/}
-              {/*    overflowY: 'visible',*/}
-              {/*    overflow: 'unset',*/}
-              {/*    border: '1px solid #e5e5e5',*/}
-              {/*    borderRadius: '6px',*/}
-              {/*    paddingLeft: '10px',*/}
-              {/*  }}*/}
-              {/*  toolbarHidden*/}
-              {/*/>*/}
-              <Button
-                onClick={onSubmitAddComment}
-                variant="contained"
-                sx={{ alignSelf: 'flex-end', marginTop: 2 }}
-              >
-                Send
-              </Button>
+              <DocumentComments
+                documentId={documentId}
+                isViewedDocumentLoading={isViewedDocumentLoading}
+                viewedDocument={viewedDocument}
+                team={team}
+              />
             </Stack>
           </Grid>
           {!isMobile && <Grid item xs={1} sm={1.5} />}

@@ -8,6 +8,12 @@ import { Comment } from 'stores/types/comment.types';
 import { UserForOtherClient } from 'stores/types/user.types';
 import { useEditor } from '../forms/fields/TextEditor/hooks/useEditor';
 import TextEditor from '../forms/fields/TextEditor';
+import ActionButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 interface DocumentCommentProps {
   comment: Comment;
@@ -20,11 +26,18 @@ function DocumentComment({
   commentAuthorsById,
   index,
 }: DocumentCommentProps) {
+  const [isEditable, setIsEditable] = useState(false);
   const author = commentAuthorsById[comment.creatorId];
-  const editor = useEditor({
-    content: comment.content,
-    editable: false,
-  });
+  const editor = useEditor(
+    {
+      content: comment.content,
+      editable: isEditable,
+      editorStyle: {
+        backgroundColor: isEditable ? 'white' : 'transparent',
+      },
+    },
+    [comment.content, isEditable],
+  );
 
   return (
     <Card
@@ -52,17 +65,40 @@ function DocumentComment({
           fontWeight: 700,
         }}
         action={
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ paddingRight: '10px' }}
-          >
-            {formatDistance(new Date(comment.createdAt), new Date())} ago
-          </Typography>
+          <>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ paddingRight: '10px' }}
+            >
+              {formatDistance(new Date(comment.createdAt), new Date())} ago
+            </Typography>
+            <ActionButton
+              sx={{
+                color: 'primary.main',
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              onClick={() => setIsEditable(!isEditable)}
+            >
+              {!isEditable ? <EditIcon /> : <CloseIcon />}
+            </ActionButton>
+          </>
         }
       />
       <CardContent>
-        <TextEditor editor={editor} />
+        <Stack spacing={1}>
+          <TextEditor editor={editor} />
+          {isEditable && (
+            <Button
+              // onClick={onSubmitAddComment}
+              // TODO: add mutation
+              variant="contained"
+              sx={{ alignSelf: 'flex-end' }}
+            >
+              Send
+            </Button>
+          )}
+        </Stack>
       </CardContent>
     </Card>
   );

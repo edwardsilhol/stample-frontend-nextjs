@@ -1,4 +1,4 @@
-import DocumentView from 'components/document/DocumentView';
+import DocumentView from 'components/view/documentView';
 
 interface Props {
   params: {
