@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useAllTeams, useTeam } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../helpers/team.helper';
 import { Team } from 'stores/types/team.types';
-import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
+import { TEAM_ROUTE } from '../../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
 
 interface SelectTeamsAndOrganisationsDialogProps {

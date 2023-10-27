@@ -3,7 +3,7 @@
 import { useAllTeams } from '../../../stores/hooks/team.hooks';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
+import { TEAM_ROUTE } from '../../../constants/routes.constant';
 
 function MainPage() {
   const router = useRouter();
