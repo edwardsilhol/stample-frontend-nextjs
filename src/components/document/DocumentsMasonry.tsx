@@ -12,7 +12,7 @@ import {
 import { useScroller } from '../../utils/hooks/useScroller';
 import { memo, useCallback, useRef } from 'react';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from './DocumentsView';
-import DocumentGridItem from './DocumentGridItem';
+import DocumentGridItem from '../grids/documentGridItem';
 import { useWindowHeight } from '@react-hook/window-size';
 import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
 import { useRouter } from 'next/navigation';

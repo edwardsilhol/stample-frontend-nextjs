@@ -84,3 +84,7 @@ export const summarizeDocument = async (
 ): Promise<Document> => {
   return await apiRequest<Document>('POST', `/document/${documentId}/summary`);
 };
+
+export const deleteDocument = async (documentId: string): Promise<void> => {
+  await apiRequest<void>('DELETE', `/document/${documentId}`);
+};

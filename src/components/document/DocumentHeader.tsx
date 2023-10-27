@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { getDocumentHeaderStrings } from 'helpers/document.helpers';
+import { getDocumentHeaderStrings } from 'utils/document.helpers';
 import { Document } from 'stores/types/document.types';
 import { Fragment, ReactNode, useMemo } from 'react';
 
