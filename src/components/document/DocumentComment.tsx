@@ -19,12 +19,14 @@ interface DocumentCommentProps {
   comment: Comment;
   commentAuthorsById: Record<string, UserForOtherClient>;
   index: number;
+  currentUserId: string;
 }
 
 function DocumentComment({
   comment,
   commentAuthorsById,
   index,
+  currentUserId,
 }: DocumentCommentProps) {
   const [isEditable, setIsEditable] = useState(false);
   const author = commentAuthorsById[comment.creatorId];
@@ -71,17 +73,31 @@ function DocumentComment({
               color="text.secondary"
               sx={{ paddingRight: '10px' }}
             >
-              {formatDistance(new Date(comment.createdAt), new Date())} ago
+              {`${formatDistance(new Date(comment.createdAt), new Date())} ago`}
+              {comment.updatedAt !== comment.createdAt && (
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ paddingLeft: '10px' }}
+                >
+                  {`(Updated ${formatDistance(
+                    new Date(comment.updatedAt),
+                    new Date(),
+                  )} ago)`}
+                </Typography>
+              )}
             </Typography>
-            <ActionButton
-              sx={{
-                color: 'primary.main',
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-              }}
-              onClick={() => setIsEditable(!isEditable)}
-            >
-              {!isEditable ? <EditIcon /> : <CloseIcon />}
-            </ActionButton>
+            {currentUserId === comment.creatorId && (
+              <ActionButton
+                sx={{
+                  color: 'primary.main',
+                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                }}
+                onClick={() => setIsEditable(!isEditable)}
+              >
+                {!isEditable ? <EditIcon /> : <CloseIcon />}
+              </ActionButton>
+            )}
           </>
         }
       />

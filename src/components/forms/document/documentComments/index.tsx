@@ -1,3 +1,5 @@
+'use client';
+
 import DocumentComment from '../../../document/DocumentComment';
 import TextEditor from '../../fields/TextEditor';
 import Button from '@mui/material/Button';
@@ -12,6 +14,7 @@ import { UserForOtherClient } from '../../../../stores/types/user.types';
 import { PopulatedDocument } from '../../../../stores/types/document.types';
 import { PopulatedTeam } from '../../../../stores/types/team.types';
 import { useCreateComment } from '../../../../stores/hooks/comment.hooks';
+import { useSession } from '../../../../stores/hooks/user.hooks';
 
 interface DocumentCommentsProps {
   documentId: string;
@@ -26,6 +29,7 @@ function DocumentComments({
   viewedDocument,
   team,
 }: DocumentCommentsProps) {
+  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
   const createComment = useCreateComment(documentId);
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
@@ -114,6 +118,7 @@ function DocumentComments({
             index={index}
             commentAuthorsById={commentAuthorsById}
             comment={comment}
+            currentUserId={loggedInUser?._id}
           />
         ))}
       </Stack>
