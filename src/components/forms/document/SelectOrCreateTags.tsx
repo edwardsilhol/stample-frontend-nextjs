@@ -18,14 +18,11 @@ function TagTextField({ teamId, onChange }: TagTextFieldProps) {
     isLoading,
   } = useTagsByTeam(teamId);
 
-  const handleInputChange = (event: SyntheticEvent, value: string) => {
+  const handleInputChange = (_: SyntheticEvent, value: string) => {
     setInputValue(value);
   };
 
-  const handleTagSelect = (
-    event: React.SyntheticEvent,
-    value: (string | Tag)[],
-  ) => {
+  const handleTagSelect = (_: SyntheticEvent, value: (string | Tag)[]) => {
     if (!Array.isArray(value)) {
       if (!selectedTags.includes(value)) {
         setSelectedTags([...selectedTags, value]);

@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import TextFieldForm from './index';
+import TextFormField from './index';
 import { useForm } from 'react-hook-form';
 
 function Template(args: any) {
@@ -10,7 +10,7 @@ function Template(args: any) {
       email: '',
     },
   });
-  return <TextFieldForm control={control} {...args} />;
+  return <TextFormField control={control} {...args} />;
 }
 export default {
   title: 'Components/Forms/Fields/TextFieldForm', // Change story title

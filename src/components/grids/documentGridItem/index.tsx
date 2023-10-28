@@ -13,9 +13,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState, MouseEvent } from 'react';
-import { useDeleteDocument } from '../../../stores/hooks/document.hooks';
+import {
+  useDeleteDocument,
+  useUpdateDocument,
+} from '../../../stores/hooks/document.hooks';
 
 interface DocumentGridItemProps {
+  userHasPrivilege: boolean;
   currentUserId: string;
   document: MinimalDocument;
   flatTags?: Tag[];
@@ -23,22 +27,32 @@ interface DocumentGridItemProps {
 }
 
 function DocumentGridItem({
+  userHasPrivilege,
   document,
   onClick,
   currentUserId,
 }: DocumentGridItemProps) {
+  const updateDocument = useUpdateDocument();
   const deleteDocument = useDeleteDocument(document.team);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   const handleDelete = () => {
     deleteDocument.mutate(document._id);
     setAnchorEl(null);
   };
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleToggleNewsletterSelection = () => {
+    updateDocument.mutate({
+      documentId: document._id,
+      updateDocumentDto: {
+        selectedForNewsletter: !document.selectedForNewsletter,
+      },
+    });
+    handleMenuClose();
   };
   const renderSettingsButton = () => (
     <>
@@ -60,9 +74,13 @@ function DocumentGridItem({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={handleToggleNewsletterSelection}>
+          {`${
+            document.selectedForNewsletter ? 'Remove from' : 'Add to'
+          } newsletter`}
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
-        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
-        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
       </Menu>
     </>
   );
@@ -76,7 +94,8 @@ function DocumentGridItem({
       }}
       variant="elevation"
     >
-      {currentUserId === document.creator && renderSettingsButton()}
+      {(userHasPrivilege || currentUserId === document.creator) &&
+        renderSettingsButton()}
       {document.mainMedia?.src ? (
         <CardMedia
           sx={{

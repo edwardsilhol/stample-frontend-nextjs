@@ -18,7 +18,6 @@ import {
 } from '../../../stores/hooks/document.hooks';
 import DocumentHeader from '../../document/DocumentHeader';
 import DocumentTags from '../../document/DocumentTags';
-import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useTeam } from 'stores/hooks/team.hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
@@ -49,7 +48,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
   const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
     viewedDocument?.team ?? null,
   );
-  useCreateComment(documentId);
   const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(
@@ -76,8 +74,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
     }
     updateDocumentAsGuest.mutate({
       documentId: documentId,
-      teamId: viewedDocument?.team,
-      updateDocumentAsGuestDTO: {
+      updateDocumentAsGuestDto: {
         isLiked: like,
       },
     });

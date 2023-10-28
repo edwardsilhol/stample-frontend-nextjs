@@ -6,6 +6,7 @@ import {
   fetchDocumentByTeam,
   summarizeDocument,
   deleteDocument,
+  updateDocument,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
@@ -18,6 +19,7 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
+  UpdateDocumentDto,
 } from '../types/document.types';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
@@ -70,14 +72,12 @@ export const useUpdateDocumentAsGuest = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
-      teamId,
       documentId,
-      updateDocumentAsGuestDTO,
+      updateDocumentAsGuestDto,
     }: {
-      teamId: string;
       documentId: string;
-      updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO;
-    }) => updateDocumentAsGuest(teamId, documentId, updateDocumentAsGuestDTO),
+      updateDocumentAsGuestDto: UpdateDocumentAsGuestDTO;
+    }) => updateDocumentAsGuest(documentId, updateDocumentAsGuestDto),
     onSuccess: async (_, { documentId }) => {
       await queryClient.invalidateQueries({
         queryKey: ['document', { documentId }],
@@ -86,7 +86,41 @@ export const useUpdateDocumentAsGuest = () => {
   });
 };
 
+export const useUpdateDocument = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      documentId,
+      updateDocumentDto,
+    }: {
+      documentId: string;
+      updateDocumentDto: UpdateDocumentDto;
+    }) => updateDocument(documentId, updateDocumentDto),
+    onSuccess: async (document) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['document', { documentId: document._id }],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['documents', { query: { team: document.team } }],
+      });
+    },
+  });
+};
+
 export const useSummarizeDocument = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ documentId }: { documentId: string }) =>
+      summarizeDocument(documentId),
+    onSuccess: async (_, { documentId }) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['document', { documentId }],
+      });
+    },
+  });
+};
+
+export const useAddDocumentToNewsletter = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ documentId }: { documentId: string }) =>

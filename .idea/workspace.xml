@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/documentComments/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/documentComments/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/textFormField/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/fields/textFormField/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/base/circularLoading/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/base/circularLoading/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signInForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signInForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/auth/signUpForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/SwitchFormField/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/textFieldForm/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/SwitchFormField/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/api/document.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/api/document.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/types/document.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/document.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,33 +53,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;youssef/EditDeleteStample&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/components/view/documentView&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/components/forms/fields",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
+    "ts.external.directory.path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/forms/fields" />
       <recent name="$PROJECT_DIR$/src/components/view/documentView" />
       <recent name="$PROJECT_DIR$/src/components/grids/documentGridItem" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]" />
       <recent name="$PROJECT_DIR$/src/components/base/circularLoading" />
-      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/tag" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/view/documentView" />

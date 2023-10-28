@@ -17,6 +17,8 @@ import { useWindowHeight } from '@react-hook/window-size';
 import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../../stores/hooks/user.hooks';
+import { useTeam } from '../../stores/hooks/team.hooks';
+import { LocalRole } from '../../stores/types/user.types';
 
 interface DocumentsMasonryProps {
   documents: MinimalDocument[];
@@ -37,7 +39,8 @@ function DocumentsMasonryComponent({
   fetchNextPage,
   variant,
 }: DocumentsMasonryProps) {
-  const { data: user, isLoading } = useSession();
+  const { data: user, isLoading: isUserLoading } = useSession();
+  const { data: team, isLoading: isTeamLoading } = useTeam(documents[0]?.team);
   const router = useRouter();
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);
@@ -62,11 +65,18 @@ function DocumentsMasonryComponent({
     totalItems: total,
     minimumBatchSize: 70,
   });
+
+  const currentUserRole = team?.users.find((u) => u.user._id === user?._id)
+    ?.role;
+  const UserHasPrivilege =
+    currentUserRole === LocalRole.ADMIN || currentUserRole === LocalRole.OWNER;
+
   const renderItem = useCallback(
     (props: { index: number; data: MinimalDocument }) => {
       const document = props.data;
-      return !isLoading && user ? (
+      return !isUserLoading && !isTeamLoading && team && user ? (
         <DocumentGridItem
+          userHasPrivilege={UserHasPrivilege}
           currentUserId={user?._id}
           document={document}
           flatTags={flatTags}
@@ -80,7 +90,7 @@ function DocumentsMasonryComponent({
         <></>
       );
     },
-    [isLoading, user],
+    [isUserLoading, user, isTeamLoading, team],
   );
 
   return useMasonry({

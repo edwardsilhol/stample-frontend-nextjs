@@ -14,7 +14,7 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import Add from '@mui/icons-material/Add';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, KeyboardEvent } from 'react';
 import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
 
 const TAG_NAME_MAX_LENGTH = 30;
@@ -135,7 +135,7 @@ function TagsView({
     handleClose();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     e.key === 'Enter' && handleCreateTag();
   };
 

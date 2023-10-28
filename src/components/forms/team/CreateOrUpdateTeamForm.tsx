@@ -5,7 +5,7 @@ import { Team } from '../../../stores/types/team.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldArrayWithId, useForm } from 'react-hook-form';
 import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
-import TextFieldForm from '../fields/textFieldForm';
+import TextFormField from '../fields/textFormField';
 import {
   useOrganisation,
   useUpdateOrganisation,
@@ -369,7 +369,7 @@ export function CreateOrUpdateTeamForm({
             <Typography variant="body2" fontWeight={700}>
               Name your team
             </Typography>
-            <TextFieldForm
+            <TextFormField
               control={control}
               name="name"
               placeholder="Name"

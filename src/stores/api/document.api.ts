@@ -6,6 +6,7 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
+  UpdateDocumentDto,
 } from '../types/document.types';
 import { apiRequest } from '../../utils/api';
 import { SEARCH_DOCUMENT_PAGE_SIZE } from 'constants/document.constant';
@@ -42,27 +43,28 @@ export const createDocument = async (
   );
 };
 
+export const updateDocument = async (
+  documentId: string,
+  updateDocumentDto: UpdateDocumentDto,
+): Promise<Document> => {
+  return await apiRequest<Document>(
+    'PATCH',
+    `/document/${documentId}`,
+    undefined,
+    updateDocumentDto,
+  );
+};
+
 export const updateDocumentAsGuest = async (
-  teamId: string,
   documentId: string,
   updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO,
 ): Promise<Document> => {
   return await apiRequest<Document>(
     'PATCH',
-    `/team/${teamId}/document/${documentId}/guest`,
+    `/document/${documentId}/guest`,
     undefined,
     updateDocumentAsGuestDTO,
   );
-};
-export const fetchDocumentsByTeam = async (
-  teamId: string,
-): Promise<MinimalDocument[]> => {
-  try {
-    return await apiRequest<Document[]>('GET', `/team/${teamId}/document`);
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
 };
 
 export const searchDocuments = async (

@@ -6,7 +6,7 @@ interface Props extends UseControllerProps {
   control: Control<any>;
 }
 
-function TextFieldForm({
+function TextFormField({
   name,
   control,
   rules,
@@ -26,4 +26,4 @@ function TextFieldForm({
   );
 }
 
-export default TextFieldForm;
+export default TextFormField;

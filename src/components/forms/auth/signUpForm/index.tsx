@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import TextFieldForm from '../../fields/textFieldForm';
+import TextFormField from '../../fields/textFormField';
 
 const useStyles = () => ({
   signUpContainer: {
@@ -95,7 +95,7 @@ function SignUpForm() {
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextFieldForm
+              <TextFormField
                 control={control}
                 name="firstName"
                 required
@@ -106,7 +106,7 @@ function SignUpForm() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextFieldForm
+              <TextFormField
                 control={control}
                 required
                 fullWidth
@@ -116,7 +116,7 @@ function SignUpForm() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextFieldForm
+              <TextFormField
                 control={control}
                 required
                 fullWidth
@@ -127,7 +127,7 @@ function SignUpForm() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextFieldForm
+              <TextFormField
                 control={control}
                 required
                 fullWidth
@@ -138,7 +138,7 @@ function SignUpForm() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextFieldForm
+              <TextFormField
                 control={control}
                 required
                 fullWidth
