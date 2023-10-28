@@ -5,6 +5,7 @@ import {
   searchDocuments,
   fetchDocumentByTeam,
   summarizeDocument,
+  deleteDocument,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
@@ -59,7 +60,7 @@ export const useCreateDocument = () => {
     }) => createDocument(teamId, createDocumentDto),
     onSuccess: async ({ team }) => {
       await queryClient.invalidateQueries({
-        queryKey: ['documents', { teamId: team }],
+        queryKey: ['documents', { team }],
       });
     },
   });
@@ -93,6 +94,18 @@ export const useSummarizeDocument = () => {
     onSuccess: async (_, { documentId }) => {
       await queryClient.invalidateQueries({
         queryKey: ['document', { documentId }],
+      });
+    },
+  });
+};
+
+export const useDeleteDocument = (team: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteDocument,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['documents', { query: { team } }],
       });
     },
   });

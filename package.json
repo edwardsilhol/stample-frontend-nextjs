@@ -11,7 +11,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "husky install",
-    "clean": "rm -rf node_modules .next"
+    "clean": "rm -rf node_modules .next",
+    "clean:hard": "rm -rf node_modules .next pnpm-lock.yaml"
   },
   "dependencies": {
     "@babel/core": "^7.23.2",

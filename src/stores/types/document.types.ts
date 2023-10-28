@@ -31,7 +31,7 @@ export interface Document {
   tags: string[];
   author?: string;
   guests?: string[];
-  creator: UserForOtherClient;
+  creator: string;
   urlWebsiteName?: string;
   mainMedia?: DocumentMedia;
   createdAt: Date;

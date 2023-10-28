@@ -1,33 +1,82 @@
-import { MinimalDocument } from '../../stores/types/document.types';
-import { Tag } from '../../stores/types/tag.types';
+import { MinimalDocument } from '../../../stores/types/document.types';
+import { Tag } from '../../../stores/types/tag.types';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import { decodeHTML } from 'entities';
-import DocumentHeader from './DocumentHeader';
+import DocumentHeader from '../../document/DocumentHeader';
 import Beenhere from '@mui/icons-material/Beenhere';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useState, MouseEvent } from 'react';
+import { useDeleteDocument } from '../../../stores/hooks/document.hooks';
 
 interface DocumentGridItemProps {
+  currentUserId: string;
   document: MinimalDocument;
   flatTags?: Tag[];
   onClick?: () => void;
 }
 
-function DocumentGridItem({ document, onClick }: DocumentGridItemProps) {
-  if (!document) {
-    return null;
-  }
+function DocumentGridItem({
+  document,
+  onClick,
+  currentUserId,
+}: DocumentGridItemProps) {
+  const deleteDocument = useDeleteDocument(document.team);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleDelete = () => {
+    deleteDocument.mutate(document._id);
+    setAnchorEl(null);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  const renderSettingsButton = () => (
+    <>
+      <IconButton
+        sx={{
+          position: 'absolute',
+          top: '8px',
+          right: '8px',
+          color: 'primary.main',
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        }}
+        onClick={handleMenuClick}
+      >
+        <MoreVertIcon fontSize="medium" />
+      </IconButton>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
+        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
+      </Menu>
+    </>
+  );
   return (
     <Card
       sx={{
         display: 'flex',
         flexDirection: 'column',
         filter: 'drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));',
+        position: 'relative',
       }}
       variant="elevation"
     >
+      {currentUserId === document.creator && renderSettingsButton()}
       {document.mainMedia?.src ? (
         <CardMedia
           sx={{

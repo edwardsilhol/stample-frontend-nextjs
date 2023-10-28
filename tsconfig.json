@@ -30,9 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src"
-,
-    "src/stores/hooks/jotai/.data.ts"
+    "src",
   ],
   "exclude": [
     "node_modules",

@@ -69,6 +69,7 @@ function EditorMenu({ editor }: EditorMenuProps) {
           borderColor: 'rgba(0, 0, 0, 0.23)',
           color: checkIfActive(editor) ? 'black' : 'rgba(0, 0, 0, 0.23)',
           fontSize: 20,
+          backgroundColor: 'white',
         }}
       >
         {icon || label}
@@ -78,7 +79,7 @@ function EditorMenu({ editor }: EditorMenuProps) {
   return (
     <ButtonGroup
       style={{
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
       }}
     >
       {EDITOR_BUTTONS.map((button) =>

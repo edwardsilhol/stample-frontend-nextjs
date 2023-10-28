@@ -8,7 +8,7 @@ import {
   summarizeTeamDocuments,
   updateTeam,
 } from '../api/team.api';
-import { getSortedTeams } from '../../helpers/team.helper';
+import { getSortedTeams } from '../../utils/team.helper';
 import {
   AnswerInvitationDTO,
   CreateTeamDTO,
