@@ -15,6 +15,7 @@ import { PopulatedDocument } from '../../../../stores/types/document.types';
 import { PopulatedTeam } from '../../../../stores/types/team.types';
 import { useCreateComment } from '../../../../stores/hooks/comment.hooks';
 import { useSession } from '../../../../stores/hooks/user.hooks';
+import CircularLoading from '../../../base/circularLoading';
 
 interface DocumentCommentsProps {
   documentId: string;
@@ -109,7 +110,7 @@ function DocumentComments({
     }
     commentEditor.commands.clearContent();
   };
-  return (
+  return !isloggedInUserLoading && loggedInUser ? (
     <>
       <Stack spacing={2} paddingY={2}>
         {viewedDocument?.comments?.map((comment, index) => (
@@ -131,6 +132,8 @@ function DocumentComments({
         Send
       </Button>
     </>
+  ) : (
+    <CircularLoading />
   );
 }
 export default DocumentComments;
