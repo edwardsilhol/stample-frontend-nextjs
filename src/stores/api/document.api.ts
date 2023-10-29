@@ -1,7 +1,6 @@
 import {
   CreateDocumentDTO,
   Document,
-  MinimalDocument,
   PopulatedDocument,
   SearchDocumentsDTO,
   SearchDocumentsReturnType,

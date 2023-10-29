@@ -15,6 +15,7 @@ const fakeDocument: MinimalDocument = {
   tags: ['development', 'typescript', 'sample'],
   creator: 'user1',
   createdAt: new Date(),
+  selectedForNewsletter: false,
   type: 'note',
 };
 export default {
