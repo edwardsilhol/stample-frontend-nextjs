@@ -60,6 +60,10 @@ export const answerInvitation = async (
   );
 };
 
+export const sendNewsletter = async (teamId: string) => {
+  return await apiRequest('POST', `/team/${teamId}/newsletter`);
+};
+
 export const summarizeTeamDocuments = async (
   teamId: string,
   tagId?: string,

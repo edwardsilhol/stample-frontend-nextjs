@@ -39,7 +39,7 @@ interface DocumentViewProps {
 function DocumentView({ documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
+  const { data: loggedInUser, isLoading: isLoggedInUserLoading } = useSession();
   const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
     useDocument(null, documentId);
   const { data: team, isLoading: isTeamLoading } = useTeam(
@@ -97,7 +97,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
           <Toolbar />
         </>
       ) : null}
-      {isloggedInUserLoading ||
+      {isLoggedInUserLoading ||
       isViewedDocumentLoading ||
       isTeamLoading ||
       isTagsLoading ? (

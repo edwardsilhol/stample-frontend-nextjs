@@ -5,6 +5,7 @@ import {
   fetchTeam,
   fetchTeamByInvitation,
   fetchTeams,
+  sendNewsletter,
   summarizeTeamDocuments,
   updateTeam,
 } from '../api/team.api';
@@ -73,6 +74,15 @@ export const useAnswerInvitation = () => {
       teamId: string;
       answerInvitationDto: AnswerInvitationDTO;
     }) => answerInvitation(teamId, answerInvitationDto),
+  });
+};
+
+export const useSendNewsletter = () => {
+  return useMutation({
+    mutationFn: sendNewsletter,
+    onSettled: () => {
+      console.log('Newsletter sent');
+    },
   });
 };
 
