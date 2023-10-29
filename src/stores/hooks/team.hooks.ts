@@ -1,4 +1,4 @@
-import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   answerInvitation,
   createTeam,
@@ -16,7 +16,7 @@ import {
   UpdateTeamDTO,
 } from '../types/team.types';
 
-export const useTeam = (teamId: string | null) => {
+export const useTeam = (teamId?: string | null) => {
   return useQuery({
     queryKey: ['team', { teamId }],
     queryFn: () => (teamId ? fetchTeam(teamId) : null),
@@ -40,7 +40,7 @@ export const useAllTeams = () => {
 };
 
 export const useCreateTeam = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (createTeamDto: CreateTeamDTO) => createTeam(createTeamDto),
     onSuccess: async () => {
@@ -50,7 +50,7 @@ export const useCreateTeam = () => {
 };
 
 export const useUpdateTeam = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       teamId,
@@ -59,8 +59,9 @@ export const useUpdateTeam = () => {
       teamId: string;
       updateTeamDto: UpdateTeamDTO;
     }) => updateTeam(teamId, updateTeamDto),
-    onSuccess: async (_, { teamId }) => {
-      await queryClient.invalidateQueries({ queryKey: ['team', { teamId }] });
+    onSuccess: async (team) => {
+      await queryClient.setQueryData(['team', { teamId: team._id }], team);
+      await queryClient.invalidateQueries({ queryKey: ['allTeams'] });
     },
   });
 };
@@ -87,7 +88,7 @@ export const useSendNewsletter = () => {
 };
 
 export const useSummarizeTeamDocuments = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ teamId, tagId }: { teamId: string; tagId?: string }) =>
       summarizeTeamDocuments(teamId, tagId),

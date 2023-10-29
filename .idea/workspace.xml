@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/newsletter/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/buttons/sendNewsletterButton/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/api/team.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/api/team.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +102,7 @@
       <workItem from="1698344122901" duration="5802000" />
       <workItem from="1698437051106" duration="6889000" />
       <workItem from="1698526956039" duration="1295000" />
+      <workItem from="1698583984801" duration="8544000" />
     </task>
     <servers />
   </component>

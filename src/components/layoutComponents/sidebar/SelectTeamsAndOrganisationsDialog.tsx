@@ -12,11 +12,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { useState } from 'react';
-import { useAllTeams, useTeam } from 'stores/hooks/team.hooks';
+import { useAllTeams } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../utils/team.helper';
 import { Team } from 'stores/types/team.types';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
+import CircularLoading from '../../base/circularLoading';
 
 interface SelectTeamsAndOrganisationsDialogProps {
   teamId: string;
@@ -30,10 +31,9 @@ function SelectTeamsAndOrganisationsDialog({
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-  const { data: teams } = useAllTeams();
-  const { data: team } = useTeam(teamId);
+  const { data: teams, isLoading: isTeamsLoading } = useAllTeams();
 
-  return (
+  return !isTeamsLoading && teams ? (
     <>
       <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
         TEAM
@@ -108,7 +108,7 @@ function SelectTeamsAndOrganisationsDialog({
           fullWidth
           variant="standard"
         >
-          {teams?.map((team) => (
+          {teams.map((team) => (
             <MenuItem
               key={team._id}
               value={team._id}
@@ -152,7 +152,7 @@ function SelectTeamsAndOrganisationsDialog({
       </Stack>
       <CreateTeamDialog
         open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
-        team={isUpdateTeamDialogOpen ? team ?? undefined : undefined}
+        teamId={isUpdateTeamDialogOpen ? teamId ?? undefined : undefined}
         onClose={() => {
           setIsCreateTeamDialogOpen(false);
           setIsUpdateTeamDialogOpen(false);
@@ -160,6 +160,8 @@ function SelectTeamsAndOrganisationsDialog({
         }}
       />
     </>
+  ) : (
+    <CircularLoading />
   );
 }
 

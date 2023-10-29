@@ -40,7 +40,7 @@ import { TEAM_ROUTE } from '../../../constants/routes.constant';
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
 interface UpdateTeamMembersProps {
-  team?: PopulatedTeam;
+  team?: PopulatedTeam | null;
   control: Control<FormValues>;
 }
 
@@ -254,7 +254,7 @@ function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
   );
 }
 interface CreateOrUpdateTeamFormProps {
-  team?: PopulatedTeam;
+  team?: PopulatedTeam | null;
   onClose: () => void;
 }
 
@@ -325,31 +325,22 @@ export function CreateOrUpdateTeamForm({
         });
         onClose();
       } else {
-        await createTeam
-          .mutateAsync({
-            name,
-            invitations,
-          })
-          .then((team) => {
-            if (organisation) {
-              updateOrganisation
-                .mutateAsync({
-                  organisationId: organisation._id,
-                  updateOrganisationDto: {
-                    add: {
-                      teams: [team._id],
-                    },
-                  },
-                })
-                .then(() => {
-                  router.push(`${TEAM_ROUTE}/${team._id}`);
-                  onClose();
-                });
-            } else {
-              router.push(`${TEAM_ROUTE}/${team._id}`);
-              onClose();
-            }
+        const team = await createTeam.mutateAsync({
+          name,
+          invitations,
+        });
+        if (organisation) {
+          await updateOrganisation.mutateAsync({
+            organisationId: organisation._id,
+            updateOrganisationDto: {
+              add: {
+                teams: [team._id],
+              },
+            },
           });
+        }
+        onClose();
+        router.push(`${TEAM_ROUTE}/${team._id}`);
       }
     } catch (e: any) {
       console.error(e);

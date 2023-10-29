@@ -42,12 +42,6 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const displaySelectTeams = () => (
-    <Box paddingY={1}>
-      <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
-    </Box>
-  );
-
   const getAccountMenu = () => {
     return !isLoading && user ? (
       <Stack direction="row" alignItems="center" spacing={1}>
@@ -97,7 +91,9 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
       ) : null}
       {getAccountMenu()}
       <Divider sx={{ marginTop: 2 }} />
-      {displaySelectTeams()}
+      <Box paddingY={1}>
+        <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
+      </Box>
       {/* TODO Remove this when summarization is automatic */}
       {/*{user?.isAdmin ? (*/}
       {/*  <Button*/}
