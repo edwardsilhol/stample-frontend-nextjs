@@ -4,6 +4,7 @@ import {
   PopulatedTeam,
   UpdateTeamDTO,
   AnswerInvitationDTO,
+  SendNewsletterDto,
 } from '../types/team.types';
 import { apiRequest } from '../../utils/api';
 
@@ -60,8 +61,19 @@ export const answerInvitation = async (
   );
 };
 
-export const sendNewsletter = async (teamId: string) => {
-  return await apiRequest('POST', `/team/${teamId}/newsletter`);
+export const sendNewsletter = async ({
+  teamId,
+  sendNewsletterDto,
+}: {
+  teamId: string;
+  sendNewsletterDto: SendNewsletterDto;
+}) => {
+  return await apiRequest(
+    'POST',
+    `/team/${teamId}/newsletter`,
+    undefined,
+    sendNewsletterDto,
+  );
 };
 
 export const summarizeTeamDocuments = async (

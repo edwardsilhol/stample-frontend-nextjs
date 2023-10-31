@@ -9,15 +9,24 @@ import Stack from '@mui/material/Stack';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Typography from '@mui/material/Typography';
 import { useTeam } from '../../../stores/hooks/team.hooks';
+import { useSession } from '../../../stores/hooks/user.hooks';
+import { LocalRole } from '../../../stores/types/user.types';
 
 interface GotoNewsletterButtonProps {
   teamId: string;
 }
 function GotoNewsletterButton({ teamId }: GotoNewsletterButtonProps) {
-  const { data: team, isLoading } = useTeam(teamId);
-  return !isLoading && team && !team.isPersonal ? (
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
+  const { data: loggedUser, isLoading: isLoggedUserLoading } = useSession();
+  return !isTeamLoading &&
+    team &&
+    !team.isPersonal &&
+    !isLoggedUserLoading &&
+    loggedUser &&
+    team.users.find((user) => user.user._id === loggedUser._id)?.role !==
+      LocalRole.MEMBER ? (
     <Link
-      href={`${TEAM_ROUTE}/${teamId}/${NEWSLETTER_ROUTE}`}
+      href={`${TEAM_ROUTE}/${teamId}${NEWSLETTER_ROUTE}`}
       style={{
         textDecoration: 'none',
         color: 'inherit',
