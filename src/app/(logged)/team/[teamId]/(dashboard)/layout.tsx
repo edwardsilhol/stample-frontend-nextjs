@@ -1,8 +1,8 @@
 'use client';
 
 import { ReactNode } from 'react';
-import LoggedSidebar from '../../../components/layoutComponents/sidebar/LoggedSidebar';
-import { useSession } from '../../../stores/hooks/user.hooks';
+import LoggedSidebar from '../../../../../components/layoutComponents/sidebar/LoggedSidebar';
+import { useSession } from '../../../../../stores/hooks/user.hooks';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'next/navigation';
 interface Props {

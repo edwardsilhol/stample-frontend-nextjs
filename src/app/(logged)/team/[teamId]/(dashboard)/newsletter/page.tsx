@@ -1,4 +1,4 @@
-import SendNewsletterButton from '../../../../../components/buttons/sendNewsletterButton';
+import SendNewsletterButton from '../../../../../../components/buttons/sendNewsletterButton';
 import Stack from '@mui/material/Stack';
 
 interface NewsletterPageProps {
