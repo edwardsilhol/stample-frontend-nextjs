@@ -1,5 +1,11 @@
+'use client';
+
 import SendNewsletterButton from '../../../../../../components/buttons/sendNewsletterButton';
 import Stack from '@mui/material/Stack';
+import { notFound } from 'next/navigation';
+import { useTeam } from '../../../../../../stores/hooks/team.hooks';
+import CircularLoading from '../../../../../../components/base/circularLoading';
+import { useEffect } from 'react';
 
 interface NewsletterPageProps {
   params: {
@@ -8,10 +14,17 @@ interface NewsletterPageProps {
 }
 
 function NewsletterPage({ params: { teamId } }: NewsletterPageProps) {
-  return (
+  const { data: team, isLoading } = useTeam(teamId);
+
+  useEffect(() => {
+    !isLoading && (!team || (team && team.isPersonal)) && notFound();
+  }, [isLoading, team]);
+  return !isLoading && team ? (
     <Stack justifyContent="center" alignItems="center" width="100%">
       <SendNewsletterButton teamId={teamId} />
     </Stack>
+  ) : (
+    <CircularLoading />
   );
 }
 

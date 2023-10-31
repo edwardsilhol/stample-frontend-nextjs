@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/invitation/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/invitation/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants/routes.constant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/routes.constant.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,7 +104,7 @@
       <workItem from="1698666024179" duration="35000" />
       <workItem from="1698667901165" duration="570000" />
       <workItem from="1698772350811" duration="63000" />
-      <workItem from="1698772424635" duration="5031000" />
+      <workItem from="1698772424635" duration="7567000" />
     </task>
     <servers />
   </component>

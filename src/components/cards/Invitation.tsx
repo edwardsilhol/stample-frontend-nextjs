@@ -28,9 +28,15 @@ function Invitation({ team }: InvitationProps) {
 
     router.push('/');
   };
-  if (!team) return <>No team</>;
+
   return (
-    <Stack justifyContent="center" alignItems="center" spacing={2} padding={2}>
+    <Stack
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}
+      padding={2}
+      height="100%"
+    >
       <Card>
         <CardContent>
           <Typography variant="h5" component="div">

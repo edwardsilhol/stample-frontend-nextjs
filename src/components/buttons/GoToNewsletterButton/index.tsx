@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import {
-  INVITATION_ROUTE,
+  NEWSLETTER_ROUTE,
   TEAM_ROUTE,
 } from '../../../constants/routes.constant';
 import Stack from '@mui/material/Stack';
@@ -17,7 +17,7 @@ function GotoNewsletterButton({ teamId }: GotoNewsletterButtonProps) {
   const { data: team, isLoading } = useTeam(teamId);
   return !isLoading && team && !team.isPersonal ? (
     <Link
-      href={`${TEAM_ROUTE}/${teamId}/${INVITATION_ROUTE}`}
+      href={`${TEAM_ROUTE}/${teamId}/${NEWSLETTER_ROUTE}`}
       style={{
         textDecoration: 'none',
         color: 'inherit',
