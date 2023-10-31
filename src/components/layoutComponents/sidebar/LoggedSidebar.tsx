@@ -21,13 +21,16 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
 
 interface LoggedSidebarProps {
   user: User | null | undefined;
   isLoading: boolean;
 }
 function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
-  const { teamId } = useParams();
+  const { teamId } = useParams<{
+    teamId: string;
+  }>();
   const isMobile = useIsMobile();
   const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(
     teamId as string,
@@ -90,10 +93,10 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
         </IconButton>
       ) : null}
       {getAccountMenu()}
-      <Divider sx={{ marginTop: 2 }} />
-      <Box paddingY={1}>
-        <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
-      </Box>
+      <Divider sx={{ marginY: 2 }} />
+      {/* TODO Refactor the newsletter button into a component */}
+      <GotoNewsletterButton teamId={teamId} />
+      <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
       {/* TODO Remove this when summarization is automatic */}
       {/*{user?.isAdmin ? (*/}
       {/*  <Button*/}

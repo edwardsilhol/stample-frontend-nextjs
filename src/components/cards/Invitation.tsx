@@ -8,29 +8,25 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { getTeamDisplayedName } from 'utils/team.helper';
 import { useRouter } from 'next/navigation';
-import {
-  useAnswerInvitation,
-  useTeamByInvitation,
-} from 'stores/hooks/team.hooks';
+import { useAnswerInvitation } from 'stores/hooks/team.hooks';
+import { Team } from '../../stores/types/team.types';
 
 interface InvitationProps {
-  teamId: string;
+  team: Team;
 }
-function Invitation({ teamId }: InvitationProps) {
-  const { data: team } = useTeamByInvitation(teamId);
+function Invitation({ team }: InvitationProps) {
   const router = useRouter();
   const answerInvitation = useAnswerInvitation();
-  const teamName = team ? getTeamDisplayedName(team) : '';
 
   const onClickAnswerInvitation = async (accept: boolean) => {
     await answerInvitation.mutateAsync({
-      teamId,
+      teamId: team._id,
       answerInvitationDto: {
         accept,
       },
     });
 
-    router.push('/me');
+    router.push('/');
   };
   if (!team) return <>No team</>;
   return (
@@ -38,7 +34,7 @@ function Invitation({ teamId }: InvitationProps) {
       <Card>
         <CardContent>
           <Typography variant="h5" component="div">
-            You have been invited to team {teamName}
+            You have been invited to team {getTeamDisplayedName(team)}
           </Typography>
           Accept the invitation ?
         </CardContent>
