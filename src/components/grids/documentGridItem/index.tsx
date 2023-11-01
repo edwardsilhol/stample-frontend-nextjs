@@ -19,6 +19,7 @@ import {
 } from '../../../stores/hooks/document.hooks';
 
 interface DocumentGridItemProps {
+  isTeamPersonal: boolean;
   userHasPrivilege: boolean;
   currentUserId: string;
   document: MinimalDocument;
@@ -27,6 +28,7 @@ interface DocumentGridItemProps {
 }
 
 function DocumentGridItem({
+  isTeamPersonal,
   userHasPrivilege,
   document,
   onClick,
@@ -74,11 +76,13 @@ function DocumentGridItem({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleToggleNewsletterSelection}>
-          {`${
-            document.selectedForNewsletter ? 'Remove from' : 'Add to'
-          } newsletter`}
-        </MenuItem>
+        {!isTeamPersonal && (
+          <MenuItem onClick={handleToggleNewsletterSelection}>
+            {document.selectedForNewsletter
+              ? 'Remove from newsletter selection'
+              : 'Select for newsletter'}
+          </MenuItem>
+        )}
         <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>

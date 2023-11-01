@@ -76,6 +76,7 @@ function DocumentsMasonryComponent({
       const document = props.data;
       return !isUserLoading && !isTeamLoading && team && user ? (
         <DocumentGridItem
+          isTeamPersonal={team.isPersonal}
           userHasPrivilege={UserHasPrivilege}
           currentUserId={user?._id}
           document={document}
