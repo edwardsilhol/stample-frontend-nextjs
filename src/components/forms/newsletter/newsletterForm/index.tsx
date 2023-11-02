@@ -2,28 +2,131 @@
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { Control, useFieldArray, useForm } from 'react-hook-form';
 import { Button, Grid, Typography } from '@mui/material';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextFormField from '../../fields/textFormField';
 import { useSendNewsletter } from '../../../../stores/hooks/team.hooks';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import { MinimalDocument } from '../../../../stores/types/document.types';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import Delete from '@mui/icons-material/Delete';
+import Divider from '@mui/material/Divider';
+import Link from 'next/link';
+import { TEAM_ROUTE } from '../../../../constants/routes.constant';
+import { useUpdateDocument } from '../../../../stores/hooks/document.hooks';
+
+interface NewsletterDocumentsListProps {
+  control: Control<NewsletterFormType>;
+  teamId: string;
+}
+
+function NewsletterDocumentsList({
+  control,
+  teamId,
+}: NewsletterDocumentsListProps) {
+  const updateDocument = useUpdateDocument();
+  const { fields, remove } = useFieldArray({
+    control,
+    name: 'documents',
+  });
+  const handleRemove = async (index: number, id: string) => {
+    await updateDocument.mutateAsync({
+      documentId: id,
+      updateDocumentDto: { selectedForNewsletter: false },
+    });
+    remove(index);
+  };
+  return (
+    <Card
+      variant="outlined"
+      sx={{
+        borderRadius: '8px',
+      }}
+    >
+      <CardContent
+        sx={{
+          padding: '0 !important',
+          margin: 0,
+        }}
+      >
+        {fields.length === 0 ? (
+          <Alert severity="error">
+            You must at least choose one document. Visit the :{' '}
+            <Link
+              href={`${TEAM_ROUTE}/${teamId}`}
+              color="primary"
+              style={{
+                textDecoration: 'none',
+                fontWeight: 'bold',
+              }}
+            >
+              team page
+            </Link>
+          </Alert>
+        ) : (
+          <List>
+            {fields.map((item, index) => (
+              <Fragment key={index}>
+                <ListItem
+                  key={index}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleRemove(index, item._id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  }
+                >
+                  <ListItemText>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: '500px',
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+                {index < fields.length - 1 && <Divider />}
+              </Fragment>
+            ))}
+          </List>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 interface NewsletterFormType {
   title: string;
   intro: string;
   conclusion: string;
+  documents: MinimalDocument[];
 }
 interface NewsletterFormProps {
   teamId: string;
+  documents: MinimalDocument[];
 }
-function NewsletterForm({ teamId }: NewsletterFormProps) {
+function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
   const router = useRouter();
   const sendNewsletter = useSendNewsletter();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +140,7 @@ function NewsletterForm({ teamId }: NewsletterFormProps) {
     title: Yup.string().required(),
     intro: Yup.string().required(),
     conclusion: Yup.string().required(),
+    documents: Yup.array().required().min(1),
   } as Record<keyof NewsletterFormType, any>);
 
   const { control, handleSubmit } = useForm<NewsletterFormType>({
@@ -44,17 +148,20 @@ function NewsletterForm({ teamId }: NewsletterFormProps) {
       title: '',
       intro: '',
       conclusion: '',
+      documents: documents.filter((document) => document.selectedForNewsletter),
     },
     resolver: yupResolver<NewsletterFormType>(validationSchema as any),
   });
 
-  const onSubmit = async (values: NewsletterFormType) => {
-    console.log(values);
-
+  const onSubmit = async ({ title, intro, conclusion }: NewsletterFormType) => {
     setIsLoading(true);
     sendNewsletter.mutate({
       teamId,
-      sendNewsletterDto: values,
+      sendNewsletterDto: {
+        title,
+        intro,
+        conclusion,
+      },
     });
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setOpenSnackbar(true);
@@ -127,8 +234,9 @@ function NewsletterForm({ teamId }: NewsletterFormProps) {
               placeholder="Give a conclusion"
             />
             <Typography variant="body2" fontWeight={500}>
-              Notes // TODO
+              Select documents
             </Typography>
+            <NewsletterDocumentsList control={control} teamId={teamId} />
             <Button
               type="submit"
               variant="contained"

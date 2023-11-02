@@ -79,10 +79,12 @@ export const useAnswerInvitation = () => {
 };
 
 export const useSendNewsletter = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: sendNewsletter,
-    onSettled: () => {
+    onSettled: async () => {
       console.log('Newsletter sent');
+      await queryClient.invalidateQueries({ queryKey: ['documents'] });
     },
   });
 };

@@ -43,10 +43,6 @@ export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
         page: pageParam as number,
       }),
     initialPageParam: 0,
-    initialData: {
-      pages: [],
-      pageParams: [],
-    },
     getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
   });
 
