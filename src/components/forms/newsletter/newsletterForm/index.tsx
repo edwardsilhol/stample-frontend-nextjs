@@ -128,7 +128,7 @@ interface NewsletterFormProps {
 }
 function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
   const router = useRouter();
-  const sendNewsletter = useSendNewsletter();
+  const sendNewsletter = useSendNewsletter(teamId);
   const [isLoading, setIsLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -143,7 +143,7 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
     documents: Yup.array().required().min(1),
   } as Record<keyof NewsletterFormType, any>);
 
-  const { control, handleSubmit } = useForm<NewsletterFormType>({
+  const { control, handleSubmit, reset } = useForm<NewsletterFormType>({
     defaultValues: {
       title: '',
       intro: '',
@@ -169,6 +169,12 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setOpenSnackbar(false);
+    reset({
+      title: '',
+      intro: '',
+      conclusion: '',
+      documents: [],
+    });
   };
 
   return (

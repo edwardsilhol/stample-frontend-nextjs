@@ -78,13 +78,21 @@ export const useAnswerInvitation = () => {
   });
 };
 
-export const useSendNewsletter = () => {
+export const useSendNewsletter = (teamId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: sendNewsletter,
     onSettled: async () => {
-      console.log('Newsletter sent');
-      await queryClient.invalidateQueries({ queryKey: ['documents'] });
+      await queryClient.invalidateQueries({
+        queryKey: [
+          'documents',
+          {
+            query: {
+              team: teamId,
+            },
+          },
+        ],
+      });
     },
   });
 };
