@@ -240,7 +240,7 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
               placeholder="Give a conclusion"
             />
             <Typography variant="body2" fontWeight={500}>
-              Select documents
+              Selected documents
             </Typography>
             <NewsletterDocumentsList control={control} teamId={teamId} />
             <Button
