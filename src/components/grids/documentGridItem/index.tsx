@@ -149,20 +149,26 @@ function DocumentGridItem({
                 marginBottom: '5px',
               }}
             >
-              <Box
-                component="span"
-                sx={{
-                  marginRight: '5px',
-                  position: 'relative',
-                  top: '3px',
-                }}
-                onMouseEnter={handlePopoverHover}
-                onMouseLeave={handlePopoverClose}
-              >
-                <Beenhere
-                  sx={{ width: '20px', height: '20px', color: 'primary.main' }}
-                />
-              </Box>
+              {document.aiSummary && document.aiSummary.length > 0 && (
+                <Box
+                  component="span"
+                  sx={{
+                    marginRight: '5px',
+                    position: 'relative',
+                    top: '3px',
+                  }}
+                  onMouseEnter={handlePopoverHover}
+                  onMouseLeave={handlePopoverClose}
+                >
+                  <Beenhere
+                    sx={{
+                      width: '20px',
+                      height: '20px',
+                      color: 'primary.main',
+                    }}
+                  />
+                </Box>
+              )}
               {decodeHTML(document.title ?? '')}
             </Typography>
             <DocumentHeader
