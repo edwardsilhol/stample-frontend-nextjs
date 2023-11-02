@@ -226,12 +226,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
                           height: '50px',
                         }}
                       />
-                      {/*<Typography*/}
-                      {/*  variant="h5"*/}
-                      {/*  sx={{ color: 'primary.main', marginBottom: '10px' }}*/}
-                      {/*>*/}
-                      {/*  {'Summary'}*/}
-                      {/*</Typography>*/}
                     </Box>
                     <ul style={{ paddingLeft: '20px' }}>
                       {viewedDocument.aiSummary?.map((sentence, i) => (
