@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/TagsView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/newsletter/newsletterForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/newsletter/newsletterForm/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +104,7 @@
       <workItem from="1698772424635" duration="9645000" />
       <workItem from="1698787336606" duration="6939000" />
       <workItem from="1698871845747" duration="9843000" />
-      <workItem from="1698962280610" duration="5211000" />
+      <workItem from="1698962280610" duration="5946000" />
     </task>
     <servers />
   </component>

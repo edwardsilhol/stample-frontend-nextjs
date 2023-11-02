@@ -8,6 +8,8 @@ import NewsletterForm from '../../../../../../components/forms/newsletter/newsle
 import { useSession } from '../../../../../../stores/hooks/user.hooks';
 import { LocalRole } from '../../../../../../stores/types/user.types';
 import { useSearchDocuments } from '../../../../../../stores/hooks/document.hooks';
+import Stack from '@mui/material/Stack';
+import { useIsMobile } from '../../../../../../utils/hooks/useIsMobile';
 
 interface NewsletterPageProps {
   params: {
@@ -16,6 +18,7 @@ interface NewsletterPageProps {
 }
 
 function NewsletterPage({ params: { teamId } }: NewsletterPageProps) {
+  const isMobile = useIsMobile();
   const { data: loggedUser, isLoading: isLoggedUserLoading } = useSession();
   const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: documents, isLoading: isDocumentsLoading } = useSearchDocuments(
@@ -43,10 +46,22 @@ function NewsletterPage({ params: { teamId } }: NewsletterPageProps) {
     documents &&
     !isLoggedUserLoading &&
     loggedUser ? (
-    <NewsletterForm
-      teamId={teamId}
-      documents={documents.pages.flatMap((page) => page.documents)}
-    />
+    <Stack
+      direction="column"
+      flex={1}
+      sx={{
+        overflowX: 'hidden',
+        overflowY: 'scroll',
+        height: '100%',
+      }}
+      paddingX={2}
+      paddingTop={isMobile ? 0 : 7}
+    >
+      <NewsletterForm
+        teamId={teamId}
+        documents={documents.pages.flatMap((page) => page.documents)}
+      />
+    </Stack>
   ) : (
     <CircularLoading />
   );

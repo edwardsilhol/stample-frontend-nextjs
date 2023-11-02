@@ -178,7 +178,7 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
   };
 
   return (
-    <Grid container paddingTop={8} paddingX={3.5}>
+    <Grid container paddingX={3.5}>
       <Grid item xs={2}>
         <Button
           onClick={() => router.back()}
