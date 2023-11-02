@@ -35,7 +35,7 @@ function SelectTeamsAndOrganisationsDialog({
 
   return !isTeamsLoading && teams ? (
     <>
-      <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
+      <Typography fontSize="10px" fontWeight={500}>
         TEAM
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1.5}>

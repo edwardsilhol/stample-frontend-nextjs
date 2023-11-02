@@ -94,37 +94,20 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
       ) : null}
       {getAccountMenu()}
       <Divider sx={{ marginY: 2 }} />
-      {/* TODO Refactor the newsletter button into a component */}
-      <GotoNewsletterButton teamId={teamId} />
-      <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
-      {/* TODO Remove this when summarization is automatic */}
-      {/*{user?.isAdmin ? (*/}
-      {/*  <Button*/}
-      {/*    onClick={() => {*/}
-      {/*      if (selectedTeamId) {*/}
-      {/*        mutate({*/}
-      {/*          teamId: selectedTeamId,*/}
-      {/*          ...(selectedTagId ? { tagId: selectedTagId } : {}),*/}
-      {/*        });*/}
-      {/*      }*/}
-      {/*    }}*/}
-      {/*    fullWidth*/}
-      {/*    variant="outlined"*/}
-      {/*    sx={{ fontSize: '12px', marginY: 2 }}*/}
-      {/*  >*/}
-      {/*    {'Summarize displayed articles'}*/}
-      {/*  </Button>*/}
-      {/*) : null}*/}
-      <TagsView
-        teamId={teamId as string}
-        tags={richTags}
-        documentsCountPerTags={documentsCountPerTags}
-        onSelectTag={() => {
-          if (isMobile) {
-            setIsSidebarOpen(false);
-          }
-        }}
-      />
+      <Stack direction="column" spacing={0.75}>
+        <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
+        <GotoNewsletterButton teamId={teamId} />
+        <TagsView
+          teamId={teamId as string}
+          tags={richTags}
+          documentsCountPerTags={documentsCountPerTags}
+          onSelectTag={() => {
+            if (isMobile) {
+              setIsSidebarOpen(false);
+            }
+          }}
+        />
+      </Stack>
       <Divider sx={{ marginBottom: 2 }} />
       <Button
         startIcon={<Logout />}

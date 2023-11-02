@@ -25,34 +25,39 @@ function GotoNewsletterButton({ teamId }: GotoNewsletterButtonProps) {
     loggedUser &&
     team.users.find((user) => user.user._id === loggedUser._id)?.role !==
       LocalRole.MEMBER ? (
-    <Link
-      href={`${TEAM_ROUTE}/${teamId}${NEWSLETTER_ROUTE}`}
-      style={{
-        textDecoration: 'none',
-        color: 'inherit',
-      }}
-    >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        spacing={1.5}
-        width="100%"
-        overflow="hidden"
+    <>
+      <Typography fontSize="10px" fontWeight={500}>
+        NEWSLETTER
+      </Typography>
+      <Link
+        href={`${TEAM_ROUTE}/${teamId}${NEWSLETTER_ROUTE}`}
+        style={{
+          textDecoration: 'none',
+          color: 'inherit',
+        }}
       >
         <Stack
           direction="row"
           alignItems="center"
+          justifyContent="space-between"
           spacing={1.5}
+          width="100%"
           overflow="hidden"
         >
-          <MailOutlineIcon fontSize="small" color="primary" />
-          <Typography variant="body2" textOverflow="ellipsis">
-            Newsletter
-          </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1.5}
+            overflow="hidden"
+          >
+            <MailOutlineIcon fontSize="small" color="primary" />
+            <Typography variant="body2" textOverflow="ellipsis">
+              Access editor
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
-    </Link>
+      </Link>
+    </>
   ) : (
     <></>
   );
