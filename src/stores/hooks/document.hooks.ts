@@ -1,12 +1,12 @@
 import {
   createDocument,
-  fetchDocument,
-  updateDocumentAsGuest,
-  searchDocuments,
-  fetchDocumentByTeam,
-  summarizeDocument,
   deleteDocument,
+  fetchDocument,
+  fetchDocumentByTeam,
+  searchDocuments,
+  summarizeDocument,
   updateDocument,
+  updateDocumentAsGuest,
 } from '../api/document.api';
 import {
   useInfiniteQuery,
