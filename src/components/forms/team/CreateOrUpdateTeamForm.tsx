@@ -25,7 +25,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
-import { LocalRole, UserForOtherClient } from 'stores/types/user.types';
+import { LocalRole, User, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
 import SelectFieldForm from '../fields/SelectFieldForm';
 import { capitalize } from 'lodash';
@@ -36,20 +36,25 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { useRouter } from 'next/navigation';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
+import CircularLoading from '../../base/circularLoading';
 
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
 interface UpdateTeamMembersProps {
+  loggedUser: User;
   team?: PopulatedTeam | null;
   control: Control<FormValues>;
 }
 
-function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
-  const { data: authenticatedUser } = useSession();
+function UpdateTeamMembers({
+  team,
+  control,
+  loggedUser,
+}: UpdateTeamMembersProps) {
   const usersById: Record<string, UserForOtherClient> = useMemo(() => {
     if (!team) return {};
     return team.users.reduce((accumulator, user) => {
-      if (authenticatedUser?._id === user.user._id) {
+      if (loggedUser?._id === user.user._id) {
         return accumulator;
       }
       return {
@@ -57,7 +62,8 @@ function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
         [user.user._id]: user.user,
       };
     }, {});
-  }, [team, authenticatedUser?._id]);
+  }, [team, loggedUser?._id]);
+
   const { fields: users, remove: removeUser } = useFieldArray({
     control,
     name: 'users',
@@ -107,15 +113,14 @@ function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
               ...(!team
                 ? ([
                     {
-                      user: authenticatedUser?._id,
+                      user: loggedUser?._id,
                       role: LocalRole.ADMIN,
-                      id: authenticatedUser?._id,
+                      id: loggedUser?._id,
                     },
                   ] as FieldArrayWithId<FormValues, 'users', 'id'>[])
                 : []),
             ].map((member, index) => {
-              const isAuthenticatedUser =
-                member.user === authenticatedUser?._id;
+              const isAuthenticatedUser = member.user === loggedUser?._id;
               const user: UserForOtherClient | undefined =
                 usersById[member.user];
               return (
@@ -266,6 +271,7 @@ export function CreateOrUpdateTeamForm({
   const createTeam = useCreateTeam();
   const updateTeam = useUpdateTeam();
 
+  const { data: loggedUser, isLoading: isLoggedUserLoading } = useSession();
   const { data: organisation } = useOrganisation();
   const updateOrganisation = useUpdateOrganisation();
   const validationSchema = Yup.object().shape({
@@ -347,7 +353,7 @@ export function CreateOrUpdateTeamForm({
     }
   };
 
-  return (
+  return !isLoggedUserLoading && loggedUser ? (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
       <Stack
         direction="column"
@@ -368,7 +374,11 @@ export function CreateOrUpdateTeamForm({
               required
             />
           </Box>
-          <UpdateTeamMembers control={control} team={team} />
+          <UpdateTeamMembers
+            control={control}
+            team={team}
+            loggedUser={loggedUser}
+          />
         </Box>
         <Button
           type="submit"
@@ -382,6 +392,8 @@ export function CreateOrUpdateTeamForm({
         </Button>
       </Stack>
     </Box>
+  ) : (
+    <CircularLoading />
   );
 }
 

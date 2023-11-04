@@ -26,7 +26,6 @@ interface SelectTeamsAndOrganisationsDialogProps {
 function SelectTeamsAndOrganisationsDialog({
   teamId,
 }: SelectTeamsAndOrganisationsDialogProps) {
-  console.log('teamId', teamId);
   const router = useRouter();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);

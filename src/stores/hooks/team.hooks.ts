@@ -74,7 +74,9 @@ export const useUpdateTeam = () => {
       updateTeamDto: UpdateTeamDTO;
     }) => updateTeam(teamId, updateTeamDto),
     onSuccess: async (team) => {
-      await queryClient.setQueryData(teamQueryKey.one(team._id), team);
+      await queryClient.invalidateQueries({
+        queryKey: teamQueryKey.one(team._id),
+      });
       await queryClient.setQueryData(teamQueryKey.all, (oldTeams?: Team[]) => {
         if (oldTeams) {
           return oldTeams.map((oldTeam) =>

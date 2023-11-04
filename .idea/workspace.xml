@@ -6,31 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/documentComments/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/documentComments/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants/reactQuery.constant.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/api/comment.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/api/comment.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/comment.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/comment.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/organisation.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/organisation.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/user.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/user.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/comment.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/comment.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/organisation.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/organisation.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/other.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/global.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +106,7 @@
       <workItem from="1698787336606" duration="6939000" />
       <workItem from="1698871845747" duration="9843000" />
       <workItem from="1698962280610" duration="7517000" />
-      <workItem from="1699052132638" duration="15552000" />
+      <workItem from="1699052132638" duration="17196000" />
     </task>
     <servers />
   </component>
