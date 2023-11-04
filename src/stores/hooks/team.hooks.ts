@@ -6,33 +6,44 @@ import {
   fetchTeamByInvitation,
   fetchTeams,
   sendNewsletter,
-  summarizeTeamDocuments,
   updateTeam,
 } from '../api/team.api';
 import { getSortedTeams } from '../../utils/team.helper';
 import {
   AnswerInvitationDTO,
   CreateTeamDTO,
+  Team,
   UpdateTeamDTO,
 } from '../types/team.types';
+import { documentQueryKey } from './document.hooks';
 
-export const useTeam = (teamId?: string | null) => {
+const teamQueryKey = {
+  base: ['team'],
+  all: ['teams'],
+  one: (teamId: string) => [...teamQueryKey.base, { teamId }],
+  invitation: (teamId: string) => [
+    ...teamQueryKey.base,
+    'invitation',
+    { teamId },
+  ],
+};
+export const useTeam = (teamId: string) => {
   return useQuery({
-    queryKey: ['team', { teamId }],
-    queryFn: () => (teamId ? fetchTeam(teamId) : null),
+    queryKey: teamQueryKey.one(teamId),
+    queryFn: () => fetchTeam(teamId),
   });
 };
 
 export const useTeamByInvitation = (teamId: string) => {
   return useQuery({
-    queryKey: ['teamByInvitation', { teamId }],
+    queryKey: teamQueryKey.invitation(teamId),
     queryFn: () => fetchTeamByInvitation(teamId),
   });
 };
 
 export const useAllTeams = () => {
   return useQuery({
-    queryKey: ['allTeams'],
+    queryKey: teamQueryKey.all,
     queryFn: fetchTeams,
     initialData: [],
     select: getSortedTeams,
@@ -43,8 +54,11 @@ export const useCreateTeam = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (createTeamDto: CreateTeamDTO) => createTeam(createTeamDto),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['allTeams'] });
+    onSuccess: async (team) => {
+      await queryClient.setQueryData(teamQueryKey.all, (oldTeams?: Team[]) => [
+        ...(oldTeams ?? []),
+        team,
+      ]);
     },
   });
 };
@@ -60,8 +74,14 @@ export const useUpdateTeam = () => {
       updateTeamDto: UpdateTeamDTO;
     }) => updateTeam(teamId, updateTeamDto),
     onSuccess: async (team) => {
-      await queryClient.setQueryData(['team', { teamId: team._id }], team);
-      await queryClient.invalidateQueries({ queryKey: ['allTeams'] });
+      await queryClient.setQueryData(teamQueryKey.one(team._id), team);
+      await queryClient.setQueryData(teamQueryKey.all, (oldTeams?: Team[]) => {
+        if (oldTeams) {
+          return oldTeams.map((oldTeam) =>
+            oldTeam._id === team._id ? team : oldTeam,
+          );
+        }
+      });
     },
   });
 };
@@ -84,35 +104,7 @@ export const useSendNewsletter = (teamId: string) => {
     mutationFn: sendNewsletter,
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [
-          'documents',
-          {
-            query: {
-              team: teamId,
-            },
-          },
-        ],
-      });
-    },
-  });
-};
-
-export const useSummarizeTeamDocuments = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ teamId, tagId }: { teamId: string; tagId?: string }) =>
-      summarizeTeamDocuments(teamId, tagId),
-    onSuccess: async (_, { teamId, tagId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: [
-          'documents',
-          {
-            searchDocumentsDTO: {
-              team: teamId,
-              ...(tagId ? { tags: [tagId] } : {}),
-            },
-          },
-        ],
+        queryKey: documentQueryKey.search({ team: teamId }),
       });
     },
   });

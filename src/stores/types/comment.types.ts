@@ -18,3 +18,5 @@ export type CreateCommentDTO = Omit<
   Comment,
   '_id' | 'createdAt' | 'updatedAt' | 'creatorId'
 >;
+
+export type UpdateCommentDTO = Partial<Omit<Comment, '_id' | 'creatorId'>>;

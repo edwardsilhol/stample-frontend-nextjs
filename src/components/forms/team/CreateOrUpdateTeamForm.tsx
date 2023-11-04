@@ -254,7 +254,7 @@ function UpdateTeamMembers({ team, control }: UpdateTeamMembersProps) {
   );
 }
 interface CreateOrUpdateTeamFormProps {
-  team?: PopulatedTeam | null;
+  team?: PopulatedTeam;
   onClose: () => void;
 }
 

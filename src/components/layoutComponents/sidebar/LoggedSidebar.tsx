@@ -1,7 +1,7 @@
 'use client';
 
 import { Logout, MenuOpen } from '@mui/icons-material';
-import { useLogout } from '../../../stores/hooks/user.hooks';
+import { useLogout, useSession } from '../../../stores/hooks/user.hooks';
 import { User } from '../../../stores/types/user.types';
 import {
   useDocumentsCountPerTagByTeam,
@@ -22,22 +22,16 @@ import Drawer from '@mui/material/Drawer';
 import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
+import { RouteParams } from '../../../stores/types/global.types';
 
-interface LoggedSidebarProps {
-  user: User | null | undefined;
-  isLoading: boolean;
-}
-function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
-  const { teamId } = useParams<{
-    teamId: string;
-  }>();
+function LoggedSidebar() {
+  const { teamId } = useParams<RouteParams>();
   const isMobile = useIsMobile();
-  const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(
-    teamId as string,
-  );
+  const { data: user, isLoading } = useSession();
+  const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(teamId);
   const {
     data: { rich: richTags },
-  } = useTagsByTeam(teamId as string);
+  } = useTagsByTeam(teamId);
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
@@ -95,10 +89,10 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
       {getAccountMenu()}
       <Divider sx={{ marginY: 2 }} />
       <Stack direction="column" spacing={0.75}>
-        <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
+        <SelectTeamsAndOrganisationsDialog teamId={teamId} open />
         <GotoNewsletterButton teamId={teamId} />
         <TagsView
-          teamId={teamId as string}
+          teamId={teamId}
           tags={richTags}
           documentsCountPerTags={documentsCountPerTags}
           onSelectTag={() => {

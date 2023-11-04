@@ -6,9 +6,10 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
 import { useMemo } from 'react';
 import CircularLoading from '../base/circularLoading';
+import { RouteParams } from '../../stores/types/global.types';
 
 function AllDocuments() {
-  const { teamId, tagId } = useParams();
+  const { teamId, tagId } = useParams<RouteParams>();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   const { data, isLoading, isFetching, fetchNextPage } = useSearchDocuments({
@@ -17,8 +18,8 @@ function AllDocuments() {
           text: searchQuery,
         }
       : {}),
-    ...(tagId ? { tags: [tagId] as string[] } : {}),
-    team: teamId ? (teamId as string) : undefined,
+    ...(tagId ? { tags: [tagId] } : {}),
+    team: teamId ? teamId : undefined,
   });
   const allDocuments = useMemo(
     () => data?.pages.flatMap((page) => page.documents) || [],

@@ -33,21 +33,18 @@ import CircularLoading from '../../base/circularLoading';
 import DocumentComments from '../../forms/document/documentComments';
 
 interface DocumentViewProps {
+  teamId: string;
   documentId: string;
 }
 
-function DocumentView({ documentId }: DocumentViewProps) {
+function DocumentView({ teamId, documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const { data: loggedInUser, isLoading: isLoggedInUserLoading } = useSession();
   const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
-    useDocument(null, documentId);
-  const { data: team, isLoading: isTeamLoading } = useTeam(
-    viewedDocument?.team ?? null,
-  );
-  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
-    viewedDocument?.team ?? null,
-  );
+    useDocument(documentId);
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
+  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(teamId);
   const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(

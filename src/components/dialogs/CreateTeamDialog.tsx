@@ -5,18 +5,16 @@ import Close from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import CreateOrUpdateTeamForm from 'components/forms/team/CreateOrUpdateTeamForm';
-import { useTeam } from '../../stores/hooks/team.hooks';
-import CircularLoading from '../base/circularLoading';
+import { PopulatedTeam } from '../../stores/types/team.types';
 
 interface CreateTeamDialogsProps {
   open: boolean;
-  teamId?: string;
+  team?: PopulatedTeam;
   onClose: () => void;
 }
 
-function CreateTeamDialog({ open, teamId, onClose }: CreateTeamDialogsProps) {
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
-  return !isTeamLoading ? (
+function CreateTeamDialog({ open, team, onClose }: CreateTeamDialogsProps) {
+  return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
         <Stack
@@ -24,7 +22,7 @@ function CreateTeamDialog({ open, teamId, onClose }: CreateTeamDialogsProps) {
           alignItems="center"
           justifyContent="space-between"
         >
-          {teamId ? 'Update team' : 'Create a new team'}
+          {team ? 'Update team' : 'Create a new team'}
           <IconButton onClick={onClose} sx={{ paddingRight: 0 }}>
             <Close />
           </IconButton>
@@ -34,8 +32,6 @@ function CreateTeamDialog({ open, teamId, onClose }: CreateTeamDialogsProps) {
         <CreateOrUpdateTeamForm team={team} onClose={onClose} />
       </DialogContent>
     </Dialog>
-  ) : (
-    <CircularLoading />
   );
 }
 

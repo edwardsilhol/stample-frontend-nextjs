@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { useState } from 'react';
-import { useAllTeams } from 'stores/hooks/team.hooks';
+import { useAllTeams, useTeam } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../utils/team.helper';
 import { Team } from 'stores/types/team.types';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
@@ -26,14 +26,16 @@ interface SelectTeamsAndOrganisationsDialogProps {
 function SelectTeamsAndOrganisationsDialog({
   teamId,
 }: SelectTeamsAndOrganisationsDialogProps) {
+  console.log('teamId', teamId);
   const router = useRouter();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const { data: teams, isLoading: isTeamsLoading } = useAllTeams();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
 
-  return !isTeamsLoading && teams ? (
+  return !isTeamsLoading && teams && !isTeamLoading && team ? (
     <>
       <Typography fontSize="10px" fontWeight={500}>
         TEAM
@@ -94,7 +96,8 @@ function SelectTeamsAndOrganisationsDialog({
             },
           }}
           onChange={(event) => {
-            router.push(`${TEAM_ROUTE}/${event.target.value}`);
+            if (event.target.value)
+              router.push(`${TEAM_ROUTE}/${event.target.value}`);
           }}
           select
           InputProps={{
@@ -152,7 +155,7 @@ function SelectTeamsAndOrganisationsDialog({
       </Stack>
       <CreateTeamDialog
         open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
-        teamId={isUpdateTeamDialogOpen ? teamId ?? undefined : undefined}
+        team={isUpdateTeamDialogOpen ? team : undefined}
         onClose={() => {
           setIsCreateTeamDialogOpen(false);
           setIsUpdateTeamDialogOpen(false);

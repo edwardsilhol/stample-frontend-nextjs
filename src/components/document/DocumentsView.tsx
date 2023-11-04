@@ -9,6 +9,7 @@ import DocumentsMasonry from './DocumentsMasonry';
 import { useParams, useSearchParams } from 'next/navigation';
 import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
 import CircularLoading from '../base/circularLoading';
+import { RouteParams } from '../../stores/types/global.types';
 
 export const DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID =
   'documents-view-scrollable';
@@ -24,13 +25,13 @@ function DocumentsView({
   totalDocumentsCount,
   fetchNextPage,
 }: DocumentViewProps) {
-  const { teamId, tagId } = useParams();
+  const { teamId, tagId } = useParams<RouteParams>();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   const {
     data: { raw: flatTags },
     isLoading,
-  } = useTagsByTeam(teamId as string);
+  } = useTagsByTeam(teamId);
   const searchId = useMemo(
     () => `${teamId}-${tagId}-${searchQuery}`,
     [tagId, searchQuery, teamId],
@@ -55,6 +56,7 @@ function DocumentsView({
       >
         <DocumentsMasonry
           variant="grid"
+          teamId={teamId}
           documents={documents}
           flatTags={flatTags}
           searchId={searchId}

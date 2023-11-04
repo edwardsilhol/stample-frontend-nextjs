@@ -21,6 +21,7 @@ import { useTeam } from '../../stores/hooks/team.hooks';
 import { LocalRole } from '../../stores/types/user.types';
 
 interface DocumentsMasonryProps {
+  teamId: string;
   documents: MinimalDocument[];
   total: number;
   flatTags?: Tag[];
@@ -31,6 +32,7 @@ interface DocumentsMasonryProps {
 }
 
 function DocumentsMasonryComponent({
+  teamId,
   documents,
   total,
   flatTags,
@@ -40,7 +42,7 @@ function DocumentsMasonryComponent({
   variant,
 }: DocumentsMasonryProps) {
   const { data: user, isLoading: isUserLoading } = useSession();
-  const { data: team, isLoading: isTeamLoading } = useTeam(documents[0]?.team);
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const router = useRouter();
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);

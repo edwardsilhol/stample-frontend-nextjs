@@ -6,19 +6,35 @@ import {
   updateTag,
 } from '../api/tag.api';
 import { CreateTagDTO, HooksUpdateTagDTO } from '../types/tag.types';
+import { useParams } from 'next/navigation';
+import { RouteParams } from '../types/global.types';
 
-export const useTagsByTeam = (teamId: string | null) => {
+const tagQueryKey = {
+  base: ['tag'],
+  all: ['tags'],
+  byTeam: (teamId: string) => [...tagQueryKey.all, { teamId }],
+  documentsCountPerTag: (teamId: string) => [
+    ...tagQueryKey.all,
+    'documentsCountPerTag',
+    { teamId },
+  ],
+};
+
+export const useTagsByTeam = (teamId: string) => {
   return useQuery({
-    queryKey: ['tags', { teamId }],
-    queryFn: () => (teamId ? fetchTagsByTeam(teamId) : { rich: [], raw: [] }),
-    initialData: { rich: [], raw: [] },
+    queryKey: tagQueryKey.byTeam(teamId),
+    queryFn: () => fetchTagsByTeam(teamId),
+    initialData: {
+      raw: [],
+      rich: [],
+    },
   });
 };
 
-export const useDocumentsCountPerTagByTeam = (teamId: string | null) => {
+export const useDocumentsCountPerTagByTeam = (teamId: string) => {
   return useQuery({
-    queryKey: ['documentsCountPerTag', { teamId: teamId }],
-    queryFn: () => (teamId ? fetchDocumentsCountPerTag(teamId) : {}),
+    queryKey: tagQueryKey.documentsCountPerTag(teamId),
+    queryFn: () => fetchDocumentsCountPerTag(teamId),
     initialData: {},
   });
 };
@@ -36,19 +52,23 @@ export const useCreateTag = () => {
       return createTag(teamId, tagCreationDTO);
     },
     onSuccess: async (_, { teamId }) => {
-      await queryClient.invalidateQueries({ queryKey: ['Tags', { teamId }] });
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.byTeam(teamId),
+      });
     },
   });
 };
 
 export const useUpdateTag = () => {
   const queryClient = useQueryClient();
+  const { teamId } = useParams<RouteParams>();
   return useMutation({
     mutationFn: ({ tagId, payload }: HooksUpdateTagDTO) =>
       updateTag(tagId, payload),
-    onSuccess: async (tag) => {
-      console.log('successfully updated:', tag);
-      await queryClient.invalidateQueries({ queryKey: ['tags'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.byTeam(teamId),
+      });
     },
   });
 };

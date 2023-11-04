@@ -17,12 +17,13 @@ import TextEditor from '../../fields/TextEditor';
 import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
 import { useParams } from 'next/navigation';
 import SwitchFormField from '../../fields/SwitchFormField';
+import { RouteParams } from '../../../../stores/types/global.types';
 
 interface CreateDocumentFormProps {
   onClose: () => void;
 }
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
-  const { teamId } = useParams();
+  const { teamId } = useParams<RouteParams>();
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const createDocument = useCreateDocument();
@@ -65,7 +66,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
 
       await createDocument
         .mutateAsync({
-          teamId: teamId as string,
+          teamId: teamId,
           createDocumentDto: {
             title,
             content: editor?.getHTML() || '',
@@ -153,10 +154,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Tags
             </Typography>
-            <SelectOrCreateTags
-              teamId={teamId as string}
-              onChange={setSelectedTags}
-            />
+            <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
             <SwitchFormField
               control={control}
               label="Select for newsletter"
