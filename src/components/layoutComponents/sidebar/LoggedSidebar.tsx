@@ -2,7 +2,6 @@
 
 import { Logout, MenuOpen } from '@mui/icons-material';
 import { useLogout, useSession } from '../../../stores/hooks/user.hooks';
-import { User } from '../../../stores/types/user.types';
 import {
   useDocumentsCountPerTagByTeam,
   useTagsByTeam,

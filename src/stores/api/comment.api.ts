@@ -4,7 +4,6 @@ import {
   UpdateCommentDTO,
 } from 'stores/types/comment.types';
 import { apiRequest } from 'utils/api';
-import { UpdateDocumentDto } from '../types/document.types';
 
 export const createComment = async ({
   documentId,
