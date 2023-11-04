@@ -9,6 +9,7 @@ import {
   updateDocumentAsGuest,
 } from '../api/document.api';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -21,6 +22,8 @@ import {
   UpdateDocumentAsGuestDTO,
   UpdateDocumentDto,
 } from '../types/document.types';
+import { useParams, useSearchParams } from 'next/navigation';
+import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
 
 export const useDocument = (teamId: string | null, documentId: string) => {
   return useQuery({
@@ -84,6 +87,9 @@ export const useUpdateDocumentAsGuest = () => {
 
 export const useUpdateDocument = () => {
   const queryClient = useQueryClient();
+  const { teamId, tagId } = useParams();
+  const searchParams = useSearchParams();
+  const search = searchParams.get(SEARCH_QUERY_PARAM);
   return useMutation({
     mutationFn: ({
       documentId,
@@ -93,12 +99,37 @@ export const useUpdateDocument = () => {
       updateDocumentDto: UpdateDocumentDto;
     }) => updateDocument(documentId, updateDocumentDto),
     onSuccess: async (document) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['document', { documentId: document._id }],
-      });
-      await queryClient.invalidateQueries({
-        queryKey: ['documents', { query: { team: document.team } }],
-      });
+      queryClient.setQueryData<InfiniteData<SearchDocumentsReturnType>>(
+        [
+          'documents',
+          {
+            query: {
+              team: teamId,
+              ...(tagId ? { tags: [tagId] } : {}),
+              ...(search ? { text: search } : {}),
+            },
+          },
+        ],
+        (oldData) => {
+          if (oldData) {
+            const newData = oldData?.pages.map((page) => {
+              return {
+                ...page,
+                documents: page.documents.map((doc) => {
+                  if (doc._id === document._id) {
+                    return document;
+                  }
+                  return doc;
+                }),
+              };
+            });
+            return {
+              ...oldData,
+              pages: newData,
+            };
+          }
+        },
+      );
     },
   });
 };

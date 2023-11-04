@@ -17,8 +17,8 @@ function AllDocuments() {
           text: searchQuery,
         }
       : {}),
-    tags: (tagId ? [tagId] : undefined) as string[] | undefined,
-    team: (teamId ? teamId : undefined) as string | undefined,
+    ...(tagId ? { tags: [tagId] as string[] } : {}),
+    team: teamId ? (teamId as string) : undefined,
   });
   const allDocuments = useMemo(
     () => data?.pages.flatMap((page) => page.documents) || [],
