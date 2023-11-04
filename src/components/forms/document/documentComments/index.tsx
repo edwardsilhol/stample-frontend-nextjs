@@ -86,7 +86,7 @@ function DocumentComments({
     },
     [viewedDocument, isViewedDocumentLoading, userMentions],
   );
-  const onSubmitAddComment = () => {
+  const onSubmitAddComment = async () => {
     if (!commentEditor) {
       return;
     }
@@ -103,7 +103,7 @@ function DocumentComments({
     });
 
     if (!commentEditor.isEmpty && mentions) {
-      createComment.mutate({
+      await createComment.mutateAsync({
         documentId,
         createCommentDTO: {
           content: commentEditor?.getHTML(),
