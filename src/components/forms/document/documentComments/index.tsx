@@ -101,8 +101,9 @@ function DocumentComments({
         user: mention === CommentMentionType.USER ? mention : undefined,
       };
     });
+    console.log('hrere', commentEditor.isEmpty, commentEditor?.getHTML());
 
-    if (!commentEditor.isEmpty && mentions) {
+    if (!commentEditor.isEmpty) {
       await createComment.mutateAsync({
         documentId,
         createCommentDTO: {
@@ -110,8 +111,8 @@ function DocumentComments({
           mentions,
         },
       });
+      commentEditor.commands.clearContent();
     }
-    commentEditor.commands.clearContent();
   };
   return !isLoggedInUserLoading && loggedInUser ? (
     <>

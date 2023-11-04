@@ -162,8 +162,8 @@ function DocumentGridItem({
                 >
                   <Beenhere
                     sx={{
-                      width: '20px',
-                      height: '20px',
+                      width: '17px',
+                      height: '17px',
                       color: 'primary.main',
                     }}
                   />
