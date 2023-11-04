@@ -14,8 +14,10 @@ import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { useUpdateComment } from '../../stores/hooks/comment.hooks';
 
 interface DocumentCommentProps {
+  documentId: string;
   comment: Comment;
   commentAuthorsById: Record<string, UserForOtherClient>;
   index: number;
@@ -23,11 +25,13 @@ interface DocumentCommentProps {
 }
 
 function DocumentComment({
+  documentId,
   comment,
   commentAuthorsById,
   index,
   currentUserId,
 }: DocumentCommentProps) {
+  const updateComment = useUpdateComment();
   const [isEditable, setIsEditable] = useState(false);
   const author = commentAuthorsById[comment.creatorId];
   const editor = useEditor(
@@ -40,6 +44,19 @@ function DocumentComment({
     },
     [comment.content, isEditable],
   );
+
+  const handleUpdateComment = async () => {
+    const { _id, creatorId, __v, ...rest } = Object(comment);
+    await updateComment.mutateAsync({
+      documentId,
+      commentId: comment._id,
+      updateCommentDTO: {
+        ...rest,
+        content: editor?.getHTML() || '',
+      },
+    });
+    setIsEditable(false);
+  };
 
   return (
     <Card
@@ -106,8 +123,7 @@ function DocumentComment({
           <TextEditor editor={editor} />
           {isEditable && (
             <Button
-              // onClick={onSubmitAddComment}
-              // TODO: add mutation
+              onClick={handleUpdateComment}
               variant="contained"
               sx={{ alignSelf: 'flex-end' }}
             >

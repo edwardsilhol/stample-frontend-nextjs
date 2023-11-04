@@ -1,8 +1,7 @@
 'use client';
 
 import { Logout, MenuOpen } from '@mui/icons-material';
-import { useLogout } from '../../../stores/hooks/user.hooks';
-import { User } from '../../../stores/types/user.types';
+import { useLogout, useSession } from '../../../stores/hooks/user.hooks';
 import {
   useDocumentsCountPerTagByTeam,
   useTagsByTeam,
@@ -21,32 +20,23 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
+import { RouteParams } from '../../../stores/types/global.types';
 
-interface LoggedSidebarProps {
-  user: User | null | undefined;
-  isLoading: boolean;
-}
-function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
-  const { teamId } = useParams();
+function LoggedSidebar() {
+  const { teamId } = useParams<RouteParams>();
   const isMobile = useIsMobile();
-  const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(
-    teamId as string,
-  );
+  const { data: user, isLoading } = useSession();
+  const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(teamId);
   const {
     data: { rich: richTags },
-  } = useTagsByTeam(teamId as string);
+  } = useTagsByTeam(teamId);
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  const displaySelectTeams = () => (
-    <Box paddingY={1}>
-      <SelectTeamsAndOrganisationsDialog teamId={teamId as string} open />
-    </Box>
-  );
 
   const getAccountMenu = () => {
     return !isLoading && user ? (
@@ -96,36 +86,21 @@ function LoggedSidebar({ user, isLoading }: LoggedSidebarProps) {
         </IconButton>
       ) : null}
       {getAccountMenu()}
-      <Divider sx={{ marginTop: 2 }} />
-      {displaySelectTeams()}
-      {/* TODO Remove this when summarization is automatic */}
-      {/*{user?.isAdmin ? (*/}
-      {/*  <Button*/}
-      {/*    onClick={() => {*/}
-      {/*      if (selectedTeamId) {*/}
-      {/*        mutate({*/}
-      {/*          teamId: selectedTeamId,*/}
-      {/*          ...(selectedTagId ? { tagId: selectedTagId } : {}),*/}
-      {/*        });*/}
-      {/*      }*/}
-      {/*    }}*/}
-      {/*    fullWidth*/}
-      {/*    variant="outlined"*/}
-      {/*    sx={{ fontSize: '12px', marginY: 2 }}*/}
-      {/*  >*/}
-      {/*    {'Summarize displayed articles'}*/}
-      {/*  </Button>*/}
-      {/*) : null}*/}
-      <TagsView
-        teamId={teamId as string}
-        tags={richTags}
-        documentsCountPerTags={documentsCountPerTags}
-        onSelectTag={() => {
-          if (isMobile) {
-            setIsSidebarOpen(false);
-          }
-        }}
-      />
+      <Divider sx={{ marginY: 2 }} />
+      <Stack direction="column" spacing={0.75}>
+        <SelectTeamsAndOrganisationsDialog teamId={teamId} open />
+        <GotoNewsletterButton teamId={teamId} />
+        <TagsView
+          teamId={teamId}
+          tags={richTags}
+          documentsCountPerTags={documentsCountPerTags}
+          onSelectTag={() => {
+            if (isMobile) {
+              setIsSidebarOpen(false);
+            }
+          }}
+        />
+      </Stack>
       <Divider sx={{ marginBottom: 2 }} />
       <Button
         startIcon={<Logout />}

@@ -6,7 +6,13 @@ export type DocumentType = (typeof documentTypes)[number];
 
 export type CreateDocumentDTO = Pick<
   Document,
-  'title' | 'content' | 'summary' | 'url' | 'type' | 'tags'
+  | 'title'
+  | 'content'
+  | 'summary'
+  | 'url'
+  | 'type'
+  | 'tags'
+  | 'selectedForNewsletter'
 >;
 const documentMediaTypes = ['image', 'video'] as const;
 type DocumentMediaType = (typeof documentMediaTypes)[number];
@@ -34,6 +40,7 @@ export interface Document {
   creator: string;
   urlWebsiteName?: string;
   mainMedia?: DocumentMedia;
+  selectedForNewsletter: boolean;
   createdAt: Date;
   aiSummary?: string[];
 }
@@ -76,3 +83,30 @@ export type UrlAndId = {
   url: string;
   id: string;
 };
+
+interface AddRemoveDto {
+  readers: string[];
+  likes: string[];
+  guests: string[];
+  comments: string[];
+  tags: string[];
+}
+
+export type UpdateDocumentDto = Partial<
+  Omit<
+    Document,
+    | '_id'
+    | 'creator'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'comments'
+    | 'likes'
+    | 'readers'
+    | 'guests'
+    | 'tags'
+    | 'team'
+  > & {
+    add?: AddRemoveDto;
+    remove?: AddRemoveDto;
+  }
+>;

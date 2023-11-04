@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react';
-import CreateDocumentForm from './index';
+import NewsletterForm from './index';
 
 export default {
-  title: 'Components/Forms/Document/CreateDocumentForm',
-  component: CreateDocumentForm,
+  title: 'Components/Forms/Newsletter/NewsletterForm',
+  component: NewsletterForm,
   args: {
     onClose: () => {
       console.log('onClose');

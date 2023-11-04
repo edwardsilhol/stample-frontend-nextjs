@@ -13,9 +13,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState, MouseEvent } from 'react';
-import { useDeleteDocument } from '../../../stores/hooks/document.hooks';
+import {
+  useDeleteDocument,
+  useUpdateDocument,
+} from '../../../stores/hooks/document.hooks';
+import Popover from '@mui/material/Popover';
 
 interface DocumentGridItemProps {
+  isTeamPersonal: boolean;
+  userHasPrivilege: boolean;
   currentUserId: string;
   document: MinimalDocument;
   flatTags?: Tag[];
@@ -23,22 +29,42 @@ interface DocumentGridItemProps {
 }
 
 function DocumentGridItem({
+  isTeamPersonal,
+  userHasPrivilege,
   document,
   onClick,
   currentUserId,
 }: DocumentGridItemProps) {
+  const updateDocument = useUpdateDocument();
   const deleteDocument = useDeleteDocument(document.team);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleDelete = () => {
-    deleteDocument.mutate(document._id);
-    setAnchorEl(null);
+    setMenuAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setMenuAnchorEl(null);
+  };
+  const handlePopoverHover = (event: MouseEvent<HTMLElement>) => {
+    setPopoverAnchorEl(event.currentTarget);
+  };
+  const handlePopoverClose = () => {
+    setPopoverAnchorEl(null);
+  };
+  const handleDelete = () => {
+    deleteDocument.mutate(document._id);
+    setMenuAnchorEl(null);
+  };
+  const handleToggleNewsletterSelection = () => {
+    updateDocument.mutate({
+      documentId: document._id,
+      updateDocumentDto: {
+        selectedForNewsletter: !document.selectedForNewsletter,
+      },
+    });
+    handleMenuClose();
   };
   const renderSettingsButton = () => (
     <>
@@ -56,13 +82,19 @@ function DocumentGridItem({
       </IconButton>
 
       <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
         onClose={handleMenuClose}
       >
+        {!isTeamPersonal && (
+          <MenuItem onClick={handleToggleNewsletterSelection}>
+            {document.selectedForNewsletter
+              ? 'Remove from newsletter selection'
+              : 'Select for newsletter'}
+          </MenuItem>
+        )}
+        {/*<MenuItem onClick={handleMenuClose}></MenuItem> TODO update document form*/}
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
-        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
-        <MenuItem onClick={handleMenuClose}>TODO</MenuItem>
       </Menu>
     </>
   );
@@ -76,7 +108,8 @@ function DocumentGridItem({
       }}
       variant="elevation"
     >
-      {currentUserId === document.creator && renderSettingsButton()}
+      {(userHasPrivilege || currentUserId === document.creator) &&
+        renderSettingsButton()}
       {document.mainMedia?.src ? (
         <CardMedia
           sx={{
@@ -116,6 +149,26 @@ function DocumentGridItem({
                 marginBottom: '5px',
               }}
             >
+              {document.aiSummary && document.aiSummary.length > 0 && (
+                <Box
+                  component="span"
+                  sx={{
+                    marginRight: '5px',
+                    position: 'relative',
+                    top: '3px',
+                  }}
+                  onMouseEnter={handlePopoverHover}
+                  onMouseLeave={handlePopoverClose}
+                >
+                  <Beenhere
+                    sx={{
+                      width: '20px',
+                      height: '20px',
+                      color: 'primary.main',
+                    }}
+                  />
+                </Box>
+              )}
               {decodeHTML(document.title ?? '')}
             </Typography>
             <DocumentHeader
@@ -132,25 +185,6 @@ function DocumentGridItem({
                 },
               }}
             />
-            {/*<Avatar*/}
-            {/*  sizes="large"*/}
-            {/*  src={creator.profilePictureUrl}*/}
-            {/*  sx={{*/}
-            {/*    width: '50px',*/}
-            {/*    height: '50px',*/}
-            {/*    marginTop: '10px',*/}
-            {/*    marginBottom: '10px',*/}
-            {/*    border: '5px solid',*/}
-            {/*    borderColor: 'primary.main',*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  {creator.profilePictureUrl*/}
-            {/*    ? null*/}
-            {/*    : `${creator.firstName[0]}${creator.lastName[0]}`}*/}
-            {/*</Avatar>*/}
-            {/*<Typography variant="h5" fontWeight={700} marginLeft={0}>*/}
-            {/*  {creator.firstName} {creator.lastName}*/}
-            {/*</Typography>*/}
             {document.summary && (
               <Box
                 sx={{
@@ -190,47 +224,62 @@ function DocumentGridItem({
             )}
           </Box>
           {document.aiSummary && document.aiSummary.length > 0 && (
-            <Box sx={{ padding: 2, backgroundColor: '#f9f9f9' }}>
+            <Popover
+              sx={{
+                pointerEvents: 'none',
+              }}
+              open={Boolean(popoverAnchorEl)}
+              anchorEl={popoverAnchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
               <Box
                 sx={{
-                  textAlign: 'center',
+                  padding: 2,
+                  backgroundColor: '#f9f9f9',
+                  maxWidth: '400px',
                 }}
               >
-                <Box sx={{ marginTop: 0 }}>
-                  <Beenhere
-                    sx={{
-                      width: '22px',
-                      height: '22px',
-                      color: 'primary.main',
-                    }}
-                  />
-                </Box>
-                <ul
-                  style={{
-                    paddingLeft: '14px',
-                    marginBlockStart: 0,
-                    marginBlockEnd: 0,
-                    textAlign: 'left',
+                <Box
+                  sx={{
+                    textAlign: 'center',
                   }}
                 >
-                  {document.aiSummary?.map((sentence, i) => (
-                    <Typography
-                      key={i}
-                      variant="caption"
-                      whiteSpace="pre-line"
-                      sx={{
-                        fontStyle: 'italic',
-                        lineHeight: '18px',
-                      }}
-                    >
-                      <li key={i} style={{ marginBottom: '5px' }}>
-                        {sentence}
-                      </li>
-                    </Typography>
-                  ))}
-                </ul>
+                  <ul
+                    style={{
+                      paddingLeft: '14px',
+                      marginBlockStart: 0,
+                      marginBlockEnd: 0,
+                      textAlign: 'left',
+                    }}
+                  >
+                    {document.aiSummary?.map((sentence, i) => (
+                      <Typography
+                        key={i}
+                        variant="caption"
+                        whiteSpace="pre-line"
+                        sx={{
+                          fontStyle: 'italic',
+                          lineHeight: '18px',
+                        }}
+                      >
+                        <li key={i} style={{ marginBottom: '5px' }}>
+                          {sentence}
+                        </li>
+                      </Typography>
+                    ))}
+                  </ul>
+                </Box>
               </Box>
-            </Box>
+            </Popover>
           )}
         </Box>
       </CardContent>

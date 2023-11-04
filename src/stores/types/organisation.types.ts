@@ -1,4 +1,4 @@
-import { AddRemoveDto } from './other.types';
+import { AddRemoveDto } from './global.types';
 import { Team } from './team.types';
 import { PopulatedUserAndPermissions, UserAndPermissions } from './user.types';
 

@@ -11,17 +11,19 @@ import Stack from '@mui/material/Stack';
 import { CreateDocumentDTO } from '../../../../stores/types/document.types';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
-import TextFieldForm from '../../fields/textFieldForm';
+import TextFormField from '../../fields/textFormField';
 import SelectOrCreateTags from '../SelectOrCreateTags';
 import TextEditor from '../../fields/TextEditor';
 import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
 import { useParams } from 'next/navigation';
+import SwitchFormField from '../../fields/SwitchFormField';
+import { RouteParams } from '../../../../stores/types/global.types';
 
 interface CreateDocumentFormProps {
   onClose: () => void;
 }
 function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
-  const { teamId } = useParams();
+  const { teamId } = useParams<RouteParams>();
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const createDocument = useCreateDocument();
@@ -37,7 +39,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
     title: Yup.string().required(),
     content: Yup.string().optional(),
     summary: Yup.string().required(),
-    url: Yup.string().required(),
+    url: Yup.string().optional(),
     tags: Yup.array().of(Yup.string()),
   } as Record<keyof CreateDocumentDTO, any>);
 
@@ -49,8 +51,9 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
       url: '',
       tags: [],
       type: 'note',
+      selectedForNewsletter: false,
     },
-    resolver: yupResolver(validationSchema) as any,
+    resolver: yupResolver<CreateDocumentDTO>(validationSchema as any),
   });
 
   const onSubmit = async (values: CreateDocumentDTO) => {
@@ -59,11 +62,11 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
     }
     try {
       setError(undefined);
-      const { title, summary, url, type } = values;
+      const { title, summary, url, type, selectedForNewsletter } = values;
 
       await createDocument
         .mutateAsync({
-          teamId: teamId as string,
+          teamId: teamId,
           createDocumentDto: {
             title,
             content: editor?.getHTML() || '',
@@ -71,6 +74,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             url,
             tags: selectedTags.map((tag) => tag._id),
             type,
+            selectedForNewsletter,
           },
         })
         .then(() => {
@@ -112,7 +116,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Title
             </Typography>
-            <TextFieldForm
+            <TextFormField
               control={control}
               name="title"
               required
@@ -124,7 +128,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Key insight
             </Typography>
-            <TextFieldForm
+            <TextFormField
               control={control}
               name="summary"
               required
@@ -136,44 +140,13 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Content
             </Typography>
-            {/*<Editor*/}
-            {/*  editorState={editorState}*/}
-            {/*  onEditorStateChange={handleEditorStateChange}*/}
-            {/*  editorStyle={{*/}
-            {/*    height: '136px',*/}
-            {/*    backgroundColor: 'white',*/}
-            {/*    border: '1px solid',*/}
-            {/*    borderColor: 'rgba(0, 0, 0, 0.23)',*/}
-            {/*    borderRadius: '8px',*/}
-            {/*    paddingLeft: '14px',*/}
-            {/*    paddingTop: '0.5px',*/}
-            {/*    paddingBottom: '0.5px',*/}
-            {/*  }}*/}
-            {/*  toolbarStyle={{*/}
-            {/*    backgroundColor: 'transparent',*/}
-            {/*    border: 'none',*/}
-            {/*    padding: 0,*/}
-            {/*    marginLeft: '-4px',*/}
-            {/*  }}*/}
-            {/*  placeholder="The content of your note"*/}
-            {/*  toolbar={{*/}
-            {/*    options: ['inline', 'list'],*/}
-            {/*    inline: {*/}
-            {/*      options: ['bold', 'italic', 'underline'],*/}
-            {/*    },*/}
-            {/*    list: {*/}
-            {/*      options: ['unordered', 'ordered'],*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*/>*/}
             <TextEditor editor={editor} />
             <Typography variant="body2" fontWeight={500}>
               Url
             </Typography>
-            <TextFieldForm
+            <TextFormField
               control={control}
               name="url"
-              required
               fullWidth
               id="url"
               placeholder="Give a url to your note"
@@ -181,9 +154,11 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
             <Typography variant="body2" fontWeight={500}>
               Tags
             </Typography>
-            <SelectOrCreateTags
-              teamId={teamId as string}
-              onChange={setSelectedTags}
+            <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
+            <SwitchFormField
+              control={control}
+              label="Select for newsletter"
+              name="selectedForNewsletter"
             />
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
               Save

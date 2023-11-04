@@ -7,19 +7,29 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CreateOrganisationDTO,
+  Organisation,
   UpdateOrganisationDTO,
 } from '../types/organisation.types';
 
+const organisationQueryKey = {
+  base: ['organisation'],
+  all: ['organisations'],
+  one: (organisationId?: string) => [
+    ...organisationQueryKey.base,
+    { organisationId },
+  ],
+};
+
 export const useOrganisation = (organisationId?: string) => {
   return useQuery({
-    queryKey: ['organisation', { organisationId }],
+    queryKey: organisationQueryKey.one(organisationId),
     queryFn: () => (organisationId ? fetchOrganisation(organisationId) : null),
   });
 };
 
 export const useAllOrganisations = () => {
   return useQuery({
-    queryKey: ['allOrganisations'],
+    queryKey: organisationQueryKey.all,
     queryFn: fetchOrganisations,
     initialData: [],
   });
@@ -30,8 +40,14 @@ export const useCreateOrganisation = () => {
   return useMutation({
     mutationFn: (createOrganisationDto: CreateOrganisationDTO) =>
       createOrganisation(createOrganisationDto),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['allOrganisations'] });
+    onSuccess: async (organisation) => {
+      await queryClient.setQueryData(
+        organisationQueryKey.all,
+        (oldOrganisations: Organisation[]) => [
+          ...oldOrganisations,
+          organisation,
+        ],
+      );
     },
   });
 };
@@ -46,8 +62,20 @@ export const useUpdateOrganisation = () => {
       organisationId: string;
       updateOrganisationDto: UpdateOrganisationDTO;
     }) => updateOrganisation(organisationId, updateOrganisationDto),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['allOrganisations'] });
+    onSuccess: async (organisation) => {
+      await queryClient.setQueryData(
+        organisationQueryKey.one(organisation._id),
+        organisation,
+      );
+      await queryClient.setQueryData(
+        organisationQueryKey.all,
+        (oldOrganisations: Organisation[]) =>
+          oldOrganisations.map((oldOrganisation) =>
+            oldOrganisation._id === organisation._id
+              ? organisation
+              : oldOrganisation,
+          ),
+      );
     },
   });
 };

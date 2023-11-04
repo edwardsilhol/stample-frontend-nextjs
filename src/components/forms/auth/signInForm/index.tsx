@@ -13,7 +13,7 @@ import { object, string } from 'yup';
 import { SignInDTO } from '../../../../stores/types/user.types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextFieldForm from '../../fields/textFieldForm';
+import TextFormField from '../../fields/textFormField';
 import Link from 'next/link';
 import Container from '@mui/material/Container';
 
@@ -79,7 +79,7 @@ function SignInForm() {
           onSubmit={handleSubmit(onSubmit)}
           sx={styles.fieldContainer}
         >
-          <TextFieldForm
+          <TextFormField
             control={control}
             margin="normal"
             required
@@ -90,7 +90,7 @@ function SignInForm() {
             autoComplete="email"
             autoFocus
           />
-          <TextFieldForm
+          <TextFormField
             control={control}
             margin="normal"
             required

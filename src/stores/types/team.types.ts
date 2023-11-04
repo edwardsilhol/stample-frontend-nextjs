@@ -28,3 +28,9 @@ export type UpdateTeamDTO = Partial<
 export type AnswerInvitationDTO = {
   accept: boolean;
 };
+
+export type SendNewsletterDto = {
+  title: string;
+  intro: string;
+  conclusion: string;
+};

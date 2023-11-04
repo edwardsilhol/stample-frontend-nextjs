@@ -8,11 +8,14 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '../../constants/tokenConfig.constant';
-import { QUERY_KEY_SESSION } from '../../constants/reactQuery.constant';
+
+const userQueryKey = {
+  session: ['session'],
+};
 
 export const useSession = () => {
   return useQuery({
-    queryKey: [QUERY_KEY_SESSION],
+    queryKey: userQueryKey.session,
     queryFn: fetchSession,
     gcTime: Infinity,
     staleTime: Infinity,
@@ -25,7 +28,7 @@ export const useSignIn = () => {
   return useMutation({
     mutationFn: (signInDTO: SignInDTO) => signIn(signInDTO),
     onSuccess: (user) => {
-      queryClient.setQueryData([QUERY_KEY_SESSION], user);
+      queryClient.setQueryData(userQueryKey.session, user);
     },
   });
 };
@@ -35,7 +38,7 @@ export const useSignUp = () => {
   return useMutation({
     mutationFn: (signUpDTO: SignUpDTO) => signUp(signUpDTO),
     onSuccess: (user) => {
-      queryClient.setQueryData([QUERY_KEY_SESSION], user);
+      queryClient.setQueryData(userQueryKey.session, user);
     },
   });
 };
@@ -47,7 +50,7 @@ export const useLogout = () => {
     mutationFn: async () => {
       localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
       localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
-      await queryClient.invalidateQueries({ queryKey: ['session'] });
+      await queryClient.invalidateQueries({ queryKey: userQueryKey.session });
       queryCache.clear();
     },
   });

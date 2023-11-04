@@ -4,8 +4,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Close from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import { CreateOrUpdateTeamForm } from 'components/forms/team/CreateOrUpdateTeamForm';
-import { PopulatedTeam } from 'stores/types/team.types';
+import CreateOrUpdateTeamForm from 'components/forms/team/CreateOrUpdateTeamForm';
+import { PopulatedTeam } from '../../stores/types/team.types';
 
 interface CreateTeamDialogsProps {
   open: boolean;

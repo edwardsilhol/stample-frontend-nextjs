@@ -14,6 +14,7 @@ import { useTagsByTeam } from 'stores/hooks/tag.hooks';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from 'components/document/DocumentsView';
 import { Tag } from 'stores/types/tag.types';
 import { useParams } from 'next/navigation';
+import { RouteParams } from '../../../stores/types/global.types';
 
 interface LoggedHeaderContentProps {
   addButtonToggled: boolean;
@@ -78,10 +79,10 @@ interface LoggedHeaderProps {
   setToggledAddButton: (toggled: boolean) => void;
 }
 function LoggedHeader(props: LoggedHeaderProps) {
-  const { teamId } = useParams();
+  const { teamId } = useParams<RouteParams>();
   const {
     data: { raw: tags },
-  } = useTagsByTeam(teamId as string);
+  } = useTagsByTeam(teamId);
   const isMobile = useIsMobile();
   const trigger = useScrollTrigger({
     target:

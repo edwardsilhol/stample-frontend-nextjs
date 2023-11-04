@@ -18,7 +18,6 @@ import {
 } from '../../../stores/hooks/document.hooks';
 import DocumentHeader from '../../document/DocumentHeader';
 import DocumentTags from '../../document/DocumentTags';
-import { useCreateComment } from 'stores/hooks/comment.hooks';
 import { useTeam } from 'stores/hooks/team.hooks';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
@@ -34,22 +33,18 @@ import CircularLoading from '../../base/circularLoading';
 import DocumentComments from '../../forms/document/documentComments';
 
 interface DocumentViewProps {
+  teamId: string;
   documentId: string;
 }
 
-function DocumentView({ documentId }: DocumentViewProps) {
+function DocumentView({ teamId, documentId }: DocumentViewProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
+  const { data: loggedInUser, isLoading: isLoggedInUserLoading } = useSession();
   const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
-    useDocument(null, documentId);
-  const { data: team, isLoading: isTeamLoading } = useTeam(
-    viewedDocument?.team ?? null,
-  );
-  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(
-    viewedDocument?.team ?? null,
-  );
-  useCreateComment(documentId);
+    useDocument(documentId);
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
+  const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(teamId);
   const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();
   const viewedDocumentEditor = useEditor(
@@ -76,8 +71,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
     }
     updateDocumentAsGuest.mutate({
       documentId: documentId,
-      teamId: viewedDocument?.team,
-      updateDocumentAsGuestDTO: {
+      updateDocumentAsGuestDto: {
         isLiked: like,
       },
     });
@@ -100,7 +94,7 @@ function DocumentView({ documentId }: DocumentViewProps) {
           <Toolbar />
         </>
       ) : null}
-      {isloggedInUserLoading ||
+      {isLoggedInUserLoading ||
       isViewedDocumentLoading ||
       isTeamLoading ||
       isTagsLoading ? (
@@ -229,12 +223,6 @@ function DocumentView({ documentId }: DocumentViewProps) {
                           height: '50px',
                         }}
                       />
-                      {/*<Typography*/}
-                      {/*  variant="h5"*/}
-                      {/*  sx={{ color: 'primary.main', marginBottom: '10px' }}*/}
-                      {/*>*/}
-                      {/*  {'Summary'}*/}
-                      {/*</Typography>*/}
                     </Box>
                     <ul style={{ paddingLeft: '20px' }}>
                       {viewedDocument.aiSummary?.map((sentence, i) => (

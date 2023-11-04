@@ -30,8 +30,8 @@ function DocumentComments({
   viewedDocument,
   team,
 }: DocumentCommentsProps) {
-  const { data: loggedInUser, isLoading: isloggedInUserLoading } = useSession();
-  const createComment = useCreateComment(documentId);
+  const { data: loggedInUser, isLoading: isLoggedInUserLoading } = useSession();
+  const createComment = useCreateComment();
   const commentAuthorsById: Record<string, UserForOtherClient> = useMemo(
     () =>
       [
@@ -104,19 +104,23 @@ function DocumentComments({
 
     if (!commentEditor.isEmpty && mentions) {
       createComment.mutate({
-        content: commentEditor?.getHTML(),
-        mentions,
+        documentId,
+        createCommentDTO: {
+          content: commentEditor?.getHTML(),
+          mentions,
+        },
       });
     }
     commentEditor.commands.clearContent();
   };
-  return !isloggedInUserLoading && loggedInUser ? (
+  return !isLoggedInUserLoading && loggedInUser ? (
     <>
       <Stack spacing={2} paddingY={2}>
         {viewedDocument?.comments?.map((comment, index) => (
           <DocumentComment
             key={index}
             index={index}
+            documentId={documentId}
             commentAuthorsById={commentAuthorsById}
             comment={comment}
             currentUserId={loggedInUser?._id}

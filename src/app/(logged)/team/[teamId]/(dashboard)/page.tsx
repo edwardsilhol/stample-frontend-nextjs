@@ -1,4 +1,4 @@
-import MainView from '../../../../components/MainView';
+import MainView from '../../../../../components/MainView';
 
 function TeamPage() {
   return <MainView />;

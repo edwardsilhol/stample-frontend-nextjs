@@ -1,13 +1,16 @@
+'use client';
+
 import {
   createDocument,
-  fetchDocument,
-  updateDocumentAsGuest,
-  searchDocuments,
-  fetchDocumentByTeam,
-  summarizeDocument,
   deleteDocument,
+  fetchDocument,
+  searchDocuments,
+  summarizeDocument,
+  updateDocument,
+  updateDocumentAsGuest,
 } from '../api/document.api';
 import {
+  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -18,33 +21,48 @@ import {
   SearchDocumentsDTO,
   SearchDocumentsReturnType,
   UpdateDocumentAsGuestDTO,
+  UpdateDocumentDto,
 } from '../types/document.types';
+import { useParams, useSearchParams } from 'next/navigation';
+import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
+import { RouteParams } from '../types/global.types';
 
-export const useDocument = (teamId: string | null, documentId: string) => {
+const useSearchDocumentsQuery = () => {
+  const { teamId, tagId } = useParams<RouteParams>();
+  const searchParams = useSearchParams();
+  const search = searchParams.get(SEARCH_QUERY_PARAM);
+  return {
+    team: teamId,
+    ...(tagId ? { tags: [tagId] } : {}),
+    ...(search ? { text: search } : {}),
+  };
+};
+export const documentQueryKey = {
+  base: ['document'],
+  all: ['documents'],
+  one: (documentId: string) => [...documentQueryKey.base, { documentId }],
+  search: (searchDocumentsDTO: SearchDocumentsDTO) => [
+    ...documentQueryKey.all,
+    { query: searchDocumentsDTO },
+  ],
+};
+
+export const useDocument = (documentId: string) => {
   return useQuery({
-    queryKey: ['document', { documentId }],
-    queryFn: () => {
-      if (teamId) {
-        return fetchDocumentByTeam(teamId, documentId);
-      } else {
-        return fetchDocument(documentId);
-      }
-    },
+    queryKey: documentQueryKey.one(documentId),
+    queryFn: () => fetchDocument(documentId),
   });
 };
+
 export const useSearchDocuments = (searchDocumentsDTO: SearchDocumentsDTO) =>
   useInfiniteQuery<SearchDocumentsReturnType>({
-    queryKey: ['documents', { query: searchDocumentsDTO }],
+    queryKey: documentQueryKey.search(searchDocumentsDTO),
     queryFn: ({ pageParam }) =>
       searchDocuments({
         ...searchDocumentsDTO,
         page: pageParam as number,
       }),
     initialPageParam: 0,
-    initialData: {
-      pages: [],
-      pageParams: [],
-    },
     getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
   });
 
@@ -60,7 +78,7 @@ export const useCreateDocument = () => {
     }) => createDocument(teamId, createDocumentDto),
     onSuccess: async ({ team }) => {
       await queryClient.invalidateQueries({
-        queryKey: ['documents', { team }],
+        queryKey: documentQueryKey.search({ team }),
       });
     },
   });
@@ -70,18 +88,55 @@ export const useUpdateDocumentAsGuest = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
-      teamId,
       documentId,
-      updateDocumentAsGuestDTO,
+      updateDocumentAsGuestDto,
     }: {
-      teamId: string;
       documentId: string;
-      updateDocumentAsGuestDTO: UpdateDocumentAsGuestDTO;
-    }) => updateDocumentAsGuest(teamId, documentId, updateDocumentAsGuestDTO),
-    onSuccess: async (_, { documentId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['document', { documentId }],
-      });
+      updateDocumentAsGuestDto: UpdateDocumentAsGuestDTO;
+    }) => updateDocumentAsGuest(documentId, updateDocumentAsGuestDto),
+    onSuccess: async (document) => {
+      await queryClient.setQueryData(
+        documentQueryKey.one(document._id),
+        document,
+      );
+    },
+  });
+};
+
+export const useUpdateDocument = () => {
+  const queryClient = useQueryClient();
+  const searchDocumentsQuery = useSearchDocumentsQuery();
+  return useMutation({
+    mutationFn: ({
+      documentId,
+      updateDocumentDto,
+    }: {
+      documentId: string;
+      updateDocumentDto: UpdateDocumentDto;
+    }) => updateDocument(documentId, updateDocumentDto),
+    onSuccess: async (document) => {
+      queryClient.setQueryData<InfiniteData<SearchDocumentsReturnType>>(
+        documentQueryKey.search(searchDocumentsQuery),
+        (oldData) => {
+          if (oldData) {
+            const newData = oldData?.pages.map((page) => {
+              return {
+                ...page,
+                documents: page.documents.map((doc) => {
+                  if (doc._id === document._id) {
+                    return document;
+                  }
+                  return doc;
+                }),
+              };
+            });
+            return {
+              ...oldData,
+              pages: newData,
+            };
+          }
+        },
+      );
     },
   });
 };
@@ -91,10 +146,11 @@ export const useSummarizeDocument = () => {
   return useMutation({
     mutationFn: ({ documentId }: { documentId: string }) =>
       summarizeDocument(documentId),
-    onSuccess: async (_, { documentId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['document', { documentId }],
-      });
+    onSuccess: async (document) => {
+      await queryClient.setQueryData(
+        documentQueryKey.one(document._id),
+        document,
+      );
     },
   });
 };
@@ -105,7 +161,7 @@ export const useDeleteDocument = (team: string) => {
     mutationFn: deleteDocument,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['documents', { query: { team } }],
+        queryKey: documentQueryKey.search({ team }),
       });
     },
   });

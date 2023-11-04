@@ -17,6 +17,7 @@ import { getTeamDisplayedName } from '../../../utils/team.helper';
 import { Team } from 'stores/types/team.types';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
+import CircularLoading from '../../base/circularLoading';
 
 interface SelectTeamsAndOrganisationsDialogProps {
   teamId: string;
@@ -30,12 +31,12 @@ function SelectTeamsAndOrganisationsDialog({
   const [isUpdateTeamDialogOpen, setIsUpdateTeamDialogOpen] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-  const { data: teams } = useAllTeams();
-  const { data: team } = useTeam(teamId);
+  const { data: teams, isLoading: isTeamsLoading } = useAllTeams();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
 
-  return (
+  return !isTeamsLoading && teams && !isTeamLoading && team ? (
     <>
-      <Typography fontSize="10px" fontWeight={500} paddingY={1.5}>
+      <Typography fontSize="10px" fontWeight={500}>
         TEAM
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1.5}>
@@ -94,7 +95,8 @@ function SelectTeamsAndOrganisationsDialog({
             },
           }}
           onChange={(event) => {
-            router.push(`${TEAM_ROUTE}/${event.target.value}`);
+            if (event.target.value)
+              router.push(`${TEAM_ROUTE}/${event.target.value}`);
           }}
           select
           InputProps={{
@@ -108,7 +110,7 @@ function SelectTeamsAndOrganisationsDialog({
           fullWidth
           variant="standard"
         >
-          {teams?.map((team) => (
+          {teams.map((team) => (
             <MenuItem
               key={team._id}
               value={team._id}
@@ -152,7 +154,7 @@ function SelectTeamsAndOrganisationsDialog({
       </Stack>
       <CreateTeamDialog
         open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
-        team={isUpdateTeamDialogOpen ? team ?? undefined : undefined}
+        team={isUpdateTeamDialogOpen ? team : undefined}
         onClose={() => {
           setIsCreateTeamDialogOpen(false);
           setIsUpdateTeamDialogOpen(false);
@@ -160,6 +162,8 @@ function SelectTeamsAndOrganisationsDialog({
         }}
       />
     </>
+  ) : (
+    <CircularLoading />
   );
 }
 
