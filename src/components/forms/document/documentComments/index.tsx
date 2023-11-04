@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import { getMentionNodes } from '../../fields/TextEditor/utils/nodes';
 import { CommentMentionType } from '../../../../stores/types/comment.types';
 import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Mention } from '../../../lists/mentionList';
 import { uniqBy } from 'lodash';
 import { UserForOtherClient } from '../../../../stores/types/user.types';
@@ -75,27 +75,6 @@ function DocumentComments({
     [viewedDocument?.guests, viewedDocument?.creator, team?.users],
   );
 
-  const renderDocumentComments = useCallback(
-    () =>
-      !isLoggedInUserLoading && loggedInUser ? (
-        <Stack spacing={2} paddingY={2}>
-          {viewedDocument?.comments?.map((comment, index) => (
-            <DocumentComment
-              key={index}
-              index={index}
-              documentId={documentId}
-              commentAuthorsById={commentAuthorsById}
-              comment={comment}
-              currentUserId={loggedInUser?._id}
-            />
-          ))}
-        </Stack>
-      ) : (
-        <CircularLoading />
-      ),
-    [viewedDocument?.comments, commentAuthorsById, loggedInUser?._id],
-  );
-
   const commentEditor = useEditor(
     {
       placeholder: 'Say something...',
@@ -122,6 +101,7 @@ function DocumentComments({
         user: mention === CommentMentionType.USER ? mention : undefined,
       };
     });
+    console.log('hrere', commentEditor.isEmpty, commentEditor?.getHTML());
 
     if (!commentEditor.isEmpty) {
       await createComment.mutateAsync({
@@ -134,9 +114,20 @@ function DocumentComments({
       commentEditor.commands.clearContent();
     }
   };
-  return (
+  return !isLoggedInUserLoading && loggedInUser ? (
     <>
-      {renderDocumentComments()}
+      <Stack spacing={2} paddingY={2}>
+        {viewedDocument?.comments?.map((comment, index) => (
+          <DocumentComment
+            key={index}
+            index={index}
+            documentId={documentId}
+            commentAuthorsById={commentAuthorsById}
+            comment={comment}
+            currentUserId={loggedInUser?._id}
+          />
+        ))}
+      </Stack>
       <TextEditor editor={commentEditor} />
       <Button
         onClick={onSubmitAddComment}
@@ -146,6 +137,8 @@ function DocumentComments({
         Send
       </Button>
     </>
+  ) : (
+    <CircularLoading />
   );
 }
 export default DocumentComments;
