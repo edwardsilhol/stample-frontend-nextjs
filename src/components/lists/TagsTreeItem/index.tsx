@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Add from '@mui/icons-material/Add';
 import { TreeItem } from '@mui/x-tree-view';
-import { MouseEvent, Ref, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,39 +20,44 @@ import { useDeleteTag } from '../../../stores/hooks/tag.hooks';
 import { RouteParams } from '../../../stores/types/global.types';
 import { useParams } from 'next/navigation';
 import ConfirmDialog from '../../modals/confirmDialog';
+import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
+import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
 interface TagsTreeItemProps {
   tag: TagRich;
-  isOriginalParent: boolean;
   setHoveredTagId: (tagId: string | null) => void;
   documentsCountPerTags: Record<string, number>;
   hoveredTagId: string | null;
-  handleClickAddTag: (event: MouseEvent<HTMLElement>, tagId: string) => void;
   handleClickSelectTag: (
     event: MouseEvent<HTMLElement>,
     tagId?: string,
   ) => void;
-  anchorRef: Ref<HTMLLIElement> | undefined;
   userHasTeamPrivilege: boolean;
+  parentId?: string;
 }
 
 function TagsTreeItem({
   tag: { _id, name, children },
-  isOriginalParent,
+  parentId,
   hoveredTagId,
   setHoveredTagId,
   documentsCountPerTags,
-  handleClickAddTag,
   handleClickSelectTag,
-  anchorRef,
   userHasTeamPrivilege,
 }: TagsTreeItemProps) {
   const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const tagFormAnchorRef = useRef(null);
+  const [tagFormAnchorEl, setTagFormAnchorEl] = useState<
+    HTMLElement | undefined
+  >(undefined);
+  const [addTagFormOpen, setAddTagFormOpen] = useState(false);
+  const [updateTagFormOpen, setUpdateTagFormOpen] = useState(false);
   const [deleteTagConfirmationDialogOpen, setDeleteTagConfirmationDialogOpen] =
     useState(false);
+
   const deleteTag = useDeleteTag();
 
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
@@ -64,7 +69,7 @@ function TagsTreeItem({
     setMenuAnchorEl(null);
   };
 
-  const handleClickDeleteTag = (event: MouseEvent<HTMLElement>) => {
+  const handleDeleteTagOptionClick = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setDeleteTagConfirmationDialogOpen(true);
   };
@@ -75,6 +80,19 @@ function TagsTreeItem({
       teamId,
     });
   };
+
+  const handleAddTagOptionClick = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setAddTagFormOpen(true);
+    setTagFormAnchorEl(event.currentTarget || undefined);
+  };
+
+  const handleUpdateTagOptionClick = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setUpdateTagFormOpen(true);
+    setTagFormAnchorEl(event.currentTarget || undefined);
+  };
+
   const deleteTagConfirmationDialog = () => (
     <ConfirmDialog
       key={`delete-tag-${_id}`}
@@ -94,12 +112,18 @@ function TagsTreeItem({
     {
       text: 'Add',
       Icon: Add,
-      onClick: handleClickAddTag,
+      onClick: handleAddTagOptionClick,
+    },
+
+    {
+      text: 'Update',
+      Icon: AutoFixNormalIcon,
+      onClick: handleUpdateTagOptionClick,
     },
     {
       text: 'Delete',
       Icon: Delete,
-      onClick: handleClickDeleteTag,
+      onClick: handleDeleteTagOptionClick,
     },
   ];
   const renderTagOptionsButton = () => (
@@ -131,7 +155,7 @@ function TagsTreeItem({
           <MenuItem
             key={index}
             onClick={(e) => {
-              onClick(e, _id);
+              onClick(e);
               handleMenuClose(e);
             }}
           >
@@ -155,7 +179,7 @@ function TagsTreeItem({
     <>
       <TreeItem
         key={_id}
-        ref={anchorRef}
+        ref={tagFormAnchorRef}
         sx={{
           marginY: '5px',
           '.MuiTreeItem-label': { paddingLeft: 0 },
@@ -215,7 +239,7 @@ function TagsTreeItem({
               >
                 <Typography
                   variant="body2"
-                  fontWeight={isOriginalParent ? 500 : 400}
+                  fontWeight={parentId ? 500 : 400}
                   paddingRight={1}
                 >
                   {name && name.length
@@ -242,18 +266,40 @@ function TagsTreeItem({
             <TagsTreeItem
               key={child._id}
               tag={child}
-              isOriginalParent={false}
+              parentId={_id}
               userHasTeamPrivilege={userHasTeamPrivilege}
               setHoveredTagId={setHoveredTagId}
               documentsCountPerTags={documentsCountPerTags}
               hoveredTagId={hoveredTagId}
-              handleClickAddTag={handleClickAddTag}
               handleClickSelectTag={handleClickSelectTag}
-              anchorRef={anchorRef}
             />
           ))}
       </TreeItem>
       {deleteTagConfirmationDialog()}
+      <CreateOrUpdateTagForm
+        key={`create-tag-${_id}`}
+        variant="create"
+        teamId={teamId}
+        handleClose={() => {
+          setAddTagFormOpen(false);
+          setTagFormAnchorEl(undefined);
+        }}
+        open={addTagFormOpen}
+        tagId={_id}
+        anchorEl={tagFormAnchorRef?.current || tagFormAnchorEl}
+      />
+      <CreateOrUpdateTagForm
+        key={`update-tag-${_id}`}
+        variant="update"
+        teamId={teamId}
+        handleClose={() => {
+          setUpdateTagFormOpen(false);
+          setTagFormAnchorEl(undefined);
+        }}
+        open={updateTagFormOpen}
+        tagId={_id}
+        anchorEl={tagFormAnchorRef?.current || tagFormAnchorEl}
+      />
     </>
   );
 }
