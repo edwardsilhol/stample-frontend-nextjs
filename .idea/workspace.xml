@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentComment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/TextEditor/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +41,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "youssef/fixLayout",
     "js.linters.configure.manually.selectedeslint": "true",
     "last_opened_file_path": "/home/izno/Izno/Personal/ReBright/hdiya",
     "node.js.detected.package.eslint": "true",

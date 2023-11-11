@@ -170,11 +170,9 @@ function TagsTree({
                 justifyContent="start"
                 paddingY={0.4}
                 width="100%"
+                spacing={1.5}
               >
-                <HomeOutlined
-                  sx={{ fontSize: '20px', marginRight: 1 }}
-                  color="primary"
-                />
+                <HomeOutlined sx={{ fontSize: '20px' }} color="primary" />
                 <Typography variant="body2" fontWeight={500}>
                   All
                 </Typography>
