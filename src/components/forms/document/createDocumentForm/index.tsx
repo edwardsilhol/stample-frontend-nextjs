@@ -38,7 +38,7 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
     content: Yup.string().optional(),
-    summary: Yup.string().required(),
+    summary: Yup.string().optional(),
     url: Yup.string().optional(),
     tags: Yup.array().of(Yup.string()),
   } as Record<keyof CreateDocumentDTO, any>);
