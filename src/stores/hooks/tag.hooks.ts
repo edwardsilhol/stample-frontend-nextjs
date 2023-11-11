@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createTag,
+  deleteTag,
   fetchDocumentsCountPerTag,
   fetchTagsByTeam,
   updateTag,
@@ -42,15 +43,7 @@ export const useDocumentsCountPerTagByTeam = (teamId: string) => {
 export const useCreateTag = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      teamId,
-      tagCreationDTO,
-    }: {
-      teamId: string;
-      tagCreationDTO: CreateTagDTO;
-    }) => {
-      return createTag(teamId, tagCreationDTO);
-    },
+    mutationFn: createTag,
     onSuccess: async (_, { teamId }) => {
       await queryClient.invalidateQueries({
         queryKey: tagQueryKey.byTeam(teamId),
@@ -65,6 +58,19 @@ export const useUpdateTag = () => {
   return useMutation({
     mutationFn: ({ tagId, payload }: HooksUpdateTagDTO) =>
       updateTag(tagId, payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.byTeam(teamId),
+      });
+    },
+  });
+};
+
+export const useDeleteTag = () => {
+  const queryClient = useQueryClient();
+  const { teamId } = useParams<RouteParams>();
+  return useMutation({
+    mutationFn: deleteTag,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: tagQueryKey.byTeam(teamId),

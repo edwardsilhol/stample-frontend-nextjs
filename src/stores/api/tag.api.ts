@@ -1,12 +1,9 @@
 import { CreateTagDTO, Tag, UpdateTagDTO, ViewTags } from '../types/tag.types';
 import { apiRequest } from '../../utils/api';
 
-export const createTag = async (
-  teamId: string,
-  tag: CreateTagDTO,
-): Promise<Tag | null> => {
+export const createTag = async (tag: CreateTagDTO): Promise<Tag | null> => {
   try {
-    return await apiRequest<Tag>('POST', `/team/${teamId}/tag`, undefined, tag);
+    return await apiRequest<Tag>('POST', `/tag`, undefined, tag);
   } catch (error) {
     return null;
   }
@@ -20,17 +17,6 @@ export const updateTag = async (
     return await apiRequest<Tag>('PATCH', '/tag/' + tagId, undefined, tag);
   } catch (error) {
     return null;
-  }
-};
-
-export const fetchTags = async (): Promise<ViewTags> => {
-  try {
-    return await apiRequest<ViewTags>('GET', '/tag/all');
-  } catch (error) {
-    return {
-      rich: [],
-      raw: [],
-    };
   }
 };
 
@@ -52,4 +38,18 @@ export const fetchDocumentsCountPerTag = async (
     'GET',
     `/team/${teamId}/documents-per-tag`,
   );
+};
+
+export const deleteTag = async ({
+  teamId,
+  tagId,
+}: {
+  tagId: string;
+  teamId: string;
+}): Promise<Tag | null> => {
+  try {
+    return await apiRequest<Tag>('DELETE', `/tag/${tagId}?teamId=${teamId}`);
+  } catch (error) {
+    return null;
+  }
 };

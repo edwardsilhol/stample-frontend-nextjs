@@ -15,6 +15,10 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Delete from '@mui/icons-material/Delete';
+import { useDeleteTag } from '../../../stores/hooks/tag.hooks';
+import { RouteParams } from '../../../stores/types/global.types';
+import { useParams } from 'next/navigation';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
@@ -42,15 +46,28 @@ function TagView({
   handleClickSelectTag,
   anchorRef,
 }: TagViewProps) {
+  const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-  useState<MouseEvent<HTMLElement> | null>(null);
+  const deleteTag = useDeleteTag();
 
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setMenuAnchorEl(event.currentTarget);
   };
-  const handleMenuClose = () => {
+  const handleMenuClose = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setMenuAnchorEl(null);
+  };
+
+  const handleDeleteTag = async (
+    event: MouseEvent<HTMLElement>,
+    tagId: string,
+  ) => {
+    event.stopPropagation();
+    await deleteTag.mutateAsync({
+      tagId,
+      teamId,
+    });
   };
 
   const tagOptions = [
@@ -58,6 +75,12 @@ function TagView({
       text: 'Add',
       Icon: Add,
       onClick: handleClickAddTag,
+    },
+    {
+      text: 'Delete',
+      Icon: Delete,
+      onClick: handleDeleteTag,
+      // TODO: add confirmation dialog
     },
   ];
   const renderTagOptionsButton = () => (
@@ -90,7 +113,7 @@ function TagView({
             key={index}
             onClick={(e) => {
               onClick(e, _id);
-              handleMenuClose();
+              handleMenuClose(e);
             }}
           >
             <ListItemIcon>

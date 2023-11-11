@@ -122,8 +122,8 @@ function TagsView({
     }
     createTag
       .mutateAsync({
-        tagCreationDTO: { name: newTagName },
-        teamId: teamId,
+        name: newTagName,
+        teamId,
       })
       .then((tag) => {
         if (tagParentId && tag?._id) {
