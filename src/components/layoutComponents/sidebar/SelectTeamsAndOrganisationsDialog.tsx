@@ -12,19 +12,19 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { useState } from 'react';
-import { useAllTeams, useTeam } from 'stores/hooks/team.hooks';
+import { useAllTeams } from 'stores/hooks/team.hooks';
 import { getTeamDisplayedName } from '../../../utils/team.helper';
-import { Team } from 'stores/types/team.types';
+import { PopulatedTeam, Team } from 'stores/types/team.types';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
 import CircularLoading from '../../base/circularLoading';
 
 interface SelectTeamsAndOrganisationsDialogProps {
-  teamId: string;
+  team: PopulatedTeam;
   open: boolean;
 }
 function SelectTeamsAndOrganisationsDialog({
-  teamId,
+  team,
 }: SelectTeamsAndOrganisationsDialogProps) {
   const router = useRouter();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
@@ -32,16 +32,15 @@ function SelectTeamsAndOrganisationsDialog({
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const { data: teams, isLoading: isTeamsLoading } = useAllTeams();
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
 
-  return !isTeamsLoading && teams && !isTeamLoading && team ? (
+  return !isTeamsLoading && teams ? (
     <>
       <Typography fontSize="10px" fontWeight={500}>
         TEAM
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1.5}>
         <TextField
-          value={teamId === null || teamId === undefined ? '' : teamId}
+          value={team._id}
           sx={{
             '.MuiInputBase-input:focus': {
               backgroundColor: 'inherit',
@@ -110,12 +109,12 @@ function SelectTeamsAndOrganisationsDialog({
           fullWidth
           variant="standard"
         >
-          {teams.map((team) => (
+          {teams.map((t) => (
             <MenuItem
-              key={team._id}
-              value={team._id}
+              key={t._id}
+              value={t._id}
               sx={{
-                ...(team._id === teamId
+                ...(t._id === team._id
                   ? {
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -129,7 +128,7 @@ function SelectTeamsAndOrganisationsDialog({
                 overflow="hidden"
                 textOverflow="ellipsis"
               >
-                {getTeamDisplayedName(team)}
+                {getTeamDisplayedName(t)}
               </Typography>
             </MenuItem>
           ))}

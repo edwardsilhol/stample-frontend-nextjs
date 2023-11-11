@@ -19,7 +19,7 @@ import {
   useRef,
 } from 'react';
 import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
-import TagView from 'components/view/TagView';
+import TagsTreeItem from 'components/lists/TagsTreeItem';
 
 function TreeItem({
   sx,
@@ -72,18 +72,20 @@ function TreeItem({
   );
 }
 
-interface TagsViewProps {
+interface TagsTreeProps {
   teamId: string;
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
   onSelectTag: () => void;
+  userHasPrivilege?: boolean;
 }
-function TagsView({
+function TagsTree({
   teamId,
   tags,
   documentsCountPerTags,
   onSelectTag,
-}: TagsViewProps) {
+  userHasPrivilege = false,
+}: TagsTreeProps) {
   const router = useRouter();
   const anchorRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -167,20 +169,24 @@ function TagsView({
             key="root"
             nodeId="root"
             endIcon={
-              <IconButton
-                sx={{
-                  borderRadius: '10px',
-                  width: '18px',
-                  height: '16px',
-                  padding: 0,
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleClickAddTag(event, 'root');
-                }}
-              >
-                <Add sx={{ height: '12px' }} />
-              </IconButton>
+              <>
+                {userHasPrivilege && (
+                  <IconButton
+                    sx={{
+                      borderRadius: '10px',
+                      width: '18px',
+                      height: '16px',
+                      padding: 0,
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleClickAddTag(event, 'root');
+                    }}
+                  >
+                    <Add sx={{ height: '12px' }} />
+                  </IconButton>
+                )}
+              </>
             }
             ContentProps={{
               style: {
@@ -224,9 +230,10 @@ function TagsView({
           />,
           ...(tags
             ? tags.map((tag) => (
-                <TagView
+                <TagsTreeItem
                   key={tag._id}
                   tag={tag}
+                  userHasPrivilege={userHasPrivilege}
                   isOriginalParent={true}
                   setHoveredTagId={setHoveredTagId}
                   documentsCountPerTags={documentsCountPerTags}
@@ -291,4 +298,4 @@ function TagsView({
     </>
   );
 }
-export default TagsView;
+export default TagsTree;

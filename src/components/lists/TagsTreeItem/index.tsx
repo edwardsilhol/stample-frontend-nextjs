@@ -22,7 +22,7 @@ import { useParams } from 'next/navigation';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
-interface TagViewProps {
+interface TagsTreeItemProps {
   tag: TagRich;
   isOriginalParent: boolean;
   setHoveredTagId: (tagId: string | null) => void;
@@ -34,9 +34,10 @@ interface TagViewProps {
     tagId?: string,
   ) => void;
   anchorRef: Ref<HTMLLIElement> | undefined;
+  userHasPrivilege?: boolean;
 }
 
-function TagView({
+function TagsTreeItem({
   tag: { _id, name, children },
   isOriginalParent,
   hoveredTagId,
@@ -45,7 +46,8 @@ function TagView({
   handleClickAddTag,
   handleClickSelectTag,
   anchorRef,
-}: TagViewProps) {
+  userHasPrivilege = false,
+}: TagsTreeItemProps) {
   const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const deleteTag = useDeleteTag();
@@ -209,7 +211,7 @@ function TagView({
               {documentsCountPerTags[_id] || ''}
             </Typography>
           </Stack>
-          {renderTagOptionsButton()}
+          {userHasPrivilege && renderTagOptionsButton()}
         </Stack>
       }
       onClick={(event) => {
@@ -219,7 +221,7 @@ function TagView({
       {children &&
         children.length > 0 &&
         children.map((child: TagRich) => (
-          <TagView
+          <TagsTreeItem
             key={child._id}
             tag={child}
             isOriginalParent={false}
@@ -234,4 +236,4 @@ function TagView({
     </TreeItem>
   );
 }
-export default TagView;
+export default TagsTreeItem;

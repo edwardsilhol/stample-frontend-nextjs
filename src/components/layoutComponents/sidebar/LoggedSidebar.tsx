@@ -6,7 +6,7 @@ import {
   useDocumentsCountPerTagByTeam,
   useTagsByTeam,
 } from '../../../stores/hooks/tag.hooks';
-import TagsView from '../../view/TagsView';
+import TagsTree from '../../lists/TagsTree';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
 import { useParams } from 'next/navigation';
@@ -22,11 +22,14 @@ import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
 import { RouteParams } from '../../../stores/types/global.types';
+import { useTeam } from '../../../stores/hooks/team.hooks';
+import { LocalRole } from '../../../stores/types/user.types';
 
 function LoggedSidebar() {
   const { teamId } = useParams<RouteParams>();
   const isMobile = useIsMobile();
-  const { data: user, isLoading } = useSession();
+  const { data: user, isLoading: isUserLoading } = useSession();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(teamId);
   const {
     data: { rich: richTags },
@@ -38,8 +41,13 @@ function LoggedSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const currentUserRole = team?.users.find((u) => u.user._id === user?._id)
+    ?.role;
+  const UserHasPrivilege =
+    currentUserRole === LocalRole.ADMIN || currentUserRole === LocalRole.OWNER;
+
   const getAccountMenu = () => {
-    return !isLoading && user ? (
+    return !isUserLoading && user ? (
       <Stack direction="row" alignItems="center" spacing={1}>
         <Avatar sx={{ width: 44, height: 44 }} src={user?.profilePictureUrl} />
         <Stack direction="column">
@@ -88,18 +96,28 @@ function LoggedSidebar() {
       {getAccountMenu()}
       <Divider sx={{ marginY: 2 }} />
       <Stack direction="column" spacing={0.75}>
-        <SelectTeamsAndOrganisationsDialog teamId={teamId} open />
-        <GotoNewsletterButton teamId={teamId} />
-        <TagsView
-          teamId={teamId}
-          tags={richTags}
-          documentsCountPerTags={documentsCountPerTags}
-          onSelectTag={() => {
-            if (isMobile) {
-              setIsSidebarOpen(false);
-            }
-          }}
-        />
+        {!isTeamLoading && team && (
+          <>
+            <SelectTeamsAndOrganisationsDialog team={team} open />
+            <GotoNewsletterButton
+              teamId={teamId}
+              userHasPrivilege={UserHasPrivilege}
+              isPersonalTeam={team.isPersonal}
+            />
+            <TagsTree
+              teamId={teamId}
+              tags={richTags}
+              userHasPrivilege={UserHasPrivilege}
+              documentsCountPerTags={documentsCountPerTags}
+              onSelectTag={() => {
+                if (isMobile) {
+                  setIsSidebarOpen(false);
+                }
+              }}
+            />
+          </>
+          // TODO: skeleton or optimistically update
+        )}
       </Stack>
       <Divider sx={{ marginBottom: 2 }} />
       <Button

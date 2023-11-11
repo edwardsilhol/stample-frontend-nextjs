@@ -8,23 +8,18 @@ import {
 import Stack from '@mui/material/Stack';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Typography from '@mui/material/Typography';
-import { useTeam } from '../../../stores/hooks/team.hooks';
-import { useSession } from '../../../stores/hooks/user.hooks';
-import { LocalRole } from '../../../stores/types/user.types';
 
 interface GotoNewsletterButtonProps {
   teamId: string;
+  userHasPrivilege: boolean;
+  isPersonalTeam: boolean;
 }
-function GotoNewsletterButton({ teamId }: GotoNewsletterButtonProps) {
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
-  const { data: loggedUser, isLoading: isLoggedUserLoading } = useSession();
-  return !isTeamLoading &&
-    team &&
-    !team.isPersonal &&
-    !isLoggedUserLoading &&
-    loggedUser &&
-    team.users.find((user) => user.user._id === loggedUser._id)?.role !==
-      LocalRole.MEMBER ? (
+function GotoNewsletterButton({
+  teamId,
+  userHasPrivilege,
+  isPersonalTeam,
+}: GotoNewsletterButtonProps) {
+  return userHasPrivilege && !isPersonalTeam ? (
     <>
       <Typography fontSize="10px" fontWeight={500}>
         NEWSLETTER
