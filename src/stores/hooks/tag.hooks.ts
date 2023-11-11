@@ -6,7 +6,7 @@ import {
   fetchTagsByTeam,
   updateTag,
 } from '../api/tag.api';
-import { CreateTagDTO, HooksUpdateTagDTO } from '../types/tag.types';
+import { HooksUpdateTagDTO } from '../types/tag.types';
 import { useParams } from 'next/navigation';
 import { RouteParams } from '../types/global.types';
 
