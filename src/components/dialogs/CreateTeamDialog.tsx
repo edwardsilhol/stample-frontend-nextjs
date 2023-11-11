@@ -4,7 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Close from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import CreateOrUpdateTeamForm from 'components/forms/team/CreateOrUpdateTeamForm';
+import CreateOrUpdateTeamForm from 'components/forms/team/createOrUpdateTeamForm';
 import { PopulatedTeam } from '../../stores/types/team.types';
 
 interface CreateTeamDialogsProps {
@@ -23,7 +23,7 @@ function CreateTeamDialog({ open, team, onClose }: CreateTeamDialogsProps) {
           justifyContent="space-between"
         >
           {team ? 'Update team' : 'Create a new team'}
-          <IconButton onClick={onClose} sx={{ paddingRight: 0 }}>
+          <IconButton onClick={onClose}>
             <Close />
           </IconButton>
         </Stack>

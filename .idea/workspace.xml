@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,11 +67,11 @@
       <recent name="$PROJECT_DIR$/src/components/view/documentView" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm" />
       <recent name="$PROJECT_DIR$/src/components/headers" />
       <recent name="$PROJECT_DIR$/src/components/bars/customSearchBar" />
       <recent name="$PROJECT_DIR$/src/components/modals/selectTeamsAndOrganisationsDialog" />
       <recent name="$PROJECT_DIR$/src/components/bars/loggedSideBar" />
-      <recent name="$PROJECT_DIR$/src/components/bars/index" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -113,7 +115,7 @@
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
       <workItem from="1699720820042" duration="12393000" />
-      <workItem from="1699738425926" duration="2420000" />
+      <workItem from="1699738425926" duration="2679000" />
     </task>
     <servers />
   </component>
