@@ -1,6 +1,6 @@
 import { TagRich } from '../../../stores/types/tag.types';
 import { Button, IconButton, Popover, TextField } from '@mui/material';
-import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
+import { useCreateTag } from '../../../stores/hooks/tag.hooks';
 import { useRouter } from 'next/navigation';
 import { TreeItemProps } from '@mui/lab';
 import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
@@ -91,9 +91,8 @@ function TagsTree({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = useState<string>('');
-  const [tagParentId, setTagParentId] = useState<string | null>(null);
+  const [tagParentId, setTagParentId] = useState<string | undefined>(undefined);
   const createTag = useCreateTag();
-  const updateTag = useUpdateTag();
   const [hoveredTagId, setHoveredTagId] = useState<string | null>(null);
 
   const handleClickAddTag = (event: MouseEvent<HTMLElement>, id: string) => {
@@ -118,26 +117,18 @@ function TagsTree({
     setAnchorEl(null);
   };
 
-  const handleCreateTag = () => {
+  const handleCreateTag = async () => {
     if (teamId === null) {
       return;
     }
-    createTag
-      .mutateAsync({
-        name: newTagName,
-        teamId,
-      })
-      .then((tag) => {
-        if (tagParentId && tag?._id) {
-          updateTag.mutate({
-            tagId: tagParentId,
-            payload: { add: { children: [tag._id] } },
-          });
-        }
-      });
+    await createTag.mutateAsync({
+      name: newTagName,
+      teamId,
+      parentId: tagParentId,
+    });
 
     setNewTagName('');
-    setTagParentId(null);
+    setTagParentId(undefined);
     handleClose();
   };
 
