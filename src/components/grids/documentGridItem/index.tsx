@@ -21,7 +21,7 @@ import Popover from '@mui/material/Popover';
 
 interface DocumentGridItemProps {
   isTeamPersonal: boolean;
-  userHasPrivilege: boolean;
+  userHasTeamPrivilege: boolean;
   currentUserId: string;
   document: MinimalDocument;
   flatTags?: Tag[];
@@ -30,7 +30,7 @@ interface DocumentGridItemProps {
 
 function DocumentGridItem({
   isTeamPersonal,
-  userHasPrivilege,
+  userHasTeamPrivilege,
   document,
   onClick,
   currentUserId,
@@ -108,7 +108,7 @@ function DocumentGridItem({
       }}
       variant="elevation"
     >
-      {(userHasPrivilege || currentUserId === document.creator) &&
+      {(userHasTeamPrivilege || currentUserId === document.creator) &&
         renderSettingsButton()}
       {document.mainMedia?.src ? (
         <CardMedia

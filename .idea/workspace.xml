@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/tag/createOrUpdateTagForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +44,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "youssef/tags",
     "js.linters.configure.manually.selectedeslint": "true",
     "last_opened_file_path": "/home/izno/Izno/Personal/ReBright/hdiya",
     "node.js.detected.package.eslint": "true",
@@ -65,11 +68,11 @@
       <recent name="$PROJECT_DIR$/src/components/view/documentView" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/view" />
+      <recent name="$PROJECT_DIR$/src/components/view/allDocuments" />
+      <recent name="$PROJECT_DIR$/src/components/lists" />
       <recent name="$PROJECT_DIR$/src/components/view/TagsView" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)" />
-      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/invitation" />
-      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]" />
-      <recent name="$PROJECT_DIR$/src/components/view/documentView" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -112,6 +115,7 @@
       <workItem from="1699620080194" duration="8000" />
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
+      <workItem from="1699720820042" duration="12393000" />
     </task>
     <servers />
   </component>

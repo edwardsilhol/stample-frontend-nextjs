@@ -1,15 +1,9 @@
 import { capitalize } from 'lodash';
 import { Team } from 'stores/types/team.types';
-
-export const getDefaultSelectedTeamId = (teams: Team[]): string | null => {
-  const personalTeam = teams.find((team) => team.isPersonal);
-  if (personalTeam) {
-    return personalTeam._id;
-  } else if (teams.length > 0) {
-    return teams[0]._id;
-  }
-  return null;
-};
+import {
+  LocalRole,
+  PopulatedUserAndPermissions,
+} from '../stores/types/user.types';
 
 export const getSortedTeams = (teams: Team[]) =>
   teams.sort((teamA, teamB) => {
@@ -26,3 +20,14 @@ export const getTeamDisplayedName = (team: Team) => {
   }
   return capitalize(team.name);
 };
+
+export function doesUserHaveTeamPrivilege(
+  userId?: string,
+  teamUsers?: PopulatedUserAndPermissions[],
+) {
+  if (!teamUsers || !userId) return false;
+  const currentUserRole = teamUsers.find((u) => u.user._id === userId)?.role;
+  return (
+    currentUserRole === LocalRole.ADMIN || currentUserRole === LocalRole.OWNER
+  );
+}

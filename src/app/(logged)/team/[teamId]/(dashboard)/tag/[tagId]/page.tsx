@@ -1,7 +1,7 @@
-import MainView from '../../../../../../../components/MainView';
+import AllDocumentsView from '../../../../../../../components/view/allDocumentsView';
 
 function TagPage() {
-  return <MainView />;
+  return <AllDocumentsView />;
 }
 
 export default TagPage;

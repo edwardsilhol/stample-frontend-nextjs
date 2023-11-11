@@ -2,6 +2,7 @@ export type CreateTagDTO = {
   teamId: string;
   name: string;
   children?: string[];
+  parentId?: string;
 };
 
 type AddRemoveTagDTO = {

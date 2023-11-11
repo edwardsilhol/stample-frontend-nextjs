@@ -1,7 +1,7 @@
-import MainView from '../../../../../components/MainView';
+import AllDocumentsView from '../../../../../components/view/allDocumentsView';
 
 function TeamPage() {
-  return <MainView />;
+  return <AllDocumentsView />;
 }
 
 export default TeamPage;

@@ -1,6 +1,5 @@
 import { TagRich } from '../../../stores/types/tag.types';
-import { Button, IconButton, Popover, TextField } from '@mui/material';
-import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
+import { IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { TreeItemProps } from '@mui/lab';
 import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
@@ -11,15 +10,10 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import Add from '@mui/icons-material/Add';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
-import {
-  useState,
-  MouseEvent,
-  KeyboardEvent,
-  ChangeEvent,
-  useRef,
-} from 'react';
+import { useState, MouseEvent } from 'react';
 import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
-import TagView from 'components/view/TagView';
+import TagsTreeItem from 'components/lists/TagsTreeItem';
+import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
 
 function TreeItem({
   sx,
@@ -72,35 +66,25 @@ function TreeItem({
   );
 }
 
-interface TagsViewProps {
+interface TagsTreeProps {
   teamId: string;
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
   onSelectTag: () => void;
+  userHasTeamPrivilege?: boolean;
 }
-function TagsView({
+function TagsTree({
   teamId,
   tags,
   documentsCountPerTags,
   onSelectTag,
-}: TagsViewProps) {
+  userHasTeamPrivilege = false,
+}: TagsTreeProps) {
   const router = useRouter();
-  const anchorRef = useRef(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>(undefined);
   const open = Boolean(anchorEl);
-  const [newTagName, setNewTagName] = useState<string>('');
-  const [tagParentId, setTagParentId] = useState<string | null>(null);
-  const createTag = useCreateTag();
-  const updateTag = useUpdateTag();
-  const [hoveredTagId, setHoveredTagId] = useState<string | null>(null);
 
-  const handleClickAddTag = (event: MouseEvent<HTMLElement>, id: string) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget.parentElement);
-    if (id && id !== 'root') {
-      setTagParentId(id);
-    }
-  };
+  const [hoveredTagId, setHoveredTagId] = useState<string | null>(null);
 
   const handleClickSelectTag = (
     event: MouseEvent<HTMLElement>,
@@ -113,34 +97,7 @@ function TagsView({
     );
   };
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleCreateTag = () => {
-    if (teamId === null) {
-      return;
-    }
-    createTag
-      .mutateAsync({
-        name: newTagName,
-        teamId,
-      })
-      .then((tag) => {
-        if (tagParentId && tag?._id) {
-          updateTag.mutate({
-            tagId: tagParentId,
-            payload: { add: { children: [tag._id] } },
-          });
-        }
-      });
-
-    setNewTagName('');
-    setTagParentId(null);
-    handleClose();
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    e.key === 'Enter' && handleCreateTag();
+    setAnchorEl(undefined);
   };
 
   return (
@@ -149,7 +106,6 @@ function TagsView({
         TAGS
       </Typography>
       <TreeView
-        {...(!tags.length ? { ref: anchorRef } : {})}
         sx={{
           overflow: 'hidden',
           maxHeight: 'calc(100vh - 268px)',
@@ -167,20 +123,26 @@ function TagsView({
             key="root"
             nodeId="root"
             endIcon={
-              <IconButton
-                sx={{
-                  borderRadius: '10px',
-                  width: '18px',
-                  height: '16px',
-                  padding: 0,
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleClickAddTag(event, 'root');
-                }}
-              >
-                <Add sx={{ height: '12px' }} />
-              </IconButton>
+              <>
+                {userHasTeamPrivilege && (
+                  <IconButton
+                    sx={{
+                      borderRadius: '10px',
+                      width: '18px',
+                      height: '16px',
+                      padding: 0,
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setAnchorEl(
+                        event.currentTarget.parentElement || undefined,
+                      );
+                    }}
+                  >
+                    <Add sx={{ height: '12px' }} />
+                  </IconButton>
+                )}
+              </>
             }
             ContentProps={{
               style: {
@@ -224,71 +186,27 @@ function TagsView({
           />,
           ...(tags
             ? tags.map((tag) => (
-                <TagView
+                <TagsTreeItem
                   key={tag._id}
                   tag={tag}
-                  isOriginalParent={true}
+                  userHasTeamPrivilege={userHasTeamPrivilege}
                   setHoveredTagId={setHoveredTagId}
                   documentsCountPerTags={documentsCountPerTags}
                   hoveredTagId={hoveredTagId}
-                  handleClickAddTag={handleClickAddTag}
                   handleClickSelectTag={handleClickSelectTag}
-                  anchorRef={anchorRef}
                 />
               ))
             : []),
         ]}
       </TreeView>
-      <Popover
-        sx={{
-          '& .MuiPopover-paper': {
-            boxShadow: '0 10px 30px rgb(0,0,0,0.13)',
-            border: '1px solid rgba(0,0,0,0.13)',
-            borderRadius: '4px',
-            margin: '-20px 0 0 -20px',
-            padding: 1,
-          },
-        }}
+      <CreateOrUpdateTagForm
+        variant="create"
+        teamId={teamId}
+        handleClose={handleClose}
         open={open}
-        anchorEl={anchorRef.current}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <Typography variant="body2" fontWeight={500} paddingBottom={0.5}>
-          Tag
-        </Typography>
-        <Stack direction="row" alignItems="center" spacing="5px">
-          <TextField
-            autoFocus
-            variant="outlined"
-            placeholder="Enter your tag"
-            value={newTagName}
-            inputProps={{ sx: { paddingY: 0.75 } }}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setNewTagName(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-          />
-          <Button
-            variant="contained"
-            onClick={handleCreateTag}
-            sx={{
-              textTransform: 'none',
-              fontSize: '12px',
-            }}
-          >
-            Submit
-          </Button>
-        </Stack>
-      </Popover>
+        anchorEl={anchorEl}
+      />
     </>
   );
 }
-export default TagsView;
+export default TagsTree;

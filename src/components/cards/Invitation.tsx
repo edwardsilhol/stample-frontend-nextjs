@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { getTeamDisplayedName } from 'utils/team.helper';
+import { getTeamDisplayedName } from 'utils/team';
 import { useRouter } from 'next/navigation';
 import { useAnswerInvitation } from 'stores/hooks/team.hooks';
 import { Team } from '../../stores/types/team.types';
