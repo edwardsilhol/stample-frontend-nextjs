@@ -22,9 +22,18 @@ export interface PopulatedTeam extends Omit<Team, 'users'> {
 }
 
 export type CreateTeamDTO = Pick<Team, 'name' | 'invitations'>;
+
+export type AddRemoveDTO = {
+  users?: string[];
+  tags?: string[];
+};
+
 export type UpdateTeamDTO = Partial<
   Pick<Team, 'name' | 'users' | 'invitations'>
->;
+> & {
+  add?: AddRemoveDTO;
+  remove?: AddRemoveDTO;
+};
 export type AnswerInvitationDTO = {
   accept: boolean;
 };

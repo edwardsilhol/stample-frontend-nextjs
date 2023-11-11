@@ -1,11 +1,14 @@
 'use client';
 
 import * as Yup from 'yup';
-import { Team } from '../../../stores/types/team.types';
+import { Team } from '../../../../stores/types/team.types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldArrayWithId, useForm } from 'react-hook-form';
-import { useCreateTeam, useUpdateTeam } from '../../../stores/hooks/team.hooks';
-import TextFormField from '../fields/textFormField';
+import {
+  useCreateTeam,
+  useUpdateTeam,
+} from '../../../../stores/hooks/team.hooks';
+import TextFormField from '../../fields/textFormField';
 import {
   useOrganisation,
   useUpdateOrganisation,
@@ -27,7 +30,7 @@ import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, User, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
-import SelectFieldForm from '../fields/SelectFieldForm';
+import SelectFieldForm from '../../fields/SelectFieldForm';
 import { capitalize } from 'lodash';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -35,8 +38,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { useRouter } from 'next/navigation';
-import { TEAM_ROUTE } from '../../../constants/routes.constant';
-import CircularLoading from '../../base/circularLoading';
+import { TEAM_ROUTE } from '../../../../constants/routes.constant';
+import CircularLoading from '../../../base/circularLoading';
 
 type FormValues = Pick<Team, 'name' | 'users' | 'invitations'>;
 
@@ -263,7 +266,7 @@ interface CreateOrUpdateTeamFormProps {
   onClose: () => void;
 }
 
-export function CreateOrUpdateTeamForm({
+function CreateOrUpdateTeamForm({
   team,
   onClose,
 }: CreateOrUpdateTeamFormProps) {
@@ -372,6 +375,7 @@ export function CreateOrUpdateTeamForm({
               placeholder="Name"
               variant="standard"
               required
+              fullWidth
             />
           </Box>
           <UpdateTeamMembers

@@ -47,7 +47,7 @@ function GotoNewsletterButton({
           >
             <MailOutlineIcon fontSize="small" color="primary" />
             <Typography variant="body2" textOverflow="ellipsis">
-              Access editor
+              Editor
             </Typography>
           </Stack>
         </Stack>

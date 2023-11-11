@@ -9,11 +9,11 @@ import { TreeView } from '@mui/x-tree-view';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import Add from '@mui/icons-material/Add';
-import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import { useState, MouseEvent } from 'react';
 import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
 import TagsTreeItem from 'components/lists/TagsTreeItem';
 import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
+import PublicIcon from '@mui/icons-material/Public';
 
 function TreeItem({
   sx,
@@ -168,13 +168,10 @@ function TagsTree({
                 direction="row"
                 alignItems="center"
                 justifyContent="start"
-                paddingY={0.4}
                 width="100%"
+                spacing={1.5}
               >
-                <HomeOutlined
-                  sx={{ fontSize: '20px', marginRight: 1 }}
-                  color="primary"
-                />
+                <PublicIcon sx={{ fontSize: '20px' }} color="primary" />
                 <Typography variant="body2" fontWeight={500}>
                   All
                 </Typography>

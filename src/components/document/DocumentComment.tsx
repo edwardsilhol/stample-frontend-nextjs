@@ -120,7 +120,7 @@ function DocumentComment({
       />
       <CardContent>
         <Stack spacing={1}>
-          <TextEditor editor={editor} />
+          <TextEditor editor={editor} showMenu={false} />
           {isEditable && (
             <Button
               onClick={handleUpdateComment}

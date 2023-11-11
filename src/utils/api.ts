@@ -4,7 +4,6 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '../constants/tokenConfig.constant';
-import { getCookie } from 'cookies-next';
 import { stringify } from 'qs';
 
 export type HTTPMethod =
@@ -44,10 +43,7 @@ export async function apiRequest<T>(
   nextConfig?: RequestInit,
   isFile?: boolean,
 ) {
-  const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-  const refreshToken = localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
-  const API_URL = (getCookie('apiUrl') ||
-    process.env.NEXT_PUBLIC_APP_API_URL) as string;
+  const API_URL = process.env.NEXT_PUBLIC_APP_API_URL as string;
   let query = API_URL + endpoint;
 
   if (params) {
@@ -62,9 +58,12 @@ export async function apiRequest<T>(
     ...nextConfig,
   };
 
-  if (accessToken) {
-    fetchConfig.headers.Authorization = `Bearer ${accessToken}`;
-  }
+  try {
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+    if (accessToken) {
+      fetchConfig.headers.Authorization = `Bearer ${accessToken}`;
+    }
+  } catch {}
 
   if (body && !isFile) {
     if (body instanceof FormData) {
@@ -90,25 +89,36 @@ export async function apiRequest<T>(
       console.log('ERROR Api bad request:', bodyResult?.message);
     }
     /* Try to use refresh token if exists */
-    if (response.status === 401 && refreshToken) {
-      const tokens = await (refreshTokenMutex.isLocked()
-        ? refreshTokenMutex.waitForUnlock().then(() => ({
-            accessToken: localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY),
-            refreshToken: localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY),
-          }))
-        : handleRefreshToken(API_URL, refreshToken));
+    if (response.status === 401) {
+      try {
+        const refreshToken = localStorage.getItem(
+          LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        );
+        if (refreshToken) {
+          const tokens = await (refreshTokenMutex.isLocked()
+            ? refreshTokenMutex.waitForUnlock().then(() => ({
+                accessToken: localStorage.getItem(
+                  LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+                ),
+                refreshToken: localStorage.getItem(
+                  LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+                ),
+              }))
+            : handleRefreshToken(API_URL, refreshToken));
 
-      if (tokens?.accessToken) {
-        fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
-        response = await fetchTimeout(query, fetchConfig);
-        if (response.status !== 204) {
-          bodyResult = await response.json();
-        }
+          if (tokens?.accessToken) {
+            fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
+            response = await fetchTimeout(query, fetchConfig);
+            if (response.status !== 204) {
+              bodyResult = await response.json();
+            }
 
-        if (response.ok) {
-          return bodyResult as T;
+            if (response.ok) {
+              return bodyResult as T;
+            }
+          }
         }
-      }
+      } catch {}
     }
     throw new ApiError(bodyResult.message, response.status);
   }

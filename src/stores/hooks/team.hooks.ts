@@ -5,6 +5,7 @@ import {
   fetchTeam,
   fetchTeamByInvitation,
   fetchTeams,
+  leaveTeam,
   sendNewsletter,
   updateTeam,
 } from '../api/team.api';
@@ -107,6 +108,23 @@ export const useSendNewsletter = (teamId: string) => {
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: documentQueryKey.search({ team: teamId }),
+      });
+    },
+  });
+};
+
+export const useLeaveTeam = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: leaveTeam,
+    onSuccess: async (team) => {
+      await queryClient.invalidateQueries({
+        queryKey: teamQueryKey.one(team._id),
+      });
+      await queryClient.setQueryData(teamQueryKey.all, (oldTeams?: Team[]) => {
+        if (oldTeams) {
+          return oldTeams.filter((oldTeam) => oldTeam._id !== team._id);
+        }
       });
     },
   });

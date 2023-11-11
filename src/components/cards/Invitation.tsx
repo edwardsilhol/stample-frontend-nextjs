@@ -10,6 +10,7 @@ import { getTeamDisplayedName } from 'utils/team';
 import { useRouter } from 'next/navigation';
 import { useAnswerInvitation } from 'stores/hooks/team.hooks';
 import { Team } from '../../stores/types/team.types';
+import { TEAM_ROUTE } from '../../constants/routes.constant';
 
 interface InvitationProps {
   team: Team;
@@ -26,7 +27,7 @@ function Invitation({ team }: InvitationProps) {
       },
     });
 
-    router.push('/');
+    router.push(`${TEAM_ROUTE}/${team._id}`);
   };
 
   return (
