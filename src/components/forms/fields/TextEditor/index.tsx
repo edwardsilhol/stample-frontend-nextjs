@@ -7,11 +7,12 @@ import Stack from '@mui/material/Stack';
 
 interface TextEditorProps {
   editor: Editor | null;
+  showMenu?: boolean;
 }
-function TextEditor({ editor }: TextEditorProps) {
+function TextEditor({ editor, showMenu = true }: TextEditorProps) {
   return (
     <Stack key={editor?.toString()} direction="column" spacing={0.5}>
-      {editor?.isEditable && <EditorMenu editor={editor} />}
+      {editor?.isEditable && showMenu && <EditorMenu editor={editor} />}
       <EditorContent editor={editor} />
     </Stack>
   );

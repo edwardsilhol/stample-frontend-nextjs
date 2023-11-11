@@ -128,7 +128,7 @@ function DocumentComments({
           />
         ))}
       </Stack>
-      <TextEditor editor={commentEditor} />
+      <TextEditor editor={commentEditor} showMenu={false} />
       <Button
         onClick={onSubmitAddComment}
         variant="contained"
