@@ -18,7 +18,6 @@ import { DOCUMENT_ROUTE, TEAM_ROUTE } from '../../constants/routes.constant';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../../stores/hooks/user.hooks';
 import { useTeam } from '../../stores/hooks/team.hooks';
-import { LocalRole } from '../../stores/types/user.types';
 import { doesUserHaveTeamPrivilege } from '../../utils/team';
 
 interface DocumentsMasonryProps {
