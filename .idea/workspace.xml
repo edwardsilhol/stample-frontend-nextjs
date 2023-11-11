@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/document.helpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/document.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/team.helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/team.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modals/confirmDialog/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modals/confirmDialog/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +115,7 @@
       <workItem from="1699620080194" duration="8000" />
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
-      <workItem from="1699720820042" duration="5644000" />
+      <workItem from="1699720820042" duration="8806000" />
     </task>
     <servers />
   </component>

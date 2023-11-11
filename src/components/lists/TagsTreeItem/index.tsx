@@ -19,6 +19,7 @@ import Delete from '@mui/icons-material/Delete';
 import { useDeleteTag } from '../../../stores/hooks/tag.hooks';
 import { RouteParams } from '../../../stores/types/global.types';
 import { useParams } from 'next/navigation';
+import ConfirmDialog from '../../modals/confirmDialog';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
@@ -34,7 +35,7 @@ interface TagsTreeItemProps {
     tagId?: string,
   ) => void;
   anchorRef: Ref<HTMLLIElement> | undefined;
-  userHasTeamPrivilege?: boolean;
+  userHasTeamPrivilege: boolean;
 }
 
 function TagsTreeItem({
@@ -46,10 +47,12 @@ function TagsTreeItem({
   handleClickAddTag,
   handleClickSelectTag,
   anchorRef,
-  userHasTeamPrivilege = false,
+  userHasTeamPrivilege,
 }: TagsTreeItemProps) {
   const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [deleteTagConfirmationDialogOpen, setDeleteTagConfirmationDialogOpen] =
+    useState(false);
   const deleteTag = useDeleteTag();
 
   const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
@@ -61,16 +64,31 @@ function TagsTreeItem({
     setMenuAnchorEl(null);
   };
 
-  const handleDeleteTag = async (
-    event: MouseEvent<HTMLElement>,
-    tagId: string,
-  ) => {
+  const handleClickDeleteTag = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
+    setDeleteTagConfirmationDialogOpen(true);
+  };
+
+  const handleDeleteTag = async (tagId: string) => {
     await deleteTag.mutateAsync({
       tagId,
       teamId,
     });
   };
+  const deleteTagConfirmationDialog = () => (
+    <ConfirmDialog
+      key={`delete-tag-${_id}`}
+      open={deleteTagConfirmationDialogOpen}
+      title="Delete Tag"
+      content="Deleting this tag will delete all its children tags and documents."
+      onConfirm={async (e) => {
+        e.stopPropagation();
+        await handleDeleteTag(_id);
+        setDeleteTagConfirmationDialogOpen(false);
+      }}
+      onCancel={() => setDeleteTagConfirmationDialogOpen(false)}
+    />
+  );
 
   const tagOptions = [
     {
@@ -81,8 +99,7 @@ function TagsTreeItem({
     {
       text: 'Delete',
       Icon: Delete,
-      onClick: handleDeleteTag,
-      // TODO: add confirmation dialog
+      onClick: handleClickDeleteTag,
     },
   ];
   const renderTagOptionsButton = () => (
@@ -135,105 +152,109 @@ function TagsTreeItem({
   );
 
   return (
-    <TreeItem
-      ref={anchorRef}
-      sx={{
-        marginY: '5px',
-        '.MuiTreeItem-label': { paddingLeft: 0 },
-        '.MuiTreeItem-content.Mui-selected': {
-          backgroundColor: 'transparent',
-        },
-        '.MuiTreeItem-content.Mui-focused': {
-          backgroundColor: 'transparent',
-        },
-        '.MuiTreeItem-content:hover': {
-          backgroundColor: 'transparent',
-          '& .MuiTypography-root:hover': {
-            color: 'primary.main',
+    <>
+      <TreeItem
+        key={_id}
+        ref={anchorRef}
+        sx={{
+          marginY: '5px',
+          '.MuiTreeItem-label': { paddingLeft: 0 },
+          '.MuiTreeItem-content.Mui-selected': {
+            backgroundColor: 'transparent',
           },
-        },
-        '.MuiTreeItem-content.Mui-selected .MuiTypography-root': {
-          fontWeight: 'bold',
-        },
-        '.MuiTreeItem-iconContainer': {
-          marginRight: 0,
-        },
-      }}
-      key={_id}
-      nodeId={_id}
-      collapseIcon={<KeyboardArrowUp style={{ fontSize: '16px' }} />}
-      expandIcon={<KeyboardArrowDown style={{ fontSize: '16px' }} />}
-      ContentProps={{
-        style: {
-          marginLeft: 0,
-        },
-      }}
-      label={
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          onMouseEnter={() => setHoveredTagId(_id)}
-          onMouseLeave={() => setHoveredTagId(null)}
-          sx={{
-            '&:hover $tagAddButton': {
-              display: 'inline-flex',
+          '.MuiTreeItem-content.Mui-focused': {
+            backgroundColor: 'transparent',
+          },
+          '.MuiTreeItem-content:hover': {
+            backgroundColor: 'transparent',
+            '& .MuiTypography-root:hover': {
+              color: 'primary.main',
             },
-          }}
-          paddingY={0.4}
-        >
-          <Stack direction="row" alignItems="center" maxWidth="100%">
-            <LocalOfferOutlined
-              sx={{ fontSize: '18px', marginRight: 1 }}
-              color="primary"
-            />
+          },
+          '.MuiTreeItem-content.Mui-selected .MuiTypography-root': {
+            fontWeight: 'bold',
+          },
+          '.MuiTreeItem-iconContainer': {
+            marginRight: 0,
+          },
+        }}
+        nodeId={_id}
+        collapseIcon={<KeyboardArrowUp style={{ fontSize: '16px' }} />}
+        expandIcon={<KeyboardArrowDown style={{ fontSize: '16px' }} />}
+        ContentProps={{
+          style: {
+            marginLeft: 0,
+          },
+        }}
+        label={
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            onMouseEnter={() => setHoveredTagId(_id)}
+            onMouseLeave={() => setHoveredTagId(null)}
+            sx={{
+              '&:hover $tagAddButton': {
+                display: 'inline-flex',
+              },
+            }}
+            paddingY={0.4}
+          >
+            <Stack direction="row" alignItems="center" maxWidth="100%">
+              <LocalOfferOutlined
+                sx={{ fontSize: '18px', marginRight: 1 }}
+                color="primary"
+              />
 
-            <Tooltip
-              title={
-                name && name.length && name.length > TAG_NAME_MAX_LENGTH
-                  ? name.toLowerCase()
-                  : ''
-              }
-            >
-              <Typography
-                variant="body2"
-                fontWeight={isOriginalParent ? 500 : 400}
-                paddingRight={1}
+              <Tooltip
+                title={
+                  name && name.length && name.length > TAG_NAME_MAX_LENGTH
+                    ? name.toLowerCase()
+                    : ''
+                }
               >
-                {name && name.length
-                  ? name.length > TAG_NAME_MAX_LENGTH
-                    ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
-                    : name.toLowerCase()
-                  : ''}
+                <Typography
+                  variant="body2"
+                  fontWeight={isOriginalParent ? 500 : 400}
+                  paddingRight={1}
+                >
+                  {name && name.length
+                    ? name.length > TAG_NAME_MAX_LENGTH
+                      ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
+                      : name.toLowerCase()
+                    : ''}
+                </Typography>
+              </Tooltip>
+              <Typography variant="body2" sx={{ opacity: 0.5 }}>
+                {documentsCountPerTags[_id] || ''}
               </Typography>
-            </Tooltip>
-            <Typography variant="body2" sx={{ opacity: 0.5 }}>
-              {documentsCountPerTags[_id] || ''}
-            </Typography>
+            </Stack>
+            {userHasTeamPrivilege && renderTagOptionsButton()}
           </Stack>
-          {userHasTeamPrivilege && renderTagOptionsButton()}
-        </Stack>
-      }
-      onClick={(event) => {
-        handleClickSelectTag(event, _id);
-      }}
-    >
-      {children &&
-        children.length > 0 &&
-        children.map((child: TagRich) => (
-          <TagsTreeItem
-            key={child._id}
-            tag={child}
-            isOriginalParent={false}
-            setHoveredTagId={setHoveredTagId}
-            documentsCountPerTags={documentsCountPerTags}
-            hoveredTagId={hoveredTagId}
-            handleClickAddTag={handleClickAddTag}
-            handleClickSelectTag={handleClickSelectTag}
-            anchorRef={anchorRef}
-          />
-        ))}
-    </TreeItem>
+        }
+        onClick={(event) => {
+          handleClickSelectTag(event, _id);
+        }}
+      >
+        {children &&
+          children.length > 0 &&
+          children.map((child: TagRich) => (
+            <TagsTreeItem
+              key={child._id}
+              tag={child}
+              isOriginalParent={false}
+              userHasTeamPrivilege={userHasTeamPrivilege}
+              setHoveredTagId={setHoveredTagId}
+              documentsCountPerTags={documentsCountPerTags}
+              hoveredTagId={hoveredTagId}
+              handleClickAddTag={handleClickAddTag}
+              handleClickSelectTag={handleClickSelectTag}
+              anchorRef={anchorRef}
+            />
+          ))}
+      </TreeItem>
+      {deleteTagConfirmationDialog()}
+    </>
   );
 }
 export default TagsTreeItem;

@@ -257,7 +257,7 @@ function TagsTree({
           },
         }}
         open={open}
-        anchorEl={anchorRef.current}
+        anchorEl={anchorRef.current || anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',

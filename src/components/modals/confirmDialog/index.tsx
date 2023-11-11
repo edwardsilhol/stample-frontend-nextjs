@@ -6,13 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import { MouseEventHandler } from 'react';
 
 interface ConfirmDialogProps {
   open: boolean;
   title: string;
   content: string;
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm: MouseEventHandler<HTMLButtonElement>;
+  onCancel: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ConfirmDialog = ({
