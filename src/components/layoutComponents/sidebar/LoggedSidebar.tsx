@@ -6,7 +6,7 @@ import {
   useDocumentsCountPerTagByTeam,
   useTagsByTeam,
 } from '../../../stores/hooks/tag.hooks';
-import TagsView from './TagsView';
+import TagsView from '../../view/TagsView';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
 import { useParams } from 'next/navigation';

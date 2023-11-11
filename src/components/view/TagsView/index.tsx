@@ -1,12 +1,9 @@
 import { TagRich } from '../../../stores/types/tag.types';
-import { Button, IconButton, Popover, TextField, Tooltip } from '@mui/material';
+import { Button, IconButton, Popover, TextField } from '@mui/material';
 import { useCreateTag, useUpdateTag } from '../../../stores/hooks/tag.hooks';
 import { useRouter } from 'next/navigation';
 import { TreeItemProps } from '@mui/lab';
 import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
-import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import LocalOfferOutlined from '@mui/icons-material/LocalOfferOutlined';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { TreeView } from '@mui/x-tree-view';
@@ -14,10 +11,16 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import Add from '@mui/icons-material/Add';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
-import { useState, MouseEvent, KeyboardEvent, ChangeEvent } from 'react';
+import {
+  useState,
+  MouseEvent,
+  KeyboardEvent,
+  ChangeEvent,
+  useRef,
+} from 'react';
 import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
+import TagView from 'components/view/TagView';
 
-const TAG_NAME_MAX_LENGTH = 30;
 function TreeItem({
   sx,
   ...props
@@ -82,6 +85,7 @@ function TagsView({
   onSelectTag,
 }: TagsViewProps) {
   const router = useRouter();
+  const anchorRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const [newTagName, setNewTagName] = useState<string>('');
@@ -139,127 +143,13 @@ function TagsView({
     e.key === 'Enter' && handleCreateTag();
   };
 
-  const renderTag = ({
-    _id,
-    name,
-    children,
-    isOriginalParent,
-  }: TagRich & { isOriginalParent: boolean }) => {
-    if (_id === undefined) {
-      return null; // TODO: why do we have to do this ?
-    }
-    return (
-      <TreeItem
-        sx={{
-          marginY: '5px',
-          '.MuiTreeItem-label': { paddingLeft: 0 },
-          '.MuiTreeItem-content.Mui-selected': {
-            backgroundColor: 'transparent',
-          },
-          '.MuiTreeItem-content.Mui-focused': {
-            backgroundColor: 'transparent',
-          },
-          '.MuiTreeItem-content:hover': {
-            backgroundColor: 'transparent',
-            '& .MuiTypography-root:hover': {
-              color: 'primary.main',
-            },
-          },
-          '.MuiTreeItem-content.Mui-selected .MuiTypography-root': {
-            fontWeight: 'bold',
-          },
-          '.MuiTreeItem-iconContainer': {
-            marginRight: 0,
-          },
-        }}
-        key={_id}
-        nodeId={_id}
-        collapseIcon={<KeyboardArrowUp style={{ fontSize: '16px' }} />}
-        expandIcon={<KeyboardArrowDown style={{ fontSize: '16px' }} />}
-        ContentProps={{
-          style: {
-            marginLeft: 0,
-          },
-        }}
-        label={
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            onMouseEnter={() => setHoveredTagId(_id)}
-            onMouseLeave={() => setHoveredTagId(null)}
-            sx={{
-              '&:hover $tagAddButton': {
-                display: 'inline-flex',
-              },
-            }}
-            paddingY={0.4}
-          >
-            <Stack direction="row" alignItems="center" maxWidth="100%">
-              <LocalOfferOutlined
-                sx={{ fontSize: '18px', marginRight: 1 }}
-                color="primary"
-              />
-
-              <Tooltip
-                title={
-                  name && name.length && name.length > TAG_NAME_MAX_LENGTH
-                    ? name.toLowerCase()
-                    : ''
-                }
-              >
-                <Typography
-                  variant="body2"
-                  fontWeight={isOriginalParent ? 500 : 400}
-                  paddingRight={1}
-                >
-                  {name && name.length
-                    ? name.length > TAG_NAME_MAX_LENGTH
-                      ? `${name.toLowerCase().slice(0, TAG_NAME_MAX_LENGTH)}...`
-                      : name.toLowerCase()
-                    : ''}
-                </Typography>
-              </Tooltip>
-              <Typography variant="body2" sx={{ opacity: 0.5 }}>
-                {documentsCountPerTags[_id] || ''}
-              </Typography>
-            </Stack>
-            <IconButton
-              aria-describedby={_id}
-              sx={{
-                display: hoveredTagId === _id ? 'inline-flex' : 'none',
-                borderRadius: '4px',
-                width: '14px',
-                height: '14px',
-                padding: 0,
-              }}
-              onClick={(event) => {
-                handleClickAddTag(event, _id);
-              }}
-            >
-              <Add sx={{ height: '14px' }} />
-            </IconButton>
-          </Stack>
-        }
-        onClick={(event) => {
-          handleClickSelectTag(event, _id);
-        }}
-      >
-        {children &&
-          children.length > 0 &&
-          children.map((child: TagRich) =>
-            renderTag({ ...child, isOriginalParent: false }),
-          )}
-      </TreeItem>
-    );
-  };
-
   return (
     <>
       <Typography fontSize="10px" fontWeight={500}>
         TAGS
       </Typography>
       <TreeView
+        {...(!tags.length ? { ref: anchorRef } : {})}
         sx={{
           overflow: 'hidden',
           maxHeight: 'calc(100vh - 268px)',
@@ -333,12 +223,19 @@ function TagsView({
             }}
           />,
           ...(tags
-            ? tags.map((tag) =>
-                renderTag({
-                  ...tag,
-                  isOriginalParent: true,
-                }),
-              )
+            ? tags.map((tag) => (
+                <TagView
+                  key={tag._id}
+                  tag={tag}
+                  isOriginalParent={true}
+                  setHoveredTagId={setHoveredTagId}
+                  documentsCountPerTags={documentsCountPerTags}
+                  hoveredTagId={hoveredTagId}
+                  handleClickAddTag={handleClickAddTag}
+                  handleClickSelectTag={handleClickSelectTag}
+                  anchorRef={anchorRef}
+                />
+              ))
             : []),
         ]}
       </TreeView>
@@ -353,7 +250,7 @@ function TagsView({
           },
         }}
         open={open}
-        anchorEl={anchorEl}
+        anchorEl={anchorRef.current}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
