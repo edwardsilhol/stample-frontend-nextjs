@@ -21,7 +21,7 @@ import { RouteParams } from '../../../stores/types/global.types';
 import { useParams } from 'next/navigation';
 import ConfirmDialog from '../../modals/confirmDialog';
 import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
-import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
+import Edit from '@mui/icons-material/Edit';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
@@ -117,7 +117,7 @@ function TagsTreeItem({
 
     {
       text: 'Update',
-      Icon: AutoFixNormalIcon,
+      Icon: Edit,
       onClick: handleUpdateTagOptionClick,
     },
     {

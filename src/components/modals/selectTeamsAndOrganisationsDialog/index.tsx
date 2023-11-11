@@ -59,29 +59,20 @@ function SelectTeamsAndOrganisationsDialog({
                 <Stack
                   direction="row"
                   alignItems="center"
-                  justifyContent="space-between"
                   spacing={1.5}
-                  width="100%"
                   overflow="hidden"
                 >
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={1.5}
-                    overflow="hidden"
+                  <GroupsOutlined fontSize="small" color="primary" />
+                  <Typography
+                    variant="body2"
+                    textOverflow="ellipsis"
+                    fontWeight="bold"
                   >
-                    <GroupsOutlined fontSize="small" color="primary" />
-                    <Typography
-                      variant="body2"
-                      textOverflow="ellipsis"
-                      fontWeight="bold"
-                    >
-                      {getTeamDisplayedName(selectedTeam)}
-                    </Typography>
-                  </Stack>
+                    {getTeamDisplayedName(selectedTeam)}
+                  </Typography>
                 </Stack>
               ) : (
-                ''
+                <></>
               );
             },
             IconComponent: KeyboardArrowDown,
@@ -90,6 +81,10 @@ function SelectTeamsAndOrganisationsDialog({
               '.MuiSelect-icon': {
                 fontSize: '16px',
                 color: 'black',
+              },
+              '.MuiSelect-select': {
+                paddingTop: 0,
+                paddingBottom: 0,
               },
             },
           }}
@@ -150,16 +145,16 @@ function SelectTeamsAndOrganisationsDialog({
         >
           <Edit fontSize="small" />
         </IconButton>
+        <CreateTeamDialog
+          open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
+          team={isUpdateTeamDialogOpen ? team : undefined}
+          onClose={() => {
+            setIsCreateTeamDialogOpen(false);
+            setIsUpdateTeamDialogOpen(false);
+            setIsSelectOpen(false);
+          }}
+        />
       </Stack>
-      <CreateTeamDialog
-        open={isCreateTeamDialogOpen || isUpdateTeamDialogOpen}
-        team={isUpdateTeamDialogOpen ? team : undefined}
-        onClose={() => {
-          setIsCreateTeamDialogOpen(false);
-          setIsUpdateTeamDialogOpen(false);
-          setIsSelectOpen(false);
-        }}
-      />
     </>
   ) : (
     <CircularLoading />

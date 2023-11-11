@@ -8,7 +8,7 @@ import {
 } from '../../../stores/hooks/tag.hooks';
 import TagsTree from '../../lists/TagsTree';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
-import SelectTeamsAndOrganisationsDialog from './SelectTeamsAndOrganisationsDialog';
+import SelectTeamsAndOrganisationsDialog from '../../modals/selectTeamsAndOrganisationsDialog';
 import { useParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -95,30 +95,28 @@ function LoggedSidebar() {
       ) : null}
       {getAccountMenu()}
       <Divider sx={{ marginY: 2 }} />
-      <Stack direction="column" spacing={0.75}>
-        {!isTeamLoading && team && (
-          <>
-            <SelectTeamsAndOrganisationsDialog team={team} open />
-            <GotoNewsletterButton
-              teamId={teamId}
-              userHasTeamPrivilege={userHasTeamPrivilege}
-              isPersonalTeam={team.isPersonal}
-            />
-            <TagsTree
-              teamId={teamId}
-              tags={richTags}
-              userHasTeamPrivilege={userHasTeamPrivilege}
-              documentsCountPerTags={documentsCountPerTags}
-              onSelectTag={() => {
-                if (isMobile) {
-                  setIsSidebarOpen(false);
-                }
-              }}
-            />
-          </>
-          // TODO: skeleton or optimistically update
-        )}
-      </Stack>
+      {!isTeamLoading && team && (
+        <Stack direction="column" spacing="20px">
+          <SelectTeamsAndOrganisationsDialog team={team} open />
+          <GotoNewsletterButton
+            teamId={teamId}
+            userHasTeamPrivilege={userHasTeamPrivilege}
+            isPersonalTeam={team.isPersonal}
+          />
+          <TagsTree
+            teamId={teamId}
+            tags={richTags}
+            userHasTeamPrivilege={userHasTeamPrivilege}
+            documentsCountPerTags={documentsCountPerTags}
+            onSelectTag={() => {
+              if (isMobile) {
+                setIsSidebarOpen(false);
+              }
+            }}
+          />
+        </Stack>
+        // TODO: skeleton or optimistically update
+      )}
       <Divider sx={{ marginBottom: 2 }} />
       <Button
         startIcon={<Logout />}

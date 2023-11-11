@@ -10,7 +10,7 @@ import { useMemo, useState } from 'react';
 import CircularLoading from '../../base/circularLoading';
 import { RouteParams } from '../../../stores/types/global.types';
 import Stack from '@mui/material/Stack/Stack';
-import LoggedHeader from '../../layoutComponents/header/LoggedHeader';
+import LoggedHeader from '../../headers/loggedHeader';
 import CreateDocumentForm from '../../forms/document/createDocumentForm';
 
 interface AllDocumentsViewProps {

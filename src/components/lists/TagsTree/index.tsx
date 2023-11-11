@@ -168,7 +168,6 @@ function TagsTree({
                 direction="row"
                 alignItems="center"
                 justifyContent="start"
-                paddingY={0.4}
                 width="100%"
                 spacing={1.5}
               >

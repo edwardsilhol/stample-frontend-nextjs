@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import LoggedSidebar from '../../../../../components/layoutComponents/sidebar/LoggedSidebar';
+import LoggedSidebar from '../../../../../components/bars/loggedSideBar';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'next/navigation';
 import { RouteParams } from '../../../../../stores/types/global.types';
