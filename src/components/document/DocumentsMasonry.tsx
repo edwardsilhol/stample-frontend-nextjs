@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '../../stores/hooks/user.hooks';
 import { useTeam } from '../../stores/hooks/team.hooks';
 import { LocalRole } from '../../stores/types/user.types';
+import { doesUserHaveTeamPrivilege } from '../../utils/team';
 
 interface DocumentsMasonryProps {
   teamId: string;
@@ -68,10 +69,10 @@ function DocumentsMasonryComponent({
     minimumBatchSize: 70,
   });
 
-  const currentUserRole = team?.users.find((u) => u.user._id === user?._id)
-    ?.role;
-  const UserHasPrivilege =
-    currentUserRole === LocalRole.ADMIN || currentUserRole === LocalRole.OWNER;
+  const userHasTeamPrivilege = doesUserHaveTeamPrivilege(
+    user?._id,
+    team?.users,
+  );
 
   const renderItem = useCallback(
     (props: { index: number; data: MinimalDocument }) => {
@@ -79,7 +80,7 @@ function DocumentsMasonryComponent({
       return !isUserLoading && !isTeamLoading && team && user ? (
         <DocumentGridItem
           isTeamPersonal={team.isPersonal}
-          userHasPrivilege={UserHasPrivilege}
+          userHasTeamPrivilege={userHasTeamPrivilege}
           currentUserId={user?._id}
           document={document}
           flatTags={flatTags}

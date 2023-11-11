@@ -8,7 +8,7 @@ import {
   sendNewsletter,
   updateTeam,
 } from '../api/team.api';
-import { getSortedTeams } from '../../utils/team.helper';
+import { getSortedTeams } from '../../utils/team';
 import {
   AnswerInvitationDTO,
   CreateTeamDTO,

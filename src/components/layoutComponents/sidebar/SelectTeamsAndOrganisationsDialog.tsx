@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import CreateTeamDialog from 'components/dialogs/CreateTeamDialog';
 import { useState } from 'react';
 import { useAllTeams } from 'stores/hooks/team.hooks';
-import { getTeamDisplayedName } from '../../../utils/team.helper';
+import { getTeamDisplayedName } from '../../../utils/team';
 import { PopulatedTeam, Team } from 'stores/types/team.types';
 import { TEAM_ROUTE } from '../../../constants/routes.constant';
 import { useRouter } from 'next/navigation';

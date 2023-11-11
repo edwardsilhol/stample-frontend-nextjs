@@ -5,18 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/modals/confirmDialog/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/modals/confirmDialog/stories.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/tag/[tagId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/tag/[tagId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MainView.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/AllDocuments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/TagView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/TagsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/document.helpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/document.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/team.helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/team.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Gherkin feature file" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -123,7 +120,7 @@
       <workItem from="1699620080194" duration="8000" />
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
-      <workItem from="1699720820042" duration="5074000" />
+      <workItem from="1699720820042" duration="5644000" />
     </task>
     <servers />
   </component>

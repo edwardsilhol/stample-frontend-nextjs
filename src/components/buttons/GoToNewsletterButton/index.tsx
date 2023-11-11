@@ -11,15 +11,15 @@ import Typography from '@mui/material/Typography';
 
 interface GotoNewsletterButtonProps {
   teamId: string;
-  userHasPrivilege: boolean;
+  userHasTeamPrivilege: boolean;
   isPersonalTeam: boolean;
 }
 function GotoNewsletterButton({
   teamId,
-  userHasPrivilege,
+  userHasTeamPrivilege,
   isPersonalTeam,
 }: GotoNewsletterButtonProps) {
-  return userHasPrivilege && !isPersonalTeam ? (
+  return userHasTeamPrivilege && !isPersonalTeam ? (
     <>
       <Typography fontSize="10px" fontWeight={500}>
         NEWSLETTER

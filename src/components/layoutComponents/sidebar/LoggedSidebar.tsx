@@ -23,7 +23,7 @@ import { useState } from 'react';
 import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
 import { RouteParams } from '../../../stores/types/global.types';
 import { useTeam } from '../../../stores/hooks/team.hooks';
-import { LocalRole } from '../../../stores/types/user.types';
+import { doesUserHaveTeamPrivilege } from '../../../utils/team';
 
 function LoggedSidebar() {
   const { teamId } = useParams<RouteParams>();
@@ -41,10 +41,10 @@ function LoggedSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const currentUserRole = team?.users.find((u) => u.user._id === user?._id)
-    ?.role;
-  const UserHasPrivilege =
-    currentUserRole === LocalRole.ADMIN || currentUserRole === LocalRole.OWNER;
+  const userHasTeamPrivilege = doesUserHaveTeamPrivilege(
+    user?._id,
+    team?.users,
+  );
 
   const getAccountMenu = () => {
     return !isUserLoading && user ? (
@@ -101,13 +101,13 @@ function LoggedSidebar() {
             <SelectTeamsAndOrganisationsDialog team={team} open />
             <GotoNewsletterButton
               teamId={teamId}
-              userHasPrivilege={UserHasPrivilege}
+              userHasTeamPrivilege={userHasTeamPrivilege}
               isPersonalTeam={team.isPersonal}
             />
             <TagsTree
               teamId={teamId}
               tags={richTags}
-              userHasPrivilege={UserHasPrivilege}
+              userHasTeamPrivilege={userHasTeamPrivilege}
               documentsCountPerTags={documentsCountPerTags}
               onSelectTag={() => {
                 if (isMobile) {

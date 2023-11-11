@@ -77,14 +77,14 @@ interface TagsTreeProps {
   tags: TagRich[];
   documentsCountPerTags: Record<string, number>;
   onSelectTag: () => void;
-  userHasPrivilege?: boolean;
+  userHasTeamPrivilege?: boolean;
 }
 function TagsTree({
   teamId,
   tags,
   documentsCountPerTags,
   onSelectTag,
-  userHasPrivilege = false,
+  userHasTeamPrivilege = false,
 }: TagsTreeProps) {
   const router = useRouter();
   const anchorRef = useRef(null);
@@ -170,7 +170,7 @@ function TagsTree({
             nodeId="root"
             endIcon={
               <>
-                {userHasPrivilege && (
+                {userHasTeamPrivilege && (
                   <IconButton
                     sx={{
                       borderRadius: '10px',
@@ -233,7 +233,7 @@ function TagsTree({
                 <TagsTreeItem
                   key={tag._id}
                   tag={tag}
-                  userHasPrivilege={userHasPrivilege}
+                  userHasTeamPrivilege={userHasTeamPrivilege}
                   isOriginalParent={true}
                   setHoveredTagId={setHoveredTagId}
                   documentsCountPerTags={documentsCountPerTags}

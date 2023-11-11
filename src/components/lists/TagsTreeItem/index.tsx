@@ -34,7 +34,7 @@ interface TagsTreeItemProps {
     tagId?: string,
   ) => void;
   anchorRef: Ref<HTMLLIElement> | undefined;
-  userHasPrivilege?: boolean;
+  userHasTeamPrivilege?: boolean;
 }
 
 function TagsTreeItem({
@@ -46,7 +46,7 @@ function TagsTreeItem({
   handleClickAddTag,
   handleClickSelectTag,
   anchorRef,
-  userHasPrivilege = false,
+  userHasTeamPrivilege = false,
 }: TagsTreeItemProps) {
   const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -211,7 +211,7 @@ function TagsTreeItem({
               {documentsCountPerTags[_id] || ''}
             </Typography>
           </Stack>
-          {userHasPrivilege && renderTagOptionsButton()}
+          {userHasTeamPrivilege && renderTagOptionsButton()}
         </Stack>
       }
       onClick={(event) => {
