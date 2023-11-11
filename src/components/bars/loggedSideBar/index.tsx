@@ -97,7 +97,10 @@ function LoggedSidebar() {
       <Divider sx={{ marginY: 2 }} />
       {!isTeamLoading && team && (
         <Stack direction="column" spacing="20px">
-          <SelectTeamsAndOrganisationsDialog team={team} open />
+          <SelectTeamsAndOrganisationsDialog
+            team={team}
+            userHasTeamPrivilege={userHasTeamPrivilege}
+          />
           <GotoNewsletterButton
             teamId={teamId}
             userHasTeamPrivilege={userHasTeamPrivilege}

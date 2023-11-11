@@ -86,3 +86,7 @@ export const summarizeTeamDocuments = async (
     tagId ? { tagId } : undefined,
   );
 };
+
+export const leaveTeam = async (teamId: string): Promise<Team> => {
+  return await apiRequest<Team>('POST', `/team/${teamId}/leave`);
+};

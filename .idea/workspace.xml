@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]/layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/ssrApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialogs/CreateTeamDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/team/CreateOrUpdateTeamForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/bars/loggedSideBar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bars/loggedSideBar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cards/Invitation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modals/selectTeamsAndOrganisationsDialog/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modals/selectTeamsAndOrganisationsDialog/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/api/team.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/api/team.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/team.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/types/team.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/team.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +54,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;youssef/fixLayout&quot;,
     &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Personal/ReBright/hdiya&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/app/(logged)/team/[teamId]/(dashboard)/document&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -60,18 +69,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document" />
+      <recent name="$PROJECT_DIR$/src/utils" />
       <recent name="$PROJECT_DIR$/src/components/forms/newsletter" />
       <recent name="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/newsletter" />
-      <recent name="$PROJECT_DIR$/src/components/forms/fields" />
-      <recent name="$PROJECT_DIR$/src/components/view/documentView" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]" />
       <recent name="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm" />
       <recent name="$PROJECT_DIR$/src/components/headers" />
       <recent name="$PROJECT_DIR$/src/components/bars/customSearchBar" />
       <recent name="$PROJECT_DIR$/src/components/modals/selectTeamsAndOrganisationsDialog" />
-      <recent name="$PROJECT_DIR$/src/components/bars/loggedSideBar" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -115,7 +124,8 @@
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
       <workItem from="1699720820042" duration="12393000" />
-      <workItem from="1699738425926" duration="2679000" />
+      <workItem from="1699738425926" duration="5679000" />
+      <workItem from="1699744111695" duration="2216000" />
     </task>
     <servers />
   </component>
