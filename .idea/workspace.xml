@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/CustomSearchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bars/customSearchBar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/header/LoggedHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/LoggedSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bars/loggedSideBar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layoutComponents/sidebar/SelectTeamsAndOrganisationsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modals/selectTeamsAndOrganisationsDialog/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/newsletter/newsletterForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/newsletter/newsletterForm/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +114,7 @@
       <workItem from="1699621514405" duration="115000" />
       <workItem from="1699621796795" duration="55000" />
       <workItem from="1699720820042" duration="12393000" />
-      <workItem from="1699738425926" duration="1446000" />
+      <workItem from="1699738425926" duration="2142000" />
     </task>
     <servers />
   </component>

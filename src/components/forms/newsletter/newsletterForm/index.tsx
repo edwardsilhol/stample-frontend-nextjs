@@ -138,8 +138,8 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
-    intro: Yup.string().required(),
-    conclusion: Yup.string().required(),
+    intro: Yup.string().optional(),
+    conclusion: Yup.string().optional(),
     documents: Yup.array().required().min(1),
   } as Record<keyof NewsletterFormType, any>);
 
@@ -202,6 +202,19 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
           paddingBottom={5}
         >
           Newsletter
+        </Typography>
+        {/* Add sub text to the title*/}
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          textAlign="center"
+          paddingBottom={5}
+          sx={{
+            opacity: 0.6,
+          }}
+        >
+          Here you can send an email to all your team members with a selection
+          of articles.
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" spacing={2}>
@@ -268,7 +281,7 @@ function NewsletterForm({ teamId, documents }: NewsletterFormProps) {
           severity="success"
           sx={{ width: '100%' }}
         >
-          This is a success message!
+          Newsletter sent successfully!
         </Alert>
       </Snackbar>
     </Grid>
