@@ -37,7 +37,7 @@ function DocumentsView({
     [tagId, searchQuery, teamId],
   );
   const ref = useRef<HTMLElement | null>(null);
-  const { width } = useScreenResizeObserver({
+  const { width, height } = useScreenResizeObserver({
     ref,
   });
   return isLoading ? (
@@ -49,7 +49,6 @@ function DocumentsView({
           width: '100%',
           overflowX: 'hidden',
           overflowY: 'hidden',
-          height: 'auto',
           minHeight: '100%',
         }}
         ref={ref}

@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Menu from '@mui/icons-material/Menu';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
 import { RouteParams } from '../../../stores/types/global.types';
 import { useTeam } from '../../../stores/hooks/team.hooks';
@@ -37,11 +37,6 @@ function LoggedSidebar() {
   } = useTagsByTeam(teamId);
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-
-  // TODO URGENT: remove this after debug
-  useEffect(() => {
-    console.log('tags', richTags);
-  }, [richTags]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -188,14 +183,15 @@ function LoggedSidebar() {
             backgroundColor: 'transparent',
           }}
         >
-          {displayDrawerContent()}
+          <Box
+            sx={{
+              position: 'fixed',
+            }}
+          >
+            {displayDrawerContent()}
+          </Box>
         </Box>
       )}
-
-      {/* <SelectTeamsAndOrganisationsDialog
-        open={isSelectTeamsAndOrganisationsOpen}
-        onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
-      /> */}
     </>
   );
 }

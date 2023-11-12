@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/newsletter/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/bars/loggedSideBar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bars/loggedSideBar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsMasonry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/document/DocumentsView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/documentView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,9 +45,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "youssef/TagFix",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/app/(logged)/team/[teamId]",
+    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -63,11 +62,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document" />
       <recent name="$PROJECT_DIR$/src/utils" />
       <recent name="$PROJECT_DIR$/src/components/forms/newsletter" />
-      <recent name="$PROJECT_DIR$/src/components/buttons/GoToNewsletterButton" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/app/(logged)" />

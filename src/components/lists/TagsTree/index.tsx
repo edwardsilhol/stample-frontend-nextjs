@@ -1,3 +1,5 @@
+'use client';
+
 import { TagRich } from '../../../stores/types/tag.types';
 import { IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
