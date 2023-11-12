@@ -2,7 +2,8 @@ import Box from '@mui/material/Box';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { getDocumentHeaderStrings } from 'utils/document';
 import { Document } from 'stores/types/document.types';
-import { Fragment, ReactNode, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
+import Link from 'next/link';
 
 type DocumentHeaderProps = Pick<
   Document,
@@ -32,6 +33,7 @@ function DocumentHeader({
       }),
     [createdAt, likesCount, readersCount],
   );
+
   const getHostname = (url: string) => {
     try {
       return new URL(url).hostname;
@@ -39,65 +41,69 @@ function DocumentHeader({
       return url;
     }
   };
+
+  const colorSx = {
+    color: 'black',
+    opacity: 0.7,
+    '&:hover': {
+      opacity: 1,
+      color: 'primary.main',
+    },
+  };
+
+  const renderSeparator = (index: number) =>
+    index > 0 && (
+      <Box component="span" sx={colorSx}>
+        {' • '}
+      </Box>
+    );
+
   return (
-    <Typography
-      variant="caption"
-      sx={{
-        gap: 0.5,
-      }}
-      {...typographyProps}
-    >
-      {[
-        ...(urlWebsiteName || url
-          ? [
-              <Box
-                component="a"
-                color="primary.dark"
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                key={0}
-              >
-                {urlWebsiteName ?? getHostname(url)}
-              </Box>,
-            ]
-          : []),
-        ...(author
-          ? [
-              <Box
-                component="a"
-                color="primary.dark"
-                href={authorUrl}
-                target="_blank"
-                rel="noreferrer"
-                key={1}
-              >
-                {author}
-              </Box>,
-            ]
-          : []),
-        ...Object.values(documentHeaderStrings)
-          .filter((headerString): headerString is string => !!headerString)
-          .map((headerString, index) => (
-            <Box component="span" color="primary.dark" key={index + 2}>
+    <Typography variant="caption" sx={{ gap: 0.5 }} {...typographyProps}>
+      {urlWebsiteName || url ? (
+        <>
+          {renderSeparator(0)}
+          <Box
+            component={Link}
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            sx={colorSx}
+          >
+            {urlWebsiteName ?? getHostname(url)}
+          </Box>
+        </>
+      ) : null}
+
+      {author ? (
+        <>
+          {renderSeparator(urlWebsiteName || url ? 1 : 0)}
+          <Box
+            component={Link}
+            href={authorUrl || '#'}
+            target="_blank"
+            rel="noreferrer"
+            sx={colorSx}
+          >
+            {author}
+          </Box>
+        </>
+      ) : null}
+
+      {Object.values(documentHeaderStrings)
+        .filter((headerString): headerString is string => !!headerString)
+        .map((headerString, index) => (
+          <Fragment key={index}>
+            {renderSeparator(
+              index + (urlWebsiteName || url ? 1 : 0) + (author ? 1 : 0),
+            )}
+            <Box component="span" sx={colorSx}>
               {headerString}
             </Box>
-          )),
-      ].reduce(
-        (accumulator, component, index) => [
-          ...accumulator,
-          ...(index !== 0
-            ? [
-                <Box component="span" color="black" key={`separator-${index}`}>
-                  {' • '}
-                </Box>,
-              ]
-            : []),
-          <Fragment key={index}>{component}</Fragment>,
-        ],
-        [] as ReactNode[],
-      )}
+          </Fragment>
+        ))}
     </Typography>
   );
 }
+
 export default DocumentHeader;
