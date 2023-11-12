@@ -8,14 +8,8 @@ import {
 } from '../types/team.types';
 import { apiRequest } from '../../utils/api';
 
-export const fetchTeam = async (
-  teamId: string,
-): Promise<PopulatedTeam | null> => {
-  try {
-    return await apiRequest<PopulatedTeam>('GET', '/team/' + teamId);
-  } catch (error) {
-    return null;
-  }
+export const fetchTeam = async (teamId: string): Promise<PopulatedTeam> => {
+  return apiRequest<PopulatedTeam>('GET', '/team/' + teamId);
 };
 
 export const fetchTeams = async (): Promise<Team[]> => {

@@ -1,5 +1,4 @@
 import { Mutex } from 'async-mutex';
-import { fetchTimeout } from './fetchTimeout';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
@@ -58,12 +57,10 @@ export async function apiRequest<T>(
     ...nextConfig,
   };
 
-  try {
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-    if (accessToken) {
-      fetchConfig.headers.Authorization = `Bearer ${accessToken}`;
-    }
-  } catch {}
+  const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+  if (accessToken) {
+    fetchConfig.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
   if (body && !isFile) {
     if (body instanceof FormData) {
@@ -77,7 +74,7 @@ export async function apiRequest<T>(
     fetchConfig.body = body;
   }
 
-  let response = await fetchTimeout(query, fetchConfig);
+  let response = await fetch(query, fetchConfig);
   let bodyResult;
   if (response.status !== 204) {
     bodyResult = await response.json();
@@ -90,35 +87,31 @@ export async function apiRequest<T>(
     }
     /* Try to use refresh token if exists */
     if (response.status === 401) {
-      try {
-        const refreshToken = localStorage.getItem(
-          LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-        );
-        if (refreshToken) {
-          const tokens = await (refreshTokenMutex.isLocked()
-            ? refreshTokenMutex.waitForUnlock().then(() => ({
-                accessToken: localStorage.getItem(
-                  LOCAL_STORAGE_ACCESS_TOKEN_KEY,
-                ),
-                refreshToken: localStorage.getItem(
-                  LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-                ),
-              }))
-            : handleRefreshToken(API_URL, refreshToken));
+      const refreshToken = localStorage.getItem(
+        LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+      );
+      if (refreshToken) {
+        const tokens = await (refreshTokenMutex.isLocked()
+          ? refreshTokenMutex.waitForUnlock().then(() => ({
+              accessToken: localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY),
+              refreshToken: localStorage.getItem(
+                LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+              ),
+            }))
+          : handleRefreshToken(API_URL, refreshToken));
 
-          if (tokens?.accessToken) {
-            fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
-            response = await fetchTimeout(query, fetchConfig);
-            if (response.status !== 204) {
-              bodyResult = await response.json();
-            }
+        if (tokens?.accessToken) {
+          fetchConfig.headers.Authorization = `Bearer ${tokens.accessToken}`;
+          response = await fetch(query, fetchConfig);
+          if (response.status !== 204) {
+            bodyResult = await response.json();
+          }
 
-            if (response.ok) {
-              return bodyResult as T;
-            }
+          if (response.ok) {
+            return bodyResult as T;
           }
         }
-      } catch {}
+      }
     }
     throw new ApiError(bodyResult.message, response.status);
   }
@@ -132,7 +125,7 @@ const handleRefreshToken = async (
   const release = await refreshTokenMutex.acquire();
 
   try {
-    const response = await fetchTimeout(API_URL + '/auth/refresh', {
+    const response = await fetch(API_URL + '/auth/refresh', {
       method: 'PUT',
       headers: {
         Accept: 'application/json',

@@ -8,7 +8,7 @@ import { RouteParams } from '../../../../../stores/types/global.types';
 interface Props {
   children: ReactNode;
 }
-function LoggedLayout({ children }: Props) {
+function DashboardLayout({ children }: Props) {
   const { documentId } = useParams<RouteParams>();
   return (
     <Stack
@@ -22,4 +22,4 @@ function LoggedLayout({ children }: Props) {
   );
 }
 
-export default LoggedLayout;
+export default DashboardLayout;

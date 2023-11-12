@@ -14,8 +14,8 @@ interface Props {
 
 async function RootLayout({ children }: Props) {
   return (
-    <html style={{ height: '100%' }}>
-      <body style={{ height: '100%' }}>
+    <html>
+      <body>
         <FontProvider>
           <ThemeProvider>
             <ReactQueryProvider>{children}</ReactQueryProvider>
