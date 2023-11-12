@@ -27,12 +27,13 @@ import { doesUserHaveTeamPrivilege } from '../../../utils/team';
 
 function LoggedSidebar() {
   const { teamId } = useParams<RouteParams>();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const isMobile = useIsMobile();
   const { data: user, isLoading: isUserLoading } = useSession();
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(teamId);
   const {
     data: { rich: richTags },
+    isLoading: isTagsLoading,
   } = useTagsByTeam(teamId);
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -106,17 +107,19 @@ function LoggedSidebar() {
             userHasTeamPrivilege={userHasTeamPrivilege}
             isPersonalTeam={team.isPersonal}
           />
-          <TagsTree
-            teamId={teamId}
-            tags={richTags}
-            userHasTeamPrivilege={userHasTeamPrivilege}
-            documentsCountPerTags={documentsCountPerTags}
-            onSelectTag={() => {
-              if (isMobile) {
-                setIsSidebarOpen(false);
-              }
-            }}
-          />
+          {!isTagsLoading && richTags && (
+            <TagsTree
+              teamId={teamId}
+              tags={richTags}
+              userHasTeamPrivilege={userHasTeamPrivilege}
+              documentsCountPerTags={documentsCountPerTags}
+              onSelectTag={() => {
+                if (isMobile) {
+                  setIsSidebarOpen(false);
+                }
+              }}
+            />
+          )}
         </Stack>
         // TODO: skeleton or optimistically update
       )}
@@ -180,14 +183,18 @@ function LoggedSidebar() {
             backgroundColor: 'transparent',
           }}
         >
-          {displayDrawerContent()}
+          <Box
+            sx={{
+              minWidth: '300px',
+              width: '330px',
+              maxWidth: '25%',
+              position: 'fixed',
+            }}
+          >
+            {displayDrawerContent()}
+          </Box>
         </Box>
       )}
-
-      {/* <SelectTeamsAndOrganisationsDialog
-        open={isSelectTeamsAndOrganisationsOpen}
-        onClose={() => setIsSelectTeamsAndOrganisationsOpen(false)}
-      /> */}
     </>
   );
 }

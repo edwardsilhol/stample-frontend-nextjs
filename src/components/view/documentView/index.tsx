@@ -38,12 +38,12 @@ interface DocumentViewProps {
 }
 
 function DocumentView({ teamId, documentId }: DocumentViewProps) {
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const isMobile = useIsMobile();
   const router = useRouter();
   const { data: loggedInUser, isLoading: isLoggedInUserLoading } = useSession();
   const { data: viewedDocument, isLoading: isViewedDocumentLoading } =
     useDocument(documentId);
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: tags, isLoading: isTagsLoading } = useTagsByTeam(teamId);
   const updateDocumentAsGuest = useUpdateDocumentAsGuest();
   const summarizeDocument = useSummarizeDocument();

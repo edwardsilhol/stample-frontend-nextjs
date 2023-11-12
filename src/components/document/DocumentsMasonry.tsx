@@ -41,8 +41,8 @@ function DocumentsMasonryComponent({
   fetchNextPage,
   variant,
 }: DocumentsMasonryProps) {
-  const { data: user, isLoading: isUserLoading } = useSession();
   const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
+  const { data: user, isLoading: isUserLoading } = useSession();
   const router = useRouter();
   const containerRef = useRef(null);
   const { width } = useContainerPosition(containerRef, [containerWidth]);

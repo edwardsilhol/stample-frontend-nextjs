@@ -49,7 +49,6 @@ function DocumentsView({
           width: '100%',
           overflowX: 'hidden',
           overflowY: 'hidden',
-          height: 'auto',
           minHeight: '100%',
         }}
         ref={ref}

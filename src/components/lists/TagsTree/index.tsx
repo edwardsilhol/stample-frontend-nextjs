@@ -1,3 +1,5 @@
+'use client';
+
 import { TagRich } from '../../../stores/types/tag.types';
 import { IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -107,7 +109,8 @@ function TagsTree({
       </Typography>
       <TreeView
         sx={{
-          overflow: 'hidden',
+          overflowX: 'hidden',
+          overflowY: 'auto',
           maxHeight: 'calc(100vh - 268px)',
           marginBottom: 0,
         }}
@@ -181,7 +184,7 @@ function TagsTree({
               handleClickSelectTag(event);
             }}
           />,
-          ...(tags
+          ...(tags && tags.length > 0
             ? tags.map((tag) => (
                 <TagsTreeItem
                   key={tag._id}

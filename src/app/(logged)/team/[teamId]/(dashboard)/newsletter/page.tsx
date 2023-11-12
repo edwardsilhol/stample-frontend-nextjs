@@ -18,9 +18,9 @@ interface NewsletterPageProps {
 }
 
 function NewsletterPage({ params: { teamId } }: NewsletterPageProps) {
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const isMobile = useIsMobile();
   const { data: loggedUser, isLoading: isLoggedUserLoading } = useSession();
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: documents, isLoading: isDocumentsLoading } = useSearchDocuments(
     {
       team: teamId,
