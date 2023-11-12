@@ -181,7 +181,7 @@ function TagsTree({
               handleClickSelectTag(event);
             }}
           />,
-          ...(tags
+          ...(tags && tags.length > 0
             ? tags.map((tag) => (
                 <TagsTreeItem
                   key={tag._id}

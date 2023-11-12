@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Menu from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GotoNewsletterButton from '../../buttons/GoToNewsletterButton';
 import { RouteParams } from '../../../stores/types/global.types';
 import { useTeam } from '../../../stores/hooks/team.hooks';
@@ -27,15 +27,21 @@ import { doesUserHaveTeamPrivilege } from '../../../utils/team';
 
 function LoggedSidebar() {
   const { teamId } = useParams<RouteParams>();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const isMobile = useIsMobile();
   const { data: user, isLoading: isUserLoading } = useSession();
-  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
   const { data: documentsCountPerTags } = useDocumentsCountPerTagByTeam(teamId);
   const {
     data: { rich: richTags },
+    isLoading: isTagsLoading,
   } = useTagsByTeam(teamId);
   const logout = useLogout();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
+  // TODO URGENT: remove this after debug
+  useEffect(() => {
+    console.log('tags', richTags);
+  }, [richTags]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -106,17 +112,19 @@ function LoggedSidebar() {
             userHasTeamPrivilege={userHasTeamPrivilege}
             isPersonalTeam={team.isPersonal}
           />
-          <TagsTree
-            teamId={teamId}
-            tags={richTags}
-            userHasTeamPrivilege={userHasTeamPrivilege}
-            documentsCountPerTags={documentsCountPerTags}
-            onSelectTag={() => {
-              if (isMobile) {
-                setIsSidebarOpen(false);
-              }
-            }}
-          />
+          {!isTagsLoading && richTags && (
+            <TagsTree
+              teamId={teamId}
+              tags={richTags}
+              userHasTeamPrivilege={userHasTeamPrivilege}
+              documentsCountPerTags={documentsCountPerTags}
+              onSelectTag={() => {
+                if (isMobile) {
+                  setIsSidebarOpen(false);
+                }
+              }}
+            />
+          )}
         </Stack>
         // TODO: skeleton or optimistically update
       )}
