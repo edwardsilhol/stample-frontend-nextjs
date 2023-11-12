@@ -185,6 +185,9 @@ function LoggedSidebar() {
         >
           <Box
             sx={{
+              minWidth: '300px',
+              width: '330px',
+              maxWidth: '25%',
               position: 'fixed',
             }}
           >

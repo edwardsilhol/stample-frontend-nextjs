@@ -109,7 +109,8 @@ function TagsTree({
       </Typography>
       <TreeView
         sx={{
-          overflow: 'hidden',
+          overflowX: 'hidden',
+          overflowY: 'auto',
           maxHeight: 'calc(100vh - 268px)',
           marginBottom: 0,
         }}

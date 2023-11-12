@@ -5,8 +5,6 @@ import LoggedSidebar from '../../../../../components/bars/loggedSideBar';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'next/navigation';
 import { RouteParams } from '../../../../../stores/types/global.types';
-import { useIsMobile } from '../../../../../utils/hooks/useIsMobile';
-import Box from '@mui/material/Box';
 
 interface Props {
   children: ReactNode;
