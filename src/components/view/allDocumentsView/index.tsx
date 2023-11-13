@@ -64,14 +64,16 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
       }}
       id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
     >
-      {isLoading || isFetching || isTeamLoading || isUserLoading ? (
+      {!isUserLoading && !isTeamLoading && team && user && (
+        <LoggedHeader
+          userHasTeamPrivilege={userHasTeamPrivilege}
+          setHideDocuments={setHideDocuments}
+        />
+      )}
+      {isLoading || isFetching ? (
         <CircularLoading />
       ) : (
         <>
-          <LoggedHeader
-            userHasTeamPrivilege={userHasTeamPrivilege}
-            setHideDocuments={setHideDocuments}
-          />
           {!hideDocuments && (
             <DocumentsView
               documents={allDocuments}

@@ -14,7 +14,6 @@ export type CreateDocumentDTO = Pick<
   | 'tags'
   | 'author'
   | 'authorUrl'
-  | 'keyInsight'
   | 'selectedForNewsletter'
   | 'urlWebsiteName'
   | 'mainMedia'

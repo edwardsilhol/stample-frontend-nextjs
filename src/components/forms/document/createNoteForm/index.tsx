@@ -73,7 +73,6 @@ function CreateNoteForm({
         createDocumentDto: {
           title,
           content: editor?.getHTML() || '',
-          keyInsight: summary,
           summary,
           url,
           tags: selectedTags.map((tag) => tag._id),

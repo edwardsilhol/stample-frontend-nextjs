@@ -25,7 +25,7 @@ import Alert from '@mui/material/Alert';
 
 type CreateWebpageFormType = Pick<
   CreateDocumentDTO,
-  'url' | 'keyInsight' | 'tags' | 'selectedForNewsletter'
+  'url' | 'summary' | 'tags' | 'selectedForNewsletter'
 >;
 
 interface CreateWepPageFormProps {
@@ -48,14 +48,14 @@ function CreateWebpageForm({
 
   const validationSchema = Yup.object().shape({
     url: Yup.string().required(),
-    keyInsight: Yup.string().optional(),
+    summary: Yup.string().optional(),
     tags: Yup.array().of(Yup.string()),
     selectedForNewsletter: Yup.boolean().optional(),
   } as Record<keyof CreateWebpageFormType, any>);
 
   const { control, handleSubmit } = useForm<CreateWebpageFormType>({
     defaultValues: {
-      keyInsight: '',
+      summary: '',
       url: '',
       tags: [],
       selectedForNewsletter: false,
@@ -69,18 +69,18 @@ function CreateWebpageForm({
     }
     try {
       setError(undefined);
-      const { url, keyInsight, selectedForNewsletter } = values;
+      const { url, summary, selectedForNewsletter } = values;
 
       if (await isUrlClipable(url)) {
         const clippedPage = await getClippedPageFromUrl(url);
         await createDocument.mutateAsync({
           teamId: teamId,
           createDocumentDto: {
-            keyInsight: keyInsight,
+            ...clippedPage,
             tags: selectedTags.map((tag) => tag._id),
             selectedForNewsletter,
             type: 'webpage',
-            ...clippedPage,
+            summary,
           },
         });
         onClose();
