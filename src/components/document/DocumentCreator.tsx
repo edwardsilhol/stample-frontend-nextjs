@@ -15,7 +15,7 @@ function DocumentCreator({ creator, insight }: DocumentCreatorProps) {
     <Stack direction="column" alignItems="center">
       <Avatar
         sizes="large"
-        src={creator.profilePictureUrl}
+        src={creator?.profilePictureUrl}
         sx={{
           width: '80px',
           height: '80px',
@@ -25,7 +25,7 @@ function DocumentCreator({ creator, insight }: DocumentCreatorProps) {
           borderColor: 'primary.main',
         }}
       >
-        {creator.profilePictureUrl
+        {creator?.profilePictureUrl || typeof creator === 'string' // TODO: remove when user type is fixed on backend
           ? null
           : `${creator.firstName[0]}${creator.lastName[0]}`}
       </Avatar>
