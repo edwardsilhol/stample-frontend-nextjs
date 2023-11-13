@@ -21,8 +21,12 @@ import { RouteParams } from '../../../../stores/types/global.types';
 
 interface CreateNoteFormProps {
   onClose: () => void;
+  userHasTeamPrivilege: boolean;
 }
-function CreateNoteForm({ onClose }: CreateNoteFormProps) {
+function CreateNoteForm({
+  onClose,
+  userHasTeamPrivilege,
+}: CreateNoteFormProps) {
   const { teamId } = useParams<RouteParams>();
   const [_, setError] = useState(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -153,11 +157,13 @@ function CreateNoteForm({ onClose }: CreateNoteFormProps) {
               Tags
             </Typography>
             <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
-            <SwitchFormField
-              control={control}
-              label="Select for newsletter"
-              name="selectedForNewsletter"
-            />
+            {userHasTeamPrivilege && (
+              <SwitchFormField
+                control={control}
+                label="Select for newsletter"
+                name="selectedForNewsletter"
+              />
+            )}
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
               Save
             </Button>

@@ -11,6 +11,9 @@ import CircularLoading from '../../base/circularLoading';
 import { RouteParams } from '../../../stores/types/global.types';
 import Stack from '@mui/material/Stack/Stack';
 import LoggedHeader from '../../headers/loggedHeader';
+import { doesUserHaveTeamPrivilege } from '../../../utils/team';
+import { useTeam } from '../../../stores/hooks/team.hooks';
+import { useSession } from '../../../stores/hooks/user.hooks';
 
 interface AllDocumentsViewProps {
   isDisplayed?: boolean;
@@ -18,6 +21,8 @@ interface AllDocumentsViewProps {
 function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
   const [hideDocuments, setHideDocuments] = useState<boolean>(false);
   const { teamId, tagId } = useParams<RouteParams>();
+  const { data: team, isLoading: isTeamLoading } = useTeam(teamId);
+  const { data: user, isLoading: isUserLoading } = useSession();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
   const { data, isLoading, isFetching, fetchNextPage } = useSearchDocuments({
@@ -39,6 +44,11 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
     [data?.pages[0]?.total],
   );
 
+  const userHasTeamPrivilege = doesUserHaveTeamPrivilege(
+    user?._id,
+    team?.users,
+  );
+
   return (
     <Stack
       direction="column"
@@ -54,11 +64,14 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
       }}
       id={DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID}
     >
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || isTeamLoading || isUserLoading ? (
         <CircularLoading />
       ) : (
         <>
-          <LoggedHeader setHideDocuments={setHideDocuments} />
+          <LoggedHeader
+            userHasTeamPrivilege={userHasTeamPrivilege}
+            setHideDocuments={setHideDocuments}
+          />
           {!hideDocuments && (
             <DocumentsView
               documents={allDocuments}

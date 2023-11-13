@@ -30,8 +30,12 @@ type CreateWebpageFormType = Pick<
 
 interface CreateWepPageFormProps {
   onClose: () => void;
+  userHasTeamPrivilege: boolean;
 }
-function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
+function CreateWebpageForm({
+  onClose,
+  userHasTeamPrivilege,
+}: CreateWepPageFormProps) {
   const { teamId } = useParams<RouteParams>();
   const [error, setError] = useState<string | undefined>(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -145,11 +149,13 @@ function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
               Tags
             </Typography>
             <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
-            <SwitchFormField
-              control={control}
-              label="Select for newsletter"
-              name="selectedForNewsletter"
-            />
+            {userHasTeamPrivilege && (
+              <SwitchFormField
+                control={control}
+                label="Select for newsletter"
+                name="selectedForNewsletter"
+              />
+            )}
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
               Save
             </Button>
