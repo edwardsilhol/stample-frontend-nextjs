@@ -25,7 +25,7 @@ function DocumentCreator({ creator, insight }: DocumentCreatorProps) {
           borderColor: 'primary.main',
         }}
       >
-        {creator?.profilePictureUrl || typeof creator === 'string' // TODO: remove when user type is fixed on backend
+        {creator?.profilePictureUrl
           ? null
           : `${creator.firstName[0]}${creator.lastName[0]}`}
       </Avatar>

@@ -111,10 +111,9 @@ export const useUpdateDocumentAsGuest = () => {
       updateDocumentAsGuestDto: UpdateDocumentAsGuestDTO;
     }) => updateDocumentAsGuest(documentId, updateDocumentAsGuestDto),
     onSuccess: async (document) => {
-      await queryClient.setQueryData(
-        documentQueryKey.one(document._id),
-        document,
-      );
+      await queryClient.invalidateQueries({
+        queryKey: documentQueryKey.one(document._id),
+      });
     },
   });
 };
@@ -163,10 +162,9 @@ export const useSummarizeDocument = () => {
     mutationFn: ({ documentId }: { documentId: string }) =>
       summarizeDocument(documentId),
     onSuccess: async (document) => {
-      await queryClient.setQueryData(
-        documentQueryKey.one(document._id),
-        document,
-      );
+      await queryClient.invalidateQueries({
+        queryKey: documentQueryKey.one(document._id),
+      });
     },
   });
 };

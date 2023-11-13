@@ -98,7 +98,7 @@ function CreateOrUpdateTagForm({
             fontSize: '12px',
           }}
         >
-          Submit
+          {variant === 'update' ? 'Update' : 'Add'}
         </Button>
       </Stack>
     </Popover>
