@@ -14,6 +14,7 @@ import LoggedHeader from '../../headers/loggedHeader';
 import { doesUserHaveTeamPrivilege } from '../../../utils/team';
 import { useTeam } from '../../../stores/hooks/team.hooks';
 import { useSession } from '../../../stores/hooks/user.hooks';
+import { UNSORTED_TAGS_ID } from '../../../constants/tag.constants';
 
 interface AllDocumentsViewProps {
   isDisplayed?: boolean;
@@ -31,7 +32,7 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
           text: searchQuery,
         }
       : {}),
-    ...(tagId ? { tags: [tagId] } : {}),
+    ...(tagId ? { tags: tagId === UNSORTED_TAGS_ID ? [] : [tagId] } : {}),
     team: teamId ? teamId : undefined,
   });
   const allDocuments = useMemo(

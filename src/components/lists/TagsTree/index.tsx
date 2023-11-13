@@ -16,7 +16,8 @@ import { TAG_ROUTE, TEAM_ROUTE } from '../../../constants/routes.constant';
 import TagsTreeItem from 'components/lists/TagsTreeItem';
 import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
 import PublicIcon from '@mui/icons-material/Public';
-
+import LabelOffIcon from '@mui/icons-material/LabelOff';
+import { UNSORTED_TAGS_ID } from '../../../constants/tag.constants';
 function TreeItem({
   sx,
   ...props
@@ -184,6 +185,24 @@ function TagsTree({
               handleClickSelectTag(event);
             }}
           />,
+          ...(documentsCountPerTags[UNSORTED_TAGS_ID] > 0
+            ? [
+                <TagsTreeItem
+                  key="toSort"
+                  tag={{
+                    _id: UNSORTED_TAGS_ID,
+                    name: 'Unsorted',
+                    children: [],
+                  }}
+                  setHoveredTagId={setHoveredTagId}
+                  documentsCountPerTags={documentsCountPerTags}
+                  hoveredTagId={hoveredTagId}
+                  handleClickSelectTag={handleClickSelectTag}
+                  userHasTeamPrivilege={false}
+                  Icon={LabelOffIcon}
+                />,
+              ]
+            : []),
           ...(tags && tags.length > 0
             ? tags.map((tag) => (
                 <TagsTreeItem

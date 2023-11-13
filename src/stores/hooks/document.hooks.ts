@@ -26,6 +26,8 @@ import {
 import { useParams, useSearchParams } from 'next/navigation';
 import { SEARCH_QUERY_PARAM } from '../../constants/queryParams.constant';
 import { RouteParams } from '../types/global.types';
+import { tagQueryKey } from './tag.hooks';
+import { UNSORTED_TAGS_ID } from '../../constants/tag.constants';
 
 const useSearchDocumentsQuery = () => {
   const { teamId, tagId } = useParams<RouteParams>();
@@ -76,10 +78,24 @@ export const useCreateDocument = () => {
       teamId: string;
       createDocumentDto: CreateDocumentDTO;
     }) => createDocument(teamId, createDocumentDto),
-    onSuccess: async ({ team }) => {
+    onSuccess: async ({ team, tags }) => {
       await queryClient.invalidateQueries({
         queryKey: documentQueryKey.search({ team }),
       });
+      await queryClient.setQueryData(
+        tagQueryKey.documentsCountPerTag(team),
+        (oldData?: Record<string, number>) => {
+          const newData: Record<string, number> = oldData ? { ...oldData } : {};
+          if (tags && tags.length > 0) {
+            tags.forEach((tag) => {
+              newData[tag] = (newData[tag] ?? 0) + 1;
+            });
+          } else {
+            newData[UNSORTED_TAGS_ID] = (newData[UNSORTED_TAGS_ID] ?? 0) + 1;
+          }
+          return newData;
+        },
+      );
     },
   });
 };

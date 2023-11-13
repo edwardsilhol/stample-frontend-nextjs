@@ -1,7 +1,7 @@
 'use client';
 
 import { TagRich } from '../../../stores/types/tag.types';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, SvgIconTypeMap, Tooltip } from '@mui/material';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import LocalOfferOutlined from '@mui/icons-material/LocalOfferOutlined';
@@ -22,6 +22,7 @@ import { useParams } from 'next/navigation';
 import ConfirmDialog from '../../modals/confirmDialog';
 import CreateOrUpdateTagForm from '../../forms/tag/createOrUpdateTagForm';
 import Edit from '@mui/icons-material/Edit';
+import { OverridableComponent } from '@mui/types';
 
 const TAG_NAME_MAX_LENGTH = 30;
 
@@ -36,6 +37,7 @@ interface TagsTreeItemProps {
   ) => void;
   userHasTeamPrivilege: boolean;
   parentId?: string;
+  Icon?: OverridableComponent<SvgIconTypeMap> & { muiName: string };
 }
 
 function TagsTreeItem({
@@ -46,6 +48,7 @@ function TagsTreeItem({
   documentsCountPerTags,
   handleClickSelectTag,
   userHasTeamPrivilege,
+  Icon,
 }: TagsTreeItemProps) {
   const { teamId } = useParams<RouteParams>();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -225,10 +228,17 @@ function TagsTreeItem({
             paddingY={0.4}
           >
             <Stack direction="row" alignItems="center" maxWidth="100%">
-              <LocalOfferOutlined
-                sx={{ fontSize: '18px', marginRight: 1 }}
-                color="primary"
-              />
+              {Icon ? (
+                <Icon
+                  sx={{ fontSize: '18px', marginRight: 1 }}
+                  color="primary"
+                />
+              ) : (
+                <LocalOfferOutlined
+                  sx={{ fontSize: '18px', marginRight: 1 }}
+                  color="primary"
+                />
+              )}
 
               <Tooltip
                 title={

@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/constants/tag.constants.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/documentTagsTextField/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/SelectFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/selectFieldForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/tag.hooks.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +123,7 @@
       <workItem from="1699744111695" duration="2216000" />
       <workItem from="1699790267484" duration="4019000" />
       <workItem from="1699876525752" duration="16168000" />
-      <workItem from="1699898712811" duration="6212000" />
+      <workItem from="1699898712811" duration="9818000" />
     </task>
     <servers />
   </component>
