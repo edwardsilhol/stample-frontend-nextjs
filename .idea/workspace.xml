@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/stories.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/fetchPageContentSrr.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/webClipper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/document.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/document.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +117,7 @@
       <workItem from="1699738425926" duration="5679000" />
       <workItem from="1699744111695" duration="2216000" />
       <workItem from="1699790267484" duration="4019000" />
-      <workItem from="1699876525752" duration="14539000" />
+      <workItem from="1699876525752" duration="14814000" />
     </task>
     <servers />
   </component>

@@ -69,6 +69,7 @@ function CreateNoteForm({ onClose }: CreateNoteFormProps) {
         createDocumentDto: {
           title,
           content: editor?.getHTML() || '',
+          keyInsight: summary,
           summary,
           url,
           tags: selectedTags.map((tag) => tag._id),
@@ -84,7 +85,7 @@ function CreateNoteForm({ onClose }: CreateNoteFormProps) {
   };
 
   return (
-    <Grid container paddingTop={8} paddingX={3.5}>
+    <Grid container paddingTop={8} paddingX={3.5} paddingBottom="20px">
       <Grid item xs={2}>
         <Button
           onClick={onClose}

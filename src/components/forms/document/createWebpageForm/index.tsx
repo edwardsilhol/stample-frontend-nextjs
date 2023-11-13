@@ -9,10 +9,7 @@ import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { Tag } from '../../../../stores/types/tag.types';
-import {
-  useCreateDocument,
-  useSummarizeDocument,
-} from '../../../../stores/hooks/document.hooks';
+import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
 import TextFormField from '../../fields/textFormField';
 import SelectOrCreateTags from '../SelectOrCreateTags';
 import { useParams } from 'next/navigation';
@@ -39,7 +36,6 @@ function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const createDocument = useCreateDocument();
-  const summarizeDocument = useSummarizeDocument();
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleCloseSnackbar = () => {
@@ -73,7 +69,7 @@ function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
 
       if (await isUrlClipable(url)) {
         const clippedPage = await getClippedPageFromUrl(url);
-        const document = await createDocument.mutateAsync({
+        await createDocument.mutateAsync({
           teamId: teamId,
           createDocumentDto: {
             keyInsight: keyInsight,
@@ -83,14 +79,6 @@ function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
             ...clippedPage,
           },
         });
-        if (document) {
-          // TODO: add role management instead of try catch
-          try {
-            await summarizeDocument.mutateAsync({
-              documentId: document._id,
-            });
-          } catch {}
-        }
         onClose();
       } else {
         console.log('url is not clipable');
@@ -105,7 +93,7 @@ function CreateWebpageForm({ onClose }: CreateWepPageFormProps) {
   };
 
   return (
-    <Grid container paddingTop={8} paddingX={3.5}>
+    <Grid container paddingTop={8} paddingX={3.5} paddingBottom="20px">
       <Grid item xs={2}>
         <Button
           onClick={onClose}
