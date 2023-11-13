@@ -1,8 +1,8 @@
 'use client';
 
 import { TextField, Autocomplete } from '@mui/material';
-import { Tag } from '../../../stores/types/tag.types';
-import { useTagsByTeam } from '../../../stores/hooks/tag.hooks';
+import { Tag } from '../../../../stores/types/tag.types';
+import { useTagsByTeam } from '../../../../stores/hooks/tag.hooks';
 import { SyntheticEvent, useState } from 'react';
 
 type TagTextFieldProps = {
@@ -10,7 +10,7 @@ type TagTextFieldProps = {
   onChange: (value: Tag[]) => void;
 };
 
-function TagTextField({ teamId, onChange }: TagTextFieldProps) {
+function DocumentTagsTextField({ teamId, onChange }: TagTextFieldProps) {
   const [inputValue, setInputValue] = useState('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const {
@@ -57,4 +57,4 @@ function TagTextField({ teamId, onChange }: TagTextFieldProps) {
   );
 }
 
-export default TagTextField;
+export default DocumentTagsTextField;

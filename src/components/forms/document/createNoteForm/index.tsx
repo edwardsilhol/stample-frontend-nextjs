@@ -12,7 +12,7 @@ import { CreateDocumentDTO } from '../../../../stores/types/document.types';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
 import TextFormField from '../../fields/textFormField';
-import SelectOrCreateTags from '../SelectOrCreateTags';
+import SelectOrCreateTags from '../documentTagsTextField';
 import TextEditor from '../../fields/TextEditor';
 import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
 import { useParams } from 'next/navigation';

@@ -30,7 +30,7 @@ import { Control, useFieldArray } from 'react-hook-form';
 import { PopulatedTeam } from 'stores/types/team.types';
 import { LocalRole, User, UserForOtherClient } from 'stores/types/user.types';
 import { useSession } from 'stores/hooks/user.hooks';
-import SelectFieldForm from '../../fields/SelectFieldForm';
+import SelectFieldForm from '../../fields/selectFieldForm';
 import { capitalize } from 'lodash';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';

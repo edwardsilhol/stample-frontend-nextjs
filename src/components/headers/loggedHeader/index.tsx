@@ -114,6 +114,14 @@ function LoggedHeader({
               onClick();
               handleMenuClose(e);
             }}
+            sx={{
+              '&:hover': {
+                color: 'primary.main',
+                '& .MuiListItemIcon-root': {
+                  color: 'primary.main',
+                },
+              },
+            }}
           >
             <ListItemIcon>
               <Icon

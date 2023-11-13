@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
 import TextFormField from '../../fields/textFormField';
-import SelectOrCreateTags from '../SelectOrCreateTags';
+import SelectOrCreateTags from '../documentTagsTextField';
 import { useParams } from 'next/navigation';
 import SwitchFormField from '../../fields/SwitchFormField';
 import { RouteParams } from '../../../../stores/types/global.types';

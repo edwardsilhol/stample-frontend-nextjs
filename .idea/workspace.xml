@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/SelectOrCreateTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/documentTagsTextField/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/fields/SelectFieldForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/fields/selectFieldForm/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,11 +71,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/forms/fields/selectFieldForm" />
+      <recent name="$PROJECT_DIR$/src/components/forms/document/documentTagsTextField" />
       <recent name="$PROJECT_DIR$/src/app/(logged)" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]" />
       <recent name="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm" />
-      <recent name="$PROJECT_DIR$/src/components/headers" />
-      <recent name="$PROJECT_DIR$/src/components/bars/customSearchBar" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -122,7 +123,7 @@
       <workItem from="1699744111695" duration="2216000" />
       <workItem from="1699790267484" duration="4019000" />
       <workItem from="1699876525752" duration="16168000" />
-      <workItem from="1699898712811" duration="4886000" />
+      <workItem from="1699898712811" duration="6212000" />
     </task>
     <servers />
   </component>
