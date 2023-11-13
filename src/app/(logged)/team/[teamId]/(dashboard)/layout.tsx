@@ -15,6 +15,7 @@ function DashboardLayout({ children }: Props) {
     <Stack
       direction="row"
       bgcolor={!!documentId ? undefined : 'additionalColors.sidebarBackground'}
+      height="100vh"
     >
       <LoggedSidebar />
       {children}
