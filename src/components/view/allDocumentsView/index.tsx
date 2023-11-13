@@ -11,13 +11,12 @@ import CircularLoading from '../../base/circularLoading';
 import { RouteParams } from '../../../stores/types/global.types';
 import Stack from '@mui/material/Stack/Stack';
 import LoggedHeader from '../../headers/loggedHeader';
-import CreateDocumentForm from '../../forms/document/createDocumentForm';
 
 interface AllDocumentsViewProps {
   isDisplayed?: boolean;
 }
 function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
-  const [toggledAddButton, setToggledAddButton] = useState<boolean>(false);
+  const [hideDocuments, setHideDocuments] = useState<boolean>(false);
   const { teamId, tagId } = useParams<RouteParams>();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get(SEARCH_QUERY_PARAM);
@@ -48,7 +47,7 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
         overflowX: 'hidden',
         overflowY: 'scroll',
         height: '100%',
-        backgroundColor: toggledAddButton
+        backgroundColor: hideDocuments
           ? 'white'
           : 'additionalColors.background',
         display: isDisplayed ? undefined : 'none',
@@ -59,21 +58,13 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
         <CircularLoading />
       ) : (
         <>
-          {!toggledAddButton ? (
-            <LoggedHeader
-              addButtonToggled={toggledAddButton}
-              setToggledAddButton={setToggledAddButton}
-            />
-          ) : null}
-
-          {!toggledAddButton ? (
+          <LoggedHeader setHideDocuments={setHideDocuments} />
+          {!hideDocuments && (
             <DocumentsView
               documents={allDocuments}
               fetchNextPage={fetchNextPage}
               totalDocumentsCount={total}
             />
-          ) : (
-            <CreateDocumentForm onClose={() => setToggledAddButton(false)} />
           )}
         </>
       )}

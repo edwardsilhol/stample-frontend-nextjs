@@ -12,10 +12,15 @@ export type CreateDocumentDTO = Pick<
   | 'url'
   | 'type'
   | 'tags'
+  | 'author'
+  | 'authorUrl'
+  | 'keyInsight'
   | 'selectedForNewsletter'
+  | 'urlWebsiteName'
+  | 'mainMedia'
 >;
 const documentMediaTypes = ['image', 'video'] as const;
-type DocumentMediaType = (typeof documentMediaTypes)[number];
+export type DocumentMediaType = (typeof documentMediaTypes)[number];
 interface DocumentMedia {
   html: string;
   mediaType: DocumentMediaType;

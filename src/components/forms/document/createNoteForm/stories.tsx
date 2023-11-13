@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react';
-import CreateDocumentForm from './index';
+import CreateNoteForm from './index';
 
 export default {
   title: 'Components/Forms/Document/CreateDocumentForm',
-  component: CreateDocumentForm,
+  component: CreateNoteForm,
   args: {
     onClose: () => {
       console.log('onClose');

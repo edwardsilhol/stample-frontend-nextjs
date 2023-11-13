@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/fetchPageContentSrr.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/webClipper.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/fetchTimeout.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/document/createDocumentForm/stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/types/document.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/document.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +27,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Gherkin feature file" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -37,33 +47,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/utils&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "youssef/clipper",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "last_opened_file_path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/src/utils",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
+    "ts.external.directory.path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/utils" />
+      <recent name="$PROJECT_DIR$/src/components/forms/document/webClipper" />
+      <recent name="$PROJECT_DIR$/src/components/forms/document" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]" />
-      <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/app/(logged)" />
@@ -117,7 +127,7 @@
       <workItem from="1699738425926" duration="5679000" />
       <workItem from="1699744111695" duration="2216000" />
       <workItem from="1699790267484" duration="4019000" />
-      <workItem from="1699876525752" duration="1669000" />
+      <workItem from="1699876525752" duration="14539000" />
     </task>
     <servers />
   </component>
