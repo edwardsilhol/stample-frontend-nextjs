@@ -55,13 +55,14 @@ function DocumentView({ teamId, documentId }: DocumentViewProps) {
     [viewedDocument?.content, isViewedDocumentLoading],
   );
 
-  const isDocumentLiked = useMemo(
-    () =>
-      viewedDocument?.likes.some(
-        (user) => user._id.toString() === loggedInUser?._id.toString(),
-      ),
-    [viewedDocument?.likes, loggedInUser],
-  );
+  const isDocumentLiked = useMemo(() => {
+    if (!viewedDocument?.likes || !loggedInUser) {
+      return false;
+    }
+    return viewedDocument?.likes.some(
+      (user) => user._id.toString() === loggedInUser?._id.toString(),
+    );
+  }, [viewedDocument?.likes, loggedInUser]);
   const onClickBack = () => {
     router.back();
   };
