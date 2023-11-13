@@ -31,10 +31,12 @@ type CreateWebpageFormType = Pick<
 interface CreateWepPageFormProps {
   onClose: () => void;
   userHasTeamPrivilege: boolean;
+  isPersonalTeam: boolean;
 }
 function CreateWebpageForm({
   onClose,
   userHasTeamPrivilege,
+  isPersonalTeam,
 }: CreateWepPageFormProps) {
   const { teamId } = useParams<RouteParams>();
   const [error, setError] = useState<string | undefined>(undefined);
@@ -149,7 +151,7 @@ function CreateWebpageForm({
               Tags
             </Typography>
             <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
-            {userHasTeamPrivilege && (
+            {userHasTeamPrivilege && !isPersonalTeam && (
               <SwitchFormField
                 control={control}
                 label="Select for newsletter"

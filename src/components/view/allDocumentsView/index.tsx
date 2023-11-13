@@ -68,6 +68,7 @@ function AllDocumentsView({ isDisplayed = true }: AllDocumentsViewProps) {
         <LoggedHeader
           userHasTeamPrivilege={userHasTeamPrivilege}
           setHideDocuments={setHideDocuments}
+          isPersonalTeam={team.isPersonal}
         />
       )}
       {isLoading || isFetching ? (

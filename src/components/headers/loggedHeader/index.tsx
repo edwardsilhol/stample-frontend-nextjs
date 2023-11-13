@@ -23,10 +23,12 @@ import CreateWebpageForm from '../../forms/document/createWebpageForm';
 interface LoggedHeaderProps {
   setHideDocuments: (toggled: boolean) => void;
   userHasTeamPrivilege: boolean;
+  isPersonalTeam: boolean;
 }
 function LoggedHeader({
   setHideDocuments,
   userHasTeamPrivilege,
+  isPersonalTeam,
 }: LoggedHeaderProps) {
   const isMobile = useIsMobile();
   const trigger = useScrollTrigger({
@@ -161,12 +163,14 @@ function LoggedHeader({
       {noteFormOpen && (
         <CreateNoteForm
           userHasTeamPrivilege={userHasTeamPrivilege}
+          isPersonalTeam={isPersonalTeam}
           onClose={handleNoteFormClose}
         />
       )}
       {webpageFormOpen && (
         <CreateWebpageForm
           userHasTeamPrivilege={userHasTeamPrivilege}
+          isPersonalTeam={isPersonalTeam}
           onClose={handleLinkFormClose}
         />
       )}

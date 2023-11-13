@@ -254,7 +254,7 @@ function UpdateTeamMembers({
             }}
             onClick={onClickAddInvitation}
           >
-            Send
+            Add
           </Button>
         </Stack>
       </Box>

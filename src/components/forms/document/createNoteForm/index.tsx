@@ -22,10 +22,12 @@ import { RouteParams } from '../../../../stores/types/global.types';
 interface CreateNoteFormProps {
   onClose: () => void;
   userHasTeamPrivilege: boolean;
+  isPersonalTeam: boolean;
 }
 function CreateNoteForm({
   onClose,
   userHasTeamPrivilege,
+  isPersonalTeam,
 }: CreateNoteFormProps) {
   const { teamId } = useParams<RouteParams>();
   const [_, setError] = useState(undefined);
@@ -156,7 +158,7 @@ function CreateNoteForm({
               Tags
             </Typography>
             <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
-            {userHasTeamPrivilege && (
+            {userHasTeamPrivilege && !isPersonalTeam && (
               <SwitchFormField
                 control={control}
                 label="Select for newsletter"

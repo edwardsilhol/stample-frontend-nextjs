@@ -8,9 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createNoteForm/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/document/createWebpageForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/allDocumentsView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/types/document.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/types/document.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/webClipper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/webClipper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/grids/documentGridItem/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/headers/loggedHeader/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +122,7 @@
       <workItem from="1699744111695" duration="2216000" />
       <workItem from="1699790267484" duration="4019000" />
       <workItem from="1699876525752" duration="16168000" />
-      <workItem from="1699898712811" duration="3772000" />
+      <workItem from="1699898712811" duration="4886000" />
     </task>
     <servers />
   </component>
