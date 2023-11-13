@@ -8,86 +8,98 @@ import { Button, Grid, Typography } from '@mui/material';
 import { KeyboardArrowLeftOutlined } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { CreateDocumentDTO } from '../../../../stores/types/document.types';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useCreateDocument } from '../../../../stores/hooks/document.hooks';
 import TextFormField from '../../fields/textFormField';
-import SelectOrCreateTags from '../SelectOrCreateTags';
-import TextEditor from '../../fields/TextEditor';
-import { useEditor } from '../../fields/TextEditor/hooks/useEditor';
+import SelectOrCreateTags from '../documentTagsTextField';
 import { useParams } from 'next/navigation';
 import SwitchFormField from '../../fields/SwitchFormField';
 import { RouteParams } from '../../../../stores/types/global.types';
+import {
+  getClippedPageFromUrl,
+  isUrlClipable,
+} from '../../../../utils/webClipper';
+import { CreateDocumentDTO } from '../../../../stores/types/document.types';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-interface CreateDocumentFormProps {
+type CreateWebpageFormType = Pick<
+  CreateDocumentDTO,
+  'url' | 'summary' | 'tags' | 'selectedForNewsletter'
+>;
+
+interface CreateWepPageFormProps {
   onClose: () => void;
+  userHasTeamPrivilege: boolean;
+  isPersonalTeam: boolean;
 }
-function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
+function CreateWebpageForm({
+  onClose,
+  userHasTeamPrivilege,
+  isPersonalTeam,
+}: CreateWepPageFormProps) {
   const { teamId } = useParams<RouteParams>();
-  const [_, setError] = useState(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const createDocument = useCreateDocument();
-  const editor = useEditor({
-    placeholder: 'The content of your note',
-    editorStyle: {
-      height: '136px',
-      overflow: 'auto',
-    },
-  });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required(),
-    content: Yup.string().optional(),
+    url: Yup.string().required(),
     summary: Yup.string().optional(),
-    url: Yup.string().optional(),
     tags: Yup.array().of(Yup.string()),
-  } as Record<keyof CreateDocumentDTO, any>);
+    selectedForNewsletter: Yup.boolean().optional(),
+  } as Record<keyof CreateWebpageFormType, any>);
 
-  const { control, handleSubmit } = useForm<CreateDocumentDTO>({
+  const { control, handleSubmit } = useForm<CreateWebpageFormType>({
     defaultValues: {
-      title: '',
-      content: '',
       summary: '',
       url: '',
       tags: [],
-      type: 'note',
       selectedForNewsletter: false,
     },
-    resolver: yupResolver<CreateDocumentDTO>(validationSchema as any),
+    resolver: yupResolver<CreateWebpageFormType>(validationSchema as any),
   });
 
-  const onSubmit = async (values: CreateDocumentDTO) => {
+  const onSubmit = async (values: CreateWebpageFormType) => {
     if (teamId === null) {
       return;
     }
     try {
       setError(undefined);
-      const { title, summary, url, type, selectedForNewsletter } = values;
+      const { url, summary, selectedForNewsletter } = values;
 
-      await createDocument
-        .mutateAsync({
+      if (await isUrlClipable(url)) {
+        const clippedPage = await getClippedPageFromUrl(url);
+        await createDocument.mutateAsync({
           teamId: teamId,
           createDocumentDto: {
-            title,
-            content: editor?.getHTML() || '',
-            summary,
-            url,
+            ...clippedPage,
             tags: selectedTags.map((tag) => tag._id),
-            type,
             selectedForNewsletter,
+            type: 'webpage',
+            summary,
           },
-        })
-        .then(() => {
-          onClose();
         });
+        onClose();
+      } else {
+        console.log('url is not clipable');
+        setError('url is not clipable');
+        setOpenSnackbar(true);
+      }
     } catch (e: any) {
       setError(e.message);
+      setOpenSnackbar(true);
       console.error(e);
     }
   };
 
   return (
-    <Grid container paddingTop={8} paddingX={3.5}>
+    <Grid container paddingTop={8} paddingX={3.5} paddingBottom="20px">
       <Grid item xs={2}>
         <Button
           onClick={onClose}
@@ -109,21 +121,19 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
           fontSize="2.4rem"
           paddingBottom={5}
         >
-          Add a note
+          Add a link
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" spacing={2}>
             <Typography variant="body2" fontWeight={500}>
-              Title
+              Url
             </Typography>
             <TextFormField
               control={control}
-              name="title"
-              required
+              name="url"
               fullWidth
-              id="title"
-              placeholder="Give a title to your note"
-              autoFocus
+              id="url"
+              placeholder="Give a url to your note"
             />
             <Typography variant="body2" fontWeight={500}>
               Key insight
@@ -138,28 +148,16 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
               multiline
             />
             <Typography variant="body2" fontWeight={500}>
-              Content
-            </Typography>
-            <TextEditor editor={editor} />
-            <Typography variant="body2" fontWeight={500}>
-              Url
-            </Typography>
-            <TextFormField
-              control={control}
-              name="url"
-              fullWidth
-              id="url"
-              placeholder="Give a url to your note"
-            />
-            <Typography variant="body2" fontWeight={500}>
               Tags
             </Typography>
             <SelectOrCreateTags teamId={teamId} onChange={setSelectedTags} />
-            <SwitchFormField
-              control={control}
-              label="Select for newsletter"
-              name="selectedForNewsletter"
-            />
+            {userHasTeamPrivilege && !isPersonalTeam && (
+              <SwitchFormField
+                control={control}
+                label="Select for newsletter"
+                name="selectedForNewsletter"
+              />
+            )}
             <Button type="submit" variant="contained" sx={{ alignSelf: 'end' }}>
               Save
             </Button>
@@ -167,8 +165,23 @@ function CreateDocumentForm({ onClose }: CreateDocumentFormProps) {
         </Box>
       </Grid>
       <Grid item xs={2} />
+      {/* TODO change when snackbar provider is created */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 }
 
-export default CreateDocumentForm;
+export default CreateWebpageForm;

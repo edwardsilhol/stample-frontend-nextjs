@@ -10,7 +10,7 @@ import { HooksUpdateTagDTO } from '../types/tag.types';
 import { useParams } from 'next/navigation';
 import { RouteParams } from '../types/global.types';
 
-const tagQueryKey = {
+export const tagQueryKey = {
   base: ['tag'],
   all: ['tags'],
   byTeam: (teamId: string) => [...tagQueryKey.all, { teamId }],
