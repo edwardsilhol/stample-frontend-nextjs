@@ -31,6 +31,7 @@ import TextEditor from 'components/forms/fields/TextEditor';
 import { useEditor } from '../../forms/fields/TextEditor/hooks/useEditor';
 import CircularLoading from '../../base/circularLoading';
 import DocumentComments from '../../forms/document/documentComments';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface DocumentViewProps {
   teamId: string;
@@ -55,13 +56,14 @@ function DocumentView({ teamId, documentId }: DocumentViewProps) {
     [viewedDocument?.content, isViewedDocumentLoading],
   );
 
-  const isDocumentLiked = useMemo(
-    () =>
-      viewedDocument?.likes.some(
-        (user) => user._id.toString() === loggedInUser?._id.toString(),
-      ),
-    [viewedDocument?.likes, loggedInUser],
-  );
+  const isDocumentLiked = useMemo(() => {
+    if (!viewedDocument?.likes || !loggedInUser) {
+      return false;
+    }
+    return viewedDocument?.likes.some(
+      (user) => user._id.toString() === loggedInUser?._id.toString(),
+    );
+  }, [viewedDocument?.likes, loggedInUser]);
   const onClickBack = () => {
     router.back();
   };
@@ -190,20 +192,26 @@ function DocumentView({ teamId, documentId }: DocumentViewProps) {
                   {isDocumentLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
                 </IconButton>
               </Stack>
-              {(!viewedDocument.aiSummary ||
-                (Array.isArray(viewedDocument.aiSummary) &&
-                  viewedDocument.aiSummary.length === 0)) && (
-                <Button
-                  sx={{ marginBottom: 2 }}
-                  onClick={() => {
-                    summarizeDocument.mutate({
-                      documentId: viewedDocument._id,
-                    });
-                  }}
-                  variant="outlined"
-                >
-                  {'Summarize this document'}
-                </Button>
+              {!summarizeDocument.isPending &&
+                (!viewedDocument.aiSummary ||
+                  (Array.isArray(viewedDocument.aiSummary) &&
+                    viewedDocument.aiSummary.length === 0)) && (
+                  <Button
+                    sx={{ marginBottom: 2 }}
+                    onClick={async () => {
+                      await summarizeDocument.mutateAsync({
+                        documentId: viewedDocument._id,
+                      });
+                    }}
+                    variant="outlined"
+                  >
+                    {'Summarize this document'}
+                  </Button>
+                )}
+              {summarizeDocument.isPending && (
+                <Stack justifyContent="center" alignItems="center">
+                  <CircularProgress />
+                </Stack>
               )}
               {viewedDocument.aiSummary &&
                 viewedDocument.aiSummary.length > 0 && (
