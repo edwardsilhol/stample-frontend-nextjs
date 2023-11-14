@@ -133,6 +133,7 @@ export const useUpdateDocument = () => {
       await queryClient.invalidateQueries({
         queryKey: documentQueryKey.one(document._id),
       });
+
       queryClient.setQueryData<InfiniteData<SearchDocumentsReturnType>>(
         documentQueryKey.search(searchDocumentsQuery),
         (oldData) => {
@@ -155,6 +156,14 @@ export const useUpdateDocument = () => {
           }
         },
       );
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.documentsCountPerTag(document.team),
+      });
+      if (!document.tags || document.tags.length === 0) {
+        await queryClient.invalidateQueries({
+          queryKey: documentQueryKey.search({ team: document.team, tags: [] }),
+        });
+      }
     },
   });
 };
@@ -179,6 +188,9 @@ export const useDeleteDocument = (team: string) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: documentQueryKey.search({ team }),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.documentsCountPerTag(team),
       });
     },
   });
