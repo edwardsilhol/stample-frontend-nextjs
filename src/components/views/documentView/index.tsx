@@ -284,13 +284,18 @@ function DocumentView({ teamId, documentId }: DocumentViewProps) {
                 </Stack>
               </Grid>
               <Grid item xs={1} sm={1.5}>
-                <Button
-                  variant="contained"
-                  startIcon={<EditIcon />}
-                  onClick={handleShowUpdateForm}
-                >
-                  Update
-                </Button>
+                {viewedDocument &&
+                  loggedInUser &&
+                  (userHasTeamPrivilege ||
+                    viewedDocument.creator?._id === loggedInUser._id) && (
+                    <Button
+                      variant="contained"
+                      startIcon={<EditIcon />}
+                      onClick={handleShowUpdateForm}
+                    >
+                      Update
+                    </Button>
+                  )}
               </Grid>
               {!isMobile && <Grid item xs={1} sm={1.5} />}
             </Grid>
