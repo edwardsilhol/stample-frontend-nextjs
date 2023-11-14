@@ -272,18 +272,20 @@ function TagsTreeItem({
       >
         {children &&
           children.length > 0 &&
-          children.map((child: TagRich) => (
-            <TagsTreeItem
-              key={child._id}
-              tag={child}
-              parentId={_id}
-              userHasTeamPrivilege={userHasTeamPrivilege}
-              setHoveredTagId={setHoveredTagId}
-              documentsCountPerTags={documentsCountPerTags}
-              hoveredTagId={hoveredTagId}
-              handleClickSelectTag={handleClickSelectTag}
-            />
-          ))}
+          children
+            .filter((tag) => !tag) // TODO: remove this filter when db is fixed
+            .map((child: TagRich) => (
+              <TagsTreeItem
+                key={child._id}
+                tag={child}
+                parentId={_id}
+                userHasTeamPrivilege={userHasTeamPrivilege}
+                setHoveredTagId={setHoveredTagId}
+                documentsCountPerTags={documentsCountPerTags}
+                hoveredTagId={hoveredTagId}
+                handleClickSelectTag={handleClickSelectTag}
+              />
+            ))}
       </TreeItem>
       {deleteTagConfirmationDialog()}
       <CreateOrUpdateTagForm
