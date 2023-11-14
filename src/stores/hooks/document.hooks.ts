@@ -96,6 +96,9 @@ export const useCreateDocument = () => {
           return newData;
         },
       );
+      await queryClient.invalidateQueries({
+        queryKey: tagQueryKey.documentsCountPerTag(team),
+      });
     },
   });
 };
