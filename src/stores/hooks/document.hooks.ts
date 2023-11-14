@@ -130,6 +130,9 @@ export const useUpdateDocument = () => {
       updateDocumentDto: UpdateDocumentDto;
     }) => updateDocument(documentId, updateDocumentDto),
     onSuccess: async (document) => {
+      await queryClient.invalidateQueries({
+        queryKey: documentQueryKey.one(document._id),
+      });
       queryClient.setQueryData<InfiniteData<SearchDocumentsReturnType>>(
         documentQueryKey.search(searchDocumentsQuery),
         (oldData) => {

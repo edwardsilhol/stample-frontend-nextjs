@@ -9,7 +9,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Add from '@mui/icons-material/Add';
 import { useIsMobile } from 'utils/hooks/useIsMobile';
 import { DOCUMENTS_VIEW_SCROLLABLE_CONTAINER_ID } from 'components/document/DocumentsView';
-import CreateNoteForm from '../../forms/document/createNoteForm';
+import NoteForm from '../../forms/document/noteForm';
 import { MouseEvent, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,7 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import StickyNote2 from '@mui/icons-material/StickyNote2';
 import LinkIcon from '@mui/icons-material/Link';
-import CreateWebpageForm from '../../forms/document/createWebpageForm';
+import WebpageForm from '../../forms/document/webpageForm';
 
 interface LoggedHeaderProps {
   setHideDocuments: (toggled: boolean) => void;
@@ -169,14 +169,16 @@ function LoggedHeader({
   ) : (
     <>
       {noteFormOpen && (
-        <CreateNoteForm
+        <NoteForm
+          variant="create"
           userHasTeamPrivilege={userHasTeamPrivilege}
           isPersonalTeam={isPersonalTeam}
           onClose={handleNoteFormClose}
         />
       )}
       {webpageFormOpen && (
-        <CreateWebpageForm
+        <WebpageForm
+          variant="create"
           userHasTeamPrivilege={userHasTeamPrivilege}
           isPersonalTeam={isPersonalTeam}
           onClose={handleLinkFormClose}
