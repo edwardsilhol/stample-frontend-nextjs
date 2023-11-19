@@ -24,9 +24,6 @@ Remember to change app name everywhere.
 - **Node** >= 19.x LTS
 - **pnpm** >= 7.2.x
 
-## Requirements
-
-- husky `npx husky install` for pre-commit and pre-push hooks
 
 ## Development
 
