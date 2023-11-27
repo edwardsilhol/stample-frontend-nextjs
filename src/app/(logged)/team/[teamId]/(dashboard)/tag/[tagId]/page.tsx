@@ -1,4 +1,4 @@
-import AllDocumentsView from '../../../../../../../components/view/allDocumentsView';
+import AllDocumentsView from '../../../../../../../components/views/allDocumentsView';
 
 function TagPage() {
   return <AllDocumentsView />;
