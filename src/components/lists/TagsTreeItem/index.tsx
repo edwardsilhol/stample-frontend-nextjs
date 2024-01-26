@@ -273,7 +273,7 @@ function TagsTreeItem({
         {children &&
           children.length > 0 &&
           children
-            .filter((tag) => !tag) // TODO: remove this filter when db is fixed
+            .filter((tag) => tag) // TODO: remove this filter when db is fixed
             .map((child: TagRich) => (
               <TagsTreeItem
                 key={child._id}
