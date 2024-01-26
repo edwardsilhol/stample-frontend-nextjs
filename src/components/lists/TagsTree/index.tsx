@@ -204,17 +204,19 @@ function TagsTree({
               ]
             : []),
           ...(tags && tags.length > 0
-            ? tags.map((tag) => (
-                <TagsTreeItem
-                  key={tag._id}
-                  tag={tag}
-                  userHasTeamPrivilege={userHasTeamPrivilege}
-                  setHoveredTagId={setHoveredTagId}
-                  documentsCountPerTags={documentsCountPerTags}
-                  hoveredTagId={hoveredTagId}
-                  handleClickSelectTag={handleClickSelectTag}
-                />
-              ))
+            ? tags
+                .filter((tag) => !tag) // TODO: remove this filter when db is fixed
+                .map((tag) => (
+                  <TagsTreeItem
+                    key={tag._id}
+                    tag={tag}
+                    userHasTeamPrivilege={userHasTeamPrivilege}
+                    setHoveredTagId={setHoveredTagId}
+                    documentsCountPerTags={documentsCountPerTags}
+                    hoveredTagId={hoveredTagId}
+                    handleClickSelectTag={handleClickSelectTag}
+                  />
+                ))
             : []),
         ]}
       </TreeView>
