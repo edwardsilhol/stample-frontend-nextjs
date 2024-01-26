@@ -205,7 +205,7 @@ function TagsTree({
             : []),
           ...(tags && tags.length > 0
             ? tags
-                .filter((tag) => !tag) // TODO: remove this filter when db is fixed
+                .filter((tag) => tag) // TODO: remove this filter when db is fixed
                 .map((tag) => (
                   <TagsTreeItem
                     key={tag._id}
