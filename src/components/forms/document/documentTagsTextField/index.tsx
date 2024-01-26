@@ -1,6 +1,6 @@
 'use client';
 
-import { TextField, Autocomplete } from '@mui/material';
+import { TextField, Autocomplete, Chip } from '@mui/material';
 import { Tag } from '../../../../stores/types/tag.types';
 import { useTagsByTeam } from '../../../../stores/hooks/tag.hooks';
 import { SyntheticEvent, useState } from 'react';
@@ -8,11 +8,16 @@ import { SyntheticEvent, useState } from 'react';
 type TagTextFieldProps = {
   teamId: string;
   onChange: (value: Tag[]) => void;
+  value?: Tag[];
 };
 
-function DocumentTagsTextField({ teamId, onChange }: TagTextFieldProps) {
+function DocumentTagsTextField({
+  teamId,
+  onChange,
+  value = [],
+}: TagTextFieldProps) {
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
   const {
     data: { raw: flatTags },
     isLoading,
@@ -22,38 +27,48 @@ function DocumentTagsTextField({ teamId, onChange }: TagTextFieldProps) {
     setInputValue(value);
   };
 
-  const handleTagSelect = (_: SyntheticEvent, value: (string | Tag)[]) => {
-    if (!Array.isArray(value)) {
-      if (!selectedTags.includes(value)) {
-        setSelectedTags([...selectedTags, value]);
-        onChange([...selectedTags, value]);
+  const handleTagSelect = (_: SyntheticEvent, tagValue: (string | Tag)[]) => {
+    if (!Array.isArray(tagValue)) {
+      if (!value.includes(tagValue)) {
+        onChange([...value, tagValue]);
       }
-    } else if (Array.isArray(value)) {
-      setSelectedTags(value as Tag[]);
-      onChange(value as Tag[]);
+    } else if (Array.isArray(tagValue)) {
+      onChange(tagValue as Tag[]);
     }
   };
 
-  return !flatTags || isLoading ? null : (
-    <>
-      <Autocomplete
-        multiple
-        options={flatTags}
-        value={selectedTags}
-        onChange={handleTagSelect}
-        inputValue={inputValue}
-        onInputChange={handleInputChange}
-        getOptionLabel={(option) => option.name}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="Select tags"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      />
-    </>
+  return !isLoading && flatTags ? (
+    <Autocomplete
+      multiple
+      options={flatTags.map((tag) => ({
+        name: tag.name,
+        _id: tag._id,
+      }))}
+      value={value?.map((tag) => ({
+        name: tag.name,
+        _id: tag._id,
+      }))}
+      onChange={handleTagSelect}
+      inputValue={inputValue}
+      onInputChange={handleInputChange}
+      getOptionLabel={(option) => option.name}
+      isOptionEqualToValue={(option, value) => option._id === value._id}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="Select tags"
+          variant="outlined"
+          fullWidth
+        />
+      )}
+      renderTags={(value, getTagProps) =>
+        value.map((option, index) => (
+          <Chip {...getTagProps({ index })} key={index} label={option.name} />
+        ))
+      }
+    />
+  ) : (
+    <></>
   );
 }
 

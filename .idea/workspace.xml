@@ -7,7 +7,8 @@
     <list default="true" id="73441740-d2fe-47c0-9da2-dd6bd7b2f4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTree/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lists/TagsTreeItem/index.tsx" afterDir="false" /
+      <change beforePath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/hooks/document.hooks.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +58,7 @@
     "ts.external.directory.path": "/home/izno/Izno/Work/Goodwave/Stample/stample-frontend-nextjs/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/utils" />
@@ -67,11 +68,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/buttons/gribBackButton" />
       <recent name="$PROJECT_DIR$/src/components/forms/fields/selectFieldForm" />
       <recent name="$PROJECT_DIR$/src/components/forms/document/documentTagsTextField" />
       <recent name="$PROJECT_DIR$/src/app/(logged)" />
       <recent name="$PROJECT_DIR$/src/app/(logged)/team/[teamId]/(dashboard)/document/[documentId]" />
-      <recent name="$PROJECT_DIR$/src/components/forms/team/createOrUpdateTeamForm" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -120,6 +121,9 @@
       <workItem from="1699790267484" duration="4019000" />
       <workItem from="1699876525752" duration="16168000" />
       <workItem from="1699898712811" duration="9818000" />
+      <workItem from="1699955996541" duration="4320000" />
+      <workItem from="1699962035598" duration="4039000" />
+      <workItem from="1699969406729" duration="3998000" />
     </task>
     <servers />
   </component>

@@ -107,7 +107,6 @@ export type UpdateDocumentDto = Partial<
     | 'likes'
     | 'readers'
     | 'guests'
-    | 'tags'
     | 'team'
   > & {
     add?: AddRemoveDto;
